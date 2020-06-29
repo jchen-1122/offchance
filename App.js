@@ -6,7 +6,7 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Text>Offchance App</Text>
-      <Text>Joshua's First Edit</Text>
+      <Text>Joshua's Second Edit</Text>
       <StatusBar style="auto" />
     </View>
   );
