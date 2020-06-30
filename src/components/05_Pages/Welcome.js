@@ -4,6 +4,7 @@ import { Button, View, Text } from 'react-native';
 // just for the examples, delete later
 import Divider from '../01_Atoms/Divider/Divider.js';
 import BlockButton from '../01_Atoms/Buttons/BlockButton/BlockButton.js';
+import InputField from '../02_Molecules/InputField/InputField.js';
 
 export default function HomeScreen({ navigation }) {
   return (
@@ -16,6 +17,9 @@ export default function HomeScreen({ navigation }) {
       <BlockButton title="SECONDARY BUTTON" color="secondary" />
       <BlockButton title="FACEBOOK BUTTON" color="facebook" />
       <BlockButton title="INSTA BUTTON" color="instagram" />
+      <InputField label="Input" textArea/>
+      <InputField label="Input"/>
+
       {/* ------------------------------------------ */}
 
       <Button
