@@ -1,15 +1,14 @@
 // insta button + facebook button + login button
 
 import React from 'react';
-import {TouchableOpacity, Text} from 'react-native';
-import {styles} from "./BlockButton.styling";
+import { TouchableOpacity, Text, Image} from 'react-native';
 
-
-function BlockButton(props){
+function BlockButton(props) {
     return (
-    <TouchableOpacity style={styles.BlockButton}>
-        <Text style={styles.BlockButton__title}>Button</Text>
-    </TouchableOpacity>
+        <TouchableOpacity style={props.btnType.BlockButton}>
+            {props.logo && <Image style={props.btnType.BlockButton__icon} source={props.logo} />}
+            <Text style={props.btnType.BlockButton__title}>{props.content}</Text>
+        </TouchableOpacity>
     )
     // return <Button style={styles.BlockButton} title="Hello"/>
 }
