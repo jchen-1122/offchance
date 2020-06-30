@@ -2,18 +2,18 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import BlockButton from './components/01_Atoms/Buttons/BlockButton/BlockButton.js';
-import {blackLogin, instaLogin, FBLogin} from "./components/01_Atoms/Buttons/BlockButton/BlockButton.styling";
-import FBLogo from "../assets/FBLogo.png";
-import InstaLogo from "../assets/InstaLogo.png";
+import LikeButton from './components/01_Atoms/Buttons/LikeButton/LikeButton.js';
 
 export default function App() {
   return (
     <View style={styles.container}>
       <Text>Offchance App</Text>
       <Text>Joshua's Second Edit</Text>
-      <BlockButton btnType={blackLogin} content="LOG IN"/>
-      <BlockButton btnType={instaLogin} content="Log In With Instagram" logo={InstaLogo}/>
-      <BlockButton btnType={FBLogin} content="Log In With Facebook" logo={FBLogo}/>
+      <LikeButton title="like" />
+      <BlockButton title="PRIMARY BUTTON" color="primary"/>
+      <BlockButton title="SECONDARY BUTTON" color="secondary"/>
+      <BlockButton title="INSTAGRAM" color="instagram"/>
+      <BlockButton title="FACEBOOK" color="facebook"/>
       <StatusBar style="auto" />
     </View>
   );
