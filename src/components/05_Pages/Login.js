@@ -1,6 +1,7 @@
   import * as React from 'react';
 import { Button, View, Text } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import BlockButton from '../01_Atoms/Buttons/BlockButton/BlockButton';
 
 export default function Login() {
   return (

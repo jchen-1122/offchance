@@ -3,7 +3,6 @@
 import React from 'react';
 import {TouchableOpacity, Text} from 'react-native';
 import {styles} from "./BlockButton.styling";
-import InstagramIcon from '@material-ui/icons/Instagram';
 
 function BlockButton(props){
 
@@ -28,7 +27,7 @@ function BlockButton(props){
 
 
     return (
-        <TouchableOpacity style={[styles.BlockButton, buttonStyle]}>
+        <TouchableOpacity style={[styles.BlockButton, buttonStyle]} onPress={props.onPress}>
             <Text style={[styles.BlockButton__title, buttonTitleStyle]}>{props.title}</Text>
         </TouchableOpacity>
     )
