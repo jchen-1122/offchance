@@ -2,6 +2,7 @@ import * as React from 'react';
 import { View, Text, Linking } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import BlockButton from '../01_Atoms/Buttons/BlockButton/BlockButton';
+import Divider from '../01_Atoms/Divider/Divider.js';
 
 export default function Login() {
   return (
@@ -16,7 +17,7 @@ export default function Login() {
         title="Log in With Facebook" 
         color="facebook"
         onPress={() => Linking.openURL('https://www.facebook.com/')}/>
-      <Text>Placeholder Login Page</Text>
+      <Divider/>
       <TextInput>Enter Your Email Here:</TextInput>
 
     </View>
