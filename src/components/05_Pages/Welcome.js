@@ -13,12 +13,12 @@ export default function HomeScreen({ navigation }) {
 
       {/* just examples, to be removed later */}
       <Divider />
-      <BlockButton title="PRIMARY BUTTON" color="primary" />
-      <BlockButton title="SECONDARY BUTTON" color="secondary" />
-      <BlockButton title="FACEBOOK BUTTON" color="facebook" />
-      <BlockButton title="INSTA BUTTON" color="instagram" />
       <InputField label="Input" textArea/>
       <InputField label="Input"/>
+      <BlockButton title="PRIMARY BUTTON" color="primary" />
+      <BlockButton title="SECONDARY BUTTON" color="secondary" />
+      {/* <BlockButton title="FACEBOOK BUTTON" color="facebook" />
+      <BlockButton title="INSTA BUTTON" color="instagram" /> */}
 
       {/* ------------------------------------------ */}
 
