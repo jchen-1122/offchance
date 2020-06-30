@@ -1,7 +1,7 @@
   
 var colors = {
     primaryColor: 'black',
-    secondaryColor: 'rgba(52, 52, 52, 0.8)',
+    secondaryColor: 'white',
     highlightColor: '#FF7123', // Off Chance Orange,
 
     lightGray: '#EFEFEF',

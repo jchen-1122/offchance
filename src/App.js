@@ -8,7 +8,10 @@ export default function App() {
     <View style={styles.container}>
       <Text>Offchance App</Text>
       <Text>Joshua's Second Edit</Text>
-      <BlockButton />
+      <BlockButton title="PRIMARY BUTTON" color="primary"/>
+      <BlockButton title="SECONDARY BUTTON" color="secondary"/>
+      <BlockButton title="INSTAGRAM" color="instagram"/>
+      <BlockButton title="FACEBOOK" color="facebook"/>
       <StatusBar style="auto" />
     </View>
   );
