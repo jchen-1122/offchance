@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
 
         borderRadius: borderRadius,
         flex: 0,
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -42,6 +43,15 @@ const styles = StyleSheet.create({
     },
     BlockButton__title_secondary:{
         color: colors.primaryColor
+    },
+
+    icon:{
+        color: 'white'
+    },
+    iconBg:{
+        backgroundColor: 'transparent',
+        height: 30,
+        width: 30
     }
 })
 
