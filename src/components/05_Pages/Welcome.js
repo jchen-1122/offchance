@@ -7,7 +7,7 @@ import TextLink from '../01_Atoms/Buttons/TextLinks/TextLinks'
 export default function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      {/* image not showing uo? */}
+      {/* TODO: image not showing uo? */}
       <Image style={{width:50, height:50}} source={OffchanceLogo}/>
       <Text>Limited Flash-Drawings for Collectibles</Text>
       <Text>Donate to Make Change and Win.</Text>
@@ -22,7 +22,7 @@ export default function HomeScreen({ navigation }) {
           title="Log in"
           style={{color: 'black', textDecorationLine: 'underline'}}
           onPress={() => navigation.navigate('Login')}/>
-        {/* Links to Explore (no explore page currently, button is ) */}
+        {/* TODO: Links to Explore (no explore page currently, button is not functional) */}
         <Text> or </Text>
         <TextLink
           title="Start Exploring"
