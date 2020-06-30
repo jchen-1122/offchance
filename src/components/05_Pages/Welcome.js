@@ -7,6 +7,7 @@ import TextLink from '../01_Atoms/Buttons/TextLinks/TextLinks'
 export default function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      {/* image not showing uo? */}
       <Image style={{width:50, height:50}} source={OffchanceLogo}/>
       <Text>Limited Flash-Drawings for Collectibles</Text>
       <Text>Donate to Make Change and Win.</Text>
