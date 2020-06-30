@@ -1,27 +1,22 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import BlockButton from './components/01_Atoms/Buttons/BlockButton/BlockButton.js';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Welcome from './components/05_Pages/Welcome'
+import Login from './components/05_Pages/Login'
+import Signup from './components/05_Pages/Signup'
 
-export default function App() {
+const Stack = createStackNavigator();
+
+function App() {
   return (
-    <View style={styles.container}>
-      <Text>Offchance App</Text>
-      <Text>Joshua's Second Edit</Text>
-      <BlockButton title="PRIMARY BUTTON" color="primary"/>
-      <BlockButton title="SECONDARY BUTTON" color="secondary"/>
-      <BlockButton title="INSTAGRAM" color="instagram"/>
-      <BlockButton title="FACEBOOK" color="facebook"/>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Home" component={Welcome} />
+        <Stack.Screen name="Signup" component={Signup} />
+        <Stack.Screen name="Login" component={Login} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
