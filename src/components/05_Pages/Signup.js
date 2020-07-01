@@ -6,6 +6,7 @@ import InputField from '../02_Molecules/InputField/InputField.js';
 import TextLink from '../01_Atoms/Buttons/TextLinks/TextLinks';
 import CheckBox from '../02_Molecules/Checkbox/Checkbox'
 import { set } from 'react-native-reanimated';
+import {colors, fonts, utilities} from '../../settings/all_settings';
 
 export default function Signup({ navigation }) {
   const [state, setState] = useState({
@@ -17,8 +18,8 @@ export default function Signup({ navigation }) {
 
   return (
     <ScrollView>
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 30 }}>
-      <Text style={{fontSize: 20, fontWeight:'bold'}}>Sign Up</Text>
+      <View style={utilities.flexCenter}>
+      <Text style={fonts.h1}>Sign Up</Text>
       {/* TODO: need to implement OAUTH functionality (currently links to instagram) */}
       <BlockButton  
         title="Log in With Instagram" 

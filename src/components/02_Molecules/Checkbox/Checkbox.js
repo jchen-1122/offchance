@@ -8,12 +8,13 @@ function CheckBox ({ selected, onPress, text}) {
         <TouchableOpacity 
             style={[styles.checkBox]} 
             onPress={onPress}>
-        <Icon
-            size={20}
-            color={'#211f30'}
-            name={ selected ? 'check-box' : 'check-box-outline-blank'}
-        />
-        <Text> {text} </Text>
+            <Icon
+                style={styles.checkbox__icon}
+                size={20}
+                color={'#211f30'}
+                name={ selected ? 'check-box' : 'check-box-outline-blank'}
+            />
+            <Text style={styles.checkBox__text}> {text} </Text>
     </TouchableOpacity>
     )
 }

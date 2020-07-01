@@ -31,12 +31,8 @@ function BlockButton(props){
 
 
     return (
-<<<<<<< HEAD
-        <TouchableOpacity style={[styles.BlockButton, buttonStyle]}>
-            {icon}
-=======
         <TouchableOpacity style={[styles.BlockButton, buttonStyle]} onPress={props.onPress}>
->>>>>>> joshua
+            {icon}
             <Text style={[styles.BlockButton__title, buttonTitleStyle]}>{props.title}</Text>
         </TouchableOpacity>
     )
