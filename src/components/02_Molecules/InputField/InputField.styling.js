@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
         marginTop: 12,
         marginBottom: 12
     },
-
+    
     InputField__box: {
         height: 45,
         width: 300,
@@ -29,4 +29,4 @@ const styles = StyleSheet.create({
 
 })
 
-export {styles}; 
+export {styles};

@@ -1,15 +1,25 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import {  View, Text, Linking, ScrollView } from 'react-native';
 import BlockButton from '../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../01_Atoms/Divider/Divider.js';
 import InputField from '../02_Molecules/InputField/InputField.js';
 import TextLink from '../01_Atoms/Buttons/TextLinks/TextLinks';
+import CheckBox from '../02_Molecules/Checkbox/Checkbox'
+import { set } from 'react-native-reanimated';
+import {colors, fonts, utilities} from '../../settings/all_settings';
 
-export default function Login({ navigation }) {
+export default function Signup({ navigation }) {
+  const [state, setState] = useState({
+    businessAccount: false,
+    futureDrawings: false,
+    agreement: false,
+    signedUp: false
+  })
+
   return (
     <ScrollView>
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 30 }}>
-      <Text>Sign Up</Text>
+      <View style={utilities.flexCenter}>
+      <Text style={fonts.h1}>Sign Up</Text>
       {/* TODO: need to implement OAUTH functionality (currently links to instagram) */}
       <BlockButton  
         title="Log in With Instagram" 
@@ -27,14 +37,36 @@ export default function Login({ navigation }) {
       <InputField label="Instagram Handle"></InputField>
       <InputField label="Password"></InputField>
       <InputField label="Confirm Password"></InputField>
-      <Text>Placeholder Checkbox</Text>
-      <Text>Placeholder Checkbox</Text>
-      <Text>Placeholder Checkbox</Text>
-      {/* TODO: Links to Home (no home page currently, button is not functional) */}
-      <BlockButton 
-        title="LOG IN" 
+      <CheckBox 
+        selected={state.businessAccount} 
+        onPress={() => setState({ businessAccount: !state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement})}
+        text='Request a business account to host your own drawings'
+      />
+      {state.businessAccount ? (
+        <View style={[utilities.flexCenter, {width: 300}]}>
+          <InputField label="Describe the item you would like to use in a drawing"></InputField>
+          <InputField label="Please provide the charity/foundation name(s) you are raising donations for"></InputField>
+          <InputField label="Please provide any additional details below (business website, social media links)"></InputField>
+        </View>) : null}
+      <CheckBox 
+        selected={state.futureDrawings} 
+        onPress={() => setState({ businessAccount: state.businessAccount, futureDrawings: !state.futureDrawings, agreement: state.agreement })}
+        text='Please keep me informed about future drawings'
+      />
+      <CheckBox 
+        selected={state.agreement} 
+        onPress={() => setState({ businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: !state.agreement })}
+        text='I agree with terms of service'
+      />
+      {/* TODO: Links to Home (no home page currently, button is not functional)
+          Right now, the button imitates a database POST request with a one second timeout */}
+      <BlockButton  
+        title="SIGN UP" 
         color="primary"
-        onPress={() => navigation.navigate('Login', { reset: false })}/>
+        onPress={() => {
+          setState({businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true})
+          setTimeout(() => {navigation.navigate('Login', { reset: false })}, 1000)}}/>
+      {state.signedUp ? <Text>Signing Up...</Text> : null}
     </View>
     </ScrollView>
   );

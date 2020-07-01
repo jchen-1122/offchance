@@ -3,12 +3,12 @@
 import React from 'react';
 import {TouchableOpacity, Text} from 'react-native';
 import {styles} from "./BlockButton.styling";
-import { Icon } from 'react-native-elements'
-//import InstagramIcon from '@material-ui/icons/Instagram';
+import { SocialIcon } from 'react-native-elements';
 
 function BlockButton(props){
 
     // determine what kind/color of button it is
+    let icon; // for fb and insta
     let buttonStyle;
     let buttonIcon;
     let buttonTitleStyle=styles.BlockButton__title_white;
@@ -22,9 +22,10 @@ function BlockButton(props){
             break;
         case "facebook":
             buttonStyle=styles.BlockButton_facebook;
-            buttonIcon='facebook-official';
+            icon = <SocialIcon type='facebook' raised="false" iconStyle={styles.icon} style={styles.iconBg} iconSize="30"/>
             break;
         case "instagram":
+            icon = <SocialIcon type='instagram' raised="false" iconStyle={styles.icon} style={styles.iconBg} iconSize="30"/>
             buttonStyle=styles.BlockButton_insta;
             buttonIcon='instagram';
             break;
@@ -33,7 +34,7 @@ function BlockButton(props){
 
     return (
         <TouchableOpacity style={[styles.BlockButton, buttonStyle]} onPress={props.onPress}>
-            {buttonIcon && <Icon color='white' name={buttonIcon} type='font-awesome' />}
+            {icon}
             <Text style={[styles.BlockButton__title, buttonTitleStyle]}>{props.title}</Text>
         </TouchableOpacity>
     )

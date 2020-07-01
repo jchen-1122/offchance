@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {  View, Text } from 'react-native';
-import BlockButton from '../01_Atoms/Buttons/BlockButton/BlockButton';
-import InputField from '../02_Molecules/InputField/InputField.js';
+import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
+import InputField from '../../../02_Molecules/InputField/InputField.js';
 
 export default function EnterEmail({ navigation }) {
   return (
