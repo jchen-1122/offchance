@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
         top: 0,
         height: bannerHeight,
         width: Dimensions.get('window').width,
-        margin: 15,
         backgroundColor: 'green',
         borderRadius: borderRadius,
         flex: 0,
