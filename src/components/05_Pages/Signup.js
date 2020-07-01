@@ -43,7 +43,7 @@ export default function Signup({ navigation }) {
         text='Request a business account to host your own drawings'
       />
       {state.businessAccount ? (
-        <View>
+        <View style={[utilities.flexCenter, {width: 300}]}>
           <InputField label="Describe the item you would like to use in a drawing"></InputField>
           <InputField label="Please provide the charity/foundation name(s) you are raising donations for"></InputField>
           <InputField label="Please provide any additional details below (business website, social media links)"></InputField>

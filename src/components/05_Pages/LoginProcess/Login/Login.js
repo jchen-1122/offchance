@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {  View, Text, Linking } from 'react-native';
-import BlockButton from '../01_Atoms/Buttons/BlockButton/BlockButton';
-import Divider from '../01_Atoms/Divider/Divider.js';
-import InputField from '../02_Molecules/InputField/InputField.js';
-import TextLink from '../01_Atoms/Buttons/TextLinks/TextLinks';
-import {fonts, utilities} from '../../settings/all_settings';
+import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
+import Divider from '../../../01_Atoms/Divider/Divider.js';
+import InputField from '../../../02_Molecules/InputField/InputField.js';
+import TextLink from '../../../01_Atoms/Buttons/TextLinks/TextLinks';
+import {fonts, utilities} from '../../../../settings/all_settings';
 
 export default function Login({ navigation }) {
   return (
