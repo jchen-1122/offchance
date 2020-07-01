@@ -8,7 +8,7 @@ import TextLink from '../01_Atoms/Buttons/TextLinks/TextLinks';
 export default function Login({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Log in</Text>
+      <Text style={{fontSize: 20, fontWeight:'bold'}}>Log In</Text>
       {/* TODO: need to implement OAUTH functionality (currently links to instagram) */}
       <BlockButton  
         title="Log in With Instagram" 

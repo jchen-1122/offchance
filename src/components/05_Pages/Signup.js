@@ -5,18 +5,20 @@ import Divider from '../01_Atoms/Divider/Divider.js';
 import InputField from '../02_Molecules/InputField/InputField.js';
 import TextLink from '../01_Atoms/Buttons/TextLinks/TextLinks';
 import CheckBox from '../02_Molecules/Checkbox/Checkbox'
+import { set } from 'react-native-reanimated';
 
 export default function Signup({ navigation }) {
   const [state, setState] = useState({
     businessAccount: false,
     futureDrawings: false,
-    agreement: false
+    agreement: false,
+    signedUp: false
   })
 
   return (
     <ScrollView>
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding: 30 }}>
-      <Text>Sign Up</Text>
+      <Text style={{fontSize: 20, fontWeight:'bold'}}>Sign Up</Text>
       {/* TODO: need to implement OAUTH functionality (currently links to instagram) */}
       <BlockButton  
         title="Log in With Instagram" 
@@ -55,11 +57,15 @@ export default function Signup({ navigation }) {
         onPress={() => setState({ businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: !state.agreement })}
         text='I agree with terms of service'
       />
-      {/* TODO: Links to Home (no home page currently, button is not functional) */}
-      <BlockButton 
-        title="LOG IN" 
+      {/* TODO: Links to Home (no home page currently, button is not functional)
+          Right now, the button imitates a database POST request with a one second timeout */}
+      <BlockButton  
+        title="SIGN UP" 
         color="primary"
-        onPress={() => navigation.navigate('Login')}/>
+        onPress={() => {
+          setState({businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true})
+          setTimeout(() => {navigation.navigate('Login')}, 1000)}}/>
+      {state.signedUp ? <Text>Signing Up...</Text> : null}
     </View>
     </ScrollView>
   );
