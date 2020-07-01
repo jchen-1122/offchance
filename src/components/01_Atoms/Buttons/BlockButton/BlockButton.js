@@ -22,10 +22,10 @@ function BlockButton(props){
             break;
         case "facebook":
             buttonStyle=styles.BlockButton_facebook;
-            icon = <SocialIcon type='facebook' raised="false" iconStyle={styles.icon} style={styles.iconBg} iconSize="30"/>
+            icon = <SocialIcon type='facebook' raised={false} iconStyle={styles.icon} style={styles.iconBg} iconSize={30}/>
             break;
         case "instagram":
-            icon = <SocialIcon type='instagram' raised="false" iconStyle={styles.icon} style={styles.iconBg} iconSize="30"/>
+            icon = <SocialIcon type='instagram' raised={false} iconStyle={styles.icon} style={styles.iconBg} iconSize={30}/>
             buttonStyle=styles.BlockButton_insta;
             buttonIcon='instagram';
             break;

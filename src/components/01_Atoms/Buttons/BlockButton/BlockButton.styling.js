@@ -44,7 +44,9 @@ const styles = StyleSheet.create({
     BlockButton__title_secondary:{
         color: colors.primaryColor
     },
-
+    BlockButton__title_white: {
+        color: 'white'
+    },
     icon:{
         color: 'white'
     },
