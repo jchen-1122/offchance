@@ -14,7 +14,7 @@ function LikeButton(props){
     */
 
     return (
-        <TouchableOpacity style={styles.BlockButton}>
+        <TouchableOpacity style={styles.LikeButton}>
             <Icon name='heart-outline' type='material-community' />
         </TouchableOpacity>
     )

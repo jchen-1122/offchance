@@ -21,7 +21,7 @@ export default function HomeScreen({ navigation }) {
         <TextLink
           title="Log in"
           style={{color: 'black', textDecorationLine: 'underline'}}
-          onPress={() => navigation.navigate('Login')}/>
+          onPress={() => navigation.navigate('Login', { reset: false })}/>
         {/* TODO: Links to Explore (no explore page currently, button is not functional) */}
         <Text> or </Text>
         <TextLink

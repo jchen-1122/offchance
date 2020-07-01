@@ -6,7 +6,7 @@ var buttonWidth = 40;
 var borderRadius = 80;
 
 const styles = StyleSheet.create({
-    BlockButton: {
+    LikeButton: {
         height: buttonHeight,
         width: buttonWidth,
         margin: 15,

@@ -4,10 +4,14 @@ import BlockButton from '../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../01_Atoms/Divider/Divider.js';
 import InputField from '../02_Molecules/InputField/InputField.js';
 import TextLink from '../01_Atoms/Buttons/TextLinks/TextLinks';
+import Banner from '../01_Atoms/Banner/Banner.js';
 
-export default function Login({ navigation }) {
+
+export default function Login({ navigation, route }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      {route.params.reset && <Banner 
+        title="Your password has been updated!" />}
       <Text>Log in</Text>
       {/* TODO: need to implement OAUTH functionality (currently links to instagram) */}
       <BlockButton  
@@ -22,11 +26,12 @@ export default function Login({ navigation }) {
       <Divider/>
       <InputField label="Email / Username"></InputField>
       <InputField label="Password"></InputField>
-      {/* TODO: Links to Forgot Password (no forgot password currently, button is not functional) */}
+      {/* DONE: Links to Forgot Password (no forgot password currently, button is not functional) */}
+      {/* Added redirect to EnterEmail */}
       <TextLink
         title="Forgot Password?"
         style={{color: 'black'}}
-        onPress={() => navigation.navigate('Login')}/>
+        onPress={() => navigation.navigate('EnterEmail')}/>
       {/* TODO: Links to Home (no home page currently, button is not functional) */}
       <BlockButton 
         title="LOG IN" 
