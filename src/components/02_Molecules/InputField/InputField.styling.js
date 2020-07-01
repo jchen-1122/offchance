@@ -29,4 +29,8 @@ const styles = StyleSheet.create({
 
 })
 
+<<<<<<< HEAD
 export {styles};
+=======
+export {styles}; 
+>>>>>>> joshua

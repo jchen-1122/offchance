@@ -1,5 +1,4 @@
 // big OR divider
-
 import React from 'react';
 import {View, Text} from 'react-native';
 import {styles} from "./Divider.styling";
@@ -15,4 +14,4 @@ function Divider(){
     )
 }
 
-export default Divider;
+export default Divider; 
