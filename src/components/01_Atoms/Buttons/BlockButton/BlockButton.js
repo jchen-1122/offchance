@@ -32,7 +32,7 @@ function BlockButton(props){
 
 
     return (
-        <TouchableOpacity style={[styles.BlockButton, buttonStyle]}>
+        <TouchableOpacity style={[styles.BlockButton, buttonStyle]} onPress={props.onPress}>
             {buttonIcon && <Icon color='white' name={buttonIcon} type='font-awesome' />}
             <Text style={[styles.BlockButton__title, buttonTitleStyle]}>{props.title}</Text>
         </TouchableOpacity>
