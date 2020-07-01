@@ -1,22 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import * as React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Welcome from './components/05_Pages/Welcome/Welcome'
+import Login from './components/05_Pages/LoginProcess/Login/Login'
+import Signup from './components/05_Pages/Signup'
+import EnterEmail from './components/05_Pages/LoginProcess/EnterEmail/EnterEmail';
+import EnterCode from './components/05_Pages/LoginProcess/EnterCode/EnterCode';
+import ChangePassword from './components/05_Pages/LoginProcess/ChangePassword/ChangePassword';
 
-export default function App() {
+const Stack = createStackNavigator();
+
+function App() {
   return (
-    <View style={styles.container}>
-      <Text>Offchance App</Text>
-      <Text>Joshua's Second Edit</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Home">
+        <Stack.Screen name="Welcome" component={Welcome} />
+        <Stack.Screen name="Signup" component={Signup} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="EnterEmail" component={EnterEmail} />
+        <Stack.Screen name="EnterCode" component={EnterCode} />
+        <Stack.Screen name="ChangePassword" component={ChangePassword} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
