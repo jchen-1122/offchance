@@ -1,14 +1,15 @@
 import * as React from 'react';
 import { View, Text, Image } from 'react-native';
-import OffchanceLogo from '../../../assets/images/White Background - Logotype.png'
+import OffchanceLogo from '../../../assets/images/WhiteBackground-Logotype.png'
 import BlockButton from '../01_Atoms/Buttons/BlockButton/BlockButton';
 import TextLink from '../01_Atoms/Buttons/TextLinks/TextLinks'
 
 export default function HomeScreen({ navigation }) {
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      {/* TODO: image not showing uo? */}
-      <Image style={{width:50, height:50}} source={OffchanceLogo}/>
+      {/* DONE: image not showing up? */}
+      {/* Removed spaces from logo file name */}
+      <Image style={{width:293, height:293}} source={OffchanceLogo}/>
       <Text>Limited Flash-Drawings for Collectibles</Text>
       <Text>Donate to Make Change and Win.</Text>
       {/* Links to Signup */}

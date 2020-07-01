@@ -34,7 +34,7 @@ export default function Login({ navigation }) {
       <BlockButton 
         title="LOG IN" 
         color="primary"
-        onPress={() => navigation.navigate('Login')}/>
+        onPress={() => navigation.navigate('Login', { reset: false })}/>
     </View>
     </ScrollView>
   );
