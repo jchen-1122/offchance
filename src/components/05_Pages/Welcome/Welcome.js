@@ -18,14 +18,14 @@ export default function HomeScreen({ navigation }) {
       <BlockButton 
         title="SIGN UP" 
         color="primary"
-        onPress={() => navigation.navigate('Signup')}/>
+        onPress={() => navigation.navigate('Sign Up')}/>
 
       <View style={{flexDirection: 'row'}}>
         {/* Links to Login */}
         <TextLink
           title="Log in"
           style={fonts.link}
-          onPress={() => navigation.navigate('Login', { reset: false })}/>
+          onPress={() => navigation.navigate('Log In', { reset: false })}/>
         {/* TODO: Links to Explore (no explore page currently, button is not functional) */}
         <Text> or</Text>
         <TextLink

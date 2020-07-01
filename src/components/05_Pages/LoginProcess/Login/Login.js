@@ -34,13 +34,13 @@ export default function Login({ navigation, route }) {
       <TextLink
         title="Forgot Password?"
         style={fonts.link}
-        onPress={() => navigation.navigate('EnterEmail')}/>
+        onPress={() => navigation.navigate('Forgot Password')}/>
         
       {/* TODO: Links to Home (no home page currently, button is not functional) */}
       <BlockButton 
         title="LOG IN" 
         color="primary"
-        onPress={() => navigation.navigate('Login')}/>
+        onPress={() => navigation.navigate('Log In')}/>
     </View>
   );
 }

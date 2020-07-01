@@ -12,7 +12,7 @@ export default function EnterEmail({ navigation }) {
       <BlockButton 
         title="SEND CODE" 
         color="primary"
-        onPress={() => navigation.navigate('EnterCode')}/>
+        onPress={() => navigation.navigate('Enter Your Code')}/>
     </View>
   );
 }

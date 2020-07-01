@@ -13,14 +13,14 @@ export default function EnterCode({ navigation }) {
       <BlockButton 
         title="SUBMIT" 
         color="primary"
-        onPress={() => navigation.navigate('ChangePassword')}/>
+        onPress={() => navigation.navigate('Update Password')}/>
       <View style={{flexDirection: 'row'}}>
         <Text>Don't see a code?</Text>
         {/* TODO: Click to re-send code (currently, button is not functional) */}
         <TextLink
           title="Send it again."
           style={{color: 'black', textDecorationLine: 'underline'}}
-          onPress={() => navigation.navigate('EnterCode')}/>
+          onPress={() => navigation.navigate('Enter Your Code')}/>
       </View>
     </View>
   );

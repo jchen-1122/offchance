@@ -65,7 +65,7 @@ export default function Signup({ navigation }) {
         color="primary"
         onPress={() => {
           setState({businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true})
-          setTimeout(() => {navigation.navigate('Login', { reset: false })}, 1000)}}/>
+          setTimeout(() => {navigation.navigate('Log In', { reset: false })}, 1000)}}/>
       {state.signedUp ? <Text>Signing Up...</Text> : null}
     </View>
     </ScrollView>
