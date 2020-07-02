@@ -1,23 +1,24 @@
-import * as React from 'react';
-import { View, Text, Image } from 'react-native'
+import React from 'react'
+import { View, Text } from 'react-native'
 // import {fonts} from '../../../settings/fonts';
 import {colors, fonts, utilities} from '../../../settings/all_settings';
+import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import BottomNav from '../../02_Molecules/BottomNav/BottomNav'
-import ProgressBar from '../../02_Molecules/ProgressBar/ProgressBar'
-import ImageCarousel from '../../02_Molecules/ImageCarousel/ImageCarousel'
+import TopNav from '../../02_Molecules/TopNav/TopNav'
 
-
-export default function Home({navigation}) {
-    const images = [require('../../../../assets/images/dwightSchrute.jpg'), require('../../../../assets/images/michaelScott.jpg'), require('../../../../assets/images/pamBeesly.jpg'), require('../../../../assets/images/logo.png')]
-    
-    // uncomment for one image example
-    // const images = [require('../../../../assets/images/dwightSchrute.jpg')]
+function Home({navigation}) {
     return (
         <View>
+            <TopNav navigation={navigation}></TopNav>
             <Text>this is a placeholder page for Home</Text>
-            {images.length > 1 ? <ImageCarousel images={images}></ImageCarousel> : <Image source={images[0]} style={{width: 400, height: 300, resizeMode: 'center'}}></Image>}
-            <ProgressBar progress={230 / 500} color='orange' raised={230} goal={500} ></ProgressBar>
+            {/* @matt you can change this block button to whatever you build for the raffle preview, just use onPress={() => navigation.navigate('Raffle')} */}
+            <BlockButton 
+                title="Raffle Details (test)" 
+                color="primary"
+                onPress={() => navigation.navigate('Raffle')}/>
             <BottomNav navigation={navigation}></BottomNav>
         </View>
     )
 }
+
+export default Home;

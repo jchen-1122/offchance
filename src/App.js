@@ -8,9 +8,12 @@ import EnterEmail from './components/05_Pages/LoginProcess/EnterEmail/EnterEmail
 import EnterCode from './components/05_Pages/LoginProcess/EnterCode/EnterCode';
 import ChangePassword from './components/05_Pages/LoginProcess/ChangePassword/ChangePassword';
 import Home from './components/05_Pages/Home/Home'
+import Raffle from './components/05_Pages/Home/Raffle/Raffle'
 import Drawings from './components/05_Pages/Drawings/Drawings'
 import Likes from './components/05_Pages/Likes/Likes'
 import Profile from './components/05_Pages/Profile/Profile'
+import YourFeed from './components/05_Pages/Home/YourFeed/YourFeed';
+import Explore from './components/05_Pages/Home/Explore/Explore';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +28,9 @@ function App() {
         <Stack.Screen name="EnterCode" component={EnterCode} />
         <Stack.Screen name="ChangePassword" component={ChangePassword} />
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="YourFeed" component={YourFeed}/>
+        <Stack.Screen name="Explore" component={Explore} />
+        <Stack.Screen name="Raffle" component={Raffle} />
         <Stack.Screen name="Drawings" component={Drawings} />
         <Stack.Screen name="Likes" component={Likes} />
         <Stack.Screen name="Profile" component={Profile} />
