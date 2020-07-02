@@ -1,19 +1,16 @@
 import React from 'react'
 import Carousel from 'react-native-snap-carousel';
 import {View, Text, Image} from 'react-native'
+require('../../../../assets/images/dwightSchrute.jpg')
+require('../../../../assets/images/michaelScott.jpg')
+require('../../../../assets/images/pamBeesly.jpg')
 
 function ImageCarousel() {
     const imgs = [
-        {
-            source: '../../../../assets/images/dwightSchrute.jpg'
-        },
-        {
-            source: '../../../../assets/images/michaelScott.jpg'
-        },
-        {
-            source: '../../../../assets/images/pamBeesly.jpg'
-        }
+        DS, MS, PB
     ]
+
+    console.log(typeof(imgs[0]))
 
     const renderItem = (item, index) => {
         return (
@@ -21,9 +18,10 @@ function ImageCarousel() {
                 borderRadius: 5,
                 height: 250,
                 padding: 50,
-                marginLeft: 25,
-                marginRight: 25}}>
-              <Image source={require('../../../../assets/images/pamBeesly.jpg')} width={5} height={5}></Image>
+                margin:50,
+                width: 250}}>
+              {/* <Image source={require(s)} style={{width: 200, height: 200, resizeMode:'contain'}}/> */}
+              <Text></Text>
             </View>
         )
     }
