@@ -28,14 +28,16 @@ export default function Signup({ navigation }) {
         title="Log in With Facebook" 
         color="facebook"
         onPress={() => Linking.openURL('https://www.facebook.com/')}/>
+
       <Divider/>
+
       <InputField label="Full Name" required />
-      <InputField label="Username"></InputField>
-      <InputField label="Phone Number" keyboardType="number-pad" />
-      <InputField label="Email" />
-      <InputField label="Instagram Handle" tooltip={true} tooltipContent="We use this to to give you bonus chances when you share with friends"/>
-      <InputField label="Password" password/>
-      <InputField label="Confirm Password" password/>
+      <InputField label="Username" required></InputField>
+      <InputField label="Phone Number" keyboardType="number-pad" required/>
+      <InputField label="Email" required/>
+      <InputField label="Instagram Handle" required tooltip={true} tooltipContent="We use this to to give you bonus chances when you share with friends"/>
+      <InputField label="Password" required password/>
+      <InputField label="Confirm Password" required password/>
       <CheckBox 
         selected={state.businessAccount} 
         onPress={() => setState({ businessAccount: !state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement})}
@@ -43,9 +45,9 @@ export default function Signup({ navigation }) {
       />
       {state.businessAccount ? (
         <View style={[utilities.flexCenter, {width: 300}]}>
-          <InputField label="Describe the item you would like to use in a drawing"></InputField>
-          <InputField label="Please provide the charity/foundation name(s) you are raising donations for"></InputField>
-          <InputField label="Please provide any additional details below (business website, social media links)"></InputField>
+          <InputField label="Describe the item you would like to use in a drawing" required />
+          <InputField label="Please provide the charity/foundation name(s) you are raising donations for" required />
+          <InputField label="Please provide any additional details below (business website, social media links)" />
         </View>) : null}
       <CheckBox 
         selected={state.futureDrawings} 

@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
 
     InputField__labelContainer: {
         flex: 0, 
-        flexDirection: 'row'
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     },
     
     InputField__box: {
