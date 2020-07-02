@@ -10,7 +10,6 @@ function BlockButton(props){
     // determine what kind/color of button it is
     let icon; // for fb and insta
     let buttonStyle;
-    let buttonIcon;
     let buttonTitleStyle=styles.BlockButton__title_white;
     switch(props.color){
         case "primary":
@@ -25,9 +24,8 @@ function BlockButton(props){
             icon = <SocialIcon type='facebook' raised={false} iconStyle={styles.icon} style={styles.iconBg} iconSize={30}/>
             break;
         case "instagram":
-            icon = <SocialIcon type='instagram' raised={false} iconStyle={styles.icon} style={styles.iconBg} iconSize={30}/>
             buttonStyle=styles.BlockButton_insta;
-            buttonIcon='instagram';
+            icon = <SocialIcon type='instagram' raised={false} iconStyle={styles.icon} style={styles.iconBg} iconSize={30}/>
             break;
     }
 
