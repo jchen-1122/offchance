@@ -4,6 +4,7 @@ import Carousel from 'react-native-snap-carousel';
 import {View, Text, Image} from 'react-native'
 
 function ImageCarousel({images}) {
+
     const renderItem = ({item, index}) => {
         return (
             <View style={{
