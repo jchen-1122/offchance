@@ -9,9 +9,9 @@ const styles = StyleSheet.create({
     LikeButton: {
         height: buttonHeight,
         width: buttonWidth,
-        margin: 15,
         backgroundColor: colors.lightGray,
         borderRadius: borderRadius,
+        margin: 20,
         flex: 0,
         alignItems: 'center',
         justifyContent: 'center',

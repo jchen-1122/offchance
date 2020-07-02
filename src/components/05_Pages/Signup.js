@@ -4,6 +4,7 @@ import BlockButton from '../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../01_Atoms/Divider/Divider.js';
 import InputField from '../02_Molecules/InputField/InputField.js';
 import CheckBox from '../02_Molecules/Checkbox/Checkbox';
+import Card from '../03_Organisms/Card/Card';
 import Tooltip from '../02_Molecules/Tooltip/Tooltip';
 import {colors, fonts, utilities} from '../../settings/all_settings';
 
@@ -29,6 +30,7 @@ export default function Signup({ navigation }) {
         color="facebook"
         onPress={() => Linking.openURL('https://www.facebook.com/')}/>
       <Divider/>
+      <Card />
       <InputField label="Full Name"></InputField>
       <InputField label="Username"></InputField>
       <InputField label="Email"></InputField>
