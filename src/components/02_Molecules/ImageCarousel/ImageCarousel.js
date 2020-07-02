@@ -1,6 +1,9 @@
 import React from 'react'
 import Carousel from 'react-native-snap-carousel';
 import {View, Text, Image} from 'react-native'
+require('../../../../assets/images/dwightSchrute.jpg')
+require('../../../../assets/images/michaelScott.jpg')
+require('../../../../assets/images/pamBeesly.jpg')
 
 function ImageCarousel() {
     const images = [require('../../../../assets/images/dwightSchrute.jpg'), require('../../../../assets/images/michaelScott.jpg'), require('../../../../assets/images/pamBeesly.jpg')]
