@@ -6,12 +6,14 @@ import BottomNav from '../../02_Molecules/BottomNav/BottomNav'
 import ProgressBar from '../../02_Molecules/ProgressBar/ProgressBar'
 import ImageCarousel from '../../02_Molecules/ImageCarousel/ImageCarousel'
 
+
 export default function Home({navigation}) {
+    const images = [require('../../../../assets/images/dwightSchrute.jpg'), require('../../../../assets/images/michaelScott.jpg'), require('../../../../assets/images/pamBeesly.jpg')]
     return (
         <View>
             <Text>this is a placeholder page for Home</Text>
             <ProgressBar progress={230 / 500} color='orange' raised={230} goal={500} ></ProgressBar>
-            <ImageCarousel></ImageCarousel>
+            <ImageCarousel images={images}></ImageCarousel>
             <BottomNav navigation={navigation}></BottomNav>
         </View>
     )
