@@ -1,8 +1,8 @@
 import {StyleSheet} from 'react-native';
-import {colors} from "../../../../settings/colors.js";
+import {colors, dimensions} from "../../../../settings/all_settings.js";
 
 var buttonHeight = 60;
-var buttonWidth = 300;
+var buttonWidth = dimensions.width;
 var borderRadius = 5;
 
 const styles = StyleSheet.create({

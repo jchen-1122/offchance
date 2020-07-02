@@ -1,6 +1,8 @@
 import React from 'react';
 import {TextInput, Text, View} from 'react-native';
 import {styles} from "./InputField.styling";
+import {Icon} from 'react-native-elements';
+import Tooltip from '../Tooltip/Tooltip';
 
 
 function InputField(props){
@@ -11,12 +13,24 @@ function InputField(props){
         inputBoxSizes.push(styles.InputField__box_textArea)
     }
 
+    // if input is supposed to have an icon with a tooltip (i.e. insta handle)
+    let icon = (props.tooltip) ? (<Tooltip label={<Icon name='info'/>} content={props.tooltipContent}/>) : null;
+
     return (
         <View style={styles.InputField}>
-            <Text style={styles.InputField__label}>
-                {props.label}
-            </Text>
-            <TextInput style={inputBoxSizes} multiline={props.textArea} numberOfLines={4}/>
+            <View style={{flex: 0, flexDirection: 'row', justifyContent: 'space-between'}}>
+                <Text style={styles.InputField__label}>
+                    {props.label}
+                </Text>
+                {icon}
+            </View>
+
+            <TextInput 
+                secureTextEntry={props.password} 
+                multiline={props.textArea} 
+                numberOfLines={4}
+                keyboardType={props.keyboardType}
+                style={inputBoxSizes} />
         </View>
     )
 }

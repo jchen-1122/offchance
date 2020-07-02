@@ -14,12 +14,12 @@ function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Welcome" component={Welcome} />
-        <Stack.Screen name="Sign Up" component={Signup} />
-        <Stack.Screen name="Log In" component={Login} />
-        <Stack.Screen name="Forgot Password" component={EnterEmail} />
-        <Stack.Screen name="Enter Your Code" component={EnterCode} />
-        <Stack.Screen name="Update Password" component={ChangePassword} />
+        <Stack.Screen name=" " component={Welcome} />
+        <Stack.Screen name="Signup" component={Signup} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Enter Email" component={EnterEmail} />
+        <Stack.Screen name="Enter Code" component={EnterCode} />
+        <Stack.Screen name="Change Password" component={ChangePassword} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import { colors } from '../../../settings/all_settings.js'
 
 var redHeight = 30;
 var greenHeight = 28;

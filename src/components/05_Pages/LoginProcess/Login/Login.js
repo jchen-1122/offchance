@@ -6,15 +6,17 @@ import InputField from '../../../02_Molecules/InputField/InputField.js';
 import TextLink from '../../../01_Atoms/Buttons/TextLinks/TextLinks';
 import Banner from '../../../01_Atoms/Banner/Banner.js';
 import {fonts, utilities} from '../../../../settings/all_settings';
+import { styles } from '../../../01_Atoms/Buttons/BlockButton/BlockButton.styling';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 export default function Login({ navigation, route }) {
   return (
+    <ScrollView contentContainerStyle={utilities.scrollview}>
     <View style={utilities.flexCenter}>
     {route.params.reset && <Banner
         color="red"
         title="Your password has been updated!" />}
-      <Text style={fonts.h1}>Log In</Text>
       {/* TODO: need to implement OAUTH functionality (currently links to instagram) */}
       <BlockButton  
         title="Log in With Instagram" 
@@ -28,14 +30,17 @@ export default function Login({ navigation, route }) {
         onPress={() => Linking.openURL('https://www.facebook.com/')}/>
 
       <Divider/>
-      <InputField label="Email / Username"></InputField>
-      <InputField label="Password"></InputField>
+      <InputField label="Email / Username" />
+      <InputField label="Password" password />
       {/* DONE: Links to Forgot Password (no forgot password currently, button is not functional) */}
       {/* Added redirect to EnterEmail */}
-      <TextLink
-        title="Forgot Password?"
-        style={fonts.link}
-        onPress={() => navigation.navigate('Forgot Password')}/>
+      <View style={[utilities.flexEndX, {width: '80%'}]}>
+        <TextLink
+          title="Forgot Password?"
+          style={fonts.link}
+          onPress={() => navigation.navigate('Enter Email')}/>
+      </View>
+
         
       {/* TODO: Links to Home (no home page currently, button is not functional) */}
       <BlockButton 
@@ -43,5 +48,6 @@ export default function Login({ navigation, route }) {
         color="primary"
         onPress={() => navigation.navigate('Log In')}/>
     </View>
+    </ScrollView>
   );
 }
