@@ -1,24 +1,25 @@
 import React from 'react'
 import { View, Text, Footer, FooterTab, Button, Icon } from 'native-base';
 
-function BottomNav() {
+function BottomNav(props) {
     return (
+      // @chelly (can't figure out how to make the footer hug the bottom of the screen)
       <View>
         <Footer style={{backgroundColor: 'orange'}}>
           <FooterTab>
-            <Button>
+            <Button onPress={() => props.navigation.navigate('Home')}>
               <Icon name="home"/>
               <Text>Home</Text>
             </Button>
-            <Button>
+            <Button onPress={() => props.navigation.navigate('Drawings')}>
               <Icon name="navigate"/>
               <Text>Drawings</Text>
             </Button>
-            <Button style={{width:2000, height: 3000}}>
+            <Button onPress={() => props.navigation.navigate('Likes')}>
               <Icon name="card" />
               <Text>Likes</Text>
             </Button>
-            <Button>
+            <Button onPress={() => props.navigation.navigate('Profile')}>
               <Icon name="person" />
               <Text>Account</Text>
             </Button>
