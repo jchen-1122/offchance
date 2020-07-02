@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {  View, Text, Linking } from 'react-native';
+import {  View, Text, Linking, Dimensions } from 'react-native';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../../../01_Atoms/Divider/Divider.js';
 import InputField from '../../../02_Molecules/InputField/InputField.js';
@@ -14,7 +14,8 @@ export default function Login({ navigation, route }) {
   return (
     <ScrollView contentContainerStyle={utilities.scrollview}>
     <View style={utilities.flexCenter}>
-    {route.params.reset && <Banner 
+    {route.params.reset && <Banner
+        color="green"
         title="Your password has been updated!" />}
       {/* TODO: need to implement OAUTH functionality (currently links to instagram) */}
       <BlockButton  

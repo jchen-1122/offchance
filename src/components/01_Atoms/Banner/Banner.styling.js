@@ -1,24 +1,35 @@
 import { StyleSheet, Dimensions } from 'react-native';
 import { colors } from '../../../settings/all_settings.js'
 
-var bannerHeight = 28;
-var borderRadius = 0;
+var redHeight = 30;
+var greenHeight = 28;
+var blackHeight = 35;
 
 const styles = StyleSheet.create({
     Banner: {
         position: "absolute",
         top: 0,
-        height: bannerHeight,
         width: Dimensions.get('window').width,
-        backgroundColor: colors.green,
-        borderRadius: borderRadius,
         flex: 0,
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
     },
     Banner__title: {
         fontSize: 16,
-        color: 'white'
+        color: 'white',
+    },
+    Banner__green: {
+        backgroundColor: '#1D9100',
+        height: greenHeight,
+    },
+    Banner__black: {
+        backgroundColor: 'black',
+        height: blackHeight,
+    },
+    Banner__red: {
+        backgroundColor: 'red',
+        height: redHeight,
     }
 })
 

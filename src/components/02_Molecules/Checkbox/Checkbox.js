@@ -10,7 +10,7 @@ function CheckBox ({ selected, onPress, text}) {
             onPress={onPress}>
             <Icon
                 style={styles.checkbox__icon}
-                size={'24%'}
+                size={24}
                 color={'#211f30'}
                 name={ selected ? 'check-box' : 'check-box-outline-blank'}
             />
