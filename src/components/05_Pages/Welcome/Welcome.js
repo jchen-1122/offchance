@@ -31,7 +31,7 @@ export default function HomeScreen({ navigation }) {
         <TextLink
           title="Start Exploring"
           style={fonts.link}
-          onPress={() => navigation.navigate('Welcome')}/>
+          onPress={() => navigation.navigate('Home')}/>
       </View>
     </View>
   );
