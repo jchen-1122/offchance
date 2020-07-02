@@ -8,7 +8,12 @@ const utilities = StyleSheet.create({
     },
     flexEndX: {
         flex: 0,
-        alignItems: 'flex-end'    }
+        alignItems: 'flex-end'
+    },
+    scrollview: {
+        flexGrow: 1,
+        justifyContent: 'center'
+    }
 
 })
 

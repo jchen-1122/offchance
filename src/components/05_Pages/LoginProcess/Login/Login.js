@@ -7,10 +7,12 @@ import TextLink from '../../../01_Atoms/Buttons/TextLinks/TextLinks';
 import Banner from '../../../01_Atoms/Banner/Banner.js';
 import {fonts, utilities} from '../../../../settings/all_settings';
 import { styles } from '../../../01_Atoms/Buttons/BlockButton/BlockButton.styling';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 export default function Login({ navigation, route }) {
   return (
+    <ScrollView contentContainerStyle={utilities.scrollview}>
     <View style={utilities.flexCenter}>
     {route.params.reset && <Banner 
         title="Your password has been updated!" />}
@@ -45,5 +47,6 @@ export default function Login({ navigation, route }) {
         color="primary"
         onPress={() => navigation.navigate('Login')}/>
     </View>
+    </ScrollView>
   );
 }
