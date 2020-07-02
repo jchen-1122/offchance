@@ -16,7 +16,7 @@ export default function ChangePassword({ navigation }) {
       <BlockButton 
         title="UPDATE PASSWORD" 
         color="primary"
-        onPress={() => navigation.navigate('Log In', { reset: true })}/>
+        onPress={() => navigation.navigate('Login', { reset: true })}/>
     </View>
     </ScrollView>
   );

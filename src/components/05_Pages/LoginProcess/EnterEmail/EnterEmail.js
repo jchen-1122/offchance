@@ -14,11 +14,7 @@ export default function EnterEmail({ navigation }) {
       <BlockButton 
         title="SEND CODE" 
         color="primary"
-<<<<<<< HEAD
-        onPress={() => navigation.navigate('Enter Your Code')}/>
-=======
         onPress={() => navigation.navigate('Enter Code')}/>
->>>>>>> master
     </View>
     </ScrollView>
   );

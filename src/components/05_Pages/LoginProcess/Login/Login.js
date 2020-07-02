@@ -15,7 +15,7 @@ export default function Login({ navigation, route }) {
     <ScrollView contentContainerStyle={utilities.scrollview}>
     <View style={utilities.flexCenter}>
     {route.params.reset && <Banner
-        color="red"
+        color="green"
         title="Your password has been updated!" />}
       {/* TODO: need to implement OAUTH functionality (currently links to instagram) */}
       <BlockButton  
@@ -46,7 +46,7 @@ export default function Login({ navigation, route }) {
       <BlockButton 
         title="LOG IN" 
         color="primary"
-        onPress={() => navigation.navigate('Log In')}/>
+        onPress={() => navigation.navigate('Login')}/>
     </View>
     </ScrollView>
   );
