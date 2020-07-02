@@ -1,4 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
+import { colors } from '../../../settings/all_settings.js'
 
 var bannerHeight = 28;
 var borderRadius = 0;
@@ -9,8 +10,7 @@ const styles = StyleSheet.create({
         top: 0,
         height: bannerHeight,
         width: Dimensions.get('window').width,
-        margin: 15,
-        backgroundColor: 'green',
+        backgroundColor: colors.green,
         borderRadius: borderRadius,
         flex: 0,
         alignItems: 'center',
