@@ -3,19 +3,9 @@ import Carousel from 'react-native-snap-carousel';
 import {View, Text, Image} from 'react-native'
 
 function ImageCarousel() {
-    const imgs = [
-        {
-            source: '../../../../assets/images/dwightSchrute.jpg'
-        },
-        {
-            source: '../../../../assets/images/michaelScott.jpg'
-        },
-        {
-            source: '../../../../assets/images/pamBeesly.jpg'
-        }
-    ]
+    const images = [require('../../../../assets/images/dwightSchrute.jpg'), require('../../../../assets/images/michaelScott.jpg'), require('../../../../assets/images/pamBeesly.jpg')]
 
-    const renderItem = (item, index) => {
+    const renderItem = ({item, index}) => {
         return (
             <View style={{
                 borderRadius: 5,
@@ -23,14 +13,14 @@ function ImageCarousel() {
                 padding: 50,
                 marginLeft: 25,
                 marginRight: 25}}>
-              <Image source={require('../../../../assets/images/pamBeesly.jpg')} width={5} height={5}></Image>
+            <Image source={item} width={50} height={50} />
             </View>
         )
     }
 
     return (
         <Carousel
-            data={imgs}
+            data={images}
             renderItem={renderItem}
             sliderWidth={500}
             itemWidth={500}
