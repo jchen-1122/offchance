@@ -18,10 +18,14 @@ function InputField(props){
 
     return (
         <View style={styles.InputField}>
-            <View style={{flex: 0, flexDirection: 'row', justifyContent: 'space-between'}}>
-                <Text style={styles.InputField__label}>
-                    {props.label}
-                </Text>
+            <View style={[styles.InputField__labelContainer, {justifyContent: 'space-between'}]}>
+                <View style={styles.InputField__labelContainer}>
+                    <Text style={styles.InputField__label}>
+                        {props.label}
+                    </Text>
+                    {/* add red required * if required field */}
+                    {(props.required) ? <Text style={{color: 'red'}}>*</Text> : null}
+                </View>
                 {icon}
             </View>
 

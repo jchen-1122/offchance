@@ -29,12 +29,13 @@ export default function Signup({ navigation }) {
         color="facebook"
         onPress={() => Linking.openURL('https://www.facebook.com/')}/>
       <Divider/>
-      <InputField label="Full Name"></InputField>
+      <InputField label="Full Name" required />
       <InputField label="Username"></InputField>
-      <InputField label="Email"></InputField>
+      <InputField label="Phone Number" keyboardType="number-pad" />
+      <InputField label="Email" />
       <InputField label="Instagram Handle" tooltip={true} tooltipContent="We use this to to give you bonus chances when you share with friends"/>
-      <InputField label="Password"></InputField>
-      <InputField label="Confirm Password"></InputField>
+      <InputField label="Password" password/>
+      <InputField label="Confirm Password" password/>
       <CheckBox 
         selected={state.businessAccount} 
         onPress={() => setState({ businessAccount: !state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement})}

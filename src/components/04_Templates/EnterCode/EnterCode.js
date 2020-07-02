@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {  View, Text } from 'react-native';
-import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
-import InputField from '../../../02_Molecules/InputField/InputField.js';
-import TextLink from '../../../01_Atoms/Buttons/TextLinks/TextLinks';
+import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
+import InputField from '../../02_Molecules/InputField/InputField.js';
+import TextLink from '../../01_Atoms/Buttons/TextLinks/TextLinks';
 import { ScrollView } from 'react-native-gesture-handler';
-import {fonts, utilities, dimensions} from '../../../../settings/all_settings';
+import {fonts, utilities, dimensions} from '../../../settings/all_settings';
 
 export default function EnterCode({ navigation }) {
   return (
