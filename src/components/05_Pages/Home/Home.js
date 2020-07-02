@@ -10,7 +10,7 @@ export default function Home({navigation}) {
     return (
         <View>
             <Text>this is a placeholder page for Home</Text>
-            <ProgressBar progress={0.3} color='orange' raised={230} goal={500} ></ProgressBar>
+            <ProgressBar progress={230 / 500} color='orange' raised={230} goal={500} ></ProgressBar>
             <ImageCarousel></ImageCarousel>
             <BottomNav navigation={navigation}></BottomNav>
         </View>
