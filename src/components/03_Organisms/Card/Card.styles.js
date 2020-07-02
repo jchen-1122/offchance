@@ -16,6 +16,11 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width * 0.8,
         flexDirection:'row',
         justifyContent: 'flex-end'
+    },
+    image: {
+        height: Dimensions.get('window').width * 0.6,
+        width: Dimensions.get('window').width * 0.6, 
+        resizeMode:'contain'
     }
 })
 
