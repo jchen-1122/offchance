@@ -12,9 +12,9 @@ const styles = StyleSheet.create({
     },
     // actual line
     Divider__line: {
-        height: 3,
+        height: 2,
         width: 125,
-        borderWidth: 1.5,
+        borderWidth: 1,
         borderColor: colors.darkGray,
         marginLeft: 10,
         marginRight: 10
