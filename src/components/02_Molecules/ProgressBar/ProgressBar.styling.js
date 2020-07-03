@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
 
 const styles = StyleSheet.create({
     view: {
@@ -10,6 +10,9 @@ const styles = StyleSheet.create({
     },
     goal: {
         paddingTop: 5
+    },
+    progressBar: {
+        width: Dimensions.get('window').width * 0.6
     }
 })
 

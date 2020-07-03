@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
         borderRadius: borderRadius,
         flex: 0,
         flexDirection:'row',
+        marginTop: 20,
     },
     likeButton: {
         width: Dimensions.get('window').width * 0.8,
