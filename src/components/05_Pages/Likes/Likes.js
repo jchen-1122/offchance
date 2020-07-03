@@ -6,7 +6,7 @@ import BottomNav from '../../02_Molecules/BottomNav/BottomNav'
 
 function Likes({navigation}) {
     return (
-        <View>
+        <View style={utilities.container}>
             <Text>this is a placeholder page for Likes</Text>
             <BottomNav navigation={navigation}></BottomNav>
         </View>

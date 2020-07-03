@@ -7,6 +7,12 @@ const styles = StyleSheet.create({
         marginTop: 12,
         marginBottom: 12
     },
+
+    InputField__labelContainer: {
+        flex: 0, 
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
     
     InputField__box: {
         height: 45,
