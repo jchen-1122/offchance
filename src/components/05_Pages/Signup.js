@@ -3,9 +3,8 @@ import {  View, Text, Linking, ScrollView } from 'react-native';
 import BlockButton from '../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../01_Atoms/Divider/Divider.js';
 import InputField from '../02_Molecules/InputField/InputField.js';
-import TextLink from '../01_Atoms/Buttons/TextLinks/TextLinks';
-import CheckBox from '../02_Molecules/Checkbox/Checkbox'
-import { set } from 'react-native-reanimated';
+import CheckBox from '../02_Molecules/Checkbox/Checkbox';
+import Tooltip from '../02_Molecules/Tooltip/Tooltip';
 import {colors, fonts, utilities} from '../../settings/all_settings';
 
 export default function Signup({ navigation }) {
@@ -18,8 +17,7 @@ export default function Signup({ navigation }) {
 
   return (
     <ScrollView>
-      <View style={utilities.flexCenter}>
-      <Text style={fonts.h1}>Sign Up</Text>
+      <View style={[utilities.flexCenter, {marginBottom: 25}]}>
       {/* TODO: need to implement OAUTH functionality (currently links to instagram) */}
       <BlockButton  
         title="Log in With Instagram" 
@@ -34,7 +32,7 @@ export default function Signup({ navigation }) {
       <InputField label="Full Name"></InputField>
       <InputField label="Username"></InputField>
       <InputField label="Email"></InputField>
-      <InputField label="Instagram Handle"></InputField>
+      <InputField label="Instagram Handle" tooltip={true} tooltipContent="We use this to to give you bonus chances when you share with friends"/>
       <InputField label="Password"></InputField>
       <InputField label="Confirm Password"></InputField>
       <CheckBox 

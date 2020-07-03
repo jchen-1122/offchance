@@ -5,7 +5,16 @@ const utilities = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    flexEndX: {
+        flex: 0,
+        alignItems: 'flex-end'
+    },
+    scrollview: {
+        flexGrow: 1,
+        justifyContent: 'center'
     }
+
 })
 
 export {utilities};

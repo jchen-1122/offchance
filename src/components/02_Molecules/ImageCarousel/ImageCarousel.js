@@ -8,12 +8,13 @@ function ImageCarousel({images}) {
     const renderItem = ({item, index}) => {
         return (
             <View style={{
-                borderRadius: 5,
-                height: 250,
-                marginLeft: 60,
-                marginRight: 25,
-                marginBottom: 30}}>
-                <Image source={item} style={{width: 300, height: 300, resizeMode: 'center'}} />
+                flex: 0,
+                width: '100%',
+                alignItems: 'center',
+                justifyContent: 'center',
+                
+                backgroundColor: 'pink'}}>
+                <Image source={item} style={{backgroundColor: 'red', width: 300, height: 300, resizeMode: 'center'}} />
             </View>
         )
     }
@@ -24,6 +25,7 @@ function ImageCarousel({images}) {
             renderItem={renderItem}
             sliderWidth={500}
             itemWidth={500}
+            activeSlideAlignment='start'
         />
     );
 }
