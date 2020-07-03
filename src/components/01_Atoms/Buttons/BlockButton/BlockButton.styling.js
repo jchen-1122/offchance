@@ -6,6 +6,7 @@ var buttonWidth = dimensions.width;
 var borderRadius = 5;
 
 const styles = StyleSheet.create({
+    // default styling for all blockbuttons
     BlockButton: {
         height: buttonHeight,
         width: buttonWidth,
@@ -27,6 +28,9 @@ const styles = StyleSheet.create({
         borderColor: colors.primaryColor,
         borderWidth: 2
     },
+    BlockButton_highlight: {
+        backgroundColor: colors.highlightColor
+    },
     BlockButton_facebook:{
         backgroundColor: colors.facebookBlue
     },
@@ -44,9 +48,20 @@ const styles = StyleSheet.create({
     BlockButton__title_secondary:{
         color: colors.primaryColor
     },
-    BlockButton__title_white: {
-        color: 'white'
+    BlockButton__title_small: {
+        fontSize: 12
     },
+
+    // different sizes for the button
+    BlockButton_short: {
+        width: 150
+    },
+    BlockButton_small: {
+        width: 80,
+        height: 25
+    },
+
+    // styles for icon in the button
     icon:{
         color: 'white'
     },
