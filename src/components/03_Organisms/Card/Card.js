@@ -7,7 +7,7 @@ import Tooltip from '../../02_Molecules/Tooltip/Tooltip';
 import LikeButton from '../../01_Atoms/Buttons/LikeButton/LikeButton';
 import {colors, fonts, utilities} from '../../../settings/all_settings';
 
-function Card ({ selected, onPress, text}) {
+function Card ({ selected, onPress, text, imageURI}) {
     return (
 /*        <TouchableOpacity 
             style={[styles.checkBox]} 
@@ -25,8 +25,9 @@ function Card ({ selected, onPress, text}) {
               <View style={styles.likeButton}>
                 <LikeButton />
               </View>
-              <View style={utilities.flexCenter}>
-                <Image style={styles.image} source={require('../../../../assets/images/logo.png')}/>
+              <View style={styles.itemDesc}>
+                <Image style={styles.image} source={imageURI}/>
+                <Text>{text}</Text>
               </View>
           </ScrollView>
     )

@@ -2,6 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native'
 import {dimensions} from '../../../settings/all_settings.js';
 
 var borderRadius = 10;
+var imageDimensions = 175;
 
 const styles = StyleSheet.create({
     card: {
@@ -17,9 +18,13 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent: 'flex-end'
     },
+    itemDesc: {
+        flex: 1,
+        alignItems: 'center'
+    },
     image: {
-        height: Dimensions.get('window').width * 0.6,
-        width: Dimensions.get('window').width * 0.6, 
+        height: imageDimensions,
+        width: imageDimensions, 
         resizeMode:'contain'
     }
 })
