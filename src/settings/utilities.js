@@ -13,6 +13,10 @@ const utilities = StyleSheet.create({
     scrollview: {
         flexGrow: 1,
         justifyContent: 'center'
+    },
+    container: {
+        flex: 1,
+        justifyContent: 'space-between'
     }
 
 })

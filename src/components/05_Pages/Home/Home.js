@@ -8,7 +8,7 @@ import TopNav from '../../02_Molecules/TopNav/TopNav'
 
 function Home({navigation}) {
     return (
-        <View>
+        <View style={utilities.container}>
             <TopNav navigation={navigation}></TopNav>
             <Text>this is a placeholder page for Home</Text>
             {/* @matt you can change this block button to whatever you build for the raffle preview, just use onPress={() => navigation.navigate('Raffle')} */}

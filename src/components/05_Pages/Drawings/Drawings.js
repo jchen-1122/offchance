@@ -6,7 +6,7 @@ import BottomNav from '../../02_Molecules/BottomNav/BottomNav'
 
 function Drawings({navigation}) {
     return (
-        <View>
+        <View style={utilities.container}>
             <Text>this is a placeholder page for Drawings</Text>
             <BottomNav navigation={navigation}></BottomNav>
         </View>
