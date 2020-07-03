@@ -10,7 +10,7 @@ function Explore({navigation}) {
         <View style={utilities.container}>
             <TopNav navigation={navigation}></TopNav>
             <Text>this is a placeholder page for Explore</Text>
-            <BottomNav navigation={navigation}></BottomNav>
+            <BottomNav navigation={navigation} active={'Home'}></BottomNav>
         </View>
     )
 }
