@@ -38,7 +38,7 @@ export default function Login({ navigation, route }) {
         <TextLink
           title="Forgot Password?"
           style={fonts.link}
-          onPress={() => navigation.navigate('Enter Email')}/>
+          onPress={() => navigation.navigate('EnterEmail')}/>
       </View>
 
         
