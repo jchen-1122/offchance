@@ -10,17 +10,19 @@ import logo from '../../../../assets/images/michaelScott.jpg';
 
 function Home({navigation}) {
     return (
-        <ScrollView>
+        <ScrollView contentContainerStyle={utilities.scrollview}>
             <TopNav navigation={navigation}></TopNav>
             <View style={utilities.flexCenter}>
             {/* @matt you can change this block button to whatever you build for the raffle preview, just use onPress={() => navigation.navigate('Raffle')} */}
-                <Card 
+            <Card 
                     text="Nintendo Switch with Neon Joy-Con"
                     imageURI={logo}/>
-                <BlockButton 
-                    title="Raffle Details (test)" 
-                    color="primary"
-                    onPress={() => navigation.navigate('Raffle')}/>
+            <Card 
+                    text="Nintendo Switch with Neon Joy-Con"
+                    imageURI={logo}/>
+            <Card 
+                    text="Nintendo Switch with Neon Joy-Con"
+                    imageURI={logo}/>
             </View>
             <BottomNav navigation={navigation}></BottomNav>
         </ScrollView>

@@ -6,7 +6,7 @@ import BottomNav from '../../02_Molecules/BottomNav/BottomNav'
 
 function Profile({navigation}) {
     return (
-        <View>
+        <View style={utilities.container}>
             <Text>this is a placeholder page for Profile</Text>
             <BottomNav navigation={navigation}></BottomNav>
         </View>

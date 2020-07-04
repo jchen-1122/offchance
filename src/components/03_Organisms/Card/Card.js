@@ -5,6 +5,7 @@ import styles from './Card.styles'
 import { ScrollView } from 'react-native-gesture-handler';
 import ProgressBar from '../../02_Molecules/ProgressBar/ProgressBar';
 import LikeButton from '../../01_Atoms/Buttons/LikeButton/LikeButton';
+import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import {colors, fonts, utilities} from '../../../settings/all_settings';
 
 function Card ({ selected, onPress, text, imageURI}) {
@@ -28,7 +29,14 @@ function Card ({ selected, onPress, text, imageURI}) {
               <View style={styles.itemDesc}>
                 <Image style={styles.image} source={imageURI}/>
                 <Text>{text}</Text>
+                <Text>Hosted by somedude</Text>
+                <Text>Drawing starts when I feel like it</Text>
+                <Text>Entered by @yourbestfriend</Text>
                 <ProgressBar progress={230 / 500} color='orange' raised={230} goal={500} ></ProgressBar>
+                <BlockButton 
+                    title="Raffle Details (test)" 
+                    color="primary"
+                    onPress={() => navigation.navigate('Raffle')}/>
               </View>
           </ScrollView>
     )

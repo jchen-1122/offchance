@@ -8,11 +8,10 @@ const styles = StyleSheet.create({
     card: {
         backgroundColor: 'white',
         width: Dimensions.get('window').width * 0.8,
-        height: Dimensions.get('window').height * 0.8,
         borderRadius: borderRadius,
         flex: 0,
         flexDirection:'row',
-        marginTop: 20,
+        margin: 20,
     },
     likeButton: {
         width: Dimensions.get('window').width * 0.8,
