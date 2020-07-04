@@ -8,7 +8,7 @@ import LikeButton from '../../01_Atoms/Buttons/LikeButton/LikeButton';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import {colors, fonts, utilities} from '../../../settings/all_settings';
 
-function Card ({ selected, onPress, text, imageURI}) {
+function Card ({ navigation, onPress, text, imageURI }) {
     return (
 /*        <TouchableOpacity 
             style={[styles.checkBox]} 
