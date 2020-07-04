@@ -1,5 +1,5 @@
 import React from 'react'
-import { Text, View, Image } from 'react-native'
+import { Text, View, Image, Dimensions } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import styles from './Card.styles'
 import { ScrollView } from 'react-native-gesture-handler';
@@ -32,7 +32,7 @@ function Card ({ selected, onPress, text, imageURI}) {
                 <Text>Hosted by somedude</Text>
                 <Text>Drawing starts when I feel like it</Text>
                 <Text>Entered by @yourbestfriend</Text>
-                <ProgressBar progress={230 / 500} color='orange' raised={230} goal={500} ></ProgressBar>
+                <ProgressBar progress={230 / 500} color='orange' raised={230} goal={500} width={Dimensions.get('window').width * 0.6} ></ProgressBar>
                 <BlockButton 
                     title="Enter Drawing" 
                     color="primary"

@@ -4,7 +4,6 @@ import {colors} from '../../../settings/colors'
 
 function BottomNav(props) {
     return (
-      // @chelly (can't figure out how to make the footer hug the bottom of the screen)
       <View>
         <Footer>
           <FooterTab>
