@@ -3,6 +3,7 @@ import {TextInput, Text, View} from 'react-native';
 import {styles} from "./InputField.styling";
 import {Icon} from 'react-native-elements';
 import Tooltip from '../Tooltip/Tooltip';
+import LikeButton from '../../01_Atoms/Buttons/LikeButton/LikeButton';
 
 
 function InputField(props){
