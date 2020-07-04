@@ -1,5 +1,7 @@
 import { StyleSheet, Dimensions } from 'react-native'
 
+var progLength = Dimensions.get('window').width * 0.6;
+
 const styles = StyleSheet.create({
     bar: {
         alignSelf: 'center'
@@ -16,7 +18,7 @@ const styles = StyleSheet.create({
         paddingTop: 5
     },
     progressBar: {
-        width: Dimensions.get('window').width * 0.6
+        width: progLength
     }
 })
 

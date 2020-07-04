@@ -34,7 +34,7 @@ function Card ({ selected, onPress, text, imageURI}) {
                 <Text>Entered by @yourbestfriend</Text>
                 <ProgressBar progress={230 / 500} color='orange' raised={230} goal={500} ></ProgressBar>
                 <BlockButton 
-                    title="Raffle Details (test)" 
+                    title="Enter Drawing" 
                     color="primary"
                     onPress={() => navigation.navigate('Raffle')}/>
               </View>
