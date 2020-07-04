@@ -28,7 +28,8 @@ function ImageCarousel({images}) {
         return (
             <View style={{
                 borderRadius: 5,
-                height: 250}}>
+                height: 250,
+                marginLeft: 7}}>
                 {res}
             </View>
         )

@@ -16,7 +16,7 @@ function Home({navigation}) {
                 title="Raffle Details (test)" 
                 color="primary"
                 onPress={() => navigation.navigate('Raffle')}/>
-            <BottomNav navigation={navigation}></BottomNav>
+            <BottomNav navigation={navigation} active={'Home'}></BottomNav>
         </View>
     )
 }
