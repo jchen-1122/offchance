@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.primaryColor
     },
     BlockButton_secondary:{
-        backgroundColor: colors.secondaryColor,
+        backgroundColor: 'transparent',
         borderColor: colors.primaryColor,
         borderWidth: 2
     },

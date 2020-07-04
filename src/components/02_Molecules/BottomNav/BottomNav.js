@@ -3,7 +3,6 @@ import { View, Text, Footer, FooterTab, Button, Icon } from 'native-base';
 
 function BottomNav(props) {
     return (
-      // @chelly (can't figure out how to make the footer hug the bottom of the screen)
       <View>
         <Footer style={{backgroundColor: 'orange'}}>
           <FooterTab>
