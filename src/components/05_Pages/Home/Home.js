@@ -16,12 +16,15 @@ function Home({navigation}) {
             {/* @matt you can change this block button to whatever you build for the raffle preview, just use onPress={() => navigation.navigate('Raffle')} */}
             <Card 
                     text="Nintendo Switch with Neon Joy-Con"
+                    navigation={navigation}
                     imageURI={logo}/>
             <Card 
                     text="Nintendo Switch with Neon Joy-Con"
+                    navigation={navigation}
                     imageURI={logo}/>
             <Card 
                     text="Nintendo Switch with Neon Joy-Con"
+                    navigation={navigation}
                     imageURI={logo}/>
             </View>
             <BlockButton 
