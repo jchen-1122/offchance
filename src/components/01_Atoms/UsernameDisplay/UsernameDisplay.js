@@ -9,15 +9,27 @@ import {fonts} from '../../../settings/all_settings';
 function UsernameDisplay(props){
     let profilePicStyle = styles.profilePic;
     let usernameStyle = [fonts.link]
+    let displayText = '@' + props.username;
+    let containerStyle = styles.container;
 
-    if (props.size == 'large'){
-        profilePicStyle = styles.profilePic_large;
-        usernameStyle.push(styles.username_large)
+    switch(props.size){
+        case 'large':
+            profilePicStyle = styles.profilePic_large;
+            usernameStyle.push(styles.username_large);
+            break;
+        case 'hostedBy':
+            profilePicStyle = styles.profilePic_small;
+            usernameStyle = styles.username_small;
+            displayText = 'Hosted by ' + displayText;
+            containerStyle = styles.container_hostedBy;
+            break;
+
     }
+
     return (
-        <View style={styles.container}>
+        <View style={containerStyle}>
             <Image style={profilePicStyle} source={props.profPic} />
-            <Text style={usernameStyle}>@{props.username}</Text>
+            <Text style={usernameStyle}>{displayText}</Text>
         </View>
 
     )

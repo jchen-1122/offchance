@@ -7,6 +7,8 @@ import BottomNav from '../../02_Molecules/BottomNav/BottomNav';
 import TopNav from '../../02_Molecules/TopNav/TopNav';
 import Card from '../../03_Organisms/Card/Card';
 import logo from '../../../../assets/images/michaelScott.jpg';
+import Nswitch from '../../../../assets/images/nintendoSwitch.jpeg';
+import aang from '../../../../assets/images/donor_placeholders/aang.png';
 
 function Home({navigation}) {
     return (
@@ -15,22 +17,26 @@ function Home({navigation}) {
                 <TopNav navigation={navigation}></TopNav>
                 <View style={utilities.flexCenter}>
                 <Card 
-                    text="Nintendo Switch with Neon Joy-Con"
+                    type='default'
+                    title="Default Card"
+                    host={{name:"theAvatar", pic: aang}}
+                    navigation={navigation}
+                    imageURI={Nswitch}/>
+                <Card 
+                    type='free'
+                    date='July 16, 11:00 AM'
+                    title="Free Drawing Card"
+                    host={{name:"arrowhead", pic: aang}}
                     navigation={navigation}
                     imageURI={logo}/>
                 <Card 
-                    text="Nintendo Switch with Neon Joy-Con"
-                    navigation={navigation}
-                    imageURI={logo}/>
-                <Card 
-                    text="Nintendo Switch with Neon Joy-Con"
+                    type='upcoming'
+                    date='July 16, 11:00 AM'
+                    title="Upcoming Raffle Card"
+                    host={{name:"thisguyagain", pic: aang}}
                     navigation={navigation}
                     imageURI={logo}/>
                 </View>
-                <BlockButton 
-                title="Raffle Details (test)" 
-                color="primary"
-                onPress={() => navigation.navigate('Raffle')}/>
             </ScrollView>
             <BottomNav navigation={navigation} active={'Home'}></BottomNav>
         </View>
