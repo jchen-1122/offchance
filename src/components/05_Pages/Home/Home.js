@@ -24,7 +24,11 @@ function Home({navigation}) {
                     text="Nintendo Switch with Neon Joy-Con"
                     imageURI={logo}/>
             </View>
-            <BottomNav navigation={navigation}></BottomNav>
+            <BlockButton 
+                title="Raffle Details (test)" 
+                color="primary"
+                onPress={() => navigation.navigate('Raffle')}/>
+            <BottomNav navigation={navigation} active={'Home'}></BottomNav>
         </ScrollView>
     )
 }

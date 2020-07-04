@@ -8,7 +8,7 @@ function Drawings({navigation}) {
     return (
         <View style={utilities.container}>
             <Text>this is a placeholder page for Drawings</Text>
-            <BottomNav navigation={navigation}></BottomNav>
+            <BottomNav navigation={navigation} active={'Drawings'}></BottomNav>
         </View>
     )
 }

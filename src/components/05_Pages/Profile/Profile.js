@@ -8,7 +8,7 @@ function Profile({navigation}) {
     return (
         <View style={utilities.container}>
             <Text>this is a placeholder page for Profile</Text>
-            <BottomNav navigation={navigation}></BottomNav>
+            <BottomNav navigation={navigation} active={'Account'}></BottomNav>
         </View>
     )
 }

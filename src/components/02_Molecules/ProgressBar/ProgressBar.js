@@ -5,8 +5,8 @@ import styles from './ProgressBar.styling'
 
 function ProgressBar({progress, color, raised, goal}) {
     return (
-        <View>
-            <Progress.Bar progress={progress} style={styles.progressBar} color={color} />
+        <View style={styles.bar}>
+            <Progress.Bar progress={progress} width={350} color={color} />
             <View style={styles.view}>
                 <Text style={styles.raised}>{'$' + raised}</Text>
                 <Text style={styles.goal}>{' raised of $' + goal + ' goal'}</Text>

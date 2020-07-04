@@ -12,7 +12,7 @@ const utilities = StyleSheet.create({
     },
     scrollview: {
         flexGrow: 1,
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     container: {
         flex: 1,

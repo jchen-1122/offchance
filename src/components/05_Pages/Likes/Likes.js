@@ -8,7 +8,7 @@ function Likes({navigation}) {
     return (
         <View style={utilities.container}>
             <Text>this is a placeholder page for Likes</Text>
-            <BottomNav navigation={navigation}></BottomNav>
+            <BottomNav navigation={navigation} active={'Likes'}></BottomNav>
         </View>
     )
 }
