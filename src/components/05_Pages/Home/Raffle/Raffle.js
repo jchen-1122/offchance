@@ -4,8 +4,10 @@ import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
 import ProgressBar from '../../../02_Molecules/ProgressBar/ProgressBar'
 import HostedBy from '../../../02_Molecules/HostedBy/HostedBy'
 import Top5Donors from '../../../02_Molecules/Top5Donors/Top5Donors'
+import DropDown from '../../../01_Atoms/DropDown/DropDown'
 import ImageCarousel from '../../../02_Molecules/ImageCarousel/ImageCarousel'
 import {utilities, fonts, colors} from '../../../../settings/all_settings';
+import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 
 
 export default function Raffle({navigation}) {
@@ -24,8 +26,12 @@ export default function Raffle({navigation}) {
                 <Text style={{marginLeft: 30, textAlign:'justify', marginRight: 30, fontWeight: '300'}}>DRAWING STARTS</Text>
                 <Text style={{marginLeft: 30, textAlign:'justify', marginRight: 30, fontWeight: '800', marginBottom: 50}}>July 16, 11:00 AM</Text>
                 <Top5Donors images={images}></Top5Donors>
-                
-                <ProgressBar progress={230 / 500} color={colors.highlightColor} raised={230} goal={500} ></ProgressBar>
+                <ProgressBar progress={230 / 500} color={colors.highlightColor} raised={230} goal={500} width={350}></ProgressBar>
+                <DropDown></DropDown>
+                <BlockButton
+                    title="PLAY GAME"
+                    color="primary"
+                    onPress={() => navigation.navigate('PlayGame')}/>
             </ScrollView>
             <BottomNav navigation={navigation} active={'Home'}></BottomNav>
         </View>
