@@ -21,18 +21,12 @@ function Explore({navigation}) {
 
     return (
         <View style={utilities.container}>
-<<<<<<< HEAD
             <ScrollView>
                 <TopNav navigation={navigation} />
                 <ListView title="Top 5 Donors" usernames={usernames} profPics={profPics}/>
                 <GridView title="Latest Winners" bgColor="white"/>
             </ScrollView>
             <BottomNav navigation={navigation}></BottomNav>
-=======
-            <TopNav navigation={navigation}></TopNav>
-            <Text>this is a placeholder page for Explore</Text>
-            <BottomNav navigation={navigation} active={'Home'}></BottomNav>
->>>>>>> DropDown
         </View>
     )
 }
