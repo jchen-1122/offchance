@@ -4,11 +4,14 @@ const styles = StyleSheet.create({
     timer: {
         textAlign:'center', 
         fontWeight: '700', 
-        fontSize: 70
+        fontSize: 70,
     },
     rpsView: {
+        flex: 0,
         flexDirection: 'row',
-        marginTop: -80
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 15
     },
     rock: {
         width:100, 

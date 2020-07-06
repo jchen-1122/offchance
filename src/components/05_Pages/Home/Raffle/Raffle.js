@@ -31,7 +31,8 @@ export default function Raffle({navigation}) {
                 <BlockButton
                     title="PLAY GAME"
                     color="primary"
-                    onPress={() => navigation.navigate('PlayGame')}/>
+                    onPress={() => navigation.navigate('GameController')}/>
+                    {/* // onPress={() => navigation.navigate('PlayGame')}/> */}
             </ScrollView>
             <BottomNav navigation={navigation} active={'Home'}></BottomNav>
         </View>
