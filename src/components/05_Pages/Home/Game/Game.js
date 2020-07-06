@@ -10,7 +10,10 @@ import {styles} from './Game.styling'
 function Game(props,{navigation}) {
     let choices = ['rock', 'paper', 'scissors']
     let compChoice = choices[Math.floor(Math.random()*3)] // randomly pick rock, paper, or scissors for computer
-    console.log(props.choice)
+    let localWins = 0
+    let localChances = 0
+    let localRounds = 0
+    //console.warn(compChoice)
 
     // map players choice to image on UI
     let playerChoiceImg;
@@ -54,20 +57,19 @@ function Game(props,{navigation}) {
         winner = 'player'
         message = "You win this round!"
         messageStyles.push(styles.message_win)
-        props.setWins(props.wins + 1)
-        //props.setChances(props.chances - 1)
+        localWins += 1
     }
     else{
         winner = 'computer'
         message = "You lost this round :("
         messageStyles.push(styles.message_lose)
-        //props.setChances(props.chances - 1)
+        localChances -= 1
     }
 
     return (
         <View style={utilities.container}>
             <View style={[utilities.container], {backgroundColor: 'black', height: '50%'}}>
-                <GameBar color={'white'} currRound={props.round} chancesLeft={props.chances} wins={props.wins} numRounds={10}></GameBar>
+                <GameBar color={'white'} currRound={props.round} chancesLeft={props.chances + localChances} wins={props.wins + localWins} numRounds={10}></GameBar>
                 <View style={{flex: 0, alignItems: 'center'}}>
                     <Text style={{color: 'white'}}>{compChoice}</Text>
                     {compChoiceImg}
@@ -85,7 +87,11 @@ function Game(props,{navigation}) {
                         title={"NEXT ROUND"}
                         color="secondary"
                         size="short"
-                        onPress={() => props.setPage('PlayGame')} />
+                        onPress={() => {
+                            props.setPage('PlayGame')
+                            props.setWins(props.wins + localWins)
+                            props.setChances(props.chances + localChances)
+                        }} />
                         {/* onPress={() => navigation.navigate('PlayGame')}></BlockButton> */}
                 </View>
             </View>
