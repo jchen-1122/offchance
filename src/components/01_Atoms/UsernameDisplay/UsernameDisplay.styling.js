@@ -35,14 +35,22 @@ const styles = StyleSheet.create({
     container: {
         flex: 0,
         flexDirection: 'row',
+<<<<<<< HEAD
+        alignItems: 'center',
+=======
         alignItems: 'center'
+>>>>>>> master
     },
     container_hostedBy: {
         marginRight: 'auto',
         marginLeft: Dimensions.get('window').width * 0.1,
         flex: 0,
         flexDirection: 'row',
+<<<<<<< HEAD
+        alignItems: 'center',
+=======
         alignItems: 'center'
+>>>>>>> master
     }
 })
 

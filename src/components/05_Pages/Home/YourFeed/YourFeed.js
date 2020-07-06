@@ -8,7 +8,7 @@ import {utilities} from '../../../../settings/all_settings';
 function YourFeed({navigation}) {
     return (
         <View style={utilities.container}>
-            <TopNav navigation={navigation}></TopNav>
+            <TopNav navigation={navigation}  active='Your Feed' />
             <Text>this is a placeholder page for Your Feed</Text>
             <BottomNav navigation={navigation} active={'Home'}></BottomNav>
         </View>
