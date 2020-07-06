@@ -26,7 +26,15 @@ function Explore({navigation}) {
                 <ListView title="Top 5 Donors" usernames={usernames} profPics={profPics}/>
                 <GridView title="Latest Winners" bgColor="white"/>
             </ScrollView>
+<<<<<<< HEAD
             <BottomNav navigation={navigation} active={'Home'}></BottomNav>
+=======
+<<<<<<< HEAD
+            <BottomNav navigation={navigation}></BottomNav>
+=======
+            <BottomNav navigation={navigation} active={'Home'}></BottomNav>
+>>>>>>> eab417c4843831563589bb4bf4f7eca4b1e69d3c
+>>>>>>> master
         </View>
     )
 }

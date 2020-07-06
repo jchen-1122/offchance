@@ -11,8 +11,12 @@ const styles = StyleSheet.create({
         borderRadius: borderRadius,
         flex: 0,
         flexDirection:'row',
+<<<<<<< HEAD
         margin: 15,
         paddingBottom: 20
+=======
+        margin: 20,
+>>>>>>> master
     },
     likeButton: {
         width: Dimensions.get('window').width * 0.8,
@@ -31,8 +35,12 @@ const styles = StyleSheet.create({
     startData_grey: {
         width: Dimensions.get('window').width * 0.6,
         fontSize: 13,
+<<<<<<< HEAD
         color: '#989898',
         marginTop: 15,
+=======
+        color: '#989898'
+>>>>>>> master
     },
     freeDraw_banner: {
         marginRight: 'auto',
@@ -59,11 +67,14 @@ const styles = StyleSheet.create({
         marginTop: 20,
         justifyContent: 'center',
         alignItems: 'center'
+<<<<<<< HEAD
     },
     friends: {
         width: Dimensions.get('window').width * 0.6,
         marginTop: 15,
         marginBottom: 5
+=======
+>>>>>>> master
     }
 })
 
