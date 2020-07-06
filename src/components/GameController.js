@@ -10,6 +10,12 @@ function GameController({navigation}) {
     const [wins, setWins] = useState(0)
 
     const [choice, setChoice] = useState(null)
+    // console.log('page; ' + page)
+    // console.log('round: ' + round)
+    // console.log('chances: ' + chances)
+    // console.log('wins: ' + wins)
+    // console.log('choice: ' +  choice)
+    // console.log('-------------------------------------------------')
 
     if (page == 'PlayGame'){
         return (

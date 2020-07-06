@@ -10,7 +10,7 @@ import {styles} from './Game.styling'
 function Game(props,{navigation}) {
     let choices = ['rock', 'paper', 'scissors']
     let compChoice = choices[Math.floor(Math.random()*3)] // randomly pick rock, paper, or scissors for computer
-    console.warn(compChoice)
+    console.log(props.choice)
 
     // map players choice to image on UI
     let playerChoiceImg;
@@ -40,6 +40,7 @@ function Game(props,{navigation}) {
             break;
     }
 
+
     let winner;
     let message;
     let messageStyles = [styles.message]
@@ -54,12 +55,13 @@ function Game(props,{navigation}) {
         message = "You win this round!"
         messageStyles.push(styles.message_win)
         props.setWins(props.wins + 1)
+        //props.setChances(props.chances - 1)
     }
     else{
         winner = 'computer'
         message = "You lost this round :("
         messageStyles.push(styles.message_lose)
-        props.setChances(props.chances - 1)
+        //props.setChances(props.chances - 1)
     }
 
     return (
