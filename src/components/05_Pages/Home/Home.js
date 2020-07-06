@@ -1,23 +1,46 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, ScrollView } from 'react-native'
 // import {fonts} from '../../../settings/fonts';
 import {colors, fonts, utilities} from '../../../settings/all_settings';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
-import BottomNav from '../../02_Molecules/BottomNav/BottomNav'
-import TopNav from '../../02_Molecules/TopNav/TopNav'
+import BottomNav from '../../02_Molecules/BottomNav/BottomNav';
+import TopNav from '../../02_Molecules/TopNav/TopNav';
+import Card from '../../03_Organisms/Card/Card';
+import logo from '../../../../assets/images/michaelScott.jpg';
+import Nswitch from '../../../../assets/images/nintendoSwitch.jpeg';
+import aang from '../../../../assets/images/donor_placeholders/aang.png';
 
 function Home({navigation}) {
     return (
         <View style={utilities.container}>
-            <TopNav navigation={navigation}></TopNav>
-            <Text>this is a placeholder page for Home</Text>
-            {/* @matt you can change this block button to whatever you build for the raffle preview, just use onPress={() => navigation.navigate('Raffle')} */}
-            <BlockButton 
-                title="Raffle Details (test)" 
-                color="primary"
-                onPress={() => navigation.navigate('Raffle')}/>
+            <ScrollView contentContainerStyle={utilities.scrollview}>
+                <TopNav navigation={navigation} active='Home'/>
+                <View style={utilities.flexCenter}>
+                <Card 
+                    type='default'
+                    title="Default Card"
+                    host={{name:"theAvatar", pic: aang}}
+                    navigation={navigation}
+                    imageURI={Nswitch}/>
+                <Card 
+                    type='free'
+                    date='July 16, 11:00 AM'
+                    title="Free Drawing Card"
+                    host={{name:"arrowhead", pic: aang}}
+                    navigation={navigation}
+                    imageURI={logo}/>
+                <Card 
+                    type='upcoming'
+                    date='July 16, 11:00 AM'
+                    title="Upcoming Raffle Card"
+                    host={{name:"thisguyagain", pic: aang}}
+                    navigation={navigation}
+                    imageURI={logo}/>
+                </View>
+            </ScrollView>
             <BottomNav navigation={navigation} active={'Home'}></BottomNav>
         </View>
+
     )
 }
 

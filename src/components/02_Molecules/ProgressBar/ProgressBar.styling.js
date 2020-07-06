@@ -1,4 +1,6 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
+
+var progLength = Dimensions.get('window').width * 0.6;
 
 const styles = StyleSheet.create({
     bar: {
@@ -14,6 +16,9 @@ const styles = StyleSheet.create({
     },
     goal: {
         paddingTop: 5
+    },
+    progressBar: {
+        width: progLength
     }
 })
 

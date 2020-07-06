@@ -1,6 +1,6 @@
 import React from 'react'
 import * as Progress from 'react-native-progress';
-import { View, Text } from 'react-native'
+import { View, Text, Dimensions } from 'react-native'
 import styles from './ProgressBar.styling'
 
 function ProgressBar({progress, color, raised, goal, width}) {

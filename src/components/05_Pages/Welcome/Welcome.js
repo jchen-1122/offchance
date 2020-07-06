@@ -11,7 +11,7 @@ export default function HomeScreen({ navigation }) {
     <View style={[utilities.flexCenter, styles.container]}>
       {/* TODO: image should be aligned closer to the top */}
       <Image style={styles.logo} source={require('../../../../assets/images/logo.png')}/>
-      <Text style={[fonts.h1, {textAlign: 'center'}]}>Limited Flash-Drawings for Collectibles</Text>
+      <Text style={[fonts.h1, {textAlign: 'center', marginBottom: 15}]}>Limited Flash-Drawings for Collectibles</Text>
       <Text style={fonts.p}>Donate to Make Change and Win.</Text>
       
       {/* Links to Signup */}
