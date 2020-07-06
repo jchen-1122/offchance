@@ -22,11 +22,7 @@ function Card ({ navigation, onPress, type,  title, host, imageURI, date }) {
         case 'default':
             like = <View style={styles.likeButton}><LikeButton /></View>;
             startData = <Text style={styles.startData_grey}>DRAWING STARTS ONCE TIMER REACHES 0 OR DONATION GOAL IS MET</Text>;
-<<<<<<< HEAD
             friendsEntered = <Text style={styles.friends}>Entered by @yourbestfriend</Text>;
-=======
-            friendsEntered = <Text>Entered by @yourbestfriend</Text>;
->>>>>>> master
             break;
         // free is the 'free drawing' card as seen in 'Home' in Figma
         case 'free':
@@ -48,11 +44,7 @@ function Card ({ navigation, onPress, type,  title, host, imageURI, date }) {
               {like}
               <View style={styles.itemDesc}>
                 <Image style={styles.image} source={imageURI}/>
-<<<<<<< HEAD
                 <Text style={[fonts.h1, {width:Dimensions.get('window').width * 0.6, marginTop: 15}]}>{title}</Text>
-=======
-                <Text style={[fonts.h1, {width:Dimensions.get('window').width * 0.6}]}>{title}</Text>
->>>>>>> master
                 <UsernameDisplay username={host.name} profPic={host.pic} size='hostedBy'/>
                 {startData}
                 {/* TODO: somehow get two or more images to overlap each other and style the friends-entered line */}
