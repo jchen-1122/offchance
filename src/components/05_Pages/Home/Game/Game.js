@@ -70,14 +70,12 @@ function Game(props,{navigation}) {
             <View style={[utilities.container], {backgroundColor: 'black', height: '50%'}}>
                 <GameBar color={'white'} currRound={props.round} chancesLeft={props.chances + localChances} wins={props.wins + localWins} numRounds={10}></GameBar>
                 <View style={{flex: 0, alignItems: 'center'}}>
-                    <Text style={{color: 'white'}}>{compChoice}</Text>
                     {compChoiceImg}
                 </View>
             </View>
             
             <View style={utilities.container}>
                 <View style={{flex: 0, alignItems: 'center'}}>
-                    <Text style={{color: 'black'}}>{props.choice}</Text>
                     {playerChoiceImg}
                 </View>
                 <Text style={messageStyles}>{message}</Text>
@@ -90,11 +88,12 @@ function Game(props,{navigation}) {
                             props.setPage('PlayGame')
                             props.setWins(props.wins + localWins)
                             props.setChances(props.chances + localChances)
+                            props.setRound(props.round + 1)
                         }} />
                         {/* onPress={() => navigation.navigate('PlayGame')}></BlockButton> */}
                 </View>
             </View>
-            <BottomNav navigation={navigation} active={'Home'}></BottomNav>
+            {/* <BottomNav navigation={navigation} active={'Home'}></BottomNav> */}
         </View>
     )
 }
