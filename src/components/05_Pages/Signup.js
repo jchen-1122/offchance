@@ -4,7 +4,6 @@ import BlockButton from '../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../01_Atoms/Divider/Divider.js';
 import InputField from '../02_Molecules/InputField/InputField.js';
 import CheckBox from '../02_Molecules/Checkbox/Checkbox';
-import Tooltip from '../02_Molecules/Tooltip/Tooltip';
 import {colors, fonts, utilities} from '../../settings/all_settings';
 
 export default function Signup({ navigation }) {

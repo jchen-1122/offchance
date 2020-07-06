@@ -3,8 +3,8 @@
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
 import {styles} from "./LikeButton.styling";
-import { Icon } from 'react-native-elements'
-//import InstagramIcon from '@material-ui/icons/Instagram';
+import { Icon } from 'react-native-elements';
+import Tooltip from '../../../02_Molecules/Tooltip/Tooltip';
 
 function LikeButton(props){
 
@@ -15,7 +15,7 @@ function LikeButton(props){
 
     return (
         <TouchableOpacity style={styles.LikeButton}>
-            <Icon name='heart-outline' type='material-community' />
+            <Tooltip label={<Icon name='heart-outline' type='material-community' />} content={"You will get a notification when this drawing becomes available/live"} like={true}/>
         </TouchableOpacity>
     )
 }
