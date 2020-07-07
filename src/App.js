@@ -10,11 +10,13 @@ import ChangePassword from './components/05_Pages/LoginProcess/ChangePassword/Ch
 import Home from './components/05_Pages/Home/Home'
 import Raffle from './components/05_Pages/Home/Raffle/Raffle'
 import PlayGame from './components/05_Pages/Home/PlayGame/PlayGame'
+import Game from './components/05_Pages/Home/Game/Game'
 import Drawings from './components/05_Pages/Drawings/Drawings'
 import Likes from './components/05_Pages/Likes/Likes'
 import Profile from './components/05_Pages/Profile/Profile'
 import YourFeed from './components/05_Pages/Home/YourFeed/YourFeed';
 import Explore from './components/05_Pages/Home/Explore/Explore';
+import GameController from './components/GameController';
 
 const Stack = createStackNavigator();
 
@@ -33,9 +35,11 @@ function App() {
         <Stack.Screen name="Explore" component={Explore} />
         <Stack.Screen name="Raffle" component={Raffle} />
         <Stack.Screen name="PlayGame" component={PlayGame} />
+        <Stack.Screen name="Game" component={Game} />
         <Stack.Screen name="Drawings" component={Drawings} />
         <Stack.Screen name="Likes" component={Likes} />
         <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="GameController" component={GameController} />
       </Stack.Navigator>
     </NavigationContainer>
   );

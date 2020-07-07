@@ -12,6 +12,8 @@ const styles = StyleSheet.create({
         borderRadius: normalSize,
         margin: 5
     },
+
+    // different sizes for profile pic
     profilePic_large: {
         height: largeSize,
         width: largeSize,
@@ -32,6 +34,7 @@ const styles = StyleSheet.create({
     username_small: {
         fontSize: 13
     },
+
     container: {
         flex: 0,
         flexDirection: 'row',
@@ -39,10 +42,14 @@ const styles = StyleSheet.create({
     },
     container_hostedBy: {
         marginRight: 'auto',
-        marginLeft: Dimensions.get('window').width * 0.1,
         flex: 0,
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    
+    // some cases need a margin on the left
+    marginLeft : {
+        marginLeft: Dimensions.get('window').width * 0.1,
     }
 })
 

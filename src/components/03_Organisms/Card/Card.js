@@ -42,10 +42,12 @@ function Card ({ navigation, onPress, type,  title, host, imageURI, date }) {
     return (
           <ScrollView style={styles.card}>
               {like}
-              <View style={styles.itemDesc}>
+              <View style={[styles.itemDesc, {justifyContent: 'center'}]}>
                 <Image style={styles.image} source={imageURI}/>
                 <Text style={[fonts.h1, {width:Dimensions.get('window').width * 0.6, marginTop: 15}]}>{title}</Text>
-                <UsernameDisplay username={host.name} profPic={host.pic} size='hostedBy'/>
+                <View style={{width:Dimensions.get('window').width * 0.6}}>
+                    <UsernameDisplay username={host.name} profPic={host.pic} size='hostedBy'/>
+                </View>
                 {startData}
                 {/* TODO: somehow get two or more images to overlap each other and style the friends-entered line */}
                 {friendsEntered}

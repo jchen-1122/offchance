@@ -19,6 +19,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 
+    // if button is disabled
+    BlockButton_disabled : {
+        backgroundColor: 'gray'
+    },
+
     // different colors for button background
     BlockButton_primary:{ 
         backgroundColor: colors.primaryColor
