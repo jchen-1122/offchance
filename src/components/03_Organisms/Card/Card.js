@@ -13,6 +13,7 @@ function Card ({ navigation, onPress, type,  title, host, imageURI, date }) {
 
     let startData = null;
     let like = null;
+    let cardBackground = styles.card__white;
     let pgBar = <ProgressBar progress={230 / 500} color='orange' raised={230} goal={500} width={Dimensions.get('window').width * 0.6} ></ProgressBar>;
     let friendsEntered = null;
     let button = <BlockButton title='Enter Drawing' color="primary" onPress={() => navigation.navigate('Raffle')}/>;
@@ -37,14 +38,34 @@ function Card ({ navigation, onPress, type,  title, host, imageURI, date }) {
             button = <TouchableOpacity style={styles.upcoming_notifyMe} onPress={() => navigation.navigate('Raffle')}><Text>NOTIFY ME</Text></TouchableOpacity>;
             startData = <View><Text style={styles.startData_grey} >DRAWING STARTS</Text><Text style={styles.freeDraw_date}>{date}</Text></View>;
             break;
+        // default-dark is for the new types of raffles Karann mentioned, change color at 'card__dark' in Card.styles.js
+        case 'default-dark':
+            cardBackground = styles.card__dark;
+            like = <View style={styles.likeButton}><LikeButton /></View>;
+            startData = <Text style={styles.startData_grey}>DRAWING STARTS ONCE TIMER REACHES 0 OR DONATION GOAL IS MET</Text>;
+            friendsEntered = <Text style={styles.friends}>Entered by @yourbestfriend</Text>;
+            break;
+        case 'notification':
+            return (
+                <ScrollView style={[styles.card, cardBackground]}>
+                    <View style={styles.notif}>                    
+                        <Image style={styles.notif_host} source={host.pic} />
+                        <View>
+                        <Text>@{host.name} {title}</Text>
+                        <Text style={styles.notif_grey}>{date}</Text>
+                        </View>
+                    </View>
+                    <Image style={styles.notif_pic} source={imageURI} />
+                </ScrollView>
+            )
     }
 
     return (
-          <ScrollView style={styles.card}>
+          <ScrollView style={[styles.card, cardBackground]}>
               {like}
-              <View style={[styles.itemDesc, {justifyContent: 'center'}]}>
+              <View style={styles.itemDesc}>
                 <Image style={styles.image} source={imageURI}/>
-                <Text style={[fonts.h1, {width:Dimensions.get('window').width * 0.6, marginTop: 15}]}>{title}</Text>
+                <Text style={[fonts.h1, {width:Dimensions.get('window').width * 0.6}]}>{title}</Text>
                 <View style={{width:Dimensions.get('window').width * 0.6}}>
                     <UsernameDisplay username={host.name} profPic={host.pic} size='hostedBy'/>
                 </View>

@@ -23,6 +23,19 @@ function Home({navigation}) {
                     navigation={navigation}
                     imageURI={Nswitch}/>
                 <Card 
+                    type='notification'
+                    title="barbequeued Appa. btw This is Notification Card"
+                    date='July 16, 11:00 AM'
+                    host={{name:"theAvatar", pic: aang}}
+                    navigation={navigation}
+                    imageURI={Nswitch}/>
+                <Card 
+                    type='default-dark'
+                    title="Dark Card (Go to Card.styles.js to change color at card__dark)"
+                    host={{name:"theAvatar", pic: aang}}
+                    navigation={navigation}
+                    imageURI={Nswitch}/>
+                <Card 
                     type='free'
                     date='July 16, 11:00 AM'
                     title="Free Drawing Card"

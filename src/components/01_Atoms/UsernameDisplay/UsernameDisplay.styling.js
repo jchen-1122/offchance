@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
         fontSize: 18
     },
     username_small: {
-        fontSize: 13
+        fontSize: 11.5
     },
 
     container: {
