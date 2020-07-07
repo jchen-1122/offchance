@@ -8,8 +8,6 @@ import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
 import {styles} from './Game.styling'
 
 function Game(props) {
-    // let choices = ['rock', 'paper', 'scissors']
-    // let compChoice = choices[Math.floor(Math.random()*3)] // randomly pick rock, paper, or scissors for computer
     let localWins = 0
     let localChances = 0
     let localRounds = 0
@@ -113,13 +111,17 @@ function Game(props) {
                         color="secondary"
                         size="short"
                         onPress={() => {
-                            props.setPage('PlayGame')
                             props.setRound(props.round + localRounds)
                             props.setWins(props.wins + localWins)
                             props.setChances(props.chances + localChances)
                             props.setOpacity([1,1,1])
                             props.setChoice("Pick Rock Paper or Scissors")
                             props.setTime(10)
+                            if ((props.round === 10 || props.chances === 1) && winner !== 'tie') {
+                                props.setPage('EndGame')
+                            } else {
+                                props.setPage('PlayGame')
+                            }
                         }} />
                         {/* onPress={() => navigation.navigate('PlayGame')}></BlockButton> */}
                 </View>

@@ -21,7 +21,7 @@ function PlayGame(props) {
             }, 1000)
         }
         return () => {
-            if (localTime === 1 && props.choice === "Pick Rock Paper or Scissors") {
+            if (localTime === 1 && props.choice !== 'rock' && props.choice !== 'paper' && props.choice !== 'scissors') {
                 props.setChoice(compChoice)
                 props.setPage("Game")
             } else if (localTime === 1 && props.choice != null) {
