@@ -9,12 +9,12 @@ function GridView(props) {
       <View style={{backgroundColor: props.bgColor}}>
             <Text style={[fonts.h1, {textAlign: 'center'}]}>{props.title}</Text>
             <View style={styles.GridView__row}>
-              <GridCard title="Air Jordan 1 Retro High OG ‘Court Purple 2.0’" navigation={props.navigation}/>
-              <GridCard title="Air Jordan 1 Retro High OG ‘Court Purple 2.0’" navigation={props.navigation}/>
+              <GridCard title="Air Jordan 1 Retro High OG ‘Court Purple 2.0’" navigation={props.navigation} type={props.Gridtype}/>
+              <GridCard title="Air Jordan 1 Retro High OG ‘Court Purple 2.0’" navigation={props.navigation} type={props.Gridtype}/>
             </View>
             <View style={styles.GridView__row}>
-              <GridCard title="Air Jordan 1 Retro High OG ‘Court Purple 2.0’" navigation={props.navigation}/>
-              <GridCard title="Air Jordan 1 Retro High OG ‘Court Purple 2.0’" navigation={props.navigation}/>
+              <GridCard title="Air Jordan 1 Retro High OG ‘Court Purple 2.0’" navigation={props.navigation} type={props.Gridtype}/>
+              <GridCard title="Air Jordan 1 Retro High OG ‘Court Purple 2.0’" navigation={props.navigation} type={props.Gridtype}/>
             </View>
 
       </View>
