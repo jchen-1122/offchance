@@ -9,7 +9,7 @@ function HostedBy({navigation, image, account}) {
     <View style={styles.hostedby}>
        <View style={styles.hostedby__profile}>
          <Image source={image} style={styles.hostedby__image}></Image>
-         <Text> Hosted by {account} </Text>
+         <Text> {account} </Text>
        </View>
          <BlockButton
             title={'Follow'}

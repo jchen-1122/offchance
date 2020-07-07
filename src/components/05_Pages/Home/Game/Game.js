@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 // import {fonts} from '../../../settings/fonts';
 import {colors, fonts, utilities} from '../../../../settings/all_settings';
-import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
 import GameBar from '../../../02_Molecules/GameBar/GameBar'
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
 import {styles} from './Game.styling'

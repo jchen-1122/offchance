@@ -18,6 +18,7 @@ export default function Raffle({navigation}) {
     // for sliding sheet (payment)
     const [sheetOpen, setSheetOpen] = useState(false);
     const [bounceValue, setBounceValue] = useState(new Animated.Value(100)); // initial position of sheet
+    const [expired, setExpired] = useState(true)
 
     const toggleSheet = () => {
         var toValue = 100;
@@ -30,7 +31,8 @@ export default function Raffle({navigation}) {
                 toValue: toValue,
                 velocity: 3,
                 tension: 2,
-                friction: 8
+                friction: 8,
+                useNativeDriver: true
         }).start();
 
         setSheetOpen(!sheetOpen);
@@ -46,7 +48,8 @@ export default function Raffle({navigation}) {
                 {images.length > 1 ? <ImageCarousel images={images}></ImageCarousel> : <Image source={images[0]} style={{width: 400, height: 300, resizeMode: 'center'}}></Image>}
 
                     <Text style={[fonts.h1,{marginLeft: '8%'}]}>Nintendo Switch with Neon Joy-Con</Text>
-                    <HostedBy image={proPic} account={'@instagram'} navigation={navigation}></HostedBy>
+                    <HostedBy image={proPic} account={'Hosted by @instagram'} navigation={navigation}></HostedBy>
+                    {(expired) ? <HostedBy image={images[1]} account={'Won by @mscott69'} navigation={navigation}></HostedBy> : null}
                     <View style={styles.content}>
                         <Text style={fonts.h3}>Description</Text>
                         <Text style={{marginBottom: 15}}>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla cursus, dui ac fermentum dapibus, dolor lorem aliquam nibh, sit amet commodo mi massa id nunc. Aenean vel mollis lorem.</Text>
@@ -66,6 +69,10 @@ export default function Raffle({navigation}) {
                         title="ENTER DRAWING"
                         color="primary"
                         onPress={() => toggleSheet()}/>
+                        <BlockButton
+                        title="toggle expired view (TEST)"
+                        color="primary"
+                        onPress={() => setExpired(!expired)}/>
                         {/* // onPress={() => navigation.navigate('PlayGame')}/> */}
                     </View>
 
@@ -76,7 +83,6 @@ export default function Raffle({navigation}) {
                         <SlidingSheet title='Enter Drawing' visible={sheetOpen} toggleSheet={toggleSheet}/>
                     </Animated.View>
                     
-
             </ScrollView>
             <BottomNav navigation={navigation} active={'Home'}></BottomNav>
         </View>
