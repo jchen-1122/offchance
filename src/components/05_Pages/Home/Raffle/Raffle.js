@@ -1,5 +1,5 @@
-import * as React from 'react';
-import { ScrollView, View, Text, Image, Dimensions } from 'react-native'
+import React, {useState} from 'react';
+import { ScrollView, View, Text, Image, Animated } from 'react-native'
 import {utilities, fonts, colors} from '../../../../settings/all_settings';
 import styles from './Raffle.styling';
 import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
@@ -9,12 +9,33 @@ import Top5Donors from '../../../02_Molecules/Top5Donors/Top5Donors'
 import DropDown from '../../../01_Atoms/DropDown/DropDown'
 import ImageCarousel from '../../../02_Molecules/ImageCarousel/ImageCarousel'
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
-
-
+import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
 
 export default function Raffle({navigation}) {
     const images = [require('../../../../../assets/images/nintendoSwitch.jpeg'), require('../../../../../assets/images/michaelScott.jpg'), require('../../../../../assets/images/pamBeesly.jpg'), require('../../../../../assets/images/profilePic.png'), require('../../../../../assets/images/logo.png')]
     const proPic = require('../../../../../assets/images/profilePic.png')
+
+
+    const [sheetOpen, setSheetOpen] = useState(false);
+    const [bounceValue, setBounceValue] = useState(new Animated.Value(100)); // initial position of sheet
+
+    const toggleSheet = () => {
+        var toValue = 100;
+        if (sheetOpen == false) {
+            toValue=0
+        }
+
+        Animated.spring(
+            bounceValue, {
+                toValue: toValue,
+                velocity: 3,
+                tension: 2,
+                friction: 8
+        }).start();
+
+        setSheetOpen(!sheetOpen);
+    };
+
     // uncomment for one image example
     // const images = [require('../../../../assets/images/dwightSchrute.jpg')]
     return (
@@ -39,8 +60,19 @@ export default function Raffle({navigation}) {
                         title="PLAY GAME"
                         color="primary"
                         onPress={() => navigation.navigate('GameController')}/>
+                        <BlockButton
+                        title="ENTER DRAWING"
+                        color="primary"
+                        onPress={() => toggleSheet()}/>
                         {/* // onPress={() => navigation.navigate('PlayGame')}/> */}
                     </View>
+
+                    <Animated.View
+                        style={[styles.subView,
+                        {transform: [{translateY: bounceValue}]}]}
+                    >
+                        <SlidingSheet title='Enter Drawing' visible={sheetOpen} toggleSheet={toggleSheet}/>
+                    </Animated.View>
                     
 
             </ScrollView>
