@@ -26,7 +26,7 @@ function UsernameDisplay(props){
         case 'latestWinner':
             profilePicStyle = styles.profilePic_small;
             usernameStyle = styles.username_small;
-            containerStyle = [styles.marginLeft, styles.container_hostedBy];
+            containerStyle = styles.container_hostedBy;
             break;
     }
 

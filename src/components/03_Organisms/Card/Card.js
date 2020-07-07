@@ -66,7 +66,9 @@ function Card ({ navigation, onPress, type,  title, host, imageURI, date }) {
               <View style={styles.itemDesc}>
                 <Image style={styles.image} source={imageURI}/>
                 <Text style={[fonts.h1, {width:Dimensions.get('window').width * 0.6}]}>{title}</Text>
-                <UsernameDisplay username={host.name} profPic={host.pic} size='hostedBy'/>
+                <View style={{width:Dimensions.get('window').width * 0.6}}>
+                    <UsernameDisplay username={host.name} profPic={host.pic} size='hostedBy'/>
+                </View>
                 {startData}
                 {/* TODO: somehow get two or more images to overlap each other and style the friends-entered line */}
                 {friendsEntered}
