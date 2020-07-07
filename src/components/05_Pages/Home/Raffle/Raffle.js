@@ -36,9 +36,10 @@ export default function Raffle({navigation}) {
                     </View>
                     <View style={[styles.content, {flex: 0, alignItems: 'center'}]}>
                         <BlockButton
-                            title="PLAY GAME"
-                            color="primary"
-                            onPress={() => navigation.navigate('PlayGame')}/>
+                        title="PLAY GAME"
+                        color="primary"
+                        onPress={() => navigation.navigate('GameController')}/>
+                        {/* // onPress={() => navigation.navigate('PlayGame')}/> */}
                     </View>
                     
 
