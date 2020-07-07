@@ -15,7 +15,7 @@ export default function Raffle({navigation}) {
     const images = [require('../../../../../assets/images/nintendoSwitch.jpeg'), require('../../../../../assets/images/michaelScott.jpg'), require('../../../../../assets/images/pamBeesly.jpg'), require('../../../../../assets/images/profilePic.png'), require('../../../../../assets/images/logo.png')]
     const proPic = require('../../../../../assets/images/profilePic.png')
 
-
+    // for sliding sheet (payment)
     const [sheetOpen, setSheetOpen] = useState(false);
     const [bounceValue, setBounceValue] = useState(new Animated.Value(100)); // initial position of sheet
 
@@ -36,6 +36,8 @@ export default function Raffle({navigation}) {
         setSheetOpen(!sheetOpen);
     };
 
+    let sizes = [69, 420, 9, 9.5]
+
     // uncomment for one image example
     // const images = [require('../../../../assets/images/dwightSchrute.jpg')]
     return (
@@ -53,7 +55,7 @@ export default function Raffle({navigation}) {
 
                         <Top5Donors images={images} />
                         <ProgressBar progress={230 / 500} color={colors.highlightColor} raised={230} goal={500} width={315} />
-                        <DropDown />
+                        <DropDown options={sizes}/>
                     </View>
                     <View style={[styles.content, {flex: 0, alignItems: 'center'}]}>
                         <BlockButton
