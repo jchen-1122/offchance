@@ -3,6 +3,7 @@
 // a styling
 
 import {StyleSheet} from 'react-native';
+import { colors } from './colors';
 
 var baseFontSize = 16;
 
@@ -10,7 +11,21 @@ const fonts = StyleSheet.create({
     h1: {
         fontSize: baseFontSize * 1.5, 
         fontWeight:'bold',
-        margin: 15
+        marginTop: 15,
+        marginBottom: 15
+    },
+    h2: {
+        fontSize: baseFontSize * 1.25,
+        fontWeight: 'bold'
+    },
+    h3: {
+        fontSize: baseFontSize,
+        fontWeight: 'bold'
+    },
+    light: {
+        fontSize: baseFontSize,
+        fontWeight: '300',
+        color: colors.darkGray
     },
     p: {
         fontSize: baseFontSize,

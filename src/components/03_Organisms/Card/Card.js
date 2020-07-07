@@ -23,7 +23,7 @@ function Card ({ navigation, onPress, type,  title, host, imageURI, date }) {
         case 'default':
             like = <View style={styles.likeButton}><LikeButton /></View>;
             startData = <Text style={styles.startData_grey}>DRAWING STARTS ONCE TIMER REACHES 0 OR DONATION GOAL IS MET</Text>;
-            friendsEntered = <Text>Entered by @yourbestfriend</Text>;
+            friendsEntered = <Text style={styles.friends}>Entered by @yourbestfriend</Text>;
             break;
         // free is the 'free drawing' card as seen in 'Home' in Figma
         case 'free':
@@ -43,7 +43,7 @@ function Card ({ navigation, onPress, type,  title, host, imageURI, date }) {
             cardBackground = styles.card__dark;
             like = <View style={styles.likeButton}><LikeButton /></View>;
             startData = <Text style={styles.startData_grey}>DRAWING STARTS ONCE TIMER REACHES 0 OR DONATION GOAL IS MET</Text>;
-            friendsEntered = <Text>Entered by @yourbestfriend</Text>;
+            friendsEntered = <Text style={styles.friends}>Entered by @yourbestfriend</Text>;
             break;
         case 'notification':
             return (

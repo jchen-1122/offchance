@@ -1,14 +1,16 @@
 import React from 'react'
 import {View, Image, Text, Button} from 'react-native'
-import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
-import {fonts} from '../../../settings/fonts'
+import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
+import styles from './HostedBy.styling';
+import {utilities} from '../../../settings/all_settings';
 
 function HostedBy({navigation, image, account}) {
  return (
-    <View style={{flexDirection:'row'}}>
-         <Image source={image} style={{width:20, height: 20, borderRadius: 20 / 2, marginLeft: 30, marginBottom: 10}}></Image>
+    <View style={styles.hostedby}>
+       <View style={styles.hostedby__profile}>
+         <Image source={image} style={styles.hostedby__image}></Image>
          <Text> Hosted by {account} </Text>
-         {/* @chelly I dont want to mess with block button, can you add a customized follow button so its aligned to the right (see Raffle demo) */}
+       </View>
          <BlockButton
             title={'Follow'}
             color="secondary"

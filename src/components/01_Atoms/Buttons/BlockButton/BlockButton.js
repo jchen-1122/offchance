@@ -44,8 +44,13 @@ function BlockButton(props){
             break;
     }
 
+    // if button is disabled
+    if (props.disabled) {
+        buttonStyle.push(styles.BlockButton_disabled)
+    }
+
     return (
-        <TouchableOpacity style={buttonStyle} onPress={props.onPress}>
+        <TouchableOpacity style={buttonStyle} onPress={props.onPress} disabled={props.disabled}>
             {icon}
             <Text style={[styles.BlockButton__title, buttonTitleStyle]}>{props.title}</Text>
         </TouchableOpacity>

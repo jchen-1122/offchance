@@ -14,7 +14,7 @@ function Home({navigation}) {
     return (
         <View style={utilities.container}>
             <ScrollView contentContainerStyle={utilities.scrollview}>
-                <TopNav navigation={navigation}></TopNav>
+                <TopNav navigation={navigation} active='Home'/>
                 <View style={utilities.flexCenter}>
                 <Card 
                     type='default'

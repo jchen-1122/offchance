@@ -10,7 +10,8 @@ const styles = StyleSheet.create({
         borderRadius: borderRadius,
         flex: 0,
         flexDirection:'row',
-        margin: 20,
+        margin: 15,
+        paddingBottom: 20
     },
     card__white: {
         backgroundColor: 'white',
@@ -25,7 +26,8 @@ const styles = StyleSheet.create({
     },
     itemDesc: {
         flex: 1,
-        alignItems: 'center'
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     image: {
         height: imageDimensions,
@@ -35,7 +37,8 @@ const styles = StyleSheet.create({
     startData_grey: {
         width: Dimensions.get('window').width * 0.6,
         fontSize: 13,
-        color: '#989898'
+        color: '#989898',
+        marginTop: 15,
     },
     freeDraw_banner: {
         marginRight: 'auto',
@@ -82,6 +85,11 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width * 0.7,
         height: Dimensions.get('window').width * 0.7,
         marginLeft: Dimensions.get('window').width * 0.05,
+    },
+    friends: {
+        width: Dimensions.get('window').width * 0.6,
+        marginTop: 15,
+        marginBottom: 5
     }
 })
 
