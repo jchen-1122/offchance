@@ -7,10 +7,10 @@ import { SocialIcon } from 'react-native-elements';
 import {fonts} from '../../../settings/all_settings';
 
 function UsernameDisplay(props){
+    let containerStyle = styles.container;
     let profilePicStyle = styles.profilePic;
     let usernameStyle = [fonts.link]
     let displayText = '@' + props.username;
-    let containerStyle = styles.container;
 
     switch(props.size){
         case 'large':
@@ -23,7 +23,11 @@ function UsernameDisplay(props){
             displayText = 'Hosted by ' + displayText;
             containerStyle = styles.container_hostedBy;
             break;
-
+        case 'latestWinner':
+            profilePicStyle = styles.profilePic_small;
+            usernameStyle = styles.username_small;
+            containerStyle = styles.container_hostedBy;
+            break;
     }
 
     return (

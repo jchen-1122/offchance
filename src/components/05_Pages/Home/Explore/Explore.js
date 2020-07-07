@@ -24,7 +24,7 @@ function Explore({navigation}) {
             <ScrollView>
                 <TopNav navigation={navigation} active='Explore'/>
                 <ListView title="Top 5 Donors" usernames={usernames} profPics={profPics}/>
-                <GridView title="Latest Winners" bgColor="white"/>
+                <GridView title="Latest Winners" bgColor="white" navigation={navigation}/>
             </ScrollView>
 
             <BottomNav navigation={navigation} active={'Home'}></BottomNav>
