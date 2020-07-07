@@ -126,7 +126,7 @@ function Game(props) {
                         {/* onPress={() => navigation.navigate('PlayGame')}></BlockButton> */}
                 </View>
             </View>
-            <BottomNav navigation={props.navigation} active={'Home'}></BottomNav>
+            {/* <BottomNav navigation={props.navigation} active={'Home'}></BottomNav> */}
         </View>
     )
 }

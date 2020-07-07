@@ -22,7 +22,7 @@ function Card ({ navigation, onPress, type,  title, host, imageURI, date }) {
         case 'default':
             like = <View style={styles.likeButton}><LikeButton /></View>;
             startData = <Text style={styles.startData_grey}>DRAWING STARTS ONCE TIMER REACHES 0 OR DONATION GOAL IS MET</Text>;
-            friendsEntered = <Text>Entered by @yourbestfriend</Text>;
+            friendsEntered = <Text style={styles.friends}>Entered by @yourbestfriend</Text>;
             break;
         // free is the 'free drawing' card as seen in 'Home' in Figma
         case 'free':
@@ -37,15 +37,27 @@ function Card ({ navigation, onPress, type,  title, host, imageURI, date }) {
             button = <TouchableOpacity style={styles.upcoming_notifyMe} onPress={() => navigation.navigate('Raffle')}><Text>NOTIFY ME</Text></TouchableOpacity>;
             startData = <View><Text style={styles.startData_grey} >DRAWING STARTS</Text><Text style={styles.freeDraw_date}>{date}</Text></View>;
             break;
+        // simplified card you see on your feed
+        case 'feed':
+            like = null;
+            pgBar = null;
+            startData = null;
+            break;
     }
 
+    let username;
+    if (host) {
+        username = <UsernameDisplay username={host.name} profPic={host.pic} size='hostedBy'/>
+    }
     return (
           <ScrollView style={styles.card}>
               {like}
-              <View style={styles.itemDesc}>
+              <View style={[styles.itemDesc, {justifyContent: 'center'}]}>
                 <Image style={styles.image} source={imageURI}/>
-                <Text style={[fonts.h1, {width:Dimensions.get('window').width * 0.6}]}>{title}</Text>
-                <UsernameDisplay username={host.name} profPic={host.pic} size='hostedBy'/>
+                <Text style={[fonts.h1, {width:Dimensions.get('window').width * 0.6, marginTop: 15}]}>{title}</Text>
+                <View style={{width:Dimensions.get('window').width * 0.6}}>
+                    {username}
+                </View>
                 {startData}
                 {/* TODO: somehow get two or more images to overlap each other and style the friends-entered line */}
                 {friendsEntered}

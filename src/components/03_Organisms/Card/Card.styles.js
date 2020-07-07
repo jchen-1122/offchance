@@ -11,7 +11,8 @@ const styles = StyleSheet.create({
         borderRadius: borderRadius,
         flex: 0,
         flexDirection:'row',
-        margin: 20,
+        margin: 15,
+        paddingBottom: 20
     },
     likeButton: {
         width: Dimensions.get('window').width * 0.8,
@@ -30,7 +31,8 @@ const styles = StyleSheet.create({
     startData_grey: {
         width: Dimensions.get('window').width * 0.6,
         fontSize: 13,
-        color: '#989898'
+        color: '#989898',
+        marginTop: 15,
     },
     freeDraw_banner: {
         marginRight: 'auto',
@@ -57,6 +59,11 @@ const styles = StyleSheet.create({
         marginTop: 20,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    friends: {
+        width: Dimensions.get('window').width * 0.6,
+        marginTop: 15,
+        marginBottom: 5
     }
 })
 

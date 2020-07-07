@@ -10,8 +10,8 @@ function Likes(props) {
     return (
         <View style={utilities.container}>
             <GameBar color={'black'} currRound={props.round} chancesLeft={props.chances} wins={props.wins} numRounds={10}></GameBar>
-            <Text style={{fontSize: 30, fontWeight: '800', textAlign: 'center', marginBottom: -200}}>THANKS FOR PLAYING!</Text>
             <View style={{alignItems: 'center'}}>
+                <Text style={{fontSize: 30, fontWeight: '800', textAlign: 'center'}}>THANKS FOR PLAYING!</Text>
                 <BlockButton
                     title="Go Back Home"
                     color="primary"
