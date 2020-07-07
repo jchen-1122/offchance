@@ -6,12 +6,17 @@ var imageDimensions = 175;
 
 const styles = StyleSheet.create({
     card: {
-        backgroundColor: 'white',
         width: Dimensions.get('window').width * 0.8,
         borderRadius: borderRadius,
         flex: 0,
         flexDirection:'row',
         margin: 20,
+    },
+    card__white: {
+        backgroundColor: 'white',
+    },
+    card__dark: {
+        backgroundColor: 'grey',
     },
     likeButton: {
         width: Dimensions.get('window').width * 0.8,
@@ -57,6 +62,26 @@ const styles = StyleSheet.create({
         marginTop: 20,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    notif_host: {
+        height: 40,
+        width: 40,
+        borderRadius: 40,
+        margin: Dimensions.get('window').width * 0.05
+    },
+    notif: {
+        width: Dimensions.get('window').width * 0.55,
+        flex: 0,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    notif_grey: {
+        color: '#C4C4C4'
+    },
+    notif_pic: {
+        width: Dimensions.get('window').width * 0.7,
+        height: Dimensions.get('window').width * 0.7,
+        marginLeft: Dimensions.get('window').width * 0.05,
     }
 })
 
