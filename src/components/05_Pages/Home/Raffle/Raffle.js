@@ -55,9 +55,9 @@ export default function Raffle({navigation}) {
 
                         <Top5Donors images={images} />
                         <ProgressBar progress={230 / 500} color={colors.highlightColor} raised={230} goal={500} width={315} />
-                        <DropDown options={sizes}/>
+                        <DropDown options={sizes} size='small'/>       
                     </View>
-                    <View style={[styles.content, {flex: 0, alignItems: 'center'}]}>
+                    <View style={[styles.content, {flex: 0, alignItems: 'center', zIndex: -1}]}>
                         <BlockButton
                         title="PLAY GAME"
                         color="primary"
