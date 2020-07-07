@@ -32,7 +32,7 @@ function PlayGame(props) {
     }, [localTime])
 
     return (
-        <View style={[utilities.container]}>
+        <View style={[utilities.container,{paddingBottom: 15}]}>
             <GameBar color={'black'} currRound={props.round} chancesLeft={props.chances} wins={props.wins} numRounds={10}></GameBar>
             <Text style={{textAlign:'center', fontWeight: '700', fontSize: 70, color: (localTime <= 3) ? 'red' : 'black'}}>{localTime}s</Text>
             <View style={styles.rpsView}>
@@ -57,6 +57,7 @@ function PlayGame(props) {
                 <BlockButton
                     title={props.choice}
                     color="primary"
+                    disabled={props.choice == "Pick Rock Paper or Scissors"}
                     onPress={() => {
                         if (props.choice !== 'rock' && props.choice !== 'paper' && props.choice !== 'scissors') {
                             props.setChoice('You must pick a choice or we will choose randomly')
@@ -66,7 +67,7 @@ function PlayGame(props) {
                         }}}></BlockButton>
                     {/* // onPress={() => navigation.navigate('Game')}></BlockButton> */}
             </View>
-            <BottomNav navigation={props.navigation} active={'Home'}></BottomNav>
+            {/* <BottomNav navigation={props.navigation} active={'Home'}></BottomNav> */}
         </View>
     )
 }

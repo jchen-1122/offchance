@@ -8,7 +8,7 @@ function GridView(props) {
     return (
       <View style={{backgroundColor: props.bgColor}}>
             <Text style={[fonts.h1, {textAlign: 'center'}]}>{props.title}</Text>
-            <GridCard />
+            <GridCard title="Air Jordan 1 Retro High OG ‘Court Purple 2.0’"/>
             {/* <UsernameDisplay /> */}
       </View>
     );

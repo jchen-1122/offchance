@@ -1,10 +1,14 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
 import {colors, dimensions} from '../../../settings/all_settings';
 
 const styles = StyleSheet.create({
     GridCard: {
-        width: '20%',
-        backgroundColor: colors.lightGray
+        width: Dimensions.get('window').width * 0.45,
+        backgroundColor: colors.lightGray,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 10,
+        margin: 10
     }
 })
 
