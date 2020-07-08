@@ -1,15 +1,13 @@
 import React, {useState, useEffect} from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
-// import {fonts} from '../../../settings/fonts';
 import {colors, fonts, utilities} from '../../../../settings/all_settings';
-import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
 import GameBar from '../../../02_Molecules/GameBar/GameBar'
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
 import {styles} from './Game.styling'
 
 function Game(props) {
     let localWins = 0
-    let localChances = 0
+    let localTokens = 0
     let localRounds = 0
     
     const [localTime, localSetTime] = useState(10)
@@ -26,7 +24,7 @@ function Game(props) {
                 props.setPage('PlayGame')
                 props.setRound(props.round + localRounds)
                 props.setWins(props.wins + localWins)
-                props.setChances(props.chances + localChances)
+                props.setTokens(props.tokens + localTokens)
                 props.setOpacity([1,1,1])
                 props.setChoice("Pick Rock Paper or Scissors")
                 props.setTime(10)
@@ -78,30 +76,28 @@ function Game(props) {
         message = "You win this round!"
         messageStyles.push(styles.message_win)
         localWins += 1
-        localChances -= 1
+        localTokens -= 1
         localRounds += 1
     }
     else{
         winner = 'computer'
         message = "You lost this round :("
         messageStyles.push(styles.message_lose)
-        localChances -= 1
+        localTokens -= 1
         localRounds += 1
     }
 
     return (
         <View style={utilities.container}>
             <View style={[utilities.container], {backgroundColor: 'black', height: '50%'}}>
-                <GameBar color={'white'} currRound={props.round + localRounds} chancesLeft={props.chances + localChances} wins={props.wins + localWins} numRounds={10}></GameBar>
+                <GameBar color={'white'} currRound={props.round + localRounds} tokensLeft={props.tokens + localTokens} wins={props.wins + localWins} numRounds={10}></GameBar>
                 <View style={{flex: 0, alignItems: 'center'}}>
-                    {/* <Text style={{color: 'white'}}>{compChoice}</Text> */}
                     {compChoiceImg}
                 </View>
             </View>
             
             <View style={utilities.container}>
                 <View style={{flex: 0, alignItems: 'center'}}>
-                    {/* <Text style={{color: 'black'}}>{props.choice}</Text> */}
                     {playerChoiceImg}
                 </View>
                 <Text style={messageStyles}>{message}</Text>
@@ -113,20 +109,20 @@ function Game(props) {
                         onPress={() => {
                             props.setRound(props.round + localRounds)
                             props.setWins(props.wins + localWins)
-                            props.setChances(props.chances + localChances)
+                            props.setTokens(props.tokens + localTokens)
                             props.setOpacity([1,1,1])
                             props.setChoice("Pick Rock Paper or Scissors")
                             props.setTime(10)
-                            if ((props.round === 10 || props.chances === 1) && winner !== 'tie') {
+                            // exit condition for game
+                            let bonusChances = Math.floor(props.wins/2)
+                            if ( bonusChances >= 2*props.initialTokens || (props.tokens === 1) && winner !== 'tie') {
                                 props.setPage('EndGame')
                             } else {
                                 props.setPage('PlayGame')
                             }
                         }} />
-                        {/* onPress={() => navigation.navigate('PlayGame')}></BlockButton> */}
                 </View>
             </View>
-            {/* <BottomNav navigation={props.navigation} active={'Home'}></BottomNav> */}
         </View>
     )
 }

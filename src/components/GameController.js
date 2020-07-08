@@ -6,11 +6,12 @@ import {Text} from 'react-native'
 import { set } from 'react-native-reanimated';
 
 function GameController({navigation}) {
-    const [page, setPage] = useState('PlayGame')
+    let initialTokens = 10
+    const [page, setPage] = useState('PlayGame') // controls which page you see
     const [round, setRound] = useState(1)
-    const [chances, setChances] = useState(10)
+    const [tokens, setTokens] = useState(initialTokens)
     const [wins, setWins] = useState(0)
-    const [choice, setChoice] = useState("Pick Rock Paper or Scissors")
+    const [choice, setChoice] = useState("Rock Paper or Scissors")
     const [opacity, setOpacity] = useState([1, 1, 1])
     const [time, setTime] = useState(10)
     
@@ -19,13 +20,13 @@ function GameController({navigation}) {
 
     if (page == 'PlayGame'){
         return (
-            <PlayGame navigation={navigation} time={time} setTime={setTime} opacity={opacity} setOpacity={setOpacity} setPage={setPage} round={round} setRound={setRound} chances={chances} setChances={setChances} wins={wins} setWins={setWins} setChoice={setChoice} choice={choice}/>
+            <PlayGame navigation={navigation} time={time} setTime={setTime} opacity={opacity} setOpacity={setOpacity} setPage={setPage} round={round} setRound={setRound} tokens={tokens} setTokens={setTokens} wins={wins} setWins={setWins} setChoice={setChoice} choice={choice}/>
         )
     }
     else if (page == 'Game'){
-        return <Game navigation={navigation} time={time} compChoice={compChoice} setTime={setTime} opacity={opacity} setOpacity={setOpacity} setPage={setPage} round={round} setRound={setRound} chances={chances} setChances={setChances} wins={wins} setWins={setWins} setChoice={setChoice} choice={choice}/>
+        return <Game navigation={navigation} time={time} compChoice={compChoice} setTime={setTime} opacity={opacity} setOpacity={setOpacity} setPage={setPage} round={round} setRound={setRound} tokens={tokens} setTokens={setTokens} wins={wins} setWins={setWins} setChoice={setChoice} choice={choice} initialTokens={initialTokens}/>
     } else if (page == 'EndGame') {
-        return  <EndGame navigation={navigation} time={time} setTime={setTime} opacity={opacity} setOpacity={setOpacity} setPage={setPage} round={round} setRound={setRound} chances={chances} setChances={setChances} wins={wins} setWins={setWins} setChoice={setChoice} choice={choice}/>
+        return  <EndGame navigation={navigation} time={time} setTime={setTime} opacity={opacity} setOpacity={setOpacity} setPage={setPage} round={round} setRound={setRound} tokens={tokens} setTokens={setTokens} wins={wins} setWins={setWins} setChoice={setChoice} choice={choice}/>
     }
 }
 

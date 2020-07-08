@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
     },
     text_light: {
         fontWeight: '600',
-        fontSize: 10,
+        fontSize: 9,
         textAlign: 'center'
     },
     GameBar: {

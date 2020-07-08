@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
 // import {fonts} from '../../../settings/fonts';
 import {colors, fonts, utilities} from '../../../../settings/all_settings';
-import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
 import GameBar from '../../../02_Molecules/GameBar/GameBar'
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
 import {styles} from './PlayGame.styling'
@@ -33,7 +32,7 @@ function PlayGame(props) {
 
     return (
         <View style={[utilities.container,{paddingBottom: 15}]}>
-            <GameBar color={'black'} currRound={props.round} chancesLeft={props.chances} wins={props.wins} numRounds={10}></GameBar>
+            <GameBar color={'black'} currRound={props.round} tokensLeft={props.tokens} wins={props.wins} numRounds={10}></GameBar>
             <Text style={{textAlign:'center', fontWeight: '700', fontSize: 70, color: (localTime <= 3) ? 'red' : 'black'}}>{localTime}s</Text>
             <View style={styles.rpsView}>
                 <TouchableOpacity onPress={() => {
@@ -55,9 +54,9 @@ function PlayGame(props) {
 
             <View style={styles.button}>
                 <BlockButton
-                    title={props.choice}
+                    title={(props.choice).charAt(0).toUpperCase()+(props.choice).slice(1)}
                     color="primary"
-                    disabled={props.choice == "Pick Rock Paper or Scissors"}
+                    disabled={props.choice !== 'rock' && props.choice !== 'paper' && props.choice !== 'scissors'}
                     onPress={() => {
                         if (props.choice !== 'rock' && props.choice !== 'paper' && props.choice !== 'scissors') {
                             props.setChoice('You must pick a choice or we will choose randomly')
