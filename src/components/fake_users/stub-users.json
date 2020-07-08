@@ -1,0 +1,52 @@
+{
+    "users": [
+        {
+            "name": "Aang",
+            "id": 1,
+            "username": "theavatar",
+            "profilePic": "../../assets/images/donor_placeholders/aang.png",
+            "following": false,
+            "prize": "1 Chance"
+        },
+        {
+            "name": "Katara",
+            "id": 2,
+            "username": "myMOTHER",
+            "profilePic": "../../assets/images/donor_placeholders/katara.png",
+            "following": false,
+            "prize": "5 Chances"
+        },
+        {
+            "name": "Toph",
+            "id": 3,
+            "username": "sonicscream",
+            "profilePic": "../../assets/images/donor_placeholders/toph.png",
+            "following": false,
+            "prize": "10 Chances"
+        },
+        {
+            "name": "Sokka",
+            "id": 4,
+            "username": "meatnsarcasm",
+            "profilePic": "../../assets/images/donor_placeholders/sokka.png",
+            "following": false,
+            "prize": "15 Chances"
+        },
+        {
+            "name": "Zuko",
+            "id": 5,
+            "username": "honor",
+            "profilePic": "../../assets/images/donor_placeholders/zuko.png",
+            "following": false,
+            "prize": "20 Chances"
+        },
+        {
+            "name": "Momo",
+            "id": 6,
+            "username": "momodynasty",
+            "profilePic": "../../assets/images/donor_placeholders/momo.png",
+            "following": false,
+            "prize": "Grand Prize"
+        }
+    ]
+}
