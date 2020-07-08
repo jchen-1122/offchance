@@ -107,6 +107,11 @@ function Game(props) {
                         color="secondary"
                         size="short"
                         onPress={() => {
+                            if ((props.round === 10 || props.chances === 1) && winner !== 'tie') {
+                                props.setPage('EndGame')
+                            } else {
+                                props.setPage('PlayGame')
+                            }
                             props.setRound(props.round + localRounds)
                             props.setWins(props.wins + localWins)
                             props.setTokens(props.tokens + localTokens)

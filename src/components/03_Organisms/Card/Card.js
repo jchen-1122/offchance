@@ -38,6 +38,12 @@ function Card ({ navigation, onPress, type,  title, host, imageURI, date }) {
             button = <TouchableOpacity style={styles.upcoming_notifyMe} onPress={() => navigation.navigate('Raffle')}><Text>NOTIFY ME</Text></TouchableOpacity>;
             startData = <View><Text style={styles.startData_grey} >DRAWING STARTS</Text><Text style={styles.freeDraw_date}>{date}</Text></View>;
             break;
+        // simplified card you see on your feed
+        case 'feed':
+            like = null;
+            pgBar = null;
+            startData = null;
+            break;
         // default-dark is for the new types of raffles Karann mentioned, change color at 'card__dark' in Card.styles.js
         case 'default-dark':
             cardBackground = styles.card__dark;
@@ -60,6 +66,10 @@ function Card ({ navigation, onPress, type,  title, host, imageURI, date }) {
             )
     }
 
+    let username;
+    if (host) {
+        username = <UsernameDisplay username={host.name} profPic={host.pic} size='hostedBy'/>
+    }
     return (
           <ScrollView style={[styles.card, cardBackground]}>
               {like}
@@ -67,7 +77,7 @@ function Card ({ navigation, onPress, type,  title, host, imageURI, date }) {
                 <Image style={styles.image} source={imageURI}/>
                 <Text style={[fonts.h1, {width:Dimensions.get('window').width * 0.6}]}>{title}</Text>
                 <View style={{width:Dimensions.get('window').width * 0.6}}>
-                    <UsernameDisplay username={host.name} profPic={host.pic} size='hostedBy'/>
+                    {username}
                 </View>
                 {startData}
                 {/* TODO: somehow get two or more images to overlap each other and style the friends-entered line */}
