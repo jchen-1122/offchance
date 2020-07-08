@@ -8,7 +8,7 @@ export function get_user(id) {
         data = {
             name: 'Aang',
             username: 'theavatar',
-            profilePic: require('../../../assets/images/donor_placeholders/aang.png'),
+            profilePic: "https://i.pinimg.com/originals/dc/24/88/dc2488feb2d6dc4750a95a1f715c67d8.jpg",
             following: false,
             prize: '1 Chance'
         }
@@ -19,7 +19,7 @@ export function get_user(id) {
         data = {
             name: 'Katara',
             username: 'myMOTHER',
-            profilePic: require('../../../assets/images/donor_placeholders/katara.png'),
+            profilePic: "https://vignette.wikia.nocookie.net/avatar/images/7/7a/Katara_smiles_at_coronation.png/revision/latest?cb=20150104171449",
             following: false,
             prize: '5 Chances'
         }
@@ -30,7 +30,7 @@ export function get_user(id) {
         data = {
             name: 'Toph',
             username: 'sonicscream',
-            profilePic: require('../../../assets/images/donor_placeholders/toph.png'),
+            profilePic: "https://vignette.wikia.nocookie.net/avatar/images/4/46/Toph_Beifong.png/revision/latest?cb=20131230122047",
             following: false,
             prize: '10 Chances'
         }
@@ -42,7 +42,7 @@ export function get_user(id) {
         data = {
             name: 'Sokka',
             username: 'meatnsarcasm',
-            profilePic: require('../../../assets/images/donor_placeholders/sokka.png'),
+            profilePic: "https://vignette.wikia.nocookie.net/avatar/images/c/cc/Sokka.png/revision/latest?cb=20140905085428",
             following: false,
             prize: '15 Chances'
         }
@@ -53,7 +53,7 @@ export function get_user(id) {
         data = {
             name: 'Zuko',
             username: 'honor',
-            profilePic: require('../../../assets/images/donor_placeholders/zuko.png'),
+            profilePic: "https://vignette.wikia.nocookie.net/avatar/images/4/4b/Zuko.png/revision/latest?cb=20180630112142",
             following: false,
             prize: '20 Chances'
         }
@@ -64,7 +64,7 @@ export function get_user(id) {
         data = {
             name: 'Momo',
             username: 'momodynasty',
-            profilePic: require('../../../assets/images/donor_placeholders/momo.png'),
+            profilePic: "https://vignette.wikia.nocookie.net/avatar/images/4/43/Inquisitive_Momo.png/revision/latest/top-crop/width/360/height/360?cb=20081225191217",
             following: false,
             prize: 'Grand Prize'
         }
