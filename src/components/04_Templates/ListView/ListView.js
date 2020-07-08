@@ -20,9 +20,13 @@ function ListView(props) {
         )
     }
 
+    let title;
+    if (props.title){
+        title = <Text style={[fonts.h1, {textAlign: 'center'}]}>{props.title}</Text>
+    }
     return (
       <View>
-          <Text style={[fonts.h1, {textAlign: 'center'}]}>{props.title}</Text>
+          {title}
           {usernameList}
       </View>
     )
