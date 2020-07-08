@@ -9,21 +9,18 @@ import ListView from '../../../04_Templates/ListView/ListView';
 import GridView from '../../../04_Templates/GridView/GridView';
 
 function Explore({navigation}) {
-    // example for top 5 donors
-    let usernames = ['Aang', 'Katara', 'Toph', 'Sokka', 'Zuko']
-    let profPics = [
-        require('../../../../../assets/images/donor_placeholders/aang.png'),
-        require('../../../../../assets/images/donor_placeholders/katara.png'),
-        require('../../../../../assets/images/donor_placeholders/toph.png'),
-        require('../../../../../assets/images/donor_placeholders/sokka.png'),
-        require('../../../../../assets/images/donor_placeholders/zuko.png')
-    ]
+    // gets 5 people from stub api
+    const data = require('../../../fake_users/stub-users.json');
+    let users = [];
+    for (let i=0; i<5; i++){
+        users.push(data.users[i])
+    }
 
     return (
         <View style={utilities.container}>
             <ScrollView>
                 <TopNav navigation={navigation} active='Explore'/>
-                <ListView title="Top 5 Donors" usernames={usernames} profPics={profPics}/>
+                <ListView title="Top 5 Donors" users={users}/>
                 <GridView title="Latest Winners" bgColor="white" Gridtype="winner" navigation={navigation}/>
             </ScrollView>
 

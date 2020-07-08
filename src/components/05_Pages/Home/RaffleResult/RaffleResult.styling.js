@@ -15,17 +15,16 @@ const styles = StyleSheet.create({
     card: {
         width: Dimensions.get('window').width * 0.15,
         height: Dimensions.get('window').height * 0.15,
-        backgroundColor: 'red',
+        backgroundColor: 'azure',
         alignItems: 'center',
         justifyContent: 'center',
         margin: spacing,
         borderRadius: borderRadius
    },
 
-   card_blue: {
-        width: Dimensions.get('window').width * 0.15,
-        height: Dimensions.get('window').height * 0.15,
-        backgroundColor: 'blue',
+   overlay: {
+        width: Dimensions.get('window').width * 0.6,
+        height: Dimensions.get('window').height * 0.6,
         alignItems: 'center',
         justifyContent: 'center',
         margin: spacing,

@@ -10,7 +10,7 @@ function Drawings({navigation}) {
     return (
         <View style={utilities.container}>
             <ScrollView>
-                <GridView title="Latest Winners" bgColor="white" Gridtype="raffle" navigation={navigation}/>
+                <GridView title="Upcoming Raffles" bgColor="white" Gridtype="raffle" navigation={navigation}/>
             </ScrollView>
             <BottomNav navigation={navigation} active={'Drawings'}></BottomNav>
         </View>

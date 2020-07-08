@@ -6,6 +6,14 @@ const styles = StyleSheet.create({
        marginLeft: '8%',
        marginRight: '8%',
    },
+   subView: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "#FFFFFF",
+    height: 100,
+  }
 
 })
 

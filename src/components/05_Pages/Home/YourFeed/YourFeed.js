@@ -1,15 +1,35 @@
 import React from 'react'
-import { View, Text } from 'react-native'
-// import {fonts} from '../../../settings/fonts';
+import { View, Text, ScrollView } from 'react-native'
+import { utilities } from '../../../../settings/all_settings';
 import TopNav from '../../../02_Molecules/TopNav/TopNav'
 import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
-import {utilities} from '../../../../settings/all_settings';
+import Card from '../../../03_Organisms/Card/Card';
+import Nswitch from '../../../../../assets/images/nintendoSwitch.jpeg'
+import aang from '../../../../../assets/images/donor_placeholders/aang.png';
 
-function YourFeed({navigation}) {
+
+function YourFeed({ navigation }) {
     return (
         <View style={utilities.container}>
-            <TopNav navigation={navigation}  active='Your Feed' />
-            <Text>this is a placeholder page for Your Feed</Text>
+            <ScrollView contentContainerStyle={utilities.scrollview}>
+                <TopNav navigation={navigation} active='Your Feed' />
+                <View style={utilities.flexCenter}>
+                    <Card
+                        type='notification'
+                        title="barbequeued Appa. btw This is Notification Card"
+                        date='July 16, 11:00 AM'
+                        host={{ name: "theAvatar", pic: aang }}
+                        navigation={navigation}
+                        imageURI={Nswitch} />
+                    <Card
+                        type='notification'
+                        title="barbequeued Appa. btw This is Notification Card"
+                        date='July 16, 11:00 AM'
+                        host={{ name: "theAvatar", pic: aang }}
+                        navigation={navigation}
+                        imageURI={Nswitch} />
+                </View>
+            </ScrollView>
             <BottomNav navigation={navigation} active={'Home'}></BottomNav>
         </View>
     )
