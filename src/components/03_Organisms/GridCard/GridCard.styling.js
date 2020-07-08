@@ -11,9 +11,17 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
-        padding: spacing,
         margin: spacing,
         borderRadius: borderRadius
+    },
+
+    GridCard__winner_padding: {
+        padding: spacing
+    },
+    GridCard__raffle_padding: {
+        paddingTop: spacing,
+        paddingLeft: spacing,
+        paddingRight: spacing
     },
 
     GridCard__image: {
@@ -21,6 +29,35 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width * 0.45,
         margin: spacing,
         resizeMode: 'contain'
+    },
+
+    GridCard__title: {
+        fontSize: 14,
+        fontWeight: 'bold',
+        textAlign: 'center'
+    },
+    startData_margin: {
+        marginLeft: Dimensions.get('window').width * 0.05
+    },
+    startData_grey: {
+        width: Dimensions.get('window').width * 0.4,
+        fontSize: 13,
+        color: '#989898',
+        marginTop: 15,
+    },
+    freeDraw_date: {
+        fontWeight: 'bold'
+    },
+    notifyMe: {
+        width: Dimensions.get('window').width * 0.45,
+        height: 40, 
+        backgroundColor: '#C4C4C4',
+        marginTop: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderBottomLeftRadius: borderRadius,
+        borderBottomRightRadius: borderRadius
+
     }
 })
 
