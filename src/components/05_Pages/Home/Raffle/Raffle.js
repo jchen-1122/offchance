@@ -17,6 +17,7 @@ import { color } from 'react-native-reanimated';
 export default function Raffle({navigation}) {
     const images = [require('../../../../../assets/images/nintendoSwitch.jpeg'), require('../../../../../assets/images/michaelScott.jpg'), require('../../../../../assets/images/pamBeesly.jpg'), require('../../../../../assets/images/profilePic.png'), require('../../../../../assets/images/logo.png')]
     const proPic = require('../../../../../assets/images/profilePic.png')
+    const donors = [require('../../../../../assets/images/naacp.jpg'), require('../../../../../assets/images/aclu.jpg')]
 
     // for sliding sheet (payment)
     const [sheetOpen, setSheetOpen] = useState(false);
@@ -79,6 +80,10 @@ export default function Raffle({navigation}) {
                         {(expired) ? null : <BuyOptions bonusAmount={10} bonusChances={40} bonusLimit={10} options={options}></BuyOptions>}
                         {(expired) ? null : <Text style={{marginRight: -10}}>*We we will never show donation amounts for any user</Text>}
                         <Text style={[fonts.p, {marginTop: 20, textAlign: 'justify'}]}>Off Chance is a for-good company that hosts drawings for incredible products to raise money for charities and important causes that affect us all. All net proceeds (after hosting and platform fees) for this drawing will benefit the partners below:</Text>
+                        <View style={{flexDirection: 'row'}}>
+                            <Image source={donors[0]} style={{marginTop: 10, marginRight: 70}}></Image>
+                            <Image source={donors[1]} style={{marginTop: 10}}></Image>
+                        </View>                        
                         <Text style={[fonts.p, {marginTop: 20, textAlign: 'justify'}]}><Text style={[fonts.p, {marginTop: 20, textAlign: 'justify'}]}>*All prizes are guaranteed to be 100% authentic and deadstock. You will be notified via email once donation goal is met and drawing starts.</Text></Text>
                     </View>
                     <View style={[styles.content, {flex: 0, alignItems: 'center', zIndex: -1}]}>
