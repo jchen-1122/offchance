@@ -71,6 +71,19 @@ const styles = StyleSheet.create({
         width: 80,
         marginRight: -5
     },
+    BlockButton_smallLongLeft: {
+        width: 170,
+        height: 33,
+        marginRight: -15,
+        borderBottomRightRadius: 0,
+        borderTopRightRadius: 0
+    },
+    BlockButton_smallLongRight: {
+        width: 170,
+        height: 33,
+        borderBottomLeftRadius: 0,
+        borderTopLeftRadius: 0
+    },
 
     // styles for icon in the button
     icon:{
