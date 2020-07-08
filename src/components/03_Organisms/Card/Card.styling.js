@@ -11,7 +11,6 @@ const styles = StyleSheet.create({
         flex: 0,
         flexDirection:'row',
         margin: 15,
-        paddingBottom: 20
     },
     card__white: {
         backgroundColor: 'white',
@@ -40,17 +39,6 @@ const styles = StyleSheet.create({
         color: '#989898',
         marginTop: 15,
     },
-    freeDraw_banner: {
-        marginRight: 'auto',
-        marginTop: 'auto',
-        marginBottom: 'auto',
-        paddingRight: 30,
-        paddingLeft: 30,
-        paddingTop: 5,
-        paddingBottom: 5,
-        color: 'white',
-        backgroundColor: 'black',
-    },
     freeDraw_date: {
         fontWeight: 'bold'
     },
@@ -64,7 +52,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#C4C4C4',
         marginTop: 20,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     notif_host: {
         height: 40,

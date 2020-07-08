@@ -11,6 +11,8 @@ import ImageCarousel from '../../../02_Molecules/ImageCarousel/ImageCarousel'
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import BuyOptions from '../../../02_Molecules/BuyOptions/BuyOptions'
 import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
+import { COLOR } from 'react-native-material-ui';
+import { color } from 'react-native-reanimated';
 
 export default function Raffle({navigation}) {
     const images = [require('../../../../../assets/images/nintendoSwitch.jpeg'), require('../../../../../assets/images/michaelScott.jpg'), require('../../../../../assets/images/pamBeesly.jpg'), require('../../../../../assets/images/profilePic.png'), require('../../../../../assets/images/logo.png')]

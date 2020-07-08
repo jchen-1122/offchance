@@ -46,11 +46,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    
-    // some cases need a margin on the left
-    marginLeft : {
-        marginLeft: Dimensions.get('window').width * 0.1,
-    }
 })
 
 export {styles};

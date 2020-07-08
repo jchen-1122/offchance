@@ -10,23 +10,6 @@ function Likes({navigation}) {
     return (
         <View style={utilities.container}>
             <Text>this is a placeholder page for Likes</Text>
-
-            <DropDownPicker
-                items={[
-                    {label: 'UK', value: 'uk'},
-                    {label: 'France', value: 'france'},
-                ]}
-                defaultValue={state}
-                containerStyle={{height: 40}}
-                style={{backgroundColor: '#fafafa', marginLeft: 300, marginRight: 50}}
-                itemStyle={{
-                    justifyContent: 'flex-start'
-                }}
-                dropDownStyle={{backgroundColor: '#fafafa', marginLeft: 300, marginRight: 100}}
-                onChangeItem={item => setState(item.value)}
-            />
-            
-
             <BottomNav navigation={navigation} active={'Likes'}></BottomNav>
         </View>
     )
