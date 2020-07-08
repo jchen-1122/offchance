@@ -23,18 +23,12 @@ function Home({navigation}) {
                     navigation={navigation}
                     imageURI={Nswitch}/>
                 <Card 
-                    type='notification'
-                    title="barbequeued Appa. btw This is Notification Card"
+                    type='buy'
                     date='July 16, 11:00 AM'
-                    host={{name:"theAvatar", pic: aang}}
+                    title="Enter To Buy Card"
+                    host={{name:"arrowhead", pic: aang}}
                     navigation={navigation}
-                    imageURI={Nswitch}/>
-                <Card 
-                    type='default-dark'
-                    title="Dark Card (Go to Card.styles.js to change color at card__dark)"
-                    host={{name:"theAvatar", pic: aang}}
-                    navigation={navigation}
-                    imageURI={Nswitch}/>
+                    imageURI={logo}/>
                 <Card 
                     type='free'
                     date='July 16, 11:00 AM'
@@ -49,6 +43,13 @@ function Home({navigation}) {
                     host={{name:"thisguyagain", pic: aang}}
                     navigation={navigation}
                     imageURI={logo}/>
+                
+                {/* <Card 
+                    type='default-dark'
+                    title="Dark Card (Go to Card.styles.js to change color at card__dark)"
+                    host={{name:"theAvatar", pic: aang}}
+                    navigation={navigation}
+                    imageURI={Nswitch}/> */}
                 </View>
             </ScrollView>
             <BottomNav navigation={navigation} active={'Home'}></BottomNav>
