@@ -7,6 +7,7 @@ import LikeButton from '../../01_Atoms/Buttons/LikeButton/LikeButton';
 import UsernameDisplay from '../../01_Atoms/UsernameDisplay/UsernameDisplay';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import CardBanner from '../../01_Atoms/CardBanner/CardBanner';
+import EnteredUsersDisplay from '../../01_Atoms/EnteredUsersDisplay/EnteredUsersDisplay';
 import {colors, fonts, utilities} from '../../../settings/all_settings';
 
 function Card ({ navigation, onPress, type,  title, host, imageURI, date }) {
@@ -14,23 +15,22 @@ function Card ({ navigation, onPress, type,  title, host, imageURI, date }) {
     let startData = null;
     let like = null;
     let cardBackground = styles.card__white;
-    let friendsEntered = null;
     let button = <BlockButton title='Enter Drawing' color="primary" onPress={() => navigation.navigate('Raffle')}/>;
     let pgBar = <ProgressBar progress={230 / 500} color={colors.highlightColor} raised={230} goal={500} width={Dimensions.get('window').width * 0.6} ></ProgressBar>;
-
+    let friendsEntered = (
+        <EnteredUsersDisplay navigation={navigation}/>
+    )
     switch(type){
         // default is the regular card as seen in 'Home (free drawing)' in Figma
         case 'default':
             like = <View style={styles.likeButton}><LikeButton /></View>;
             startData = <Text style={styles.startData_grey}>DRAWING STARTS ONCE TIMER REACHES 0 OR DONATION GOAL IS MET</Text>;
-            friendsEntered = <Text style={styles.friends}>Entered by @yourbestfriend</Text>;
             break;
         // enter to buy drawings
         case 'buy':
             like = <View style={styles.likeButton}><CardBanner title='ENTER TO BUY' color='green' icon='usd'/><LikeButton /></View>;
             pgBar = null;
             startData = <View><Text style={styles.startData_grey} >DRAWING STARTS</Text><Text style={styles.freeDraw_date}>{date}</Text></View>;
-            friendsEntered = <Text style={styles.friends}>Entered by @yourbestfriend</Text>;
             break;
         // free is the 'free drawing' card as seen in 'Home' in Figma
         case 'free':
@@ -42,6 +42,7 @@ function Card ({ navigation, onPress, type,  title, host, imageURI, date }) {
         case 'upcoming':
             like = <View style={styles.upcoming_placeholder} />
             pgBar = null;
+            friendsEntered = null;
             button = <TouchableOpacity style={styles.upcoming_notifyMe} onPress={() => navigation.navigate('Raffle')}><Text>NOTIFY ME</Text></TouchableOpacity>;
             startData = <View><Text style={styles.startData_grey} >DRAWING STARTS</Text><Text style={styles.freeDraw_date}>{date}</Text></View>;
             break;

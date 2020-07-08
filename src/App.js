@@ -17,6 +17,7 @@ import Profile from './components/05_Pages/Profile/Profile'
 import YourFeed from './components/05_Pages/Home/YourFeed/YourFeed';
 import Explore from './components/05_Pages/Home/Explore/Explore';
 import GameController from './components/GameController';
+import EnteredUsers from './components/05_Pages/Home/EnteredUsers/EnteredUsers';
 
 const Stack = createStackNavigator();
 
@@ -40,6 +41,7 @@ function App() {
         <Stack.Screen name="Likes" component={Likes} />
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="GameController" component={GameController} />
+        <Stack.Screen name="EnteredUsers" component={EnteredUsers} />
       </Stack.Navigator>
     </NavigationContainer>
   );
