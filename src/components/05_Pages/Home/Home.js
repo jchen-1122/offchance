@@ -8,7 +8,6 @@ import TopNav from '../../02_Molecules/TopNav/TopNav';
 import Card from '../../03_Organisms/Card/Card';
 import logo from '../../../../assets/images/michaelScott.jpg';
 import Nswitch from '../../../../assets/images/nintendoSwitch.jpeg';
-import aang from '../../../../assets/images/donor_placeholders/aang.png';
 
 function Home({navigation}) {
     return (
