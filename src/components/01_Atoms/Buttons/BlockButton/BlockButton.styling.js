@@ -55,7 +55,8 @@ const styles = StyleSheet.create({
         color: colors.primaryColor
     },
     BlockButton__title_small: {
-        fontSize: 12
+        fontSize: 12,
+        textAlign: 'center'
     },
 
     // different sizes for the button
@@ -65,6 +66,10 @@ const styles = StyleSheet.create({
     BlockButton_small: {
         width: 80,
         height: 25
+    },
+    BlockButton_smallShort: {
+        width: 80,
+        marginRight: -5
     },
 
     // styles for icon in the button

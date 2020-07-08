@@ -27,6 +27,11 @@ const fonts = StyleSheet.create({
         fontWeight: '300',
         color: colors.darkGray
     },
+    bold: {
+        fontSize: baseFontSize,
+        fontWeight: '800',
+        color: colors.primaryColor
+    },
     p: {
         fontSize: baseFontSize,
     },
