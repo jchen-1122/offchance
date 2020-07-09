@@ -3,7 +3,6 @@
 import React from 'react';
 import {TouchableOpacity, Text, Image, View} from 'react-native';
 import { styles } from './UsernameDisplay.styling';
-import { SocialIcon } from 'react-native-elements';
 import {fonts} from '../../../settings/all_settings';
 
 function UsernameDisplay(props){

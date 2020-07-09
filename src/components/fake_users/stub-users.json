@@ -4,15 +4,15 @@
             "name": "Aang",
             "id": 1,
             "username": "theavatar",
-            "profilePic": "../../assets/images/donor_placeholders/aang.png",
-            "following": false,
+            "profilePic": "https://i.pinimg.com/originals/dc/24/88/dc2488feb2d6dc4750a95a1f715c67d8.jpg",
+            "following": true,
             "prize": "1 Chance"
         },
         {
             "name": "Katara",
             "id": 2,
             "username": "myMOTHER",
-            "profilePic": "../../assets/images/donor_placeholders/katara.png",
+            "profilePic": "https://vignette.wikia.nocookie.net/avatar/images/7/7a/Katara_smiles_at_coronation.png/revision/latest?cb=20150104171449",
             "following": false,
             "prize": "5 Chances"
         },
@@ -20,7 +20,7 @@
             "name": "Toph",
             "id": 3,
             "username": "sonicscream",
-            "profilePic": "../../assets/images/donor_placeholders/toph.png",
+            "profilePic": "https://vignette.wikia.nocookie.net/avatar/images/4/46/Toph_Beifong.png/revision/latest?cb=20131230122047",
             "following": false,
             "prize": "10 Chances"
         },
@@ -28,7 +28,7 @@
             "name": "Sokka",
             "id": 4,
             "username": "meatnsarcasm",
-            "profilePic": "../../assets/images/donor_placeholders/sokka.png",
+            "profilePic": "https://vignette.wikia.nocookie.net/avatar/images/c/cc/Sokka.png/revision/latest?cb=20140905085428",
             "following": false,
             "prize": "15 Chances"
         },
@@ -36,7 +36,7 @@
             "name": "Zuko",
             "id": 5,
             "username": "honor",
-            "profilePic": "../../assets/images/donor_placeholders/zuko.png",
+            "profilePic": "https://vignette.wikia.nocookie.net/avatar/images/4/4b/Zuko.png/revision/latest?cb=20180630112142",
             "following": false,
             "prize": "20 Chances"
         },
@@ -44,7 +44,7 @@
             "name": "Momo",
             "id": 6,
             "username": "momodynasty",
-            "profilePic": "../../assets/images/donor_placeholders/momo.png",
+            "profilePic": "https://vignette.wikia.nocookie.net/avatar/images/4/43/Inquisitive_Momo.png/revision/latest/top-crop/width/360/height/360?cb=20081225191217",
             "following": false,
             "prize": "Grand Prize"
         }

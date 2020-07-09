@@ -11,18 +11,22 @@ function ListView(props) {
 
     // build rows of usernames and profile pics
     let usernameList = [];
-    for (let name in props.usernames) {
+    for (let user in props.users) {
         usernameList.push(
             <View style={styles.ListViewRow}>
-                <UsernameDisplay username={props.usernames[name]} profPic={props.profPics[name]}size="large"/>
-                <BlockButton color="secondary" size="small" title="FOLLOW"/>
+                <UsernameDisplay username={props.users[user].username} profPic={{uri: props.users[user].profilePic}} size="large"/>
+                <BlockButton color="secondary" size="small" title={(props.users[user].following) ? 'FOLLOWED' : 'FOLLOW'}/>
             </View>
         )
     }
 
+    let title;
+    if (props.title){
+        title = <Text style={[fonts.h1, {textAlign: 'center'}]}>{props.title}</Text>
+    }
     return (
       <View>
-          <Text style={[fonts.h1, {textAlign: 'center'}]}>{props.title}</Text>
+          {title}
           {usernameList}
       </View>
     )
