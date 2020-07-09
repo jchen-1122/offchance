@@ -31,7 +31,8 @@ function InputField(props){
                 multiline={props.textArea} 
                 numberOfLines={4}
                 keyboardType={props.keyboardType}
-                style={inputBoxSizes} />
+                style={inputBoxSizes} 
+                onChangeText={text => {props.setState(text)}}/>
         </View>
     )
 }

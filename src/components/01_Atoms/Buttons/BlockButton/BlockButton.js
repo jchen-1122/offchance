@@ -46,6 +46,14 @@ function BlockButton(props){
             buttonStyle.push(styles.BlockButton_smallShort);
             buttonTitleStyle.push(styles.BlockButton__title_small)
             break;
+        case "smallLongLeft": // ex. buy chance buttons (second row)
+            buttonStyle.push(styles.BlockButton_smallLongLeft);
+            buttonTitleStyle.push(styles.BlockButton__title_small)
+            break;
+        case "smallLongRight": // ex. buy chance buttons (second row)
+            buttonStyle.push(styles.BlockButton_smallLongRight);
+            buttonTitleStyle.push(styles.BlockButton__title_small)
+            break;
     }
 
     // if button is disabled
