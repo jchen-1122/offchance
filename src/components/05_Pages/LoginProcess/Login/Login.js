@@ -1,16 +1,19 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import {  View, Text, Linking, Dimensions } from 'react-native';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../../../01_Atoms/Divider/Divider.js';
 import InputField from '../../../02_Molecules/InputField/InputField.js';
 import TextLink from '../../../01_Atoms/Buttons/TextLinks/TextLinks';
 import Banner from '../../../01_Atoms/Banner/Banner.js';
+import users, { get_user } from '../..//../fake_users/stub-users'
 import {fonts, utilities} from '../../../../settings/all_settings';
 import { styles } from '../../../01_Atoms/Buttons/BlockButton/BlockButton.styling';
 import { ScrollView } from 'react-native-gesture-handler';
 
 
 export default function Login({ navigation, route }) {
+  const [state, setState] = useState(0)
+
   return (
     <ScrollView contentContainerStyle={utilities.scrollview}>
     <View style={utilities.flexCenter}>
@@ -30,7 +33,7 @@ export default function Login({ navigation, route }) {
         onPress={() => Linking.openURL('https://www.facebook.com/')}/>
 
       <Divider/>
-      <InputField label="Email / Username" />
+      <InputField label="Email / Username" state={state} setState={setState}/>
       <InputField label="Password" password />
       {/* DONE: Links to Forgot Password (no forgot password currently, button is not functional) */}
       {/* Added redirect to EnterEmail */}
@@ -46,7 +49,8 @@ export default function Login({ navigation, route }) {
       <BlockButton 
         title="LOG IN" 
         color="primary"
-        onPress={() => navigation.navigate('Login')}/>
+        onPress={() => {
+          navigation.navigate('Profile', get_user(state))}}/>
     </View>
     </ScrollView>
   );

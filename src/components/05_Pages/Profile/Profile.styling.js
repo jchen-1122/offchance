@@ -1,47 +1,35 @@
 import {StyleSheet, Dimensions} from 'react-native';
-import {fonts} from "../../../settings/all_settings";
 
 const styles = StyleSheet.create({
+    header_name: {
+        fontSize: 25, 
+        textAlign: 'center', 
+        fontWeight: '700', 
+        marginTop: 15, 
+        marginBottom: 15
+    },
     profilePic: {
-        height: normalSize,
-        width: normalSize,
-        borderRadius: normalSize,
-        margin: 5
+        width: 120, 
+        height: 120,
+        borderRadius: 120 / 2, 
+        alignSelf: 'center'
     },
+    toggleBar: {
+        alignItems: 'center'
+    },
+    descriptor: {
+        fontWeight: '800', 
+        fontSize: 15
+    },
+    description: {
+        fontWeight: '300', 
+        fontSize: 17, 
+        marginBottom: 25
+    },
+    payment: {
+        marginLeft: -15
+    }
 
-    // different sizes for profile pic
-    profilePic_large: {
-        height: largeSize,
-        width: largeSize,
-        borderRadius: largeSize,
-        margin: 15
-    },
-    profilePic_small: {
-        height: smallSize,
-        width: smallSize,
-        borderRadius: smallSize,
-        marginTop: 5,
-        marginBottom: 5,
-        marginRight: 5
-    },
-    username_large: {
-        fontSize: 18
-    },
-    username_small: {
-        fontSize: 11.5
-    },
-
-    container: {
-        flex: 0,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    container_hostedBy: {
-        marginRight: 'auto',
-        flex: 0,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
 })
 
 export {styles};
