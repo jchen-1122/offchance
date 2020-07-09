@@ -9,9 +9,11 @@ import BottomNav from '../../02_Molecules/BottomNav/BottomNav'
 import Nswitch from '../../../../assets/images/switch.jpeg'
 import { set } from 'react-native-reanimated';
 import {styles} from './Profile.styling'
+import { get_user } from '../../fake_users/stub-users';
 
 function Profile({navigation, route}) {
     const [info, setInfo] = useState(true)
+    const [viewing, setViewing] = useState((route.params != null) ? route.params.viewing : false)
     let name, username, profilePic
     if (route.params == null) {
         name = 'John Doe'
@@ -21,6 +23,9 @@ function Profile({navigation, route}) {
         name = route.params.name
         username = route.params.username
         profilePic = route.params.profilePic
+    }
+    if (viewing) {
+        profilePic = 'https://i.ytimg.com/vi/oHg5SJYRHA0/hqdefault.jpg'
     }
     return (
         <View style={utilities.container}>
@@ -39,7 +44,7 @@ function Profile({navigation, route}) {
                     <Text style={styles.descriptor}>Email</Text>
                     <Text style={styles.description}>qwerty@gmail.com</Text>
 
-                    <Text style={styles.descriptor}>Username</Text>
+                    {(!viewing) ? <View><Text style={styles.descriptor}>Username</Text>
                     <Text style={styles.description}>@{username}</Text>
 
                     <Text style={styles.descriptor}>Address</Text>
@@ -59,8 +64,8 @@ function Profile({navigation, route}) {
                         title="ADD PAYMENT"
                         color="secondary"
                         size="short"
-                        onPress={() => navigation.navigate("RaffleResult")}></BlockButton>
-                    </View>
+                        onPress={() => navigation.navigate("RaffleResult", {name:name, setViewing:setViewing})}></BlockButton>
+                    </View></View> : null}
                 </View> : 
 
                 <View style={utilities.flexCenter}>
@@ -68,14 +73,14 @@ function Profile({navigation, route}) {
                         type='notification'
                         title="barbequeued Appa. btw This is Notification Card"
                         date='18hr'
-                        host={{ name: "theAvatar", pic: profilePic }}
+                        host={{ name: "theAvatar", pic: Nswitch }}
                         navigation={navigation}
                         imageURI={Nswitch} />
                     <Card
                         type='notification'
                         title="barbequeued Appa. btw This is Notification Card"
                         date='26hr'
-                        host={{ name: "theAvatar", pic: profilePic }}
+                        host={{ name: "theAvatar", pic: Nswitch }}
                         navigation={navigation}
                         imageURI={Nswitch} />
                 </View>}
