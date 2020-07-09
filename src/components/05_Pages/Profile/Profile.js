@@ -17,7 +17,7 @@ function Profile({navigation, route}) {
         <View style={utilities.container}>
             <ScrollView>
                 <Text style={styles.header_name}>{name}</Text>
-                <Image source={profilePic} style={styles.profilePic}></Image>
+                <Image source={{uri:profilePic}} style={styles.profilePic}></Image>
                 
                 <View style={styles.toggleBar}>
                     <InfoFeed info={info} setInfo={setInfo}></InfoFeed>
@@ -50,7 +50,7 @@ function Profile({navigation, route}) {
                         title="ADD PAYMENT"
                         color="secondary"
                         size="short"
-                        onPress={() => navigation.navigate("Profile")}></BlockButton>
+                        onPress={() => navigation.navigate("RaffleResult")}></BlockButton>
                     </View>
                 </View> : 
 
