@@ -8,6 +8,7 @@ import Card from '../../03_Organisms/Card/Card'
 import BottomNav from '../../02_Molecules/BottomNav/BottomNav'
 import Nswitch from '../../../../assets/images/switch.jpeg'
 import { set } from 'react-native-reanimated';
+import {styles} from './Profile.styling'
 
 function Profile({navigation, route}) {
     const [info, setInfo] = useState(true)
@@ -15,40 +16,41 @@ function Profile({navigation, route}) {
     return (
         <View style={utilities.container}>
             <ScrollView>
-                <Text style={{fontSize: 25, textAlign: 'center', fontWeight: '700', marginTop: 15, marginBottom: 15}}>{name}</Text>
-                <Image source={profilePic} style={{width: 120, height: 120, resizeMode: 'contain',  borderRadius: 120 / 2, alignSelf: 'center'}}></Image>
+                <Text style={styles.header_name}>{name}</Text>
+                <Image source={profilePic} style={styles.profilePic}></Image>
                 
-                <View style={{alignItems: 'center'}}>
+                <View style={styles.toggleBar}>
                     <InfoFeed info={info} setInfo={setInfo}></InfoFeed>
                 </View>
 
                 {(info) ? <View style={{alignItems: 'flex-start', marginLeft: 38}}>
-                    <Text style={{fontWeight: '800', fontSize: 15}}>Name</Text>
-                    <Text style={{fontWeight: '300', fontSize: 17, marginBottom: 25}}>{name}</Text>
+                    <Text style={styles.descriptor}>Name</Text>
+                    <Text style={styles.description}>{name}</Text>
 
-                    <Text style={{fontWeight: '800', fontSize: 15}}>Email</Text>
-                    <Text style={{fontWeight: '300', fontSize: 17, marginBottom: 25}}>qwerty@gmail.com</Text>
+                    <Text style={styles.descriptor}>Email</Text>
+                    <Text style={styles.description}>qwerty@gmail.com</Text>
 
-                    <Text style={{fontWeight: '800', fontSize: 15}}>Username</Text>
-                    <Text style={{fontWeight: '300', fontSize: 17, marginBottom: 25}}>@{username}</Text>
+                    <Text style={styles.descriptor}>Username</Text>
+                    <Text style={styles.description}>@{username}</Text>
 
-                    <Text style={{fontWeight: '800', fontSize: 15}}>Address</Text>
-                    <Text style={{fontWeight: '300', fontSize: 17, marginBottom: 25}}>1234 Plumbus St. New York, New York 10001</Text>
+                    <Text style={styles.descriptor}>Address</Text>
+                    <Text style={styles.description}>1234 Plumbus St. New York, New York 10001</Text>
 
-                    <Text style={{fontWeight: '800', fontSize: 15}}>Shoe Size</Text>
-                    <Text style={{fontWeight: '300', fontSize: 17, marginBottom: 25}}>Womens 5.5</Text>
+                    <Text style={styles.descriptor}>Shoe Size</Text>
+                    <Text style={styles.description}>Womens 5.5</Text>
 
-                    <Text style={{fontWeight: '800', fontSize: 15}}>Shirt Size</Text>
-                    <Text style={{fontWeight: '300', fontSize: 17, marginBottom: 25}}>M</Text>
+                    <Text style={styles.descriptor}>Shirt Size</Text>
+                    <Text style={styles.description}>M</Text>
 
-                    <Text style={{fontWeight: '800', fontSize: 15}}>Payment Information</Text>
-                    <Text style={{fontWeight: '300', fontSize: 17, marginBottom: 25}}>**** **** **** 1234</Text>
+                    <Text style={styles.descriptor}>Payment Information</Text>
+                    <Text style={styles.description}>**** **** **** 1234</Text>
 
-                    <View style={{marginLeft: -15}}>
+                    <View style={styles.payment}>
                         <BlockButton
                         title="ADD PAYMENT"
                         color="secondary"
-                        size="short"></BlockButton>
+                        size="short"
+                        onPress={() => navigation.navigate("Profile")}></BlockButton>
                     </View>
                 </View> : 
 
