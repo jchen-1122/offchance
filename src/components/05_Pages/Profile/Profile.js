@@ -12,7 +12,16 @@ import {styles} from './Profile.styling'
 
 function Profile({navigation, route}) {
     const [info, setInfo] = useState(true)
-    const { name, username, profilePic, following, prize, id } = route.params
+    let name, username, profilePic
+    if (route.params == null) {
+        name = 'John Doe'
+        username = '@johndoe'
+        profilePic = "https://i.pinimg.com/originals/dc/24/88/dc2488feb2d6dc4750a95a1f715c67d8.jpg"
+    } else {
+        name = route.params.name
+        username = route.params.username
+        profilePic = route.params.profilePic
+    }
     return (
         <View style={utilities.container}>
             <ScrollView>
