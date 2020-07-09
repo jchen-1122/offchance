@@ -1,9 +1,9 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 
 const styles = StyleSheet.create({
     compChoice: {
-        width: 180, 
-        height: 180, 
+        width: Dimensions.get('window').width * 0.75,
+        height:Dimensions.get('window').height * 0.25, 
         resizeMode: 'contain', 
         // marginTop: 40, 
         // marginLeft: 120, 
@@ -29,6 +29,11 @@ const styles = StyleSheet.create({
     },
     message_lose: {
         color: 'red'
+    },
+
+    label: {
+        fontSize: 18,
+        textAlign: 'center'
     }
 })
 

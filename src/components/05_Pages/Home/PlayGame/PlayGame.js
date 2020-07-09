@@ -7,6 +7,11 @@ import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
 import {styles} from './PlayGame.styling'
 
 function PlayGame(props) {
+    // images
+    let rockImage = {uri: 'https://oc-mobile-images.s3.us-east-2.amazonaws.com/RPS/the-rock.png'};
+    let paperImage = {uri: 'https://oc-mobile-images.s3.us-east-2.amazonaws.com/RPS/paper.jpeg'};
+    let scissorsImage = {uri: 'https://oc-mobile-images.s3.us-east-2.amazonaws.com/RPS/scissors.png'};
+
     const [localTime, localSetTime] = useState(props.time)
 
     let choices = ['rock', 'paper', 'scissors']
@@ -33,23 +38,30 @@ function PlayGame(props) {
     return (
         <View style={[utilities.container,{paddingBottom: 15}]}>
             <GameBar color={'black'} currRound={props.round} tokensLeft={props.tokens} wins={props.wins} numRounds={10}></GameBar>
-            <Text style={{textAlign:'center', fontWeight: '700', fontSize: 70, color: (localTime <= 3) ? 'red' : 'black'}}>{localTime}s</Text>
+            <Text style={[{color: (localTime <= 3) ? 'red' : 'black'},styles.timer]}>{localTime}s</Text>
             <View style={styles.rpsView}>
-                <TouchableOpacity onPress={() => {
-                    props.setOpacity([1, 0.2, 0.2])
-                    props.setChoice("rock")}}>
-                    <Image style={{opacity: props.opacity[0], width:100, height:100, resizeMode: 'contain', marginLeft: 25}} source={require('../../../../../assets/game/rock.png')}></Image>
-                </TouchableOpacity>
+                <View style={styles.rpsView__row}>
+                    <TouchableOpacity onPress={() => {
+                        props.setOpacity([1, 0.2, 0.2])
+                        props.setChoice("rock")}}>
+                        <Image style={{opacity: props.opacity[0]},styles.rps__choice} source={rockImage} />
+                        <Text style={[styles.label, props.choice == 'rock' ? styles.label_active : '']}>ROCK</Text>
+                    </TouchableOpacity>
+                </View>
+                <View style={styles.rpsView__row}>
                 <TouchableOpacity onPress={() => {
                     props.setOpacity([0.2, 1, 0.2])
                     props.setChoice("paper")}}>
-                    <Image style={{opacity: props.opacity[1], width:100, height:100, resizeMode: 'contain', marginLeft: 30}} source={require('../../../../../assets/game/paper.png')}></Image>
+                    <Image style={{opacity: props.opacity[1]},styles.rps__choice} source={paperImage}/>
+                    <Text style={[styles.label, props.choice == 'paper' ? styles.label_active : '']}>PAPER</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => {
                     props.setOpacity([0.2, 0.2, 1])
                     props.setChoice("scissors")}}>
-                    <Image style={{opacity: props.opacity[2], width:100, height:100, resizeMode: 'contain', marginLeft: 30}} source={require('../../../../../assets/game/scissors.png')}></Image>
+                    <Image style={{opacity: props.opacity[2]},styles.rps__choice} source={scissorsImage}/>
+                    <Text style={[styles.label, props.choice == 'scissors' ? styles.label_active : '']}>SCISSORS</Text>
                 </TouchableOpacity>
+                </View>
             </View>
 
             <View style={styles.button}>
@@ -63,10 +75,8 @@ function PlayGame(props) {
                             return
                         } else {
                             props.setPage('Game')
-                        }}}></BlockButton>
-                    {/* // onPress={() => navigation.navigate('Game')}></BlockButton> */}
+                        }}} />
             </View>
-            {/* <BottomNav navigation={props.navigation} active={'Home'}></BottomNav> */}
         </View>
     )
 }

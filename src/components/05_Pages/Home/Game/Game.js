@@ -6,6 +6,11 @@ import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
 import {styles} from './Game.styling'
 
 function Game(props) {
+    // images
+    let rockImage = {uri: 'https://oc-mobile-images.s3.us-east-2.amazonaws.com/RPS/the-rock.png'};
+    let paperImage = {uri: 'https://oc-mobile-images.s3.us-east-2.amazonaws.com/RPS/paper.jpeg'};
+    let scissorsImage = {uri: 'https://oc-mobile-images.s3.us-east-2.amazonaws.com/RPS/scissors.png'};
+
     let localWins = 0
     let localTokens = 0
     let localRounds = 0
@@ -37,13 +42,28 @@ function Game(props) {
     let playerChoiceImg;
     switch (props.choice){
         case 'rock':
-            playerChoiceImg = <Image style={styles.compChoice} source={require('../../../../../assets/game/rock.png')} />
+            playerChoiceImg = (
+                <View>
+                    <Image style={styles.compChoice} source={rockImage} />
+                    <Text style={styles.label}>ROCK</Text>
+                </View>
+            )
             break;
         case 'paper':
-            playerChoiceImg = <Image style={styles.compChoice} source={require('../../../../../assets/game/paper.png')} />
+            playerChoiceImg = (
+                <View>
+                    <Image style={styles.compChoice} source={paperImage} />
+                    <Text style={styles.label}>PAPER</Text>
+                </View>
+            )
             break;
         case 'scissors':
-            playerChoiceImg = <Image style={styles.compChoice} source={require('../../../../../assets/game/scissors.png')} />
+            playerChoiceImg = (
+                <View>
+                    <Image style={styles.compChoice} source={scissorsImage} />
+                    <Text style={styles.label}>SCISSORS</Text>
+                </View>
+            )
             break;
     }
 
@@ -51,21 +71,35 @@ function Game(props) {
     let compChoiceImg;
     switch (props.compChoice){
         case 'rock':
-            compChoiceImg = <Image style={styles.compChoice} source={require('../../../../../assets/game/rockFlip.png')} />
+            compChoiceImg = (
+                <View>
+                    <Image style={styles.compChoice} source={rockImage} />
+                    <Text style={[styles.label, {color: 'white'}]}>ROCK</Text>
+                </View>
+            )
             break;
         case 'paper':
-            compChoiceImg = <Image style={styles.compChoice} source={require('../../../../../assets/game/paperFlip.png')} />
+            compChoiceImg = (
+                <View>
+                    <Image style={styles.compChoice} source={paperImage} />
+                    <Text style={[styles.label, {color: 'white'}]}>PAPER</Text>
+                </View>
+            )
             break;
         case 'scissors':
-            compChoiceImg = <Image style={styles.compChoice} source={require('../../../../../assets/game/scissorsFlip.png')} />
+            compChoiceImg = (
+                <View>
+                    <Image style={styles.compChoice} source={scissorsImage} />
+                    <Text style={[styles.label, {color: 'white'}]}>SCISSORS</Text>
+                </View>
+            )
             break;
     }
 
-
+    // determines who wins
     let winner;
     let message;
     let messageStyles = [styles.message]
-    // determines who wins
     if (props.choice == props.compChoice){
         winner = 'tie'
         message = "It's a tie!"
@@ -89,8 +123,9 @@ function Game(props) {
 
     return (
         <View style={utilities.container}>
-            <View style={[utilities.container], {backgroundColor: 'black', height: '50%'}}>
+            <View style={[utilities.container], {backgroundColor: 'black', height: '55%'}}>
                 <GameBar color={'white'} currRound={props.round + localRounds} tokensLeft={props.tokens + localTokens} wins={props.wins + localWins} numRounds={10}></GameBar>
+                <Text style={messageStyles}>{message}</Text>
                 <View style={{flex: 0, alignItems: 'center'}}>
                     {compChoiceImg}
                 </View>
@@ -100,7 +135,6 @@ function Game(props) {
                 <View style={{flex: 0, alignItems: 'center'}}>
                     {playerChoiceImg}
                 </View>
-                <Text style={messageStyles}>{message}</Text>
                 <View style={{alignItems: 'center'}}>
                     <BlockButton
                         title={"NEXT ROUND"}
