@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image } from 'react-native';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import TextLink from '../../01_Atoms/Buttons/TextLinks/TextLinks';
@@ -7,6 +7,14 @@ import {styles} from './Welcome.styling';
 import {colors, fonts, utilities} from '../../../settings/all_settings';
 
 export default function HomeScreen({ navigation }) {
+
+  useEffect(() => {
+    fetch('http://10.0.0.145:3000/signup/5f0dd47a03a8ba7e10fb794e')
+      .then((response) => response.json())
+      .then((json) => console.log(json))
+      .catch((error) => console.log(error))
+  }, []);
+
   return (
     <View style={[utilities.flexCenter, styles.container]}>
       {/* TODO: image should be aligned closer to the top */}
