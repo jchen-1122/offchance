@@ -13,6 +13,8 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 export default function Login({ navigation, route }) {
   const [state, setState] = useState(0)
+  let userObj = get_user(state)
+  userObj['viewing'] = false
 
   return (
     <ScrollView contentContainerStyle={utilities.scrollview}>
@@ -50,7 +52,7 @@ export default function Login({ navigation, route }) {
         title="LOG IN" 
         color="primary"
         onPress={() => {
-          navigation.navigate('Profile', get_user(state))}}/>
+          navigation.navigate('Profile', userObj)}}/>
     </View>
     </ScrollView>
   );
