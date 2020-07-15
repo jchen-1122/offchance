@@ -27,12 +27,18 @@ function InputField(props){
             </View>
 
             <TextInput 
+                value={props.value}
+                textContentType={props.textContentType}
+                returnKeyType="next"
+                keyboardAppearance="dark"
+                autoCapitalize={props.autoCapitalize}
                 secureTextEntry={props.password} 
                 multiline={props.textArea} 
                 numberOfLines={4}
                 keyboardType={props.keyboardType}
                 style={inputBoxSizes} 
-                onChangeText={text => {props.setState(text)}}/>
+                maxLength={props.maxLength}
+                onChangeText={props.onChangeText}/>
         </View>
     )
 }

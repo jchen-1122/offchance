@@ -11,8 +11,30 @@ export default function Signup({ navigation }) {
     businessAccount: false,
     futureDrawings: false,
     agreement: false,
-    signedUp: false
+    signedUp: false,
+    confirm: null // for confirming password
   })
+
+  // states for each input value
+  const [_name, setName] = useState(null)
+  const [_username, setUsername] = useState(null)
+  const [_phoneNumber, setPhoneNumber] = useState(null)
+  const [_email, setEmail] = useState(null)
+  const [_instaHandle, setInstaHandle] = useState(null)
+  const [_password, setPassword] = useState(null)
+
+  // makes a json object with all the input fields
+  const makeJSON = () => {
+    let data = {
+      name: _name,
+      username: _username,
+      phoneNumber: _phoneNumber,
+      email: _email,
+      instaHandle: _instaHandle,
+      password: _password
+    }
+    console.log(JSON.stringify(data))
+  };
 
   return (
     <ScrollView>
@@ -30,13 +52,49 @@ export default function Signup({ navigation }) {
 
       <Divider/>
 
-      <InputField label="Full Name" required />
-      <InputField label="Username" required></InputField>
-      <InputField label="Phone Number" keyboardType="number-pad" required/>
-      <InputField label="Email" required/>
-      <InputField label="Instagram Handle" required tooltip={true} tooltipContent="We use this to to give you bonus chances when you share with friends"/>
-      <InputField label="Password" required password/>
-      <InputField label="Confirm Password" required password/>
+      <InputField 
+        label="Full Name" 
+        autoCapitalize="words" 
+        value={_name} 
+        onChangeText={(text) => {setName(text)}} 
+        required />
+      <InputField 
+        label="Username" 
+        value={_username} 
+        onChangeText={(text) => {setUsername(text)}} 
+        required/>
+      <InputField 
+        label="Phone Number" 
+        textContentType="telephoneNumber"
+        // maxLength={10} 
+        keyboardType="phone-pad" 
+        value={_phoneNumber} 
+        onChangeText={(text) => {setPhoneNumber(text)}}
+        required/>
+      <InputField 
+        label="Email" 
+        textContentType="emailAddress"
+        keyboardType="email-address" 
+        value={_email} onChangeText={(text) => {setEmail(text)}} required/>
+      <InputField 
+        label="Instagram Handle" 
+        value={_instaHandle} onChangeText={(text) => {setInstaHandle(text)}}
+        required 
+        tooltip={true} 
+        tooltipContent="We use this to to give you bonus chances when you share with friends"/>
+      <InputField 
+        label="Password" 
+        value={_password} 
+        onChangeText={(text) => {setPassword(text)}}
+        required 
+        password/>
+      <InputField 
+        label="Confirm Password" 
+        value={state.confirm}
+        onChangeText={(text) => {setState({confirm: text})}}
+        required 
+        password/>
+
       <CheckBox 
         selected={state.businessAccount} 
         onPress={() => setState({ businessAccount: !state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement})}
@@ -64,8 +122,14 @@ export default function Signup({ navigation }) {
         title="SIGN UP" 
         color="primary"
         onPress={() => {
-          setState({businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true})
-          setTimeout(() => {navigation.navigate('Login', { reset: false })}, 1000)}}/>
+          // check that passwords match
+          if (_password == state.confirm){
+            setState({businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true, name: state.name})
+            setTimeout(() => {navigation.navigate('Login', { reset: false })}, 1000)
+            makeJSON()
+          }
+
+          }}/>
       {state.signedUp ? <Text>Signing Up...</Text> : null}
     </View>
     </ScrollView>
