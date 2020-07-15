@@ -8,6 +8,21 @@ import {colors, fonts, utilities, dimensions} from '../../../settings/all_settin
 import styling, { styles } from './Signup.styling';
 
 export default function Signup({ navigation }) {
+// posts user to database
+  const postUser = () => {
+    fetch('http://192.168.86.65:3000/user/signup/',{
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: makeJSON()
+    })
+      .then((response) => response.json())
+      .then((json) => console.log(json))
+      .catch((error) => console.log(error))
+  }
+
   const [state, setState] = useState({
     businessAccount: false,
     futureDrawings: false,
@@ -52,15 +67,13 @@ export default function Signup({ navigation }) {
     }
     // if not valid phone number
     if (!isValidPhoneNumber()){
-      console.log('oh')
       errors.push(<Text style={styles.error}>Phone number is not valid</Text>)
     }
     // must agree to terms of service
-    if (!state.agreement){
-      errors.push(<Text style={styles.error}>Must agree to terms of services</Text>)
-    }
+    // if (!state.agreement){
+    //   errors.push(<Text style={styles.error}>Must agree to terms of services</Text>)
+    // }
     setErrors(errors)
-    console.log(_errors)
   }
 
   // makes a json object with all the input fields
@@ -73,8 +86,7 @@ export default function Signup({ navigation }) {
       instaHandle: _instaHandle,
       password: _password
     }
-    console.log(JSON.stringify(data))
-    return data
+    return JSON.stringify(data)
   };
 
   return (
@@ -170,7 +182,7 @@ export default function Signup({ navigation }) {
           if (_errors.length == 0){
             setState({businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true, name: state.name})
             setTimeout(() => {navigation.navigate('Login', { reset: false })}, 1000)
-            makeJSON()
+            postUser()
           }
           }}/>
       {state.signedUp && _errors.length == 0? <Text>Signing Up...</Text> : null}
