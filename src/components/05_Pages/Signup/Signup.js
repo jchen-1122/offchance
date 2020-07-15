@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react'
 import {  View, Text, Linking, ScrollView } from 'react-native';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../../01_Atoms/Divider/Divider.js';
@@ -8,9 +8,11 @@ import {colors, fonts, utilities, dimensions} from '../../../settings/all_settin
 import styling, { styles } from './Signup.styling';
 
 export default function Signup({ navigation }) {
-// posts user to database
+  const data = require('../../IP_ADDRESS.json');
+
+  // posts user to database
   const postUser = () => {
-    fetch('http://192.168.86.65:3000/user/signup/',{
+    fetch('http://'+data.ipAddress+':3000/user/signup/',{
       method: "POST",
       headers: {
         'Accept': 'application/json',
