@@ -19,8 +19,8 @@ export default function Signup({ navigation }) {
       body: makeJSON()
     })
       .then((response) => response.json())
-      .then((json) => console.log(json))
-      .catch((error) => console.log(error))
+      // .then((json) => console.log(json))
+      // .catch((error) => console.log(error))
   }
 
   const [state, setState] = useState({
@@ -29,9 +29,9 @@ export default function Signup({ navigation }) {
     agreement: false,
     signedUp: false,
     confirm: null, // for confirming password
-    errors: []
   })
   const [_errors, setErrors] = useState([])
+  const [_confirm, setConfirm] = useState(null)
 
   // states for each input value
   const [_name, setName] = useState(null)
@@ -58,7 +58,7 @@ export default function Signup({ navigation }) {
   const generateErrors = () => {
     let errors = []
     // if passwords don't match
-    if (_password != state.confirm){
+    if (_password != _confirm){
       errors.push(<Text style={styles.error}>Passwords do not match</Text>)
     }
     // if not a valid email
@@ -125,7 +125,7 @@ export default function Signup({ navigation }) {
         onChangeText={(text) => {setPhoneNumber(text)}}
         required/>
       <InputField 
-        label="Email" 
+        label="Email"
         textContentType="emailAddress"
         keyboardType="email-address" 
         value={_email} onChangeText={(text) => {setEmail(text)}} required/>
@@ -143,13 +143,12 @@ export default function Signup({ navigation }) {
         password/>
       <InputField 
         label="Confirm Password" 
-        value={state.confirm}
-        onChangeText={(text) => {setState({confirm: text})}}
+        value={_confirm}
+        onChangeText={(text) => {setConfirm(text)}}
         required 
         password/>
 
-      {/* THINK WE'RE GETTING RID OF THIS BUT JUST IN CASE */}
-      {/* <CheckBox 
+      <CheckBox 
         selected={state.businessAccount} 
         onPress={() => setState({ businessAccount: !state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement})}
         text='Request a business account to host your own drawings'
@@ -159,7 +158,7 @@ export default function Signup({ navigation }) {
           <InputField label="Describe the item you would like to use in a drawing" required />
           <InputField label="Please provide the charity/foundation name(s) you are raising donations for" required />
           <InputField label="Please provide any additional details below (business website, social media links)" />
-        </View>) : null} */}
+        </View>) : null}
       <CheckBox 
         selected={state.futureDrawings} 
         onPress={() => setState({ businessAccount: state.businessAccount, futureDrawings: !state.futureDrawings, agreement: state.agreement })}
@@ -179,8 +178,9 @@ export default function Signup({ navigation }) {
         color="primary"
         onPress={() => {
           generateErrors()
+          setState({businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true})
+          console.log(_errors)
           if (_errors.length == 0){
-            setState({businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true, name: state.name})
             setTimeout(() => {navigation.navigate('Login', { reset: false })}, 1000)
             postUser()
           }
