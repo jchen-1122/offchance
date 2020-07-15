@@ -30,7 +30,8 @@
     "react-native-snap-carousel": "^3.9.1",
     "react-native-vector-icons": "^6.7.0",
     "react-native-web": "~0.11.7",
-    "react-native-zoom-view": "^1.0.2"
+    "react-native-zoom-view": "^1.0.2",
+    "validator": "^13.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
