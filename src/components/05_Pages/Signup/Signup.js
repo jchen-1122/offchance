@@ -10,7 +10,7 @@ import styling, { styles } from './Signup.styling';
 export default function Signup({ navigation }) {
 // posts user to database
   const postUser = () => {
-    fetch('http://192.168.86.65:3000/user/signup/',{
+    fetch('http://192.168.0.22:3000/user/signup/',{
       method: "POST",
       headers: {
         'Accept': 'application/json',

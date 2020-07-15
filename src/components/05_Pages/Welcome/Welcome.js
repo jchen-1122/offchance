@@ -5,8 +5,18 @@ import TextLink from '../../01_Atoms/Buttons/TextLinks/TextLinks';
 import {styles} from './Welcome.styling';
 // import {fonts} from '../../../settings/fonts';
 import {colors, fonts, utilities} from '../../../settings/all_settings';
+import axios from 'axios'
+
 
 export default function HomeScreen({ navigation }) {
+
+  React.useEffect(() => {
+    fetch('http://192.168.0.22:3000/signup/5f0cf346718f40cc64419ed7')
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+    .catch((e) => console.log(e))
+  }, [])
+  
   return (
     <View style={[utilities.flexCenter, styles.container]}>
       {/* TODO: image should be aligned closer to the top */}
