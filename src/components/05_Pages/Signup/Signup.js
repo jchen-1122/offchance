@@ -19,8 +19,8 @@ export default function Signup({ navigation }) {
       body: makeJSON()
     })
       .then((response) => response.json())
-      // .then((json) => console.log(json))
-      // .catch((error) => console.log(error))
+      .then((json) => console.log(json))
+      .catch((error) => console.log(error))
   }
 
   const [state, setState] = useState({
