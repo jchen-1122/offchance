@@ -11,8 +11,8 @@ export default function Signup({ navigation }) {
   const data = require('../../IP_ADDRESS.json');
 
   // posts user to database
-  const postUser = () => {
-    fetch('http://'+data.ipAddress+':3000/user/signup/',{
+  const postUser = async () => {
+    const response = await fetch('http://'+data.ipAddress+':3000/user/signup/',{
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -20,9 +20,8 @@ export default function Signup({ navigation }) {
       },
       body: makeJSON()
     })
-      .then((response) => response.json())
-      .then((json) => console.log(json))
-      .catch((error) => console.log(error))
+    const json = await response.json()
+    return json
   }
 
   const [state, setState] = useState({
@@ -180,13 +179,28 @@ export default function Signup({ navigation }) {
       <BlockButton  
         title="SIGN UP" 
         color="primary"
-        onPress={() => {
+        onPress={async () => {
           let isError = generateErrors()
           setState({businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true})
           //console.log(_errors)
           if (!isError){
-            setTimeout(() => {navigation.navigate('Login', { reset: false })}, 1000)
-            postUser()
+            const userObj = await postUser()
+            if (userObj.keyValue == null) {
+              console.log("signed up")
+              navigation.navigate('Login', {signedUp:true})
+            } else {
+              let errors = []
+              let errMsg = ""
+              if (userObj.keyValue.username) {
+                errMsg = "Username is taken. Please try again."
+              } else if (userObj.keyValue.email) {
+                errMsg = "Email is taken. Please login."
+              } else {
+                errMsg = "Fill in required fields"
+              }
+              errors.push(<Text style={fonts.error}>{errMsg}</Text>)
+              setErrors(errors)
+            }
           }
           }}/>
       {state.signedUp && _errors.length == 0? <Text>Signing Up...</Text> : null}
