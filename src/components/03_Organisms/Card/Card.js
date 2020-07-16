@@ -12,7 +12,7 @@ import {colors, fonts, utilities} from '../../../settings/all_settings';
 
 function Card ({ data,navigation, onPress, type,  title, host, imageURI, date }) {
     if (data){
-        console.log(data)
+        console.log(data.name)
     }
     let startData = null;
     let like = null;

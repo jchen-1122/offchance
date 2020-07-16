@@ -15,26 +15,29 @@ function Home({navigation}) {
     const data = require('../../IP_ADDRESS.json');
     const [raffles, setRaffles] = useState([])
 
-    const getRaffle = async (raffleID) => {
-        const response = await fetch('http://'+data.ipAddress+':3000/raffle/'+raffleID)
-        const json = await response.json()
-        // console.log(json)
-        return json
-    }
-    React.useEffect(async () => {
-        console.log('use effect')
+    // get one raffle item
+    React.useEffect(() => {
+        async function getRaffle() {
         let raffleID = '5f0f88c325ed43ab8af8612c'
-        let raffle = await getRaffle(raffleID)
-        let _raffles = raffles
-        setRaffles(_raffles.push(raffle))
-        console.log(raffles)
-    }, [])
+          let response = await fetch('http://'+data.ipAddress+':3000/raffle/'+raffleID)
+          response = await response.json()
+          setRaffles(response)
+        }
+        getRaffle()
+      }, [])
 
     return (
         <View style={utilities.container}>
             <ScrollView contentContainerStyle={utilities.scrollview}>
                 <TopNav navigation={navigation} active='Home'/>
                 <View style={utilities.flexCenter}>
+                    <Card
+                        data={raffles}
+                        type='default'
+                        title="Default Card"
+                        host={{ name: "theAvatar", pic: aang }}
+                        navigation={navigation}
+                        imageURI={Nswitch} />
                     {/* {raffles.map( 
                         d => 
                         <Card
