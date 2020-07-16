@@ -43,7 +43,7 @@ export default function Login({ navigation, route }) {
     let errors = []
     // if not a valid email
     if (!isValidEmail()) {
-      errors.push(<Text style={styles.error}>Email is not valid</Text>)
+      errors.push(<Text style={fonts.error}>Email is not valid</Text>)
       setErrors(errors)
       return true
     } else {

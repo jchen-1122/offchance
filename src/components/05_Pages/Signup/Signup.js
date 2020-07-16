@@ -5,7 +5,6 @@ import Divider from '../../01_Atoms/Divider/Divider.js';
 import InputField from '../../02_Molecules/InputField/InputField.js';
 import CheckBox from '../../02_Molecules/Checkbox/Checkbox';
 import {colors, fonts, utilities, dimensions} from '../../../settings/all_settings';
-import styling, { styles } from './Signup.styling';
 import validator from 'validator'
 
 export default function Signup({ navigation }) {
@@ -62,19 +61,19 @@ export default function Signup({ navigation }) {
     let errors = []
     // if passwords don't match
     if (_password != _confirm){
-      errors.push(<Text style={styles.error}>Passwords do not match</Text>)
+      errors.push(<Text style={fonts.error}>Passwords do not match</Text>)
     }
     // if not a valid email
     if (!isValidEmail()){
-      errors.push(<Text style={styles.error}>Email is not valid</Text>)
+      errors.push(<Text style={fonts.error}>Email is not valid</Text>)
     }
     // if not valid phone number
     if (!isValidPhoneNumber()){
-      errors.push(<Text style={styles.error}>Phone number is not valid</Text>)
+      errors.push(<Text style={fonts.error}>Phone number is not valid</Text>)
     }
     // must agree to terms of service
      if (!state.agreement){
-       errors.push(<Text style={styles.error}>Must agree to terms of services</Text>)
+       errors.push(<Text style={fonts.error}>Must agree to terms of services</Text>)
      }
     setErrors(errors)
     if (errors.length > 0) return true
