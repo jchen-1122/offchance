@@ -14,14 +14,14 @@ import validator from 'validator'
 export default function Login({ navigation, route }) {
   const data = require('../../../IP_ADDRESS.json');
 
-  useEffect(() => {
-    console.log('using effect')
-    if (_errors.length == 0 && renderToggle) {
-      console.log('set email valid to true')
-      setEmailValid(true)
-    }
-    setRender(true)
-  }, [_email])
+  // useEffect(() => {
+  //   console.log('using effect')
+  //   if (_errors.length == 0 && renderToggle) {
+  //     console.log('set email valid to true')
+  //     setEmailValid(true)
+  //   }
+  //   setRender(true)
+  // }, [_email])
 
   const loginUser = () => {
     fetch('http://'+data.ipAddress+':3000/user/login',{
@@ -64,7 +64,7 @@ export default function Login({ navigation, route }) {
   }
 
   // check for any errors in input, returns array of errors
-  const generateErrors = () => {
+  const generateErrors = async () => {
     let errors = []
     // if not a valid email
     if (!isValidEmail()) {
@@ -124,9 +124,9 @@ export default function Login({ navigation, route }) {
       <BlockButton 
         title="LOG IN" 
         color="primary"
-        onPress={() => {
-          generateErrors()
-          if (emailValid) {
+        onPress={async () => {
+          await generateErrors()
+          if (_errors.length == 0) {
             navigation.navigate('Profile')
           }
         }}/>
