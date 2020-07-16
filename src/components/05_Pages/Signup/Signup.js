@@ -73,10 +73,12 @@ export default function Signup({ navigation }) {
       errors.push(<Text style={styles.error}>Phone number is not valid</Text>)
     }
     // must agree to terms of service
-    // if (!state.agreement){
-    //   errors.push(<Text style={styles.error}>Must agree to terms of services</Text>)
-    // }
+     if (!state.agreement){
+       errors.push(<Text style={styles.error}>Must agree to terms of services</Text>)
+     }
     setErrors(errors)
+    if (errors.length > 0) return true
+    return false
   }
 
   // makes a json object with all the input fields
@@ -180,10 +182,10 @@ export default function Signup({ navigation }) {
         title="SIGN UP" 
         color="primary"
         onPress={() => {
-          generateErrors()
+          let isError = generateErrors()
           setState({businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true})
-          console.log(_errors)
-          if (_errors.length == 0){
+          //console.log(_errors)
+          if (!isError){
             setTimeout(() => {navigation.navigate('Login', { reset: false })}, 1000)
             postUser()
           }
