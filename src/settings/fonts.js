@@ -4,6 +4,7 @@
 
 import {StyleSheet} from 'react-native';
 import { colors } from './colors';
+import {dimensions} from './dimensions';
 
 var baseFontSize = 16;
 
@@ -38,6 +39,11 @@ const fonts = StyleSheet.create({
     link: {
         color: 'black',
         textDecorationLine: 'underline'
+    },
+    error: {
+        width: dimensions.width,
+        color: colors.red,
+        fontWeight: 'bold'
     }
 })
 
