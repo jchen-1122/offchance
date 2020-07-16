@@ -68,6 +68,9 @@ export default function Login({ navigation, route }) {
     {route.params.reset && <Banner
         color="green"
         title="Your password has been updated!" />}
+    {route.params.signedUp && <Banner
+        color="green"
+        title="You have successfully signed up!" />}
       {/* TODO: need to implement OAUTH functionality (currently links to instagram) */}
       <BlockButton  
         title="Log in With Instagram" 
