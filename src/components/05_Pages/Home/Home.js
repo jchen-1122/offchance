@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react';
 import { View, Text, ScrollView } from 'react-native'
 // import {fonts} from '../../../settings/fonts';
 import {colors, fonts, utilities} from '../../../settings/all_settings';
@@ -12,18 +12,39 @@ import aang from '../../../../assets/images/donor_placeholders/aang.png';
 
 import {get_user} from '../../fake_users/stub-users';
 function Home({navigation}) {
-    console.warn(get_user(0))
+    const data = require('../../IP_ADDRESS.json');
+    const [raffles, setRaffles] = useState([])
+
+    const getRaffle = async (raffleID) => {
+        const response = await fetch('http://'+data.ipAddress+':3000/raffle/'+raffleID)
+        const json = await response.json()
+        // console.log(json)
+        return json
+    }
+    React.useEffect(async () => {
+        let raffleID = '5f0f88c325ed43ab8af8612c'
+        let raffle = await getRaffle(raffleID)
+        let _raffles = raffles
+        setRaffles(_raffles.push(raffle))
+        console.log(raffles)
+    }, [])
+
     return (
         <View style={utilities.container}>
             <ScrollView contentContainerStyle={utilities.scrollview}>
                 <TopNav navigation={navigation} active='Home'/>
                 <View style={utilities.flexCenter}>
-                <Card 
-                    type='default'
-                    title="Default Card"
-                    host={{name:"theAvatar", pic: aang}}
-                    navigation={navigation}
-                    imageURI={Nswitch}/>
+                    {/* {raffles.map( 
+                        d => 
+                        <Card
+                            data={d}
+                            type='default'
+                            title="Default Card"
+                            host={{name:"theAvatar", pic: aang}}
+                            navigation={navigation}
+                            imageURI={Nswitch}/>
+                    )} */}
+                
                 <Card 
                     type='buy'
                     date='July 16, 11:00 AM'

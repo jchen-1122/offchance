@@ -10,8 +10,10 @@ import CardBanner from '../../01_Atoms/CardBanner/CardBanner';
 import EnteredUsersDisplay from '../../01_Atoms/EnteredUsersDisplay/EnteredUsersDisplay';
 import {colors, fonts, utilities} from '../../../settings/all_settings';
 
-function Card ({ navigation, onPress, type,  title, host, imageURI, date }) {
-
+function Card ({ data,navigation, onPress, type,  title, host, imageURI, date }) {
+    if (data){
+        console.log(data)
+    }
     let startData = null;
     let like = null;
     let cardBackground = styles.card__white;
