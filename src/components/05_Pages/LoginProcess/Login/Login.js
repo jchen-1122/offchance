@@ -70,8 +70,10 @@ export default function Login({ navigation, route }) {
     if (!isValidEmail()) {
       errors.push(<Text style={styles.error}>Email is not valid</Text>)
       setErrors(errors)
+      return true
     } else {
       setErrors([])
+      return false
     }
     
   }
@@ -125,8 +127,7 @@ export default function Login({ navigation, route }) {
         title="LOG IN" 
         color="primary"
         onPress={async () => {
-          await generateErrors()
-          if (_errors.length == 0) {
+          if (!generateErrors()) {
             navigation.navigate('Profile')
           }
         }}/>
