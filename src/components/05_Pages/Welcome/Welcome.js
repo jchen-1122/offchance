@@ -5,7 +5,6 @@ import TextLink from '../../01_Atoms/Buttons/TextLinks/TextLinks';
 import {styles} from './Welcome.styling';
 // import {fonts} from '../../../settings/fonts';
 import {colors, fonts, utilities} from '../../../settings/all_settings';
-import axios from 'axios'
 
 
 export default function HomeScreen({ navigation }) {

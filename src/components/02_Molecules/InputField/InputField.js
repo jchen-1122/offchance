@@ -31,7 +31,8 @@ function InputField(props){
                 textContentType={props.textContentType}
                 returnKeyType="next"
                 keyboardAppearance="dark"
-                autoCapitalize={props.autoCapitalize}
+                autoCorrect={false}
+                autoCapitalize={props.autoCapitalize || "none"}
                 secureTextEntry={props.password} 
                 multiline={props.textArea} 
                 numberOfLines={4}

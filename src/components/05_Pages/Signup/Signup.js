@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react'
 import {  View, Text, Linking, ScrollView } from 'react-native';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../../01_Atoms/Divider/Divider.js';
@@ -6,11 +6,14 @@ import InputField from '../../02_Molecules/InputField/InputField.js';
 import CheckBox from '../../02_Molecules/Checkbox/Checkbox';
 import {colors, fonts, utilities, dimensions} from '../../../settings/all_settings';
 import styling, { styles } from './Signup.styling';
+import validator from 'validator'
 
 export default function Signup({ navigation }) {
-// posts user to database
+  const data = require('../../IP_ADDRESS.json');
+
+  // posts user to database
   const postUser = () => {
-    fetch('http://192.168.0.22:3000/user/signup/',{
+    fetch('http://'+data.ipAddress+':3000/user/signup/',{
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -29,9 +32,9 @@ export default function Signup({ navigation }) {
     agreement: false,
     signedUp: false,
     confirm: null, // for confirming password
-    errors: []
   })
   const [_errors, setErrors] = useState([])
+  const [_confirm, setConfirm] = useState(null)
 
   // states for each input value
   const [_name, setName] = useState(null)
@@ -44,21 +47,21 @@ export default function Signup({ navigation }) {
   // validates email input
   const isValidEmail = () => {
     // regex expression
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(_email).toLowerCase());
+    //const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return validator.isEmail(String(_email).toLowerCase());
   }
 
   // validates phone input
   const isValidPhoneNumber = () => {
-    const re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-    return re.test(String(_phoneNumber).toLowerCase());
+    //const re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+    return validator.isMobilePhone(String(_phoneNumber).toLowerCase());
   }
 
   // check for any errors in input, returns array of errors
   const generateErrors = () => {
     let errors = []
     // if passwords don't match
-    if (_password != state.confirm){
+    if (_password != _confirm){
       errors.push(<Text style={styles.error}>Passwords do not match</Text>)
     }
     // if not a valid email
@@ -125,7 +128,7 @@ export default function Signup({ navigation }) {
         onChangeText={(text) => {setPhoneNumber(text)}}
         required/>
       <InputField 
-        label="Email" 
+        label="Email"
         textContentType="emailAddress"
         keyboardType="email-address" 
         value={_email} onChangeText={(text) => {setEmail(text)}} required/>
@@ -143,13 +146,12 @@ export default function Signup({ navigation }) {
         password/>
       <InputField 
         label="Confirm Password" 
-        value={state.confirm}
-        onChangeText={(text) => {setState({confirm: text})}}
+        value={_confirm}
+        onChangeText={(text) => {setConfirm(text)}}
         required 
         password/>
 
-      {/* THINK WE'RE GETTING RID OF THIS BUT JUST IN CASE */}
-      {/* <CheckBox 
+      <CheckBox 
         selected={state.businessAccount} 
         onPress={() => setState({ businessAccount: !state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement})}
         text='Request a business account to host your own drawings'
@@ -159,7 +161,7 @@ export default function Signup({ navigation }) {
           <InputField label="Describe the item you would like to use in a drawing" required />
           <InputField label="Please provide the charity/foundation name(s) you are raising donations for" required />
           <InputField label="Please provide any additional details below (business website, social media links)" />
-        </View>) : null} */}
+        </View>) : null}
       <CheckBox 
         selected={state.futureDrawings} 
         onPress={() => setState({ businessAccount: state.businessAccount, futureDrawings: !state.futureDrawings, agreement: state.agreement })}
@@ -179,8 +181,9 @@ export default function Signup({ navigation }) {
         color="primary"
         onPress={() => {
           generateErrors()
+          setState({businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true})
+          console.log(_errors)
           if (_errors.length == 0){
-            setState({businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true, name: state.name})
             setTimeout(() => {navigation.navigate('Login', { reset: false })}, 1000)
             postUser()
           }
