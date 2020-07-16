@@ -23,6 +23,10 @@ export default function Login({ navigation, route }) {
   //   setRender(true)
   // }, [_email])
 
+  useEffect(() => {
+    console.log('rendering')
+  })
+
   const loginUser = () => {
     fetch('http://'+data.ipAddress+':3000/user/login',{
       method: "POST",
@@ -126,6 +130,7 @@ export default function Login({ navigation, route }) {
         color="primary"
         onPress={async () => {
           await generateErrors()
+          console.log(_errors.length)
           if (_errors.length == 0) {
             navigation.navigate('Profile')
           }
