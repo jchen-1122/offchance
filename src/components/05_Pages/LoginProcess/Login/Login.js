@@ -20,17 +20,12 @@ export default function Login({ navigation, route }) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      },
+      },  
       body: makeJSON()
     })
     const json = await response.json()
-    if (json.error) {
-      console.log('error')
-      setValidUser(false)
-    } else {
-      console.log(json)
-      setValidUser(true)
-    }
+    console.log(json)
+    return json
   }
 
   const [_errors, setErrors] = useState([])
@@ -38,7 +33,6 @@ export default function Login({ navigation, route }) {
   // states for each input value
   const [_email, setEmail] = useState(null)
   const [_password, setPassword] = useState(null)
-  const [_validUser, setValidUser] = useState(false)
  
   // validates email input
   const isValidEmail = () => {
@@ -108,10 +102,10 @@ export default function Login({ navigation, route }) {
       <BlockButton 
         title="LOG IN" 
         color="primary"
-        onPress={() => {
+        onPress={async () => {
           if (!generateErrors()) {
-            loginUser()
-            if (_validUser) {
+            const userObj = await loginUser()
+            if (userObj.error == null) {
               navigation.navigate('Profile')
             }
           }
