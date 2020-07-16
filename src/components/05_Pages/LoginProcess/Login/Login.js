@@ -14,21 +14,8 @@ import validator from 'validator'
 export default function Login({ navigation, route }) {
   const data = require('../../../IP_ADDRESS.json');
 
-  // useEffect(() => {
-  //   console.log('using effect')
-  //   if (_errors.length == 0 && renderToggle) {
-  //     console.log('set email valid to true')
-  //     setEmailValid(true)
-  //   }
-  //   setRender(true)
-  // }, [_email])
-
-  useEffect(() => {
-    console.log('rendering')
-  })
-
-  const loginUser = () => {
-    fetch('http://'+data.ipAddress+':3000/user/login',{
+  const loginUser = async () => {
+    const response = await fetch('http://'+data.ipAddress+':3000/user/login',{
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -36,22 +23,14 @@ export default function Login({ navigation, route }) {
       },
       body: makeJSON()
     })
-      .then((response) => response.json())
-      .then((json) => {
-        let errors = []
-        errors.push(<Text style={styles.error}>Logging you in...</Text>)
-        setErrors(errors)
-        if (json.error) {
-          console.log('error found')
-          passInvalid = true
-          let errors = []
-          errors.push(<Text style={styles.error}>Password Incorrect</Text>)
-          setErrors(errors)
-        } else {
-          console.log(json)
-          setUserObj(json)
-        }})
-      .catch((error) => {console.log(error)})
+    const json = await response.json()
+    if (json.error) {
+      console.log('error')
+      setValidUser(false)
+    } else {
+      console.log(json)
+      setValidUser(true)
+    }
   }
 
   const [_errors, setErrors] = useState([])
@@ -59,8 +38,7 @@ export default function Login({ navigation, route }) {
   // states for each input value
   const [_email, setEmail] = useState(null)
   const [_password, setPassword] = useState(null)
-  const [emailValid, setEmailValid] = useState(false)
-  const [renderToggle, setRender] = useState(false)
+  const [_validUser, setValidUser] = useState(false)
  
   // validates email input
   const isValidEmail = () => {
@@ -68,14 +46,16 @@ export default function Login({ navigation, route }) {
   }
 
   // check for any errors in input, returns array of errors
-  const generateErrors = async () => {
+  const generateErrors = () => {
     let errors = []
     // if not a valid email
     if (!isValidEmail()) {
       errors.push(<Text style={styles.error}>Email is not valid</Text>)
       setErrors(errors)
+      return true
     } else {
       setErrors([])
+      return false
     }
     
   }
@@ -128,11 +108,12 @@ export default function Login({ navigation, route }) {
       <BlockButton 
         title="LOG IN" 
         color="primary"
-        onPress={async () => {
-          await generateErrors()
-          console.log(_errors.length)
-          if (_errors.length == 0) {
-            navigation.navigate('Profile')
+        onPress={() => {
+          if (!generateErrors()) {
+            loginUser()
+            if (_validUser) {
+              navigation.navigate('Profile')
+            }
           }
         }}/>
     </View>
