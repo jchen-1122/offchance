@@ -108,7 +108,7 @@ export default function Login({ navigation, route }) {
               navigation.navigate('Profile', userObj)
             } else {
               let errors = []
-              errors.push(<Text style={styles.error}>Password is not valid</Text>)
+              errors.push(<Text style={fonts.error}>Password is not valid</Text>)
               setErrors(errors)
             }
           }
