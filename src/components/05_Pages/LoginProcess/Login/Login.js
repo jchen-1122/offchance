@@ -28,11 +28,10 @@ export default function Login({ navigation, route }) {
     return json
   }
 
-  const [_errors, setErrors] = useState([])
-
   // states for each input value
   const [_email, setEmail] = useState(null)
   const [_password, setPassword] = useState(null)
+  const [_errors, setErrors] = useState([])
  
   // validates email input
   const isValidEmail = () => {
@@ -106,7 +105,11 @@ export default function Login({ navigation, route }) {
           if (!generateErrors()) {
             const userObj = await loginUser()
             if (userObj.error == null) {
-              navigation.navigate('Profile')
+              navigation.navigate('Profile', userObj)
+            } else {
+              let errors = []
+              errors.push(<Text style={styles.error}>Password is not valid</Text>)
+              setErrors(errors)
             }
           }
         }}/>
