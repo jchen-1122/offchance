@@ -19,7 +19,7 @@ function Home({navigation}) {
     React.useEffect(() => {
         async function getRaffle() {
         let raffleID = '5f0f88c325ed43ab8af8612c'
-          let response = await fetch('http://'+data.ipAddress+':3000/raffle/'+raffleID)
+          let response = await fetch('http://'+data.ipAddress+':3000/raffle/all')
           response = await response.json()
           setRaffles(response)
         }
@@ -31,14 +31,14 @@ function Home({navigation}) {
             <ScrollView contentContainerStyle={utilities.scrollview}>
                 <TopNav navigation={navigation} active='Home'/>
                 <View style={utilities.flexCenter}>
-                    <Card
+                    {/*<Card
                         data={raffles}
                         type='default'
                         title="Default Card"
                         host={{ name: "theAvatar", pic: aang }}
                         navigation={navigation}
-                        imageURI={Nswitch} />
-                    {/* {raffles.map( 
+                        imageURI={Nswitch} />*/}
+                     {raffles.map( 
                         d => 
                         <Card
                             data={d}
@@ -47,7 +47,7 @@ function Home({navigation}) {
                             host={{name:"theAvatar", pic: aang}}
                             navigation={navigation}
                             imageURI={Nswitch}/>
-                    )} */}
+                    )} 
                 
                 <Card 
                     type='buy'
