@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect, Component} from 'react';
 import {  View, Text, Linking, Dimensions } from 'react-native';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../../../01_Atoms/Divider/Divider.js';
@@ -9,12 +9,59 @@ import users, { get_user } from '../..//../fake_users/stub-users'
 import {fonts, utilities} from '../../../../settings/all_settings';
 import { styles } from '../../../01_Atoms/Buttons/BlockButton/BlockButton.styling';
 import { ScrollView } from 'react-native-gesture-handler';
-
+import validator from 'validator'
 
 export default function Login({ navigation, route }) {
-  const [state, setState] = useState(0)
-  let userObj = get_user(state)
-  userObj['viewing'] = false
+  const data = require('../../../IP_ADDRESS.json');
+
+  const loginUser = async () => {
+    const response = await fetch('http://'+data.ipAddress+':3000/user/login',{
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },  
+      body: makeJSON()
+    })
+    const json = await response.json()
+    console.log(json)
+    return json
+  }
+
+  const [_errors, setErrors] = useState([])
+
+  // states for each input value
+  const [_email, setEmail] = useState(null)
+  const [_password, setPassword] = useState(null)
+ 
+  // validates email input
+  const isValidEmail = () => {
+    return validator.isEmail(String(_email).toLowerCase());
+  }
+
+  // check for any errors in input, returns array of errors
+  const generateErrors = () => {
+    let errors = []
+    // if not a valid email
+    if (!isValidEmail()) {
+      errors.push(<Text style={fonts.error}>Email is not valid</Text>)
+      setErrors(errors)
+      return true
+    } else {
+      setErrors([])
+      return false
+    }
+    
+  }
+
+  // makes a json object with all the input fields
+  const makeJSON = () => {
+    let data = {
+      email: _email,
+      password: _password
+    }
+    return JSON.stringify(data)
+  };
 
   return (
     <ScrollView contentContainerStyle={utilities.scrollview}>
@@ -35,8 +82,10 @@ export default function Login({ navigation, route }) {
         onPress={() => Linking.openURL('https://www.facebook.com/')}/>
 
       <Divider/>
-      <InputField label="Email / Username" state={state} setState={setState}/>
-      <InputField label="Password" password />
+      <InputField label="Email / Username" onChangeText={(text) => {
+        setEmail(text)}}/>  
+      <InputField label="Password" password onChangeText={(text) => {
+        setPassword(text)}}/>
       {/* DONE: Links to Forgot Password (no forgot password currently, button is not functional) */}
       {/* Added redirect to EnterEmail */}
       <View style={[utilities.flexEndX, {width: '80%'}]}>
@@ -46,13 +95,21 @@ export default function Login({ navigation, route }) {
           onPress={() => navigation.navigate('EnterEmail')}/>
       </View>
 
+      {/* if some input field is invalid, a red error message will pop up */} 
+      {_errors}
         
       {/* TODO: Links to Home (no home page currently, button is not functional) */}
       <BlockButton 
         title="LOG IN" 
         color="primary"
-        onPress={() => {
-          navigation.navigate('Profile', userObj)}}/>
+        onPress={async () => {
+          if (!generateErrors()) {
+            const userObj = await loginUser()
+            if (userObj.error == null) {
+              navigation.navigate('Profile')
+            }
+          }
+        }}/>
     </View>
     </ScrollView>
   );

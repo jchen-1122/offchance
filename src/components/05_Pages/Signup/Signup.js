@@ -5,7 +5,7 @@ import Divider from '../../01_Atoms/Divider/Divider.js';
 import InputField from '../../02_Molecules/InputField/InputField.js';
 import CheckBox from '../../02_Molecules/Checkbox/Checkbox';
 import {colors, fonts, utilities, dimensions} from '../../../settings/all_settings';
-import styling, { styles } from './Signup.styling';
+import validator from 'validator'
 
 export default function Signup({ navigation }) {
   const data = require('../../IP_ADDRESS.json');
@@ -46,14 +46,14 @@ export default function Signup({ navigation }) {
   // validates email input
   const isValidEmail = () => {
     // regex expression
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(_email).toLowerCase());
+    //const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return validator.isEmail(String(_email).toLowerCase());
   }
 
   // validates phone input
   const isValidPhoneNumber = () => {
-    const re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
-    return re.test(String(_phoneNumber).toLowerCase());
+    //const re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im;
+    return validator.isMobilePhone(String(_phoneNumber).toLowerCase());
   }
 
   // check for any errors in input, returns array of errors
@@ -61,21 +61,23 @@ export default function Signup({ navigation }) {
     let errors = []
     // if passwords don't match
     if (_password != _confirm){
-      errors.push(<Text style={styles.error}>Passwords do not match</Text>)
+      errors.push(<Text style={fonts.error}>Passwords do not match</Text>)
     }
     // if not a valid email
     if (!isValidEmail()){
-      errors.push(<Text style={styles.error}>Email is not valid</Text>)
+      errors.push(<Text style={fonts.error}>Email is not valid</Text>)
     }
     // if not valid phone number
     if (!isValidPhoneNumber()){
-      errors.push(<Text style={styles.error}>Phone number is not valid</Text>)
+      errors.push(<Text style={fonts.error}>Phone number is not valid</Text>)
     }
     // must agree to terms of service
-    // if (!state.agreement){
-    //   errors.push(<Text style={styles.error}>Must agree to terms of services</Text>)
-    // }
+     if (!state.agreement){
+       errors.push(<Text style={fonts.error}>Must agree to terms of services</Text>)
+     }
     setErrors(errors)
+    if (errors.length > 0) return true
+    return false
   }
 
   // makes a json object with all the input fields
@@ -179,10 +181,10 @@ export default function Signup({ navigation }) {
         title="SIGN UP" 
         color="primary"
         onPress={() => {
-          generateErrors()
+          let isError = generateErrors()
           setState({businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true})
-          console.log(_errors)
-          if (_errors.length == 0){
+          //console.log(_errors)
+          if (!isError){
             setTimeout(() => {navigation.navigate('Login', { reset: false })}, 1000)
             postUser()
           }
