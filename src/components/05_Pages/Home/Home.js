@@ -22,6 +22,7 @@ function Home({navigation}) {
         return json
     }
     React.useEffect(async () => {
+        console.log('use effect')
         let raffleID = '5f0f88c325ed43ab8af8612c'
         let raffle = await getRaffle(raffleID)
         let _raffles = raffles
