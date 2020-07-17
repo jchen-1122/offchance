@@ -9,6 +9,7 @@ import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import CardBanner from '../../01_Atoms/CardBanner/CardBanner';
 import EnteredUsersDisplay from '../../01_Atoms/EnteredUsersDisplay/EnteredUsersDisplay';
 import {colors, fonts, utilities, dimensions} from '../../../settings/all_settings';
+import {unix_to_date} from '../../../functions/convert_dates';
 
 function Card ({ navigation, data, onPress, host }) {
     const ip = require('../../IP_ADDRESS.json');
@@ -40,7 +41,7 @@ function Card ({ navigation, data, onPress, host }) {
     if (data){
         title = data.name
         imageURI = data.images[0]
-        date = data.startTime
+        date = unix_to_date(data.startTime)
         type = typeMap.get(data.type)
     }
 
