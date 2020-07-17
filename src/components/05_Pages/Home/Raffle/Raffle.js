@@ -76,14 +76,14 @@ export default function Raffle({navigation}) {
 
                         <Top5Donors images={images} />
                         {(expired) ? null : <ProgressBar progress={230 / 500} color={colors.highlightColor} raised={230} goal={500} width={315} />}
-                        {(expired) ? null : <DropDown options={sizes} size='small'/>  } 
+                        {(expired) ? null : <DropDown options={sizes} size='small'/>  }
                         {(expired) ? null : <BuyOptions bonusAmount={10} bonusChances={40} bonusLimit={10} options={options}></BuyOptions>}
                         {(expired) ? null : <Text style={{marginRight: -10}}>*We we will never show donation amounts for any user</Text>}
                         <Text style={[fonts.p, {marginTop: 20, textAlign: 'justify'}]}>Off Chance is a for-good company that hosts drawings for incredible products to raise money for charities and important causes that affect us all. All net proceeds (after hosting and platform fees) for this drawing will benefit the partners below:</Text>
                         <View style={{flexDirection: 'row'}}>
                             <Image source={donors[0]} style={{marginTop: 10, marginRight: 70}}></Image>
                             <Image source={donors[1]} style={{marginTop: 10}}></Image>
-                        </View>                        
+                        </View>
                         <Text style={[fonts.p, {marginTop: 20, textAlign: 'justify'}]}><Text style={[fonts.p, {marginTop: 20, textAlign: 'justify'}]}>*All prizes are guaranteed to be 100% authentic and deadstock. You will be notified via email once donation goal is met and drawing starts.</Text></Text>
                     </View>
                     <View style={[styles.content, {flex: 0, alignItems: 'center', zIndex: -1}]}>
@@ -101,6 +101,10 @@ export default function Raffle({navigation}) {
                         title="toggle expired view (TEST)"
                         color="primary"
                         onPress={() => setExpired(!expired)}/>
+                        <BlockButton
+                        title="How It Works"
+                        color="primary"
+                        onPress={() => navigation.navigate('HowItWorks')}/>
                         {/* // onPress={() => navigation.navigate('PlayGame')}/> */}
                     </View>
 
@@ -110,7 +114,7 @@ export default function Raffle({navigation}) {
                     >
                         <SlidingSheet title='Enter Drawing' visible={sheetOpen} toggleSheet={toggleSheet}/>
                     </Animated.View>
-                    
+
             </ScrollView>
             <BottomNav navigation={navigation} active={'Home'}></BottomNav>
         </View>

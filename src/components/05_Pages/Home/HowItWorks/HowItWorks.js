@@ -25,7 +25,7 @@ export default function HowItWorks({navigation}) {
 
                 <View style={{width: windowWidth, height:windowHeight, backgroundColor:"white"}}>
                     <View style={styles.content}>
-                        <Text style={[fonts.h1, {marginTop: 40, textAlign: "center"}]}>Welcome to Off Chance Mobile! How LIVE DRAWING Works:</Text>
+                        <Text style={[fonts.h1, {marginTop: 40, textAlign: "center", fontSize: 23}]}>Welcome to Off Chance Mobile! How LIVE DRAWING Works:</Text>
                         <Text style={[fonts.p, {marginTop: 100, textAlign: 'center', fontSize: 18}]}>1. Donate to receive chances for drawings and get an equal amount of Lives to play games and Win bonus chances. </Text>
                         <Image source={images[0]} style={{marginTop: 60, justifyContent: 'center', alignItems: 'center'}}></Image>
                     </View>
