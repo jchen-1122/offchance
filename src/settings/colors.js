@@ -4,6 +4,7 @@ var colors = {
     secondaryColor: 'white',
     highlightColor: '#FF7123', // Off Chance Orange,
 
+    limeGreen: '#31ED31',
     lightGray: '#EFEFEF',
     darkGray: '#545454',
     instaPurple: '#983E9B', // for login/sign in to instagram
