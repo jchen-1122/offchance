@@ -13,6 +13,7 @@ import {styles} from './Profile.styling'
 import { get_user } from '../../fake_users/stub-users';
 
 function Profile({navigation, route}) {
+    console.log(route.params)
     const [info, setInfo] = useState(true)
     const [viewing, setViewing] = useState((route.params != null) ? route.params.viewing : false)
     let name, username, profilePic, email, followers, following, enteredRaffles, address, shoeSize, shirtSize
@@ -38,6 +39,7 @@ function Profile({navigation, route}) {
         address = route.params.address
         shoeSize = route.params.shoeSize
         shirtSize = route.params.shirtSize
+        console.log('here')
     }
     if (viewing) {
         profilePic = 'https://i.ytimg.com/vi/oHg5SJYRHA0/hqdefault.jpg'

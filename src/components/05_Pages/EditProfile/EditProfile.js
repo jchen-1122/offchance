@@ -97,13 +97,13 @@ export default function({navigation, route}) {
                 <InputField 
                     label="Shoe Size" 
                     autoCapitalize="words" 
-                    value={_shoeSize} 
+                    value={_shoeSize.toString()} 
                     onChangeText={(text) => {setShoe(text)}}  />
 
                 <InputField 
                     label="Shirt Size" 
                     autoCapitalize="words" 
-                    value={_shirtSize} 
+                    value={_shirtSize.toString()} 
                     onChangeText={(text) => {setShirt(text)}}  />
                 {_errors}
 
