@@ -34,7 +34,7 @@ export default function HowItWorks({navigation}) {
                 <View style={{width: windowWidth, height:windowHeight, backgroundColor:"black"}}>
                     <View style={styles.content}>
                         <Text style={[fonts.p, {marginTop: windowHeight * 0.07, textAlign: 'center', fontSize: 18, color: 'white'}]}>2. Use Lives to play Rock, Paper, Scissors against others and earn additional chances to win drawing prizes. </Text>
-                        <Image source={images[1]} style={{marginTop: windowHeight * 0.07, justifyContent: 'center', alignItems: 'center',}}></Image>
+                        <Image source={images[1]} style={{height: windowHeight * .7, marginTop: windowHeight * 0.07, justifyContent: 'center', alignItems: 'center',}}></Image>
                     </View>
                 </View>
 
