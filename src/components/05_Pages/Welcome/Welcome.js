@@ -6,14 +6,15 @@ import {styles} from './Welcome.styling';
 // import {fonts} from '../../../settings/fonts';
 import {colors, fonts, utilities} from '../../../settings/all_settings';
 
+
 export default function HomeScreen({ navigation }) {
 
-  useEffect(() => {
-    fetch('http://10.0.0.145:3000/signup/5f0dd47a03a8ba7e10fb794e')
-      .then((response) => response.json())
-      .then((json) => console.log(json))
-      .catch((error) => console.log(error))
-  }, []);
+  React.useEffect(() => {
+    fetch('http://192.168.0.22:3000/signup/5f0cf346718f40cc64419ed7')
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+    .catch((e) => console.log(e))
+  }, [])
 
   return (
     <View style={[utilities.flexCenter, styles.container]}>
@@ -21,10 +22,10 @@ export default function HomeScreen({ navigation }) {
       <Image style={styles.logo} source={require('../../../../assets/images/logo.png')}/>
       <Text style={[fonts.h1, {textAlign: 'center', marginBottom: 15}]}>Limited Flash-Drawings for Collectibles</Text>
       <Text style={fonts.p}>Donate to Make Change and Win.</Text>
-      
+
       {/* Links to Signup */}
-      <BlockButton 
-        title="SIGN UP" 
+      <BlockButton
+        title="SIGN UP"
         color="primary"
         onPress={() => navigation.navigate('Signup')}/>
 

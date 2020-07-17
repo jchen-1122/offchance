@@ -11,6 +11,7 @@
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/native": "^5.6.1",
     "@react-navigation/stack": "^5.6.2",
+    "axios": "^0.19.2",
     "expo": "^38.0.4",
     "expo-status-bar": "^1.0.0",
     "native-base": "^2.13.12",
@@ -30,7 +31,8 @@
     "react-native-snap-carousel": "^3.9.1",
     "react-native-vector-icons": "^6.7.0",
     "react-native-web": "~0.11.7",
-    "react-native-zoom-view": "^1.0.2"
+    "react-native-zoom-view": "^1.0.2",
+    "validator": "^13.1.1"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",

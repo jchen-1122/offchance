@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Welcome from './components/05_Pages/Welcome/Welcome'
 import Login from './components/05_Pages/LoginProcess/Login/Login'
-import Signup from './components/05_Pages/Signup'
+import Signup from './components/05_Pages/Signup/Signup'
 import EnterEmail from './components/05_Pages/LoginProcess/EnterEmail/EnterEmail';
 import EnterCode from './components/04_Templates/EnterCode/EnterCode';
 import ChangePassword from './components/05_Pages/LoginProcess/ChangePassword/ChangePassword';
@@ -19,6 +19,7 @@ import Explore from './components/05_Pages/Home/Explore/Explore';
 import GameController from './components/GameController';
 import RaffleResult from './components/05_Pages/Home/RaffleResult/RaffleResult'
 import EnteredUsers from './components/05_Pages/Home/EnteredUsers/EnteredUsers';
+import HowItWorks from './components/05_Pages/Home/HowItWorks/HowItWorks';
 
 const Stack = createStackNavigator();
 
@@ -44,6 +45,7 @@ function App() {
         <Stack.Screen name="GameController" component={GameController} />
         <Stack.Screen name="RaffleResult" component={RaffleResult} />
         <Stack.Screen name="EnteredUsers" component={EnteredUsers} />
+        <Stack.Screen name="HowItWorks" component={HowItWorks} />
       </Stack.Navigator>
     </NavigationContainer>
   );
