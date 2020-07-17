@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Welcome from './components/05_Pages/Welcome/Welcome'
 import Login from './components/05_Pages/LoginProcess/Login/Login'
-import Signup from './components/05_Pages/Signup'
+import Signup from './components/05_Pages/Signup/Signup'
 import EnterEmail from './components/05_Pages/LoginProcess/EnterEmail/EnterEmail';
 import EnterCode from './components/04_Templates/EnterCode/EnterCode';
 import ChangePassword from './components/05_Pages/LoginProcess/ChangePassword/ChangePassword';
