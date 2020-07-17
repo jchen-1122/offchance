@@ -106,7 +106,6 @@ export default function Login({ navigation, route }) {
         onPress={async () => {
           if (!generateErrors()) {
             const userObj = await loginUser()
-            // localStorage.setItem('userid', userObj._id)
             if (userObj.error == null) {
               navigation.navigate('Profile', userObj)
             } else {

@@ -14,11 +14,14 @@ import Game from './components/05_Pages/Home/Game/Game'
 import Drawings from './components/05_Pages/Drawings/Drawings'
 import Likes from './components/05_Pages/Likes/Likes'
 import Profile from './components/05_Pages/Profile/Profile'
+import EditProfile from './components/05_Pages/EditProfile/EditProfile'
 import YourFeed from './components/05_Pages/Home/YourFeed/YourFeed';
 import Explore from './components/05_Pages/Home/Explore/Explore';
 import GameController from './components/GameController';
 import RaffleResult from './components/05_Pages/Home/RaffleResult/RaffleResult'
 import EnteredUsers from './components/05_Pages/Home/EnteredUsers/EnteredUsers';
+import {Button, Text} from 'react-native'
+import { startClock } from 'react-native-reanimated';
 
 const Stack = createStackNavigator();
 
@@ -41,6 +44,7 @@ function App() {
         <Stack.Screen name="Drawings" component={Drawings} />
         <Stack.Screen name="Likes" component={Likes} />
         <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="EditProfile" component={EditProfile} />
         <Stack.Screen name="GameController" component={GameController} />
         <Stack.Screen name="RaffleResult" component={RaffleResult} />
         <Stack.Screen name="EnteredUsers" component={EnteredUsers} />
