@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Text, View, Image, Dimensions } from 'react-native'
 import styles from './Card.styling'
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
@@ -11,6 +11,18 @@ import EnteredUsersDisplay from '../../01_Atoms/EnteredUsersDisplay/EnteredUsers
 import {colors, fonts, utilities, dimensions} from '../../../settings/all_settings';
 
 function Card ({ navigation, data, onPress, host }) {
+    const ip = require('../../IP_ADDRESS.json');
+    const [user, setUser] = useState(null)
+
+    React.useEffect(() => {
+        async function getHost() {
+          let response = await fetch('http://'+ip.ipAddress+':3000/user/id/' + data.hostedBy)
+          response = await response.json()
+          setUser(response)
+        }
+        getHost()
+      }, [])
+    
     // width for card content
     let contentWidth = Dimensions.get('window').width * 0.65;
 
@@ -88,9 +100,13 @@ function Card ({ navigation, data, onPress, host }) {
     }
 
     // if card has a host
+    // Modified so that host is fetched from database. Data provides host id.
     let username;
-    if (host) {
-        username = <UsernameDisplay username={host.name} profPic={host.pic} size='hostedBy'/>
+    //if (host) {
+    //    username = <UsernameDisplay username={host.name} profPic={host.pic} size='hostedBy'/>
+    //}
+    if (user) {
+        username = <UsernameDisplay username={user.username} profPic={{uri: user.profilePicture}} size='hostedBy'/>
     }
 
     return (

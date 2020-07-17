@@ -28,12 +28,11 @@ function Home({navigation}) {
             <ScrollView contentContainerStyle={utilities.scrollview}>
                 <TopNav navigation={navigation} active='Home'/>
                 <View style={utilities.flexCenter}>
-                    {raffles.map( 
-                        d => 
+                    {raffles.map((raffle, index) => 
                         <Card
-                            data={d}
+                            data={raffle}
                             type='default'
-                            host={{name:"theAvatar", pic: aang}}
+                            key={index}
                             navigation={navigation}
                         />
                     )} 
