@@ -15,8 +15,7 @@ import { get_user } from '../../fake_users/stub-users';
 function Profile({navigation, route}) {
     const [info, setInfo] = useState(true)
     const [viewing, setViewing] = useState((route.params != null) ? route.params.viewing : false)
-    let name, username, profilePic, email, followers, following, enteredRaffles
-    const userObj = route.params
+    let name, username, profilePic, email, followers, following, enteredRaffles, address, shoeSize, shirtSize
     if (route.params == null) {
         name = 'John Doe'
         username = '@johndoe'
@@ -24,7 +23,10 @@ function Profile({navigation, route}) {
         email = 'fakeemail'
         followers = []
         following = []
-        enteredRaffles = []
+        enteredRaffles = [],
+        address = '1234 Plumbus St. New York, New York, 12345'
+        shoeSize = 69
+        shirtSize = 'XL'
     } else {
         name = route.params.name
         username = route.params.username
@@ -33,6 +35,9 @@ function Profile({navigation, route}) {
         followers = route.params.followers
         following = route.params.following
         enteredRaffles = route.params.enteredRaffles
+        address = route.params.address
+        shoeSize = route.params.shoeSize
+        shirtSize = route.params.shirtSize
     }
     if (viewing) {
         profilePic = 'https://i.ytimg.com/vi/oHg5SJYRHA0/hqdefault.jpg'
@@ -58,13 +63,13 @@ function Profile({navigation, route}) {
                     <View>
 
                     <Text style={styles.descriptor}>Address</Text>
-                    <Text style={styles.description}>1234 Plumbus St. New York, New York 10001</Text>
+                    <Text style={styles.description}>{address}</Text>
 
                     <Text style={styles.descriptor}>Shoe Size</Text>
-                    <Text style={styles.description}>Womens 5.5</Text>
+                    <Text style={styles.description}>{shoeSize}</Text>
 
                     <Text style={styles.descriptor}>Shirt Size</Text>
-                    <Text style={styles.description}>M</Text>
+                    <Text style={styles.description}>{shirtSize}</Text>
 
                     <Text style={styles.descriptor}>Payment Information</Text>
                     <Text style={styles.description}>**** **** **** 1234</Text>
@@ -82,7 +87,9 @@ function Profile({navigation, route}) {
                             title="EDIT PROFILE"
                             color="secondary"
                             size="short"
-                            onPress={() => navigation.navigate("EditProfile", route.params)}></BlockButton>
+                            onPress={() => {
+                                console.log(route.params)
+                                navigation.navigate("EditProfile", route.params)}}></BlockButton>
                         </View>
                     </View>
 

@@ -126,7 +126,6 @@ export default function({navigation, route}) {
                                 if (userObj.keyValue == null) {
                                     navigation.navigate('Profile', userObj)
                                   } else {
-                                    console.log('here')
                                     let errors = []
                                     let errMsg = ""
                                     if (userObj.keyValue.username) {
