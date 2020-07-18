@@ -33,6 +33,10 @@ const fonts = StyleSheet.create({
         fontWeight: '800',
         color: colors.primaryColor
     },
+    italic: {
+        fontSize: baseFontSize,
+        fontStyle: 'italic'
+    },
     p: {
         fontSize: baseFontSize*0.8,
     },

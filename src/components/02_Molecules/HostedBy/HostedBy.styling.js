@@ -5,8 +5,7 @@ const styles = StyleSheet.create({
         flexDirection:'row', 
         alignItems:'center', 
         justifyContent: 'space-between', 
-        paddingLeft: 30, 
-        paddingRight: 15
+        height: 25
     },
     hostedby__profile: {
         flex: 0, 
@@ -16,8 +15,9 @@ const styles = StyleSheet.create({
     hostedby__image: {
         width:20, 
         height: 20, 
-        borderRadius: 20 / 2}
+        borderRadius: 20 / 2,
+        marginRight: 5
     }
-)
+})
 
 export default styles

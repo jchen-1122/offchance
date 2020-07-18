@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     BlockButton__title_primary:{
-        color: colors.secondaryColor
+        color: colors.darkGreen
     },
     BlockButton__title_secondary:{
         color: colors.primaryColor

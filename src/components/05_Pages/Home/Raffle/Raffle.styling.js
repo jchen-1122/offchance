@@ -13,6 +13,16 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: "#FFFFFF",
     height: 100,
+  },
+
+  pickSize: {
+    flex: 0, 
+    flexDirection:'row', 
+    alignItems: 'center', 
+    justifyContent: 'space-between', 
+    marginTop: 15, 
+    marginBottom: 15,
+    zIndex: 2
   }
 
 })
