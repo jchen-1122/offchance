@@ -34,7 +34,7 @@ const fonts = StyleSheet.create({
         color: colors.primaryColor
     },
     p: {
-        fontSize: baseFontSize,
+        fontSize: baseFontSize*0.8,
     },
     link: {
         color: 'black',
