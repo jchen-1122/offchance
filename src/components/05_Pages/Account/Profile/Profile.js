@@ -1,15 +1,15 @@
 import React, {useState} from 'react'
 import { View, ScrollView, Text, Image } from 'react-native'
 // import {fonts} from '../../../settings/fonts';
-import {colors, fonts, utilities} from '../../../settings/all_settings';
-import InfoFeed from '../../02_Molecules/InfoFeed/InfoFeed'
-import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
-import Card from '../../03_Organisms/Card/Card'
-import BottomNav from '../../02_Molecules/BottomNav/BottomNav'
-import Nswitch from '../../../../assets/images/switch.jpeg'
+import {colors, fonts, utilities} from '../../../../settings/all_settings';
+import InfoFeed from '../../../02_Molecules/InfoFeed/InfoFeed'
+import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
+import Card from '../../../03_Organisms/Card/Card'
+import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
+import Nswitch from '../../../../../assets/images/switch.jpeg'
 import { set } from 'react-native-reanimated';
 import {styles} from './Profile.styling'
-import { get_user } from '../../fake_users/stub-users';
+import { get_user } from '../../../fake_users/stub-users';
 
 function Profile({navigation, route}) {
     const [info, setInfo] = useState(true)
@@ -32,7 +32,7 @@ function Profile({navigation, route}) {
             <ScrollView>
                 <Text style={styles.header_name}>{name}</Text>
                 <Image source={{uri:profilePic}} style={styles.profilePic}></Image>
-                
+
                 <View style={styles.toggleBar}>
                     <InfoFeed info={info} setInfo={setInfo}></InfoFeed>
                 </View>
@@ -66,7 +66,7 @@ function Profile({navigation, route}) {
                         size="short"
                         onPress={() => navigation.navigate("RaffleResult", {name:name, setViewing:setViewing})}></BlockButton>
                     </View></View> : null}
-                </View> : 
+                </View> :
 
                 <View style={utilities.flexCenter}>
                     <Card
@@ -85,7 +85,7 @@ function Profile({navigation, route}) {
                         imageURI={Nswitch} />
                 </View>}
             </ScrollView>
-            
+
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>
         </View>
     )
