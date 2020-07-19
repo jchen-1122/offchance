@@ -44,6 +44,12 @@ function Profile({navigation, route}) {
     if (viewing) {
         profilePic = 'https://i.ytimg.com/vi/oHg5SJYRHA0/hqdefault.jpg'
     }
+    if (route.params.shoeSize == null) {
+        route.params.shoeSize = 15
+    } 
+    if (route.params.shirtSize == null) {
+        route.params.shirtSize = 15
+    } 
     return (
         <View style={utilities.container}>
             <ScrollView>
@@ -51,7 +57,7 @@ function Profile({navigation, route}) {
                 <Text style={styles.header_name}>{name}</Text>
                 <Text style={styles.header_username}>@{username}</Text>
 
-                <StatsBar followers={followers.length} following={following.length} enteredRaffles={enteredRaffles.length}></StatsBar>
+                <StatsBar currUser={route.params} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>
 
                 <View style={styles.toggleBar}>
                     <InfoFeed info={info} setInfo={setInfo}></InfoFeed>

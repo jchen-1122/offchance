@@ -15,6 +15,8 @@ import Drawings from './components/05_Pages/Drawings/Drawings'
 import Likes from './components/05_Pages/Likes/Likes'
 import Profile from './components/05_Pages/Profile/Profile'
 import EditProfile from './components/05_Pages/EditProfile/EditProfile'
+import Following from './components/05_Pages/Following/Following'
+import Followers from './components/05_Pages/Followers/Followers'
 import YourFeed from './components/05_Pages/Home/YourFeed/YourFeed';
 import Explore from './components/05_Pages/Home/Explore/Explore';
 import GameController from './components/GameController';
@@ -45,6 +47,8 @@ function App() {
         <Stack.Screen name="Likes" component={Likes} />
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="EditProfile" component={EditProfile} />
+        <Stack.Screen name="Following" component={Following} />
+        <Stack.Screen name="Followers" component={Followers} />
         <Stack.Screen name="GameController" component={GameController} />
         <Stack.Screen name="RaffleResult" component={RaffleResult} />
         <Stack.Screen name="EnteredUsers" component={EnteredUsers} />

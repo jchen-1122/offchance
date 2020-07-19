@@ -8,7 +8,6 @@ import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 
 // e.g. the "top 10 donors" section
 function ListView(props) {
-
     // build rows of usernames and profile pics
     let usernameList = [];
     for (let user in props.users) {

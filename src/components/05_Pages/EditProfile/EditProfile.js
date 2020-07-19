@@ -18,7 +18,6 @@ export default function({navigation, route}) {
     const data = require('../../IP_ADDRESS.json');
 
     const editUser = async () => {
-        console.log(route.params._id)
         const response = await fetch('http://'+data.ipAddress+':3000/user/edit/'+route.params._id,{
           method: "PATCH",
           headers: {
@@ -136,7 +135,7 @@ export default function({navigation, route}) {
                                     errors.push(<Text style={fonts.error}>{errMsg}</Text>)
                                     setErrors(errors)
                                   }
-                            }                            
+                            }
                             }}></BlockButton>
                     </View>
                 </View>
