@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     },
     BlockButton_secondary:{
         backgroundColor: 'transparent',
-        borderColor: colors.primaryColor,
+        borderColor: colors.secondaryColor,
         borderWidth: 2
     },
     BlockButton_highlight: {
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
         color: colors.darkGreen
     },
     BlockButton__title_secondary:{
-        color: colors.primaryColor
+        color: colors.secondaryColor
     },
     BlockButton__title_small: {
         fontSize: 12,

@@ -103,7 +103,7 @@ export default function Login({ navigation, route }) {
       {/* TODO: Links to Home (no home page currently, button is not functional) */}
       <BlockButton 
         title="LOG IN" 
-        color="primary"
+        color="secondary"
         onPress={async () => {
           if (!generateErrors()) {
             const userObj = await loginUser()

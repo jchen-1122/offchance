@@ -3,8 +3,8 @@ import {dimensions} from '../../../../settings/all_settings';
 
 const styles = StyleSheet.create({
    content: {
-       marginLeft: '8%',
-       marginRight: '8%',
+       paddingLeft: '8%',
+       paddingRight: '8%',
    },
    subView: {
     position: "absolute",
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     marginTop: 15, 
     marginBottom: 15,
     zIndex: 2
-  }
+  },
 
 })
 

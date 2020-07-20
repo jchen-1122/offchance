@@ -4,12 +4,12 @@ import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
 
 export default function BuyOptions(props) {
     return (
-        <View>
+        <View style={{flex: 0, alignItems: 'center'}}>
             {(Object.keys(props.options).map(element => {
                 return (
                     <BlockButton
                         title={"$" + element + ' for ' + props.options[element].chances + " chances"}
-                        color="highlight"/>
+                        color="primary"/>
                 )
             })
             )}

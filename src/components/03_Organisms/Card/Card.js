@@ -51,7 +51,7 @@ function Card ({ navigation, data, onPress, host }) {
     let startData = null;
     let like = null;
     let pgBar = null;
-    let button = <BlockButton title='Enter Drawing' color="highlight" onPress={() => navigation.navigate('Raffle', data)}/>;
+    let button = <BlockButton title='Enter Drawing' color="primary" onPress={() => navigation.navigate('Raffle', data)}/>;
     let friendsEntered = <EnteredUsersDisplay navigation={navigation}/>
 
     // CHECK WHAT TYPE OF CARD--------------------------------------------------------------
@@ -60,12 +60,12 @@ function Card ({ navigation, data, onPress, host }) {
         case 'default':
             like = <View style={styles.likeButton}><LikeButton /></View>;
             pgBar = (<View style={{marginTop: 15}}>
-                        <ProgressBar progress={230 / 500} color={colors.highlightColor} raised={230} goal={500} width={contentWidth} />
+                        <ProgressBar progress={230 / 500} color={colors.primaryColor} raised={230} goal={500} width={contentWidth} />
                     </View>)
             startData = (
                 <View>
                     <Text style={[styles.startData_grey,fonts.p]}>
-                        DRAWING STARTS ONCE TIMER REACHES 0 OR DONATION GOAL IS MET
+                        {(expired) ? 'DRAWING STARTED' : 'DRAWING STARTS ONCE TIMER REACHES 0 OR DONATION GOAL IS MET'}   
                     </Text>
                     <Text style={styles.freeDraw_date}>{date}</Text>
                 </View>);

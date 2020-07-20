@@ -1,6 +1,7 @@
   
 var colors = {
     limeGreen: '#31ED31',
+    lightGreen: '#B2FF9F',
     lightGray: '#EFEFEF',
     darkGray: '#545454',
     instaPurple: '#983E9B', // for login/sign in to instagram
@@ -9,9 +10,13 @@ var colors = {
     red: '#FF0000',
     darkGreen: '#0E4A26',
 
-    primaryColor: 'black',
-    secondaryColor: 'white',
-    highlightColor: '#31ED31', // Off Chance Green,
+    get primaryColor(){
+        return this.limeGreen
+    },
+    get secondaryColor(){
+        return this.darkGreen
+    },
+    tertiaryColor: 'black'
 };
 
 export {colors};
