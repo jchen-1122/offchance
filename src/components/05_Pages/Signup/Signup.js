@@ -177,8 +177,8 @@ export default function Signup({ navigation }) {
       {_errors}
       
       <BlockButton  
-        title="SIGN UP" 
-        color="primary"
+        title="SIGN UP FOR 5 FREE CHANCES" 
+        color="secondary"
         onPress={async () => {
           let isError = generateErrors()
           setState({businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true})

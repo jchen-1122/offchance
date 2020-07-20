@@ -25,8 +25,8 @@ export default function HomeScreen({ navigation }) {
       
       {/* Links to Signup */}
       <BlockButton 
-        title="SIGN UP" 
-        color="primary"
+        title="SIGN UP FOR 5 FREE CHANCES" 
+        color="secondary"
         onPress={() => navigation.navigate('Signup')}/>
 
       <View style={{flexDirection: 'row'}}>

@@ -1,6 +1,6 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
-let imageSize = 20;
+let imageSize = 14;
 
 const styles = StyleSheet.create({
     container: {
