@@ -39,12 +39,14 @@ function Card ({ navigation, data, onPress, host }) {
     let date; // TODO: in last 24 hours, should be a timer
     let type;
     let expired;
+    let donationGoal;
     if (data){
         title = data.name
         imageURI = data.images[0]
         date = unix_to_date(data.startTime)
         expired = is_expired(data.startTime)
         type = typeMap.get(data.type)
+        donationGoal = (data.donationGoal) ? data.donationGoal : null
     }
 
     // set default values for card
@@ -59,9 +61,12 @@ function Card ({ navigation, data, onPress, host }) {
         // default is the regular card as seen in 'Home (free drawing)' in Figma
         case 'default':
             like = <View style={styles.likeButton}><LikeButton /></View>;
-            pgBar = (<View style={{marginTop: 15}}>
-                        <ProgressBar progress={230 / 500} color={colors.primaryColor} raised={230} goal={500} width={contentWidth} />
-                    </View>)
+            if (donationGoal){
+                pgBar = 
+                <View style={{marginTop: 15}}>
+                    <ProgressBar progress={230 / donationGoal} color={colors.primaryColor} raised={230} goal={donationGoal} width={contentWidth} />
+                </View>
+            }
             startData = (
                 <View>
                     <Text style={[styles.startData_grey,fonts.p]}>

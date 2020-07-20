@@ -56,7 +56,6 @@ export default function Raffle({ navigation, route }) {
     const [sheetOpen, setSheetOpen] = useState(false);
     const [bounceValue, setBounceValue] = useState(new Animated.Value(100)); // initial position of sheet
 
-
     const toggleSheet = () => {
         var toValue = 100;
         if (sheetOpen == false) {

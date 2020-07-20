@@ -13,7 +13,6 @@ import validator from 'validator'
 
 export default function Login({ navigation, route }) {
   const data = require('../../../IP_ADDRESS.json');
-
   const loginUser = async () => {
     const response = await fetch('http://'+data.ipAddress+':3000/user/login',{
       method: "POST",
