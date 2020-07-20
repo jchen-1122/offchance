@@ -31,10 +31,13 @@ const fonts = StyleSheet.create({
     bold: {
         fontSize: baseFontSize,
         fontWeight: '800',
-        color: colors.primaryColor
+    },
+    italic: {
+        fontSize: baseFontSize,
+        fontStyle: 'italic'
     },
     p: {
-        fontSize: baseFontSize,
+        fontSize: baseFontSize*0.8,
     },
     link: {
         color: 'black',

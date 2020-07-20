@@ -18,7 +18,7 @@ function UsernameDisplay(props){
             break;
         case 'hostedBy':
             profilePicStyle = styles.profilePic_small;
-            usernameStyle = styles.username_small;
+            usernameStyle = fonts.p;
             displayText = 'Hosted by ' + displayText;
             containerStyle = styles.container_hostedBy;
             break;
