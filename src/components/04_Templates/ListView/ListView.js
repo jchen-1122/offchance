@@ -19,7 +19,7 @@ function ListView(props) {
                         props.navigation.navigate('OtherUser', {currUser: props.currUser, user: props.users[user]})}}>
                     <UsernameDisplay username={props.users[user].username} profPic={{uri: props.users[user].profilePic}} size="large"/>
                 </TouchableOpacity>
-                {props.users[user].followingBool ? 
+                {props.users[user].followingBool  ? 
                 <BlockButton color="primary" size="small" title='FOLLOWED'/> :
                 <BlockButton color="secondary" size="small" title='FOLLOW'/>}
             </View>
