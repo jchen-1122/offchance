@@ -72,7 +72,7 @@ export default function OtherUser({navigation, route})  {
                 <Text style={styles.header_name}>{route.params.user.name}</Text>
                 <Text style={styles.header_username}>@{route.params.user.username}</Text>
 
-                <StatsBar currUser={route.params.user} followers={route.params.user.followers} following={route.params.user.following} enteredRaffles={route.params.user.enteredRaffles} navigation={navigation}></StatsBar>
+                <StatsBar currUser={route.params.currUser} followers={route.params.user.followers} following={route.params.user.following} enteredRaffles={route.params.user.enteredRaffles} navigation={navigation}></StatsBar>
                 
                 {follow ? <View style={styles.followButton}>
                     <BlockButton
