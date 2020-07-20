@@ -19,6 +19,7 @@ import Following from './components/05_Pages/Following/Following'
 import Followers from './components/05_Pages/Followers/Followers'
 import YourFeed from './components/05_Pages/Home/YourFeed/YourFeed';
 import Explore from './components/05_Pages/Home/Explore/Explore';
+import OtherUser from './components/05_Pages/OtherUser/OtherUser'
 import GameController from './components/GameController';
 import RaffleResult from './components/05_Pages/Home/RaffleResult/RaffleResult'
 import EnteredUsers from './components/05_Pages/Home/EnteredUsers/EnteredUsers';
@@ -49,6 +50,7 @@ function App() {
         <Stack.Screen name="EditProfile" component={EditProfile} />
         <Stack.Screen name="Following" component={Following} />
         <Stack.Screen name="Followers" component={Followers} />
+        <Stack.Screen name="OtherUser" component={OtherUser} />
         <Stack.Screen name="GameController" component={GameController} />
         <Stack.Screen name="RaffleResult" component={RaffleResult} />
         <Stack.Screen name="EnteredUsers" component={EnteredUsers} />

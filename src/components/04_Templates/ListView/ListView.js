@@ -1,4 +1,5 @@
 import React from 'react'
+import {TouchableOpacity} from 'react-native'
 import { View, Text, Footer, FooterTab, Button, Icon } from 'native-base';
 import { fonts, utilities } from '../../../settings/all_settings';
 import {styles} from './ListView.styling';
@@ -13,8 +14,12 @@ function ListView(props) {
     for (let user in props.users) {
         usernameList.push(
             <View style={styles.ListViewRow}>
-                <UsernameDisplay username={props.users[user].username} profPic={{uri: props.users[user].profilePic}} size="large"/>
-                <BlockButton color="secondary" size="small" title={(props.users[user].following) ? 'FOLLOWED' : 'FOLLOW'}/>
+                <TouchableOpacity
+                    onPress={() => {
+                        props.navigation.navigate('OtherUser', {currUser: props.currUser, user: props.users[user]})}}>
+                    <UsernameDisplay username={props.users[user].username} profPic={{uri: props.users[user].profilePic}} size="large"/>
+                </TouchableOpacity>
+                <BlockButton color="secondary" size="small" title={(props.users[user].followingBool) ? 'FOLLOWED' : 'FOLLOW'}/>
             </View>
         )
     }

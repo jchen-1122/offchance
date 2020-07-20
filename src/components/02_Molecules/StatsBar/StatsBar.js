@@ -19,7 +19,7 @@ export default function(props) {
 
     const handleFollowing = async () => {
         let following = await getUsers(props.following)
-        props.navigation.navigate('Following', following)
+        props.navigation.navigate('Following', {following: following , user: props.currUser})
     }
 
     const handleFollowers = async () => {

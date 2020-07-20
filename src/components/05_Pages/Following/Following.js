@@ -4,7 +4,7 @@ import {ScrollView} from 'react-native'
 import ListView from '../../04_Templates/ListView/ListView'
 
 export default function Following({navigation, route}) {
-    let usersObj = route.params
+    let usersObj = route.params.following
 
     // ListView takes in profilePic and our data is profilePicture :(
     // reformatting key profilePicture -> profilePic
@@ -16,7 +16,7 @@ export default function Following({navigation, route}) {
 
     return (
         <ScrollView>
-            <ListView users={usersObj} title="Following"></ListView>
+            <ListView users={usersObj} title="Following" navigation={navigation} currUser={route.params.user}></ListView>
         </ScrollView>
     )
 }

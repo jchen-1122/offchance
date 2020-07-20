@@ -16,12 +16,12 @@ export default function Followers({navigation, route}) {
     usersObj.forEach(user => {
         user['profilePic'] = user['profilePicture']
         delete user['profilePicture']
-        user['following'] = currUser['following'].includes(user['_id'])
+        user['followingBool'] = currUser['following'].includes(user['_id'])
     })
 
     return (
         <ScrollView>
-            <ListView users={usersObj} title="Following"></ListView>
+            <ListView users={usersObj} title="Followers" navigation={navigation} currUser={route.params.user}></ListView>
         </ScrollView>
     )
 }
