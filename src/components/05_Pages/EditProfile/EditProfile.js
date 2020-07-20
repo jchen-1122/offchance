@@ -1,24 +1,26 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import {ScrollView, View, Text} from 'react-native'
 import InputField from '../../02_Molecules/InputField/InputField'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import validator from 'validator'
 import {colors, fonts, utilities, dimensions} from '../../../settings/all_settings';
+import GlobalState from '../../globalState'
 
-export default function({navigation, route}) {
-    const [_name, setName] = useState(route.params.name)
-    const [_username, setUsername] = useState(route.params.username)
-    const [_address, setAddress] = useState(route.params.address)
-    const [_email, setEmail] = useState(route.params.email)
-    const [_shoeSize, setShoe] = useState(route.params.shoeSize)
-    const [_shirtSize, setShirt] = useState(route.params.shirtSize)
+export default function({navigation}) {
+    const {user, setUser} = useContext(GlobalState)
+    const [_name, setName] = useState(user.name)
+    const [_username, setUsername] = useState(user.username)
+    const [_address, setAddress] = useState(user.address)
+    const [_email, setEmail] = useState(user.email)
+    const [_shoeSize, setShoe] = useState(user.shoeSize)
+    const [_shirtSize, setShirt] = useState(user.shirtSize)
 
     const [_errors, setErrors] = useState([])
 
     const data = require('../../IP_ADDRESS.json');
 
     const editUser = async () => {
-        const response = await fetch('http://'+data.ipAddress+':3000/user/edit/'+route.params._id,{
+        const response = await fetch('http://'+data.ipAddress+':3000/user/edit/'+user._id,{
           method: "PATCH",
           headers: {
             'Accept': 'application/json',
@@ -122,8 +124,9 @@ export default function({navigation, route}) {
                         onPress={async () => {
                             if (!generateErrors()) {
                                 const userObj = await editUser()
+                                setUser(userObj)
                                 if (userObj.keyValue == null) {
-                                    navigation.navigate('Profile', userObj)
+                                    navigation.navigate('Profile')
                                   } else {
                                     let errors = []
                                     let errMsg = ""
