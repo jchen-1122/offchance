@@ -8,14 +8,13 @@ import { color } from 'react-native-reanimated';
 
 export default function Account({navigation}) {
 
+    // To change height, go to BlockButton.styling.js/BlockButton_transparent:height
 
-    // uncomment for one image example
-    // const images = [require('../../../../assets/images/dwightSchrute.jpg')]
     return (
         <View style={utilities.container}>
             <View>
                 <BlockButton
-                title="Profile                                                   >"
+                title="Profile                                                          >"
                 color="transparent"
                 onPress={() => navigation.navigate('Profile')}/>
                 <View
@@ -25,7 +24,7 @@ export default function Account({navigation}) {
                   }}
                 />
                 <BlockButton
-                title="Wallet                                                   >"
+                title="Wallet                                                          >"
                 color="transparent"
                 onPress={() => navigation.navigate('Wallet')}/>
                 <View
@@ -35,7 +34,7 @@ export default function Account({navigation}) {
                   }}
                 />
                 <BlockButton
-                title="How It Works                                     >"
+                title="How It Works                                            >"
                 color="transparent"
                 onPress={() => navigation.navigate('HowItWorks')}/>
                 <View
@@ -45,7 +44,7 @@ export default function Account({navigation}) {
                   }}
                 />
                 <BlockButton
-                title="FAQ                                                       >"
+                title="FAQ                                                             >"
                 color="transparent"
                 onPress={() => navigation.navigate('FAQ')}/>
                 <View
@@ -55,9 +54,9 @@ export default function Account({navigation}) {
                   }}
                 />
                 <BlockButton
-                title="My Entries                                          >"
+                title="Request Business Account                 >"
                 color="transparent"
-                onPress={() => navigation.navigate('MyEntries')}/>
+                onPress={() => navigation.navigate('ReqBesAcct')}/>
                 <View
                   style={{
                     borderBottomColor: 'rgba(52, 52, 52, 0.3)',
@@ -65,7 +64,7 @@ export default function Account({navigation}) {
                   }}
                 />
                 <BlockButton
-                title="Log Out                                                >"
+                title="Log Out                                                     >"
                 color="transparent"
                 onPress={() => navigation.navigate('NotLogin')}/>
                 <View
