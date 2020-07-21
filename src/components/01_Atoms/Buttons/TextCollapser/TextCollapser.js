@@ -11,7 +11,7 @@ function TextCollapser(props){
 
     let buttonStyle = [styles.TextCollapser_primary];
     let buttonHeaderStyle=[styles.TextCollapser__header_primary];
-    let buttonBodyStyle=[styles.TextCollapser__header_primary];
+    let buttonBodyStyle=[styles.TextCollapser__body_primary];
 
     let headerTextStyle=[styles.TextCollapser__header_text_primary];
     let bodyTextStyle=[styles.TextCollapser__body_text_primary];

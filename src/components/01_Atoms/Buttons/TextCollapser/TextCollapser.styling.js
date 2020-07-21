@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
         alignItems:'center',
         justifyContent:'center',
         flexDirection:'row',
-        backgroundColor:'rgba(255, 255, 255, 1.0)',
+        backgroundColor:'transparent',
     },
 
     // Header Text Style
