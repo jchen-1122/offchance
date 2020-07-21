@@ -10,11 +10,10 @@ import CardBanner from '../../01_Atoms/CardBanner/CardBanner';
 import EnteredUsersDisplay from '../../01_Atoms/EnteredUsersDisplay/EnteredUsersDisplay';
 import {colors, fonts, utilities, dimensions} from '../../../settings/all_settings';
 import {unix_to_date, is_expired} from '../../../functions/convert_dates';
-import GlobalState from '../../globalState';
+import { top5_raffle } from '../../../functions/explore_functions';
 
 function Card ({ navigation, data, onPress }) {
     const ip = require('../../IP_ADDRESS.json');
-    // const {user, setUser} = useContext(GlobalState)
     const [host, setHost] = useState(null)
 
     React.useEffect(() => {
@@ -24,6 +23,7 @@ function Card ({ navigation, data, onPress }) {
           setHost(response)
         }
         getHost()
+
       }, [])
     
     // width for card content
