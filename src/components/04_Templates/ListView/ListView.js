@@ -10,7 +10,6 @@ import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 function ListView(props) {   
     const currUser = props.currUser
     const setUser = props.setUser
-    console.log(props.users)
 
     const addFollower = async (user) => {
         const data = require('../../IP_ADDRESS.json')
@@ -78,7 +77,7 @@ function ListView(props) {
                         props.navigation.navigate('OtherUser', {currUser: props.currUser, user: props.users[user]})}}>
                     <UsernameDisplay username={props.users[user].username} profPic={{uri: props.users[user].profilePicture}} size="large"/>
                 </TouchableOpacity>
-                {currUser.following.includes(props.users[user]._id)  ? 
+                {typeof currUser._id === 'undefined' ? null : currUser.following.includes(props.users[user]._id)  ? 
                 <BlockButton color="primary" size="small" title='FOLLOWED'
                 onPress={async () => {
                     const userObj = await removeFollower(props.users[user])
