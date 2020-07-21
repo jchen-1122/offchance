@@ -10,8 +10,9 @@ import CardBanner from '../../01_Atoms/CardBanner/CardBanner';
 import EnteredUsersDisplay from '../../01_Atoms/EnteredUsersDisplay/EnteredUsersDisplay';
 import {colors, fonts, utilities, dimensions} from '../../../settings/all_settings';
 import {unix_to_date, is_expired} from '../../../functions/convert_dates';
+import { ImageZoomProps } from 'react-native-image-pan-zoom';
 
-function Card ({ navigation, data, onPress, host }) {
+function Card ({ navigation, data, onPress, host, currUserG, setUserG }) {
     const ip = require('../../IP_ADDRESS.json');
     const [user, setUser] = useState(null)
 
@@ -46,13 +47,14 @@ function Card ({ navigation, data, onPress, host }) {
         expired = is_expired(data.startTime)
         type = typeMap.get(data.type)
     }
-
+    let enteredUsers = {}
+    
     // set default values for card
     let startData = null;
     let like = null;
     let pgBar = null;
     let button = <BlockButton title='Enter Drawing' color="primary" onPress={() => navigation.navigate('Raffle', data)}/>;
-    let friendsEntered = <EnteredUsersDisplay navigation={navigation}/>
+    let friendsEntered = <EnteredUsersDisplay users={enteredUsers} navigation={navigation} currUser={currUserG} setUser={setUserG}/>
 
     // CHECK WHAT TYPE OF CARD--------------------------------------------------------------
     switch(type){
@@ -82,7 +84,7 @@ function Card ({ navigation, data, onPress, host }) {
         // for upcoming 4 raffles
         case 'upcoming':
             like = <View style={styles.upcoming_placeholder} />
-            friendsEntered = null;
+            friendsEntered = <EnteredUsersDisplay users={["5f1717acfe0108ee8b5e5c0b", "5f17187efe0108ee8b5e5c0d", "5f17190afe0108ee8b5e5c0f"]} navigation={navigation} currUser={currUserG} setUser={setUserG}/>;
             button = <TouchableOpacity style={styles.upcoming_notifyMe} onPress={() => navigation.navigate('Raffle')}><Text>NOTIFY ME</Text></TouchableOpacity>;
             startData = <View><Text style={[styles.startData_grey,fonts.p]} >DRAWING STARTS</Text><Text style={styles.freeDraw_date}>{date}</Text></View>;
             break;
@@ -116,7 +118,8 @@ function Card ({ navigation, data, onPress, host }) {
           <ScrollView style={[styles.card]}>
               {like}
               <View style={styles.itemDesc}>
-                <Image style={styles.image} source={{uri: imageURI}}/>
+                <Image style={styles.image} source={{uri: imageURI}} onPress={() => {
+                }}/>
                 <View style={{flex: 1, width: contentWidth}}>
                     <Text style={[fonts.h1,{textAlign: 'center'}]}>{title}</Text>
                     {username}
