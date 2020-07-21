@@ -33,7 +33,6 @@ export default function Raffle({ navigation, route }) {
             }
         }
         getHost()
-
     }, [top5])
 
     // get fields of raffle from db
@@ -89,8 +88,6 @@ export default function Raffle({ navigation, route }) {
         100: { chances: 400 },
     }
 
-    // uncomment for one image example
-    // const images = [require('../../../../assets/images/dwightSchrute.jpg')]
     return (
         <View style={[utilities.container, { backgroundColor: 'white' }]}>
             <ScrollView contentContainerStyle={utilities.scrollview}>
