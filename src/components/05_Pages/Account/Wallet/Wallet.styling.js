@@ -6,13 +6,14 @@ const styles = StyleSheet.create({
        paddingLeft: '8%',
        paddingRight: '8%',
    },
+
    subView: {
-    position: 'relative',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    backgroundColor: "#FFFFFF",
-    height: 300,
+      position: 'relative',
+      bottom: '-7%',
+      left: 0,
+      right: 0,
+      backgroundColor: "#FFFFFF",
+      height: 400,
   },
 
 })

@@ -14,7 +14,7 @@ export default function Wallet({navigation}) {
   const [bounceValue, setBounceValue] = useState(new Animated.Value(100)); // initial position of sheet
 
   const toggleSheet = () => {
-      var toValue = 100;
+      var toValue = 1000;
       if (sheetOpen == false) {
           toValue = 0
       }
@@ -44,7 +44,10 @@ export default function Wallet({navigation}) {
             <Animated.View
                 style={[styles.subView,
                 { transform: [{ translateY: bounceValue }] }]}>
-                <SlidingSheet title='Add Chances' visible={sheetOpen} toggleSheet={toggleSheet} />
+                <SlidingSheet
+                title='Add Chances'
+                context={['Wallet Balance', 'Reload Source', ]}
+                toggleSheet={toggleSheet} />
             </Animated.View>
 
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>
