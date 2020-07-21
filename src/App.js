@@ -13,7 +13,7 @@ import PlayGame from './components/05_Pages/Home/PlayGame/PlayGame'
 import Game from './components/05_Pages/Home/Game/Game'
 import Drawings from './components/05_Pages/Drawings/Drawings'
 import Likes from './components/05_Pages/Likes/Likes'
-import Profile from './components/05_Pages/Profile/Profile'
+
 import EditProfile from './components/05_Pages/EditProfile/EditProfile'
 import Following from './components/05_Pages/Following/Following'
 import Followers from './components/05_Pages/Followers/Followers'
@@ -25,6 +25,17 @@ import RaffleResult from './components/05_Pages/Home/RaffleResult/RaffleResult'
 import EnteredUsers from './components/05_Pages/Home/EnteredUsers/EnteredUsers';
 import {Button, Text} from 'react-native'
 import { startClock } from 'react-native-reanimated';
+
+// Account page import
+import Account from './components/05_Pages/Account/Account'
+import Profile from './components/05_Pages/Account/Profile/Profile'
+import Wallet from './components/05_Pages/Account/Wallet/Wallet'
+import HowItWorks from './components/05_Pages/Account/HowItWorks/HowItWorks';
+import FAQ from './components/05_Pages/Account/FAQ/FAQ'
+import ReqBesAcct from './components/05_Pages/Account/ReqBesAcct/ReqBesAcct'
+import LogOut from './components/05_Pages/Account/LogOut/LogOut';
+import NotLogin from './components/05_Pages/Account/NotLogin/NotLogin';
+// Account page import
 
 const Stack = createStackNavigator();
 
@@ -46,7 +57,18 @@ function App() {
         <Stack.Screen name="Game" component={Game} />
         <Stack.Screen name="Drawings" component={Drawings} />
         <Stack.Screen name="Likes" component={Likes} />
+
+        {/* Account navigation */}
+        <Stack.Screen name="Account" component={Account} />
         <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="Wallet" component={Wallet} />
+        <Stack.Screen name="HowItWorks" component={HowItWorks} />
+        <Stack.Screen name="FAQ" component={FAQ} />
+        <Stack.Screen name="ReqBesAcct" component={ReqBesAcct} />
+        <Stack.Screen name="LogOut" component={LogOut} />
+        <Stack.Screen name="NotLogin" component={NotLogin} />
+        {/* Account navigation */}
+
         <Stack.Screen name="EditProfile" component={EditProfile} />
         <Stack.Screen name="Following" component={Following} />
         <Stack.Screen name="Followers" component={Followers} />

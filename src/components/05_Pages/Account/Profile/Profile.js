@@ -1,16 +1,15 @@
 import React, {useState} from 'react'
 import { View, ScrollView, Text, Image } from 'react-native'
 // import {fonts} from '../../../settings/fonts';
-import {colors, fonts, utilities} from '../../../settings/all_settings';
-import InfoFeed from '../../02_Molecules/InfoFeed/InfoFeed'
-import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
-import Card from '../../03_Organisms/Card/Card'
-import BottomNav from '../../02_Molecules/BottomNav/BottomNav'
-import StatsBar from '../../02_Molecules/StatsBar/StatsBar'
-import Nswitch from '../../../../assets/images/switch.jpeg'
+import {colors, fonts, utilities} from '../../../../settings/all_settings';
+import InfoFeed from '../../../02_Molecules/InfoFeed/InfoFeed'
+import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
+import Card from '../../../03_Organisms/Card/Card'
+import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
+import Nswitch from '../../../../../assets/images/switch.jpeg'
 import { set } from 'react-native-reanimated';
 import {styles} from './Profile.styling'
-import { get_user } from '../../fake_users/stub-users';
+import { get_user } from '../../../fake_users/stub-users';
 
 function Profile({navigation, route}) {
     console.log(route.params)
@@ -46,10 +45,10 @@ function Profile({navigation, route}) {
     }
     if (route.params.shoeSize == null) {
         route.params.shoeSize = 15
-    } 
+    }
     if (route.params.shirtSize == null) {
         route.params.shirtSize = 15
-    } 
+    }
     return (
         <View style={utilities.container}>
             <ScrollView>
@@ -67,7 +66,7 @@ function Profile({navigation, route}) {
                     <Text style={styles.descriptor}>Email</Text>
                     <Text style={styles.description}>{email}</Text>
 
-                    {(!viewing) ? 
+                    {(!viewing) ?
                     <View>
 
                     <Text style={styles.descriptor}>Address</Text>
@@ -102,7 +101,7 @@ function Profile({navigation, route}) {
                     </View>
 
                     </View> : null}
-                </View> : 
+                </View> :
 
                 <View style={utilities.flexCenter}>
                     <Card
@@ -121,7 +120,7 @@ function Profile({navigation, route}) {
                         imageURI={Nswitch} />
                 </View>}
             </ScrollView>
-            
+
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>
         </View>
     )

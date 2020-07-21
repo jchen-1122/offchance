@@ -127,7 +127,7 @@ export default function Raffle({ navigation, route }) {
                         <View>
                             {/* !!!!!!!!!!!!! TODO: conditionally show progress bar !!!!!!!!!!!!!!*/}
                             <ProgressBar progress={230 / 500} color={colors.primaryColor} raised={230} goal={500} width={315} />
-                            
+
                             <View style={styles.pickSize}>
                                 <Text>PICK YOUR SIZE</Text>
                                 {(sizeTypes.length > 0) ? <DropDown options={sizeTypes} size='small' /> : null}

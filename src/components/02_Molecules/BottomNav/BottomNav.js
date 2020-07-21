@@ -19,7 +19,7 @@ function BottomNav(props) {
               <Icon name="card" style={(props.active === 'Likes') ? {color:'white'} : null}/>
               <Text style={(props.active === 'Likes') ? {color:'white'} : null}>Likes</Text>
             </Button>
-            <Button onPress={() => props.navigation.navigate('Profile')}>
+            <Button onPress={() => props.navigation.navigate('Account')}>
               <Icon name="person" style={(props.active === 'Account') ? {color:'white'} : null}/>
               <Text style={(props.active === 'Account') ? {color:'white'} : null}>Account</Text>
             </Button>
