@@ -27,11 +27,20 @@ function Profile({navigation, route}) {
     if (viewing) {
         profilePic = 'https://i.ytimg.com/vi/oHg5SJYRHA0/hqdefault.jpg'
     }
+    if (route.params.shoeSize == null) {
+        route.params.shoeSize = 15
+    }
+    if (route.params.shirtSize == null) {
+        route.params.shirtSize = 15
+    }
     return (
         <View style={utilities.container}>
             <ScrollView>
-                <Text style={styles.header_name}>{name}</Text>
                 <Image source={{uri:profilePic}} style={styles.profilePic}></Image>
+                <Text style={styles.header_name}>{name}</Text>
+                <Text style={styles.header_username}>@{username}</Text>
+
+                <StatsBar currUser={route.params} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>
 
                 <View style={styles.toggleBar}>
                     <InfoFeed info={info} setInfo={setInfo}></InfoFeed>
@@ -44,8 +53,8 @@ function Profile({navigation, route}) {
                     <Text style={styles.descriptor}>Email</Text>
                     <Text style={styles.description}>qwerty@gmail.com</Text>
 
-                    {(!viewing) ? <View><Text style={styles.descriptor}>Username</Text>
-                    <Text style={styles.description}>@{username}</Text>
+                    {(!viewing) ?
+                    <View>
 
                     <Text style={styles.descriptor}>Address</Text>
                     <Text style={styles.description}>1234 Plumbus St. New York, New York 10001</Text>
@@ -59,13 +68,26 @@ function Profile({navigation, route}) {
                     <Text style={styles.descriptor}>Payment Information</Text>
                     <Text style={styles.description}>**** **** **** 1234</Text>
 
-                    <View style={styles.payment}>
-                        <BlockButton
-                        title="ADD PAYMENT"
-                        color="secondary"
-                        size="short"
-                        onPress={() => navigation.navigate("RaffleResult", {name:name, setViewing:setViewing})}></BlockButton>
-                    </View></View> : null}
+                    <View style={{flexDirection: 'row'}}>
+                        <View style={styles.payment}>
+                            <BlockButton
+                            title="ADD PAYMENT"
+                            color="secondary"
+                            size="short"
+                            onPress={() => navigation.navigate("RaffleResult", {name:name, setViewing:setViewing})}></BlockButton>
+                        </View>
+                        <View style={styles.payment}>
+                            <BlockButton
+                            title="EDIT PROFILE"
+                            color="secondary"
+                            size="short"
+                            onPress={() => {
+                                console.log(route.params)
+                                navigation.navigate("EditProfile", route.params)}}></BlockButton>
+                        </View>
+                    </View>
+
+                    </View> : null}
                 </View> :
 
                 <View style={utilities.flexCenter}>
