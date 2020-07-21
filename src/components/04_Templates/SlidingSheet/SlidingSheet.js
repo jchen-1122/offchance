@@ -23,16 +23,16 @@ function SlidingSheet(props) {
 
             {/* content part - with a text input */}
             <View style={styles.slidingSheet__content}>
-                <Text style={styles.slidingSheet__content_text}>{props.context[0]}</Text>
+                <Text style={styles.slidingSheet__content_text}>{props.content[0]}</Text>
                 <TextInput
-                  style={{ height: 40, lineHeight: 23, }}
+                  style={{ height: 30, lineHeight: 23, borderWidth: 1, }}
                   onChangeText={text => onChangeText(text)}
                   value={value}
                 />
             </View>
 
             <View style={styles.slidingSheet__content}>
-                <Text style={styles.slidingSheet__content_text}>{props.context[1]}</Text>
+                <Text style={styles.slidingSheet__content_text}>{props.content[1]}</Text>
                 <TextInput
                   style={{ height: 40, lineHeight: 23, }}
                   onChangeText={text => onChangeText(text)}
