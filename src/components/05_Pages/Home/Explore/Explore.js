@@ -19,7 +19,7 @@ function Explore({navigation}) {
         <View style={utilities.container}>
             <ScrollView>
                 <TopNav navigation={navigation} active='Explore'/>
-                <ListView title="Top 5 Donors" users={users}/>
+                <ListView title="Top 5 Donors" users={users} currUser={{}}/>
                 <GridView title="Latest Winners" bgColor="white" Gridtype="winner" navigation={navigation}/>
             </ScrollView>
 

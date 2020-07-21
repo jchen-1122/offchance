@@ -12,22 +12,28 @@ import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import BuyOptions from '../../../02_Molecules/BuyOptions/BuyOptions'
 import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
 import { unix_to_date, is_expired } from '../../../../functions/convert_dates';
-
+import { top5_raffle } from '../../../../functions/explore_functions';
 
 export default function Raffle({ navigation, route }) {
 
     // get host of raffle from db
     const [host, setHost] = useState(null)
+    const [top5, setTop5] = useState([])
     const ip = require('../../../IP_ADDRESS.json');
+
     React.useEffect(() => {
         async function getHost() {
             let response = await fetch('http://' + ip.ipAddress + ':3000/user/id/' + route.params.hostedBy)
             response = await response.json()
             setHost(response)
-            console.log(host)
+            // get top 5 donors of this raffle
+            if (route.params != null) {
+                let pics = await top5_raffle(route.params.users.children)
+                setTop5(pics)
+            }
         }
         getHost()
-    }, [])
+    }, [top5])
 
     // get fields of raffle from db
     let name;
@@ -49,7 +55,6 @@ export default function Raffle({ navigation, route }) {
     for (let i in images_strs) {
         images.push({ uri: images_strs[i] })
     }
-    // const images = [require('../../../../../assets/images/nintendoSwitch.jpeg'), require('../../../../../assets/images/michaelScott.jpg'), require('../../../../../assets/images/pamBeesly.jpg'), require('../../../../../assets/images/profilePic.png'), require('../../../../../assets/images/logo.png')]
     const donors = [require('../../../../../assets/images/naacp.jpg'), require('../../../../../assets/images/aclu.jpg')]
 
     // for sliding sheet (payment)
@@ -83,8 +88,6 @@ export default function Raffle({ navigation, route }) {
         100: { chances: 400 },
     }
 
-    // uncomment for one image example
-    // const images = [require('../../../../assets/images/dwightSchrute.jpg')]
     return (
         <View style={[utilities.container, { backgroundColor: 'white' }]}>
             <ScrollView contentContainerStyle={utilities.scrollview}>
@@ -121,7 +124,7 @@ export default function Raffle({ navigation, route }) {
                     <Text style={{ marginBottom: 15 }}>$200</Text>
 
                     {/* !!!!!!!!!!!!! TODO: top 5 donors !!!!!!!!!!!!!!*/}
-                    <Top5Donors images={images} />
+                    <Top5Donors images={top5} />
 
                     {(expired) ? null :
                         <View>
@@ -164,7 +167,7 @@ export default function Raffle({ navigation, route }) {
                 <Animated.View
                     style={[styles.subView,
                     { transform: [{ translateY: bounceValue }] }]}>
-                    <SlidingSheet title='Enter Drawing' visible={sheetOpen} toggleSheet={toggleSheet} />
+                    <SlidingSheet title='Enter Drawing' context={['abc']} visible={sheetOpen} toggleSheet={toggleSheet} />
                 </Animated.View>
 
             </ScrollView>
