@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import { View, Text, ScrollView } from 'react-native'
 // import {fonts} from '../../../settings/fonts';
 import {colors, fonts, utilities} from '../../../settings/all_settings';
@@ -6,10 +6,12 @@ import BottomNav from '../../02_Molecules/BottomNav/BottomNav';
 import TopNav from '../../02_Molecules/TopNav/TopNav';
 import Card from '../../03_Organisms/Card/Card';
 import aang from '../../../../assets/images/donor_placeholders/aang.png';
+import GlobalState from '../../globalState'
 
 import {get_user} from '../../fake_users/stub-users';
 function Home({navigation}) {
     const data = require('../../IP_ADDRESS.json');
+    const {user, setUser} = useContext(GlobalState)
     const [raffles, setRaffles] = useState([])
 
     // get one raffle item
@@ -33,6 +35,8 @@ function Home({navigation}) {
                             type='default'
                             key={index}
                             navigation={navigation}
+                            currUserG={user}
+                            setUserG={setUser}
                         />
                     )} 
                 

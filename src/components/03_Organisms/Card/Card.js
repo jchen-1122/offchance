@@ -51,7 +51,7 @@ function Card ({ navigation, data, onPress }) {
         donationGoal = (data.donationGoal) ? data.donationGoal : null,
         enteredUsers = data.users.children
     }
-
+    
     // set default values for card
     let startData = null;
     let like = null;
@@ -124,7 +124,8 @@ function Card ({ navigation, data, onPress }) {
           <ScrollView style={[styles.card]}>
               {like}
               <View style={styles.itemDesc}>
-                <Image style={styles.image} source={{uri: imageURI}}/>
+                <Image style={styles.image} source={{uri: imageURI}} onPress={() => {
+                }}/>
                 <View style={{flex: 1, width: contentWidth}}>
                     <Text style={[fonts.h1,{textAlign: 'center'}]}>{title}</Text>
                     {username}

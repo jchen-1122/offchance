@@ -1,14 +1,72 @@
-import React from 'react'
+import React, {useState, useContext} from 'react'
 import {TouchableOpacity} from 'react-native'
 import { View, Text, Footer, FooterTab, Button, Icon } from 'native-base';
 import { fonts, utilities } from '../../../settings/all_settings';
 import {styles} from './ListView.styling';
-
 import UsernameDisplay from '../../01_Atoms/UsernameDisplay/UsernameDisplay';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 
 // e.g. the "top 10 donors" section
-function ListView(props) {
+function ListView(props) {   
+    const currUser = props.currUser
+    const setUser = props.setUser
+
+    const addFollower = async (user) => {
+        const data = require('../../IP_ADDRESS.json')
+        if (currUser.following.includes(user._id)) {
+            return
+        }
+        const response = await fetch('http://'+data.ipAddress+':3000/user/edit/'+currUser._id,{
+          method: "PATCH",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },  
+          body: makeAddJSON(user)
+        })
+        const json = await response.json()
+        return json
+    }
+
+    const removeFollower = async (user) => {
+        const data = require('../../IP_ADDRESS.json')
+        if (!currUser.following.includes(user._id)) {
+            return
+        }
+        const response = await fetch('http://'+data.ipAddress+':3000/user/edit/'+currUser._id,{
+          method: "PATCH",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },  
+          body: makeDeleteJSON(user)
+        })
+        const json = await response.json()
+        return json
+    }
+
+    const makeAddJSON = (user) => {
+        let prevFollowing = currUser.following
+        prevFollowing.push(user._id)
+        let data = {
+            following: prevFollowing
+        }
+        return JSON.stringify(data)
+    }
+
+    const makeDeleteJSON = (user) => {
+        let prevFollowing = currUser.following
+        for(var i = prevFollowing.length - 1; i >= 0; i--) {
+            if(prevFollowing[i] === user._id) {
+                prevFollowing.splice(i, 1);
+            }
+        }
+        console.log(prevFollowing)
+        let data = {
+            following: prevFollowing
+        }
+        return JSON.stringify(data)
+    }
     // build rows of usernames and profile pics
     let usernameList = [];
     for (let user in props.users) {
@@ -17,11 +75,21 @@ function ListView(props) {
                 <TouchableOpacity
                     onPress={() => {
                         props.navigation.navigate('OtherUser', {currUser: props.currUser, user: props.users[user]})}}>
-                    <UsernameDisplay username={props.users[user].username} profPic={{uri: props.users[user].profilePic}} size="large"/>
+                    <UsernameDisplay username={props.users[user].username} profPic={{uri: props.users[user].profilePicture}} size="large"/>
                 </TouchableOpacity>
-                {props.users[user].followingBool  ? 
-                <BlockButton color="primary" size="small" title='FOLLOWED'/> :
-                <BlockButton color="secondary" size="small" title='FOLLOW'/>}
+                {typeof currUser._id === 'undefined' ? null : currUser.following.includes(props.users[user]._id)  ? 
+                <BlockButton color="primary" size="small" title='FOLLOWED'
+                onPress={async () => {
+                    const userObj = await removeFollower(props.users[user])
+                    setUser(userObj)
+                }}
+                /> :
+                <BlockButton color="secondary" size="small" title='FOLLOW'
+                onPress={async () => {
+                    const userObj = await addFollower(props.users[user])
+                    setUser(userObj)
+                }}
+                />}
             </View>
         )
     }

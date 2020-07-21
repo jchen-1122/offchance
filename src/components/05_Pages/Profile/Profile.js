@@ -41,9 +41,6 @@ function Profile({navigation}) {
         shoeSize = user.shoeSize
         shirtSize = user.shirtSize
     }
-    if (viewing) {
-        profilePic = 'https://i.ytimg.com/vi/oHg5SJYRHA0/hqdefault.jpg'
-    }
     if (user.shoeSize == null) {
         user.shoeSize = 15
     } 
