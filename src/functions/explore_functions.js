@@ -7,10 +7,19 @@ export function top5_raffle(users){
         return response
     }
 
-    var top5 = []
-    var sorted_users = users.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,5)
+    const getTop5 = async(users) => {
+        var top5 = []
+        var sorted_users = users.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,5) // sort by amount donated
 
-    // for (let i = 0; i<)
+        for (let i = 0; i<sorted_users.length; i++){
+            let user = await getUser(sorted_users[i].userID)
+            top5.push(user.profilePicture)
+        }
+        return top5
+    }
+    if (users){
+        return getTop5(users)
+    }
 }
 
 // export function is_expired(unix_timestamp){
