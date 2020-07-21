@@ -3,17 +3,18 @@ import {dimensions} from '../../../../settings/all_settings';
 
 const styles = StyleSheet.create({
    content: {
-       paddingLeft: '8%',
-       paddingRight: '8%',
+       marginLeft: '8%',
+       marginRight: '8%',
+       alignItems: 'center'
    },
    subView: {
-    position: 'relative',
+    position: "absolute",
     bottom: 0,
     left: 0,
     right: 0,
     backgroundColor: "#FFFFFF",
-    height: 300,
-  },
+    height: 100,
+  }
 
 })
 

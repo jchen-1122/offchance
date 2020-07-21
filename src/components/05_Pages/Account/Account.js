@@ -64,6 +64,16 @@ export default function Account({navigation}) {
                   }}
                 />
                 <BlockButton
+                title="My Drawings                                            >"
+                color="transparent"
+                onPress={() => navigation.navigate('MyDrawings')}/>
+                <View
+                  style={{
+                    borderBottomColor: 'rgba(52, 52, 52, 0.3)',
+                    borderBottomWidth: 1,
+                  }}
+                />
+                <BlockButton
                 title="Log Out                                                     >"
                 color="transparent"
                 onPress={() => navigation.navigate('NotLogin')}/>

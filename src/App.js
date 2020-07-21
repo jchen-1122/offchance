@@ -27,13 +27,13 @@ import {Button, Text} from 'react-native'
 import { startClock } from 'react-native-reanimated';
 
 // Account page import
-import Account from './components/05_Pages/Account/Account'
-import Profile from './components/05_Pages/Account/Profile/Profile'
-import Wallet from './components/05_Pages/Account/Wallet/Wallet'
+import Account from './components/05_Pages/Account/Account';
+import Profile from './components/05_Pages/Account/Profile/Profile';
+import Wallet from './components/05_Pages/Account/Wallet/Wallet';
 import HowItWorks from './components/05_Pages/Account/HowItWorks/HowItWorks';
-import FAQ from './components/05_Pages/Account/FAQ/FAQ'
-import ReqBesAcct from './components/05_Pages/Account/ReqBesAcct/ReqBesAcct'
-import LogOut from './components/05_Pages/Account/LogOut/LogOut';
+import FAQ from './components/05_Pages/Account/FAQ/FAQ';
+import ReqBesAcct from './components/05_Pages/Account/ReqBesAcct/ReqBesAcct';
+import MyDrawings from './components/05_Pages/Account/MyDrawings/MyDrawings';
 import NotLogin from './components/05_Pages/Account/NotLogin/NotLogin';
 // Account page import
 
@@ -66,7 +66,7 @@ function App() {
         <Stack.Screen name="HowItWorks" component={HowItWorks} />
         <Stack.Screen name="FAQ" component={FAQ} />
         <Stack.Screen name="ReqBesAcct" component={ReqBesAcct} />
-        <Stack.Screen name="LogOut" component={LogOut} />
+        <Stack.Screen name="MyDrawings" component={MyDrawings} />
         <Stack.Screen name="NotLogin" component={NotLogin} />
         {/* Account navigation */}
 

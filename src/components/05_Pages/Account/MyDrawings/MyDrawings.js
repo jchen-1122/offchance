@@ -5,11 +5,11 @@ import {utilities, fonts, colors} from '../../../../settings/all_settings';
 import { set } from 'react-native-reanimated';
 import { get_user } from '../../../fake_users/stub-users';
 
-export default function LogOut({navigation}) {
+export default function Wallet({navigation}) {
 
     return (
         <View style={utilities.container}>
-            <Text>This is a placeholder for LOGOUT page.</Text>
+            <Text>This is a placeholder for MYDRAWINGS page.</Text>
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>
         </View>
     )
