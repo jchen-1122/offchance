@@ -1,13 +1,12 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
-let imageSize = 20;
+let imageSize = 14;
 
 const styles = StyleSheet.create({
     container: {
         flex: 0,
         flexDirection: 'row',
-        alignItems: 'center',
-        width: Dimensions.get('window').width * 0.6
+        alignItems: 'center'
     },
     image: {
         height: imageSize,

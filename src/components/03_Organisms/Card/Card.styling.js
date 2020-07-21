@@ -6,17 +6,12 @@ var imageDimensions = 175;
 
 const styles = StyleSheet.create({
     card: {
-        width: Dimensions.get('window').width * 0.8,
+        backgroundColor: 'white',
+        width: Dimensions.get('window').width * 0.85,
         borderRadius: borderRadius,
         flex: 0,
-        flexDirection:'row',
         margin: 15,
-    },
-    card__white: {
-        backgroundColor: 'white',
-    },
-    card__dark: {
-        backgroundColor: 'grey',
+        paddingBottom: 15
     },
     likeButton: {
         width: Dimensions.get('window').width * 0.8,
@@ -26,7 +21,7 @@ const styles = StyleSheet.create({
     itemDesc: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     image: {
         height: imageDimensions,
@@ -34,10 +29,9 @@ const styles = StyleSheet.create({
         resizeMode:'contain'
     },
     startData_grey: {
-        width: Dimensions.get('window').width * 0.6,
-        fontSize: 13,
+        fontSize: 14,
         color: '#989898',
-        marginTop: 15,
+        marginTop: 15
     },
     freeDraw_date: {
         fontWeight: 'bold'
