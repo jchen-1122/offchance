@@ -6,23 +6,24 @@ import GlobalState from '../../globalState'
 
 function EnteredUsersDisplay(props) {
     const {user, setUser} = useContext(GlobalState)
-    // console.log(user.following.includes("5f17187efe0108ee8b5e5c0d"))
     var enteredUsers = []
 
     if (props.enteredUsers) {
         // sort entered users so the people you're following show up at the front
         for (let i = 0; i < props.enteredUsers.length; i++) {
             let enteredUser = props.enteredUsers[i]
+            // if you're following them, add to the top
             if (user.following.includes(enteredUser.userID)){
                 enteredUsers.unshift(enteredUser)
             }
+            // if you're not following them, push to back
             else{
                 enteredUsers.push(enteredUser)
             }
         }
-        console.log(enteredUsers)
     }
 
+    // conditionally display text if there's entries
     let enteredUsersCount = "No entries yet"
     if (props.enteredUsers && props.enteredUsers.length > 0) {
         enteredUsersCount = "Entered by user 1 and " + props.enteredUsers.length.toString() + " others"
