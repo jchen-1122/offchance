@@ -1,6 +1,5 @@
-import React, {useState} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import { View, ScrollView, Text, Image } from 'react-native'
-// import {fonts} from '../../../settings/fonts';
 import {colors, fonts, utilities} from '../../../settings/all_settings';
 import InfoFeed from '../../02_Molecules/InfoFeed/InfoFeed'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
@@ -8,16 +7,18 @@ import Card from '../../03_Organisms/Card/Card'
 import BottomNav from '../../02_Molecules/BottomNav/BottomNav'
 import StatsBar from '../../02_Molecules/StatsBar/StatsBar'
 import Nswitch from '../../../../assets/images/switch.jpeg'
-import { set } from 'react-native-reanimated';
 import {styles} from './Profile.styling'
-import { get_user } from '../../fake_users/stub-users';
+import GlobalState from '../../globalState';
 
-function Profile({navigation, route}) {
-    console.log(route.params)
+function Profile({navigation}) {
+    const {user, setUser} = useContext(GlobalState)
     const [info, setInfo] = useState(true)
-    const [viewing, setViewing] = useState((route.params != null) ? route.params.viewing : false)
+    const [viewing, setViewing] = useState((user != null) ? user.viewing : false)
     let name, username, profilePic, email, followers, following, enteredRaffles, address, shoeSize, shirtSize
-    if (route.params == null) {
+    useEffect(() => {
+        name = 'JohnDoe'
+    })
+    if (user == null) {
         name = 'John Doe'
         username = '@johndoe'
         profilePic = "https://i.pinimg.com/originals/dc/24/88/dc2488feb2d6dc4750a95a1f715c67d8.jpg"
@@ -29,26 +30,25 @@ function Profile({navigation, route}) {
         shoeSize = 69
         shirtSize = 'XL'
     } else {
-        name = route.params.name
-        username = route.params.username
+        name = user.name
+        username = user.username
         profilePic = "https://i.pinimg.com/originals/dc/24/88/dc2488feb2d6dc4750a95a1f715c67d8.jpg"
-        email = route.params.email
-        followers = route.params.followers
-        following = route.params.following
-        enteredRaffles = route.params.enteredRaffles
-        address = route.params.address
-        shoeSize = route.params.shoeSize
-        shirtSize = route.params.shirtSize
-        console.log('here')
+        email = user.email
+        followers = user.followers
+        following = user.following
+        enteredRaffles = user.enteredRaffles
+        address = user.address
+        shoeSize = user.shoeSize
+        shirtSize = user.shirtSize
     }
     if (viewing) {
         profilePic = 'https://i.ytimg.com/vi/oHg5SJYRHA0/hqdefault.jpg'
     }
-    if (route.params.shoeSize == null) {
-        route.params.shoeSize = 15
+    if (user.shoeSize == null) {
+        user.shoeSize = 15
     } 
-    if (route.params.shirtSize == null) {
-        route.params.shirtSize = 15
+    if (user.shirtSize == null) {
+        user.shirtSize = 15
     } 
     return (
         <View style={utilities.container}>
@@ -57,7 +57,7 @@ function Profile({navigation, route}) {
                 <Text style={styles.header_name}>{name}</Text>
                 <Text style={styles.header_username}>@{username}</Text>
 
-                <StatsBar currUser={route.params} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>
+                <StatsBar currUser={user} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>
 
                 <View style={styles.toggleBar}>
                     <InfoFeed info={info} setInfo={setInfo}></InfoFeed>
@@ -96,8 +96,7 @@ function Profile({navigation, route}) {
                             color="secondary"
                             size="short"
                             onPress={() => {
-                                console.log(route.params)
-                                navigation.navigate("EditProfile", route.params)}}></BlockButton>
+                                navigation.navigate("EditProfile", user)}}></BlockButton>
                         </View>
                     </View>
 

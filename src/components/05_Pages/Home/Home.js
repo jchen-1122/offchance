@@ -15,7 +15,6 @@ function Home({navigation}) {
     // get one raffle item
     React.useEffect(() => {
         async function getRaffle() {
-        let raffleID = '5f0f88c325ed43ab8af8612c'
           let response = await fetch('http://'+data.ipAddress+':3000/raffle/all')
           response = await response.json()
           setRaffles(response)
