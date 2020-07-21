@@ -10,6 +10,7 @@ import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 function ListView(props) {   
     const currUser = props.currUser
     const setUser = props.setUser
+    console.log(props.users)
 
     const addFollower = async (user) => {
         const data = require('../../IP_ADDRESS.json')
