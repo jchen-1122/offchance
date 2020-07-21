@@ -128,7 +128,12 @@ function Card ({ navigation, data, onPress }) {
                 }}/>
                 <View style={{flex: 1, width: contentWidth}}>
                     <Text style={[fonts.h1,{textAlign: 'center'}]}>{title}</Text>
-                    {username}
+                    <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate('OtherUser', {user: host})
+                    }}>
+                        {username}
+                    </TouchableOpacity>
                     {friendsEntered}
                     {startData}
                 </View>

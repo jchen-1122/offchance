@@ -1,14 +1,14 @@
 import React, {useState, useContext, useEffect} from 'react'
 import { View, ScrollView, Text, Image } from 'react-native'
-import {colors, fonts, utilities} from '../../../settings/all_settings';
-import InfoFeed from '../../02_Molecules/InfoFeed/InfoFeed'
-import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
-import Card from '../../03_Organisms/Card/Card'
-import BottomNav from '../../02_Molecules/BottomNav/BottomNav'
-import StatsBar from '../../02_Molecules/StatsBar/StatsBar'
-import Nswitch from '../../../../assets/images/switch.jpeg'
+import {colors, fonts, utilities} from '../../../../settings/all_settings';
+import InfoFeed from '../../../02_Molecules/InfoFeed/InfoFeed'
+import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
+import Card from '../../../03_Organisms/Card/Card'
+import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
+import StatsBar from '../../../02_Molecules/StatsBar/StatsBar'
+import Nswitch from '../../../../../assets/images/switch.jpeg'
 import {styles} from './Profile.styling'
-import GlobalState from '../../globalState';
+import GlobalState from '../../../globalState';
 
 function Profile({navigation}) {
     const {user, setUser} = useContext(GlobalState)
@@ -22,13 +22,6 @@ function Profile({navigation}) {
         name = 'John Doe'
         username = '@johndoe'
         profilePic = "https://i.pinimg.com/originals/dc/24/88/dc2488feb2d6dc4750a95a1f715c67d8.jpg"
-        email = 'fakeemail'
-        followers = []
-        following = []
-        enteredRaffles = [],
-        address = '1234 Plumbus St. New York, New York, 12345'
-        shoeSize = 69
-        shirtSize = 'XL'
     } else {
         name = user.name
         username = user.username
@@ -61,20 +54,23 @@ function Profile({navigation}) {
                 </View>
 
                 {(info) ? <View style={{alignItems: 'flex-start', marginLeft: 38}}>
-                    <Text style={styles.descriptor}>Email</Text>
-                    <Text style={styles.description}>{email}</Text>
+                    <Text style={styles.descriptor}>Name</Text>
+                    <Text style={styles.description}>{name}</Text>
 
-                    {(!viewing) ? 
+                    <Text style={styles.descriptor}>Email</Text>
+                    <Text style={styles.description}>qwerty@gmail.com</Text>
+
+                    {(!viewing) ?
                     <View>
 
                     <Text style={styles.descriptor}>Address</Text>
-                    <Text style={styles.description}>{address}</Text>
+                    <Text style={styles.description}>1234 Plumbus St. New York, New York 10001</Text>
 
                     <Text style={styles.descriptor}>Shoe Size</Text>
-                    <Text style={styles.description}>{shoeSize}</Text>
+                    <Text style={styles.description}>Womens 5.5</Text>
 
                     <Text style={styles.descriptor}>Shirt Size</Text>
-                    <Text style={styles.description}>{shirtSize}</Text>
+                    <Text style={styles.description}>M</Text>
 
                     <Text style={styles.descriptor}>Payment Information</Text>
                     <Text style={styles.description}>**** **** **** 1234</Text>
@@ -98,7 +94,7 @@ function Profile({navigation}) {
                     </View>
 
                     </View> : null}
-                </View> : 
+                </View> :
 
                 <View style={utilities.flexCenter}>
                     <Card
@@ -117,7 +113,7 @@ function Profile({navigation}) {
                         imageURI={Nswitch} />
                 </View>}
             </ScrollView>
-            
+
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>
         </View>
     )

@@ -31,7 +31,7 @@ function EnteredUsersDisplay(props) {
             else {
                 entered.push(enteredUser)
             }
-        }
+        }   
         return entered
     }
 

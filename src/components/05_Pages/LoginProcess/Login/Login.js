@@ -111,7 +111,7 @@ export default function Login({ navigation, route }) {
             const userObj = await loginUser()
             if (userObj.error == null) {
               setUser(userObj)
-              navigation.navigate('Profile')
+              navigation.navigate('Home')
             } else {
               let errors = []
               errors.push(<Text style={fonts.error}>Password is not valid</Text>)

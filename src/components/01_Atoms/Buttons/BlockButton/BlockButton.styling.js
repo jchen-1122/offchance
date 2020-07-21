@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native'
 import {colors, dimensions} from "../../../../settings/all_settings.js";
 
 var buttonHeight = 60;
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     },
 
     // different colors for button background
-    BlockButton_primary:{ 
+    BlockButton_primary:{
         backgroundColor: colors.primaryColor
     },
     BlockButton_secondary:{
@@ -43,6 +43,12 @@ const styles = StyleSheet.create({
     BlockButton_insta:{
         backgroundColor: colors.instaPurple
     },
+    BlockButton_transparent:{
+        height: '12%',
+        marginLeft:'8%',
+        backgroundColor: 'transparent',
+        justifyContent: 'center',
+    },
 
     // different colors for button text
     BlockButton__title: {
@@ -57,6 +63,12 @@ const styles = StyleSheet.create({
     BlockButton__title_small: {
         fontSize: 12,
         textAlign: 'center'
+    },
+    BlockButton__title_transparent: {
+        fontSize: 22,
+        color: 'black',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
     },
 
     // different sizes for the button

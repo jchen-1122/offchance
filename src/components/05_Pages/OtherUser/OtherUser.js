@@ -8,7 +8,7 @@ import GlobalState from '../../globalState'
 
 export default function OtherUser({navigation, route})  {
     const {user, setUser} = useContext(GlobalState)
-    const [follow, setFollow] = useState(!user.following.includes(route.params.user._id))
+    const [follow, setFollow] = useState(user.following != null && !user.following.includes(route.params.user._id))
     const addFollower = async () => {
         const data = require('../../IP_ADDRESS.json')
         if (user.following.includes(route.params.user._id)) {
@@ -76,7 +76,7 @@ export default function OtherUser({navigation, route})  {
 
                 <StatsBar currUser={user} followers={route.params.user.followers} following={route.params.user.following} enteredRaffles={route.params.user.enteredRaffles} navigation={navigation}></StatsBar>
                 
-                {follow ? <View style={styles.followButton}>
+                {user._id == null ? null : follow ? <View style={styles.followButton}>
                     <BlockButton
                     title="FOLLOW"
                     color="secondary"
