@@ -23,6 +23,7 @@ import OtherUser from './components/05_Pages/OtherUser/OtherUser'
 import GameController from './components/GameController';
 import RaffleResult from './components/05_Pages/Home/RaffleResult/RaffleResult'
 import EnteredUsers from './components/05_Pages/Home/EnteredUsers/EnteredUsers';
+import HowItWorks from './components/05_Pages/Home/HowItWorks/HowItWorks';
 import {Button, Text} from 'react-native'
 import { startClock } from 'react-native-reanimated';
 
