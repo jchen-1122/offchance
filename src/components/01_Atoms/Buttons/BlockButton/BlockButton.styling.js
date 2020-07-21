@@ -44,8 +44,10 @@ const styles = StyleSheet.create({
         backgroundColor: colors.instaPurple
     },
     BlockButton_transparent:{
-        height: 40,
-        backgroundColor: 'transparent'
+        height: '12%',
+        marginLeft:'8%',
+        backgroundColor: 'transparent',
+        justifyContent: 'center',
     },
 
     // different colors for button text

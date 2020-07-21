@@ -32,7 +32,7 @@ function BlockButton(props){
             icon = <SocialIcon type='instagram' raised={false} iconStyle={styles.icon} style={styles.iconBg} iconSize={30}/>
             break;
         case "transparent":
-            buttonStyle.push(styles.BlockButton_transparent);
+            buttonStyle = [styles.BlockButton_transparent];
             buttonTitleStyle=[styles.BlockButton__title_transparent];
             break;
     }

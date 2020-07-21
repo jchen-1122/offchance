@@ -19,7 +19,7 @@ import Profile from './components/05_Pages/Account/Profile/Profile'
 import Wallet from './components/05_Pages/Account/Wallet/Wallet'
 import HowItWorks from './components/05_Pages/Account/HowItWorks/HowItWorks';
 import FAQ from './components/05_Pages/Account/FAQ/FAQ'
-import MyEntries from './components/05_Pages/Account/MyEntries/MyEntries'
+import ReqBesAcct from './components/05_Pages/Account/ReqBesAcct/ReqBesAcct'
 import LogOut from './components/05_Pages/Account/LogOut/LogOut';
 import NotLogin from './components/05_Pages/Account/NotLogin/NotLogin';
 
@@ -56,7 +56,7 @@ function App() {
         <Stack.Screen name="Wallet" component={Wallet} />
         <Stack.Screen name="HowItWorks" component={HowItWorks} />
         <Stack.Screen name="FAQ" component={FAQ} />
-        <Stack.Screen name="MyEntries" component={MyEntries} />
+        <Stack.Screen name="ReqBesAcct" component={ReqBesAcct} />
         <Stack.Screen name="LogOut" component={LogOut} />
         <Stack.Screen name="NotLogin" component={NotLogin} />
 
