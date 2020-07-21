@@ -31,7 +31,7 @@ function EnteredUsersDisplay(props) {
             return entered
         }
 
-        // gets prof pictures from db given certain use id
+        // gets prof picture and username from db given certain use id
         const getUserInfo = async (userID, field) => {
             let response = await fetch('http://' + ip.ipAddress + ':3000/user/id/' + userID)
             response = await response.json()
@@ -44,6 +44,7 @@ function EnteredUsersDisplay(props) {
         }
 
         // sets uri of the two profile pictures to the first two people in the list
+        // also sets name of first user you see on card
         const renderImages = async(users) => {
             if (users.length > 0) {
                 setImage1(await getUserInfo(enteredUsers[0].userID, 'profPic'))
