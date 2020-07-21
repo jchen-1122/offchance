@@ -10,6 +10,7 @@ npm-debug.*
 web-build/
 src/components/IP_ADDRESS.json
 src/components/*.json
+**/IP_ADDRESS.json
 
 # macOS
 .DS_Store
