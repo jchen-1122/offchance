@@ -69,10 +69,10 @@ export default function Account({navigation}) {
                     borderBottomWidth: 1,
                   }}
                 />
-                <BlockButton
+                {user._id == null ? null : <BlockButton
                 title="My Drawings                                            >"
                 color="transparent"
-                onPress={() => navigation.navigate('MyDrawings')}/>
+                onPress={() => navigation.navigate('MyDrawings')}/>}
                 <View
                   style={{
                     borderBottomColor: 'rgba(52, 52, 52, 0.3)',

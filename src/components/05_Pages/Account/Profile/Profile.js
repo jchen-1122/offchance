@@ -12,6 +12,7 @@ import GlobalState from '../../../globalState';
 
 function Profile({navigation}) {
     const {user, setUser} = useContext(GlobalState)
+    console.log(user)
     const [info, setInfo] = useState(true)
     const [viewing, setViewing] = useState((user != null) ? user.viewing : false)
     let name, username, profilePic, email, followers, following, enteredRaffles, address, shoeSize, shirtSize
@@ -58,19 +59,19 @@ function Profile({navigation}) {
                     <Text style={styles.description}>{name}</Text>
 
                     <Text style={styles.descriptor}>Email</Text>
-                    <Text style={styles.description}>qwerty@gmail.com</Text>
+                    <Text style={styles.description}>{email}</Text>
 
                     {(!viewing) ?
                     <View>
 
                     <Text style={styles.descriptor}>Address</Text>
-                    <Text style={styles.description}>1234 Plumbus St. New York, New York 10001</Text>
+                    <Text style={styles.description}>{address}</Text>
 
                     <Text style={styles.descriptor}>Shoe Size</Text>
-                    <Text style={styles.description}>Womens 5.5</Text>
+                    <Text style={styles.description}>{shoeSize}</Text>
 
                     <Text style={styles.descriptor}>Shirt Size</Text>
-                    <Text style={styles.description}>M</Text>
+                    <Text style={styles.description}>{shirtSize}</Text>
 
                     <Text style={styles.descriptor}>Payment Information</Text>
                     <Text style={styles.description}>**** **** **** 1234</Text>

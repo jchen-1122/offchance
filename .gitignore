@@ -8,7 +8,7 @@ npm-debug.*
 *.mobileprovision
 *.orig.*
 web-build/
-IP_ADDRESS.json
+src/components/IP_ADDRESS.json
 
 # macOS
 .DS_Store
