@@ -14,6 +14,19 @@ import Game from './components/05_Pages/Home/Game/Game'
 import Drawings from './components/05_Pages/Drawings/Drawings'
 import Likes from './components/05_Pages/Likes/Likes'
 
+import EditProfile from './components/05_Pages/EditProfile/EditProfile'
+import Following from './components/05_Pages/Following/Following'
+import Followers from './components/05_Pages/Followers/Followers'
+import YourFeed from './components/05_Pages/Home/YourFeed/YourFeed';
+import Explore from './components/05_Pages/Home/Explore/Explore';
+import OtherUser from './components/05_Pages/OtherUser/OtherUser'
+import GameController from './components/GameController';
+import RaffleResult from './components/05_Pages/Home/RaffleResult/RaffleResult'
+import EnteredUsers from './components/05_Pages/Home/EnteredUsers/EnteredUsers';
+import {Button, Text} from 'react-native'
+import { startClock } from 'react-native-reanimated';
+
+// Account page import
 import Account from './components/05_Pages/Account/Account'
 import Profile from './components/05_Pages/Account/Profile/Profile'
 import Wallet from './components/05_Pages/Account/Wallet/Wallet'
@@ -22,13 +35,7 @@ import FAQ from './components/05_Pages/Account/FAQ/FAQ'
 import ReqBesAcct from './components/05_Pages/Account/ReqBesAcct/ReqBesAcct'
 import LogOut from './components/05_Pages/Account/LogOut/LogOut';
 import NotLogin from './components/05_Pages/Account/NotLogin/NotLogin';
-
-import YourFeed from './components/05_Pages/Home/YourFeed/YourFeed';
-import Explore from './components/05_Pages/Home/Explore/Explore';
-import GameController from './components/GameController';
-import RaffleResult from './components/05_Pages/Home/RaffleResult/RaffleResult'
-import EnteredUsers from './components/05_Pages/Home/EnteredUsers/EnteredUsers';
-
+// Account page import
 
 const Stack = createStackNavigator();
 
@@ -51,6 +58,7 @@ function App() {
         <Stack.Screen name="Drawings" component={Drawings} />
         <Stack.Screen name="Likes" component={Likes} />
 
+        {/* Account navigation */}
         <Stack.Screen name="Account" component={Account} />
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="Wallet" component={Wallet} />
@@ -59,7 +67,12 @@ function App() {
         <Stack.Screen name="ReqBesAcct" component={ReqBesAcct} />
         <Stack.Screen name="LogOut" component={LogOut} />
         <Stack.Screen name="NotLogin" component={NotLogin} />
+        {/* Account navigation */}
 
+        <Stack.Screen name="EditProfile" component={EditProfile} />
+        <Stack.Screen name="Following" component={Following} />
+        <Stack.Screen name="Followers" component={Followers} />
+        <Stack.Screen name="OtherUser" component={OtherUser} />
         <Stack.Screen name="GameController" component={GameController} />
         <Stack.Screen name="RaffleResult" component={RaffleResult} />
         <Stack.Screen name="EnteredUsers" component={EnteredUsers} />

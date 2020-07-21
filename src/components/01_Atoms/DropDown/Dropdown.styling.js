@@ -4,14 +4,11 @@ const styles = StyleSheet.create({
     DropDown: {
         flexDirection: 'row', 
         alignItems: 'center',
-        marginTop: 20, 
-        marginBottom: 20,
         zIndex: 10,
     },
     DropDown__picker: {
         height: 40, 
         zIndex: 1,
-        marginLeft: 15
     },
     DropDown__picker_small: {
         width: 75, 

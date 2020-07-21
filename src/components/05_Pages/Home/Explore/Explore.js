@@ -15,7 +15,6 @@ function Explore({navigation}) {
     for (let i=0; i<5; i++){
         users.push(data.users[i])
     }
-
     return (
         <View style={utilities.container}>
             <ScrollView>
