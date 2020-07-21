@@ -7,11 +7,10 @@ import ListView from '../../../04_Templates/ListView/ListView';
 
 function EnteredUsers(props){
     const data = require('../../../fake_users/stub-users.json')
-    console.log(props.users)
     return (
         <View style={utilities.container}>
             <ScrollView>
-                <ListView users={props.users} title="Entered Users" navigation={props.navigation} currUser={props.currUser} setUser={props.setUser}/>
+                <ListView users={props.users} title="Entered Users" navigation={props.navigation}/>
             </ScrollView>
         </View>
 

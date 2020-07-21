@@ -10,17 +10,18 @@ import CardBanner from '../../01_Atoms/CardBanner/CardBanner';
 import EnteredUsersDisplay from '../../01_Atoms/EnteredUsersDisplay/EnteredUsersDisplay';
 import {colors, fonts, utilities, dimensions} from '../../../settings/all_settings';
 import {unix_to_date, is_expired} from '../../../functions/convert_dates';
-import { ImageZoomProps } from 'react-native-image-pan-zoom';
+import GlobalState from '../../globalState';
 
-function Card ({ navigation, data, onPress, host, currUserG, setUserG }) {
+function Card ({ navigation, data, onPress }) {
     const ip = require('../../IP_ADDRESS.json');
-    const [user, setUser] = useState(null)
+    // const {user, setUser} = useContext(GlobalState)
+    const [host, setHost] = useState(null)
 
     React.useEffect(() => {
         async function getHost() {
           let response = await fetch('http://'+ip.ipAddress+':3000/user/id/' + data.hostedBy)
           response = await response.json()
-          setUser(response)
+          setHost(response)
         }
         getHost()
       }, [])
@@ -30,9 +31,8 @@ function Card ({ navigation, data, onPress, host, currUserG, setUserG }) {
 
     // maps numerical types to actual types of cards
     let typeMap = new Map()
-    typeMap.set(1, 'default') // donation goal
-    typeMap.set(2, 'default') // set time
-    typeMap.set(3, 'buy') // enter to buy
+    typeMap.set(1, 'default') // donate to enter
+    typeMap.set(2, 'buy') // enter to buy
 
     // get fields from data passed in from fetch
     let title;
@@ -40,30 +40,36 @@ function Card ({ navigation, data, onPress, host, currUserG, setUserG }) {
     let date; // TODO: in last 24 hours, should be a timer
     let type;
     let expired;
+    let donationGoal;
+    let enteredUsers;
     if (data){
         title = data.name
         imageURI = data.images[0]
         date = unix_to_date(data.startTime)
         expired = is_expired(data.startTime)
         type = typeMap.get(data.type)
+        donationGoal = (data.donationGoal) ? data.donationGoal : null,
+        enteredUsers = data.users.children
     }
-    let enteredUsers = {}
     
     // set default values for card
     let startData = null;
     let like = null;
     let pgBar = null;
     let button = <BlockButton title='Enter Drawing' color="primary" onPress={() => navigation.navigate('Raffle', data)}/>;
-    let friendsEntered = <EnteredUsersDisplay users={enteredUsers} navigation={navigation} currUser={currUserG} setUser={setUserG}/>
+    let friendsEntered = <EnteredUsersDisplay enteredUsers={enteredUsers} navigation={navigation}/>
 
     // CHECK WHAT TYPE OF CARD--------------------------------------------------------------
     switch(type){
         // default is the regular card as seen in 'Home (free drawing)' in Figma
         case 'default':
             like = <View style={styles.likeButton}><LikeButton /></View>;
-            pgBar = (<View style={{marginTop: 15}}>
-                        <ProgressBar progress={230 / 500} color={colors.primaryColor} raised={230} goal={500} width={contentWidth} />
-                    </View>)
+            if (donationGoal){
+                pgBar = 
+                <View style={{marginTop: 15}}>
+                    <ProgressBar progress={230 / donationGoal} color={colors.primaryColor} raised={230} goal={donationGoal} width={contentWidth} />
+                </View>
+            }
             startData = (
                 <View>
                     <Text style={[styles.startData_grey,fonts.p]}>
@@ -84,7 +90,7 @@ function Card ({ navigation, data, onPress, host, currUserG, setUserG }) {
         // for upcoming 4 raffles
         case 'upcoming':
             like = <View style={styles.upcoming_placeholder} />
-            friendsEntered = <EnteredUsersDisplay users={["5f1717acfe0108ee8b5e5c0b", "5f17187efe0108ee8b5e5c0d", "5f17190afe0108ee8b5e5c0f"]} navigation={navigation} currUser={currUserG} setUser={setUserG}/>;
+            friendsEntered = null;
             button = <TouchableOpacity style={styles.upcoming_notifyMe} onPress={() => navigation.navigate('Raffle')}><Text>NOTIFY ME</Text></TouchableOpacity>;
             startData = <View><Text style={[styles.startData_grey,fonts.p]} >DRAWING STARTS</Text><Text style={styles.freeDraw_date}>{date}</Text></View>;
             break;
@@ -110,8 +116,8 @@ function Card ({ navigation, data, onPress, host, currUserG, setUserG }) {
     //if (host) {
     //    username = <UsernameDisplay username={host.name} profPic={host.pic} size='hostedBy'/>
     //}
-    if (user) {
-        username = <UsernameDisplay username={user.username} profPic={{uri: user.profilePicture}} size='hostedBy'/>
+    if (host) {
+        username = <UsernameDisplay username={host.username} profPic={{uri: host.profilePicture}} size='hostedBy'/>
     }
 
     return (
