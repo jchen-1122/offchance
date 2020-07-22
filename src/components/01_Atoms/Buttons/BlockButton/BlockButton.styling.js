@@ -2,7 +2,8 @@ import {StyleSheet} from 'react-native'
 import {colors, dimensions} from "../../../../settings/all_settings.js";
 
 var buttonHeight = 50;
-var buttonWidth = dimensions.width;
+var buttonWidth = '90%';
+
 var borderRadius = 5;
 
 const styles = StyleSheet.create({
@@ -57,12 +58,12 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     BlockButton__title_primary:{
-        color: colors.darkGreen
+        color: colors.secondaryColor
     },
     BlockButton__title_secondary:{
         color: colors.secondaryColor
     },
-    BlockButton__title_tertiary:{
+    BlockButton__title_tertiary: {
         color: 'white'
     },
     BlockButton__title_small: {
