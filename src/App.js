@@ -13,6 +13,7 @@ import PlayGame from './components/05_Pages/Home/PlayGame/PlayGame'
 import Game from './components/05_Pages/Home/Game/Game'
 import Drawings from './components/05_Pages/Drawings/Drawings'
 import Likes from './components/05_Pages/Likes/Likes'
+import Social from './components/05_Pages/Social/Social'
 
 import EditProfile from './components/05_Pages/EditProfile/EditProfile'
 import Following from './components/05_Pages/Following/Following'
@@ -67,13 +68,11 @@ function App() {
           <Stack.Screen name="PlayGame" component={PlayGame} />
           <Stack.Screen name="Game" component={Game} />
           <Stack.Screen name="Drawings" component={Drawings} options={{ headerLeft: null }}/>
+          <Stack.Screen name="Social" component={Social}  options={{ headerLeft: null }}/>
           <Stack.Screen name="Likes" component={Likes}  options={{ headerLeft: null }}/>
           <Stack.Screen name="Account" component={Account} options={{ headerLeft: null }}/>
           <Stack.Screen name="Profile" component={Profile} options={{ 
-            title: user.name,
-            headerRight: () => (
-              <Button title="Edit" />
-            ), }} />
+            title: user.name, }} />
           <Stack.Screen name="Wallet" component={Wallet} />
           <Stack.Screen name="HowItWorks" component={HowItWorks} options={{ title: 'How It Works' }}/>
           <Stack.Screen name="FAQ" component={FAQ} />
