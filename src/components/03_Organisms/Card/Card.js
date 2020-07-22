@@ -5,6 +5,7 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import ProgressBar from '../../02_Molecules/ProgressBar/ProgressBar';
 import LikeButton from '../../01_Atoms/Buttons/LikeButton/LikeButton';
 import UsernameDisplay from '../../01_Atoms/UsernameDisplay/UsernameDisplay';
+import Countdown from '../../01_Atoms/Countdown/Countdown';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import CardBanner from '../../01_Atoms/CardBanner/CardBanner';
 import EnteredUsersDisplay from '../../01_Atoms/EnteredUsersDisplay/EnteredUsersDisplay';
@@ -45,7 +46,7 @@ function Card ({ navigation, data, onPress }) {
     if (data){
         title = data.name
         imageURI = data.images[0]
-        date = unix_to_date(data.startTime)
+        date = data.startTime
         expired = is_expired(data.startTime)
         type = typeMap.get(data.type)
         donationGoal = (data.donationGoal) ? data.donationGoal : null,
@@ -75,7 +76,7 @@ function Card ({ navigation, data, onPress }) {
                     <Text style={[styles.startData_grey,fonts.p]}>
                         {(expired) ? 'DRAWING STARTED' : 'DRAWING STARTS ONCE TIMER REACHES 0 OR DONATION GOAL IS MET'}   
                     </Text>
-                    <Text style={styles.freeDraw_date}>{date}</Text>
+                    <Countdown unix_timestamp={date}/>
                 </View>);
             break;
         // enter to buy drawings
@@ -85,14 +86,14 @@ function Card ({ navigation, data, onPress }) {
                     <CardBanner title='ENTER TO BUY' color='green' icon='usd'/>
                     <LikeButton />
                 </View>);
-            startData = (<View><Text style={[styles.startData_grey,fonts.p]}>{expired ? 'DRAWING STARTED' : 'DRAWING STARTS'}</Text><Text style={styles.freeDraw_date}>{date}</Text></View>);
+            startData = (<View><Text style={[styles.startData_grey,fonts.p]}>{expired ? 'DRAWING STARTED' : 'DRAWING STARTS'}</Text><Countdown unix_timestamp={date}/></View>);
             break;
         // for upcoming 4 raffles
         case 'upcoming':
             like = <View style={styles.upcoming_placeholder} />
             friendsEntered = null;
             button = <TouchableOpacity style={styles.upcoming_notifyMe} onPress={() => navigation.navigate('Raffle')}><Text>NOTIFY ME</Text></TouchableOpacity>;
-            startData = <View><Text style={[styles.startData_grey,fonts.p]} >DRAWING STARTS</Text><Text style={styles.freeDraw_date}>{date}</Text></View>;
+            startData = <View><Text style={[styles.startData_grey,fonts.p]} >DRAWING STARTS</Text><Countdown unix_timestamp={date}/></View>;
             break;
         // for simplified cards in your feed
         case 'notification':

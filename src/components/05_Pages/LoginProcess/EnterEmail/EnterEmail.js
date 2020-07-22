@@ -6,6 +6,7 @@ import InputField from '../../../02_Molecules/InputField/InputField.js';
 import { fonts, utilities, dimensions } from '../../../../settings/all_settings';
 import TextLink from '../../../01_Atoms/Buttons/TextLinks/TextLinks';
 import validator from 'validator';
+import Countdown from '../../../01_Atoms/Countdown/Countdown';
 
 export default function EnterEmail({ navigation }) {
 
@@ -119,6 +120,7 @@ export default function EnterEmail({ navigation }) {
   return (
     <ScrollView contentContainerStyle={utilities.scrollview}>
     <View style={utilities.flexCenter}>
+      <Countdown unix_timestamp='1597921200'/>
       <Text style={styles.header}>{!_sent ? 'Enter your email so we can send you a verification code' : 'Enter the verification code that was sent to your email'}</Text>
       <InputField label="Email" onChangeText={(text) => {
         setEmail(text)}}/>
