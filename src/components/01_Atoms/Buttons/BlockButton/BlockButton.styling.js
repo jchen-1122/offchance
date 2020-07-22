@@ -1,8 +1,9 @@
 import {StyleSheet} from 'react-native'
 import {colors, dimensions} from "../../../../settings/all_settings.js";
 
-var buttonHeight = 60;
+var buttonHeight = 50;
 var buttonWidth = '90%';
+
 var borderRadius = 5;
 
 const styles = StyleSheet.create({
@@ -34,8 +35,10 @@ const styles = StyleSheet.create({
         borderColor: colors.secondaryColor,
         borderWidth: 2
     },
-    BlockButton_highlight: {
-        backgroundColor: colors.highlightColor
+    BlockButton_tertiary:{
+        backgroundColor: 'transparent',
+        borderColor: 'white',
+        borderWidth: 2
     },
     BlockButton_facebook:{
         backgroundColor: colors.facebookBlue
