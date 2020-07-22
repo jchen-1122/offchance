@@ -25,6 +25,11 @@ function DropDown(props) {
             containerStyles.push(styles.DropDown__picker_large);
             break;
     }
+
+    const onChange = (item) =>{
+        setSelectedValue(item.value)
+        props.set_us_state(item.value)
+    }
     return (
         <View style={styles.DropDown}>
             <DropDownPicker
@@ -34,10 +39,8 @@ function DropDown(props) {
                 max={10}
                 defaultValue={selectedValue}
                 containerStyle={containerStyles}
-                itemStyle={{
-                    justifyContent: 'flex-start',
-                }}
-                onChangeItem={item => setSelectedValue(item.value)}
+                itemStyle={{justifyContent: 'flex-start'}}
+                onChangeItem={item => onChange(item)}
             />
         </View>
     )

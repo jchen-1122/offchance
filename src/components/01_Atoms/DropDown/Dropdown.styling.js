@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
         zIndex: 10,
     },
     DropDown__picker: {
-        height: 40, 
+        height: 45, 
         zIndex: 1,
     },
     DropDown__picker_small: {
