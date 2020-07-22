@@ -71,7 +71,7 @@ export default function({navigation}) {
         <ScrollView>
             <View>
                 <Image source={{uri:user.profilePicture}} style={styles.profilePic}></Image>
-
+                <View style={{marginLeft: 50}}>
                 <InputField 
                     label="Name" 
                     autoCapitalize="words" 
@@ -107,9 +107,10 @@ export default function({navigation}) {
                     autoCapitalize="words" 
                     value={_shirtSize.toString()} 
                     onChangeText={(text) => {setShirt(text)}}  />
+                </View>
                 {_errors}
 
-                <View style={{flexDirection: 'row'}}>
+                <View style={{flexDirection: 'row', marginLeft: 20}}>
                     <View >
                         <BlockButton
                         title="CANCEL"
