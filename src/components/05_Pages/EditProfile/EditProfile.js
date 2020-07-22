@@ -10,7 +10,7 @@ export default function({navigation}) {
     const {user, setUser} = useContext(GlobalState)
     const [_name, setName] = useState(user.name)
     const [_username, setUsername] = useState(user.username)
-    const [_address, setAddress] = useState(user.address)
+    const [_address, setAddress] = useState(user.shippingAddress)
     const [_email, setEmail] = useState(user.email)
     const [_shoeSize, setShoe] = useState(user.shoeSize)
     const [_shirtSize, setShirt] = useState(user.shirtSize)
@@ -59,7 +59,7 @@ export default function({navigation}) {
         name: _name,
         username: _username,
         email: _email,
-        address: _address,
+        shippingAddress: _address,
         shoeSize: _shoeSize,
         shirtSize: _shirtSize
         }
@@ -124,6 +124,7 @@ export default function({navigation}) {
                         onPress={async () => {
                             if (!generateErrors()) {
                                 const userObj = await editUser()
+                                console.log(userObj)
                                 setUser(userObj)
                                 if (userObj.keyValue == null) {
                                     navigation.navigate('Profile')

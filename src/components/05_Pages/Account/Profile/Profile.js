@@ -31,7 +31,7 @@ function Profile({navigation}) {
         followers = user.followers
         following = user.following
         enteredRaffles = user.enteredRaffles
-        address = user.address
+        address = user.shippingAddress
         shoeSize = user.shoeSize
         shirtSize = user.shirtSize
     }
