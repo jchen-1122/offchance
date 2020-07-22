@@ -9,11 +9,11 @@ function UsernameDisplay(props){
     // account for different colors of banner
     let bannerStyles = [styles.CardBanner]
     switch (props.color) {
-        case ('black'):
-            bannerStyles.push(styles.CardBanner_black);
+        case ('lightGreen'):
+            bannerStyles.push(styles.CardBanner_lightGreen);
             break;
-        case ('green'):
-            bannerStyles.push(styles.CardBanner_green);
+        case ('darkGreen'):
+            bannerStyles.push(styles.CardBanner_darkGreen);
             break;
     }
 
@@ -26,7 +26,7 @@ function UsernameDisplay(props){
     return (
         <View style={bannerStyles}>
             {icon}
-            <Text style={styles.CardBanner__title}>{props.title}</Text>
+            <Text style={(props.color == 'darkGreen')? styles.CardBanner__title : styles.cardBanner__titleDark}>{props.title}</Text>
         </View>
 
     )
