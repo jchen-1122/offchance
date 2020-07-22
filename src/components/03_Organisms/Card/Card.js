@@ -15,12 +15,14 @@ import { top5_raffle } from '../../../functions/explore_functions';
 function Card ({ navigation, data, onPress }) {
     const ip = require('../../IP_ADDRESS.json');
     const [host, setHost] = useState(null)
+    const [top5, setTop5] = useState([])
 
     React.useEffect(() => {
         async function getHost() {
           let response = await fetch('http://'+ip.ipAddress+':3000/user/id/' + data.hostedBy)
           response = await response.json()
           setHost(response)
+          setTop5(response.users.children)
         }
         getHost()
 
@@ -56,6 +58,8 @@ function Card ({ navigation, data, onPress }) {
     let startData = null;
     let like = null;
     let pgBar = null;
+    data['host'] = host
+    data['top5'] = top5
     let button = <BlockButton title='Enter Drawing' color="primary" onPress={() => navigation.navigate('Raffle', data)}/>;
     let friendsEntered = <EnteredUsersDisplay enteredUsers={enteredUsers} navigation={navigation}/>
 

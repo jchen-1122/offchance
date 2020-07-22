@@ -24,6 +24,9 @@ function DropDown(props) {
         case 'large':
             containerStyles.push(styles.DropDown__picker_large);
             break;
+        case 'xlarge':
+            containerStyles.push(styles.DropDown__picker_xlarge);
+            break;
     }
 
     const onChange = (item) =>{

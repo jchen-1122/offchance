@@ -2,12 +2,14 @@ import React, {useState, useContext} from 'react'
 import {ScrollView, View, Text, Image} from 'react-native'
 import InputField from '../../02_Molecules/InputField/InputField'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
+import Dropdown from '../../01_Atoms/DropDown/DropDown'
 import validator from 'validator'
 import {colors, fonts, utilities, dimensions} from '../../../settings/all_settings';
 import GlobalState from '../../globalState'
 import {styles} from './EditProfile.styling'
 
 export default function({navigation}) {
+    var shirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
     const {user, setUser} = useContext(GlobalState)
     const [_name, setName] = useState(user.name)
     const [_username, setUsername] = useState(user.username)
@@ -69,9 +71,9 @@ export default function({navigation}) {
 
     return (
         <ScrollView>
-            <View>
+            <View style={{zIndex: 5}}>
                 <Image source={{uri:user.profilePicture}} style={styles.profilePic}></Image>
-                <View style={{marginLeft: 50}}>
+                <View style={styles.inputs}>
                 <InputField 
                     label="Name" 
                     autoCapitalize="words" 
@@ -102,11 +104,17 @@ export default function({navigation}) {
                     value={_shoeSize.toString()} 
                     onChangeText={(text) => {setShoe(text)}}  />
 
-                <InputField 
+                {/* <InputField 
                     label="Shirt Size" 
                     autoCapitalize="words" 
                     value={_shirtSize.toString()} 
-                    onChangeText={(text) => {setShirt(text)}}  />
+                    onChangeText={(text) => {setShirt(text)}}  /> */}
+                <View style={{zIndex: 5}}>
+                    <Text style={{fontSize: 16, marginBottom: 5, fontWeight: '500'}}>Shirt Size</Text>
+                    <View style={{zIndex: 10, marginBottom: 10}}>
+                        <Dropdown options={shirtSizes} size="xlarge" set_us_state={setShirt}/>
+                    </View>
+                </View>
                 </View>
                 {_errors}
 

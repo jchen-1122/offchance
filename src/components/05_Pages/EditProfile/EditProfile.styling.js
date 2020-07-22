@@ -13,6 +13,9 @@ const styles = StyleSheet.create({
         fontWeight: '300', 
         fontSize: 17, 
         marginBottom: Dimensions.get('window').height * 0.03
+    },
+    inputs: {
+        marginLeft: Dimensions.get('window').width * 0.08
     }
 
 })
