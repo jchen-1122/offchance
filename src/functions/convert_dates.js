@@ -19,6 +19,18 @@ export function unix_to_date(unix_timestamp){
     return str
 }
 
+export function in_a_day(unix_timestamp){
+
+    var date = new Date(unix_timestamp * 1000); // convert to date object
+    var diff = date.getTime() - Date.now() // calc time until date
+
+    // check if its 24 hours away
+    if (diff < (24*3.6*Math.pow(10,6))){
+        return true;
+    }
+    return false;
+}
+
 export function is_expired(unix_timestamp){
     let expired = false
     var date = (new Date(unix_timestamp * 1000)).getTime(); // convert to date in ms

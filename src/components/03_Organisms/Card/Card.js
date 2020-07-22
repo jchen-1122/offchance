@@ -10,7 +10,7 @@ import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import CardBanner from '../../01_Atoms/CardBanner/CardBanner';
 import EnteredUsersDisplay from '../../01_Atoms/EnteredUsersDisplay/EnteredUsersDisplay';
 import {colors, fonts, utilities, dimensions} from '../../../settings/all_settings';
-import {unix_to_date, is_expired} from '../../../functions/convert_dates';
+import {in_a_day, is_expired} from '../../../functions/convert_dates';
 import { top5_raffle } from '../../../functions/explore_functions';
 
 function Card ({ navigation, data, onPress }) {
@@ -48,6 +48,7 @@ function Card ({ navigation, data, onPress }) {
         imageURI = data.images[0]
         date = data.startTime
         expired = is_expired(data.startTime)
+        today = in_a_day(data.startTime)
         type = typeMap.get(data.type)
         donationGoal = (data.donationGoal) ? data.donationGoal : null,
         enteredUsers = data.users.children
@@ -73,10 +74,11 @@ function Card ({ navigation, data, onPress }) {
             }
             startData = (
                 <View>
-                    <Text style={[styles.startData_grey,fonts.p]}>
-                        {(expired) ? 'DRAWING STARTED' : 'DRAWING STARTS ONCE TIMER REACHES 0 OR DONATION GOAL IS MET'}   
+                    <Text style={{marginTop: 15}}>
+                        {(expired) ? <Text style={[styles.grey_text,fonts.p]}>DRAWING STARTED</Text> : (today ? <Text style={[styles.startData_grey,fonts.p]}>DRAWING STARTS IN </Text> : <Text style={[styles.startData_grey,fonts.p]}>DRAWING STARTS AT </Text>)}   
+                        {!expired && <Countdown unix_timestamp={date}/>}
                     </Text>
-                    <Countdown unix_timestamp={date}/>
+                    {!expired && <Text style={[styles.grey_text,fonts.p]}>OR WHEN DONATION GOAL IS MET</Text>}
                 </View>);
             break;
         // enter to buy drawings

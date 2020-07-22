@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {  View, Text, StyleSheet } from 'react-native';
 
-const Countdown = ({ unix_timestamp }) => {
+const Countdown = ({ unix_timestamp, type }) => {
     // initialize timeLeft with the seconds prop
 
     const monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];

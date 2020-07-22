@@ -33,6 +33,10 @@ const styles = StyleSheet.create({
         color: '#989898',
         marginTop: 15
     },
+    grey_text: {
+        fontSize: 14,
+        color: '#989898'
+    },
     freeDraw_date: {
         fontWeight: 'bold'
     },
