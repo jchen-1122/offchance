@@ -25,11 +25,13 @@ function BlockButton(props){
             break;
         case "facebook":
             buttonStyle.push(styles.BlockButton_facebook);
+            buttonTitleStyle=[styles.BlockButton__title_tertiary];
             icon = <SocialIcon type='facebook' raised={false} iconStyle={styles.icon} style={styles.iconBg} iconSize={30}/>
             break;
-        case "instagram":
+        case "google":
             buttonStyle.push(styles.BlockButton_insta);
-            icon = <SocialIcon type='instagram' raised={false} iconStyle={styles.icon} style={styles.iconBg} iconSize={30}/>
+            buttonTitleStyle=[styles.BlockButton__title_tertiary];
+            icon = <SocialIcon type='google' raised={false} iconStyle={styles.icon} style={styles.iconBg} iconSize={30}/>
             break;
         case "transparent":
             buttonStyle = [styles.BlockButton_transparent];

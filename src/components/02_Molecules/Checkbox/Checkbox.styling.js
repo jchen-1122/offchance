@@ -4,18 +4,14 @@ import {dimensions} from '../../../settings/all_settings.js';
 const styles = StyleSheet.create({
     checkBox: {
         flex: 1,
-        flexWrap: 'wrap',
         flexDirection: 'row',
-        width: dimensions.width,
+        width: '100%',
         marginTop: 5,
-        marginBottom: 5
-
-    },
-    checkBox__icon: {
-        backgroundColor: 'red',
+        alignItems: 'center'
     },
     checkBox__text: {
-        width: '90%'
+        width: '93%',
+        fontSize: 12,
     }
 })
 

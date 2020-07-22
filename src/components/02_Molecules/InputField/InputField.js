@@ -18,7 +18,7 @@ function InputField(props){
     let icon = (props.tooltip) ? (<Tooltip label={<Icon name='info'/>} content={props.tooltipContent}/>) : null;
 
     return (
-        <View style={styles.InputField}>
+        <View style={[styles.InputField, props.style]}>
             <View style={styles.InputField__labelContainer}>
                 <Text style={styles.InputField__label}>
                     {props.label} {(props.required) ? <Text style={{color: 'red'}}>*</Text> : null}
