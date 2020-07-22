@@ -31,6 +31,10 @@ function BlockButton(props){
             buttonStyle.push(styles.BlockButton_insta);
             icon = <SocialIcon type='instagram' raised={false} iconStyle={styles.icon} style={styles.iconBg} iconSize={30}/>
             break;
+        case "transparent":
+            buttonStyle = [styles.BlockButton_transparent];
+            buttonTitleStyle=[styles.BlockButton__title_transparent];
+            break;
     }
 
     // determing what size (large by default)

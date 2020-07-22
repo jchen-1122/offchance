@@ -5,8 +5,10 @@ import { fonts } from '../../../settings/all_settings'
 
 function Top5Donors({ images, account }) {
     let donors = [];
-    for (var i=0; i<5; i++){
-        donors.push(<Image source={images[i]} style={styles.donor} />)
+    if (images){
+        for (var i=0; i<5; i++){
+            donors.push(<Image source={{uri:images[i]}} style={styles.donor} />)
+        }
     }
     
     return (

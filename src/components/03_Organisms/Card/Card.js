@@ -10,18 +10,20 @@ import CardBanner from '../../01_Atoms/CardBanner/CardBanner';
 import EnteredUsersDisplay from '../../01_Atoms/EnteredUsersDisplay/EnteredUsersDisplay';
 import {colors, fonts, utilities, dimensions} from '../../../settings/all_settings';
 import {unix_to_date, is_expired} from '../../../functions/convert_dates';
+import { top5_raffle } from '../../../functions/explore_functions';
 
-function Card ({ navigation, data, onPress, host }) {
+function Card ({ navigation, data, onPress }) {
     const ip = require('../../IP_ADDRESS.json');
-    const [user, setUser] = useState(null)
+    const [host, setHost] = useState(null)
 
     React.useEffect(() => {
         async function getHost() {
           let response = await fetch('http://'+ip.ipAddress+':3000/user/id/' + data.hostedBy)
           response = await response.json()
-          setUser(response)
+          setHost(response)
         }
         getHost()
+
       }, [])
     
     // width for card content
@@ -29,9 +31,8 @@ function Card ({ navigation, data, onPress, host }) {
 
     // maps numerical types to actual types of cards
     let typeMap = new Map()
-    typeMap.set(1, 'default') // donation goal
-    typeMap.set(2, 'default') // set time
-    typeMap.set(3, 'buy') // enter to buy
+    typeMap.set(1, 'default') // donate to enter
+    typeMap.set(2, 'buy') // enter to buy
 
     // get fields from data passed in from fetch
     let title;
@@ -40,21 +41,23 @@ function Card ({ navigation, data, onPress, host }) {
     let type;
     let expired;
     let donationGoal;
+    let enteredUsers;
     if (data){
         title = data.name
         imageURI = data.images[0]
         date = unix_to_date(data.startTime)
         expired = is_expired(data.startTime)
         type = typeMap.get(data.type)
-        donationGoal = (data.donationGoal) ? data.donationGoal : null
+        donationGoal = (data.donationGoal) ? data.donationGoal : null,
+        enteredUsers = data.users.children
     }
-
+    
     // set default values for card
     let startData = null;
     let like = null;
     let pgBar = null;
     let button = <BlockButton title='Enter Drawing' color="primary" onPress={() => navigation.navigate('Raffle', data)}/>;
-    let friendsEntered = <EnteredUsersDisplay navigation={navigation}/>
+    let friendsEntered = <EnteredUsersDisplay enteredUsers={enteredUsers} navigation={navigation}/>
 
     // CHECK WHAT TYPE OF CARD--------------------------------------------------------------
     switch(type){
@@ -113,18 +116,24 @@ function Card ({ navigation, data, onPress, host }) {
     //if (host) {
     //    username = <UsernameDisplay username={host.name} profPic={host.pic} size='hostedBy'/>
     //}
-    if (user) {
-        username = <UsernameDisplay username={user.username} profPic={{uri: user.profilePicture}} size='hostedBy'/>
+    if (host) {
+        username = <UsernameDisplay username={host.username} profPic={{uri: host.profilePicture}} size='hostedBy'/>
     }
 
     return (
           <ScrollView style={[styles.card]}>
               {like}
               <View style={styles.itemDesc}>
-                <Image style={styles.image} source={{uri: imageURI}}/>
+                <Image style={styles.image} source={{uri: imageURI}} onPress={() => {
+                }}/>
                 <View style={{flex: 1, width: contentWidth}}>
                     <Text style={[fonts.h1,{textAlign: 'center'}]}>{title}</Text>
-                    {username}
+                    <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate('OtherUser', {user: host})
+                    }}>
+                        {username}
+                    </TouchableOpacity>
                     {friendsEntered}
                     {startData}
                 </View>

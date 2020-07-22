@@ -1,18 +1,20 @@
-import React, {useState}from 'react'
+import React, {useState, useContext}from 'react'
 import { View, ScrollView, Text, Image } from 'react-native'
 import {colors, fonts, utilities} from '../../../settings/all_settings'
 import StatsBar from '../../02_Molecules/StatsBar/StatsBar'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
 import {styles} from './OtherUser.styling'
+import GlobalState from '../../globalState'
 
 export default function OtherUser({navigation, route})  {
-    const [follow, setFollow] = useState(!route.params.currUser.following.includes(route.params.user._id))
+    const {user, setUser} = useContext(GlobalState)
+    const [follow, setFollow] = useState(user.following != null && !user.following.includes(route.params.user._id))
     const addFollower = async () => {
         const data = require('../../IP_ADDRESS.json')
-        if (route.params.currUser.following.includes(route.params.user._id)) {
+        if (user.following.includes(route.params.user._id)) {
             return
         }
-        const response = await fetch('http://'+data.ipAddress+':3000/user/edit/'+route.params.currUser._id,{
+        const response = await fetch('http://'+data.ipAddress+':3000/user/edit/'+user._id,{
           method: "PATCH",
           headers: {
             'Accept': 'application/json',
@@ -26,10 +28,10 @@ export default function OtherUser({navigation, route})  {
 
     const removeFollower = async () => {
         const data = require('../../IP_ADDRESS.json')
-        if (!route.params.currUser.following.includes(route.params.user._id)) {
+        if (!user.following.includes(route.params.user._id)) {
             return
         }
-        const response = await fetch('http://'+data.ipAddress+':3000/user/edit/'+route.params.currUser._id,{
+        const response = await fetch('http://'+data.ipAddress+':3000/user/edit/'+user._id,{
           method: "PATCH",
           headers: {
             'Accept': 'application/json',
@@ -42,7 +44,7 @@ export default function OtherUser({navigation, route})  {
     }
 
     const makeAddJSON = () => {
-        let prevFollowing = route.params.currUser.following
+        let prevFollowing = user.following
         prevFollowing.push(route.params.user._id)
         console.log(prevFollowing)
         let data = {
@@ -52,7 +54,7 @@ export default function OtherUser({navigation, route})  {
     }
 
     const makeDeleteJSON = () => {
-        let prevFollowing = route.params.currUser.following
+        let prevFollowing = user.following
         for(var i = prevFollowing.length - 1; i >= 0; i--) {
             if(prevFollowing[i] === route.params.user._id) {
                 prevFollowing.splice(i, 1);
@@ -68,18 +70,19 @@ export default function OtherUser({navigation, route})  {
     return (
         <View style={utilities.container}>
             <ScrollView>
-                <Image source={{uri:route.params.user.profilePic}} style={styles.profilePic}></Image>
+                <Image source={{uri:route.params.user.profilePicture}} style={styles.profilePic}></Image>
                 <Text style={styles.header_name}>{route.params.user.name}</Text>
                 <Text style={styles.header_username}>@{route.params.user.username}</Text>
 
-                <StatsBar currUser={route.params.currUser} followers={route.params.user.followers} following={route.params.user.following} enteredRaffles={route.params.user.enteredRaffles} navigation={navigation}></StatsBar>
+                <StatsBar currUser={user} followers={route.params.user.followers} following={route.params.user.following} enteredRaffles={route.params.user.enteredRaffles} navigation={navigation}></StatsBar>
                 
-                {follow ? <View style={styles.followButton}>
+                {user._id == null ? null : follow ? <View style={styles.followButton}>
                     <BlockButton
                     title="FOLLOW"
                     color="secondary"
                     onPress={async () => {
-                        await addFollower()
+                        const updatedObj = await addFollower()
+                        setUser(updatedObj)
                         setFollow(false)
                     }}
                     ></BlockButton>
@@ -89,7 +92,8 @@ export default function OtherUser({navigation, route})  {
                     title="FOLLOWED"
                     color="primary"
                     onPress={async () => {
-                        await removeFollower()
+                        const updatedObj = await removeFollower()
+                        setUser(updatedObj)
                         setFollow(true)
                     }}
                     ></BlockButton>
