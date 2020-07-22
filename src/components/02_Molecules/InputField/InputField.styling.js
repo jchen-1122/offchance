@@ -30,7 +30,8 @@ const styles = StyleSheet.create({
 
     InputField__label: {
         fontSize: 16,
-        marginBottom: 5
+        marginBottom: 5,
+        fontWeight: '500', 
     }
 
 })

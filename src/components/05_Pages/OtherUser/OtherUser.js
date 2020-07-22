@@ -23,6 +23,16 @@ export default function OtherUser({navigation, route})  {
           body: makeAddJSON()
         })
         const json = await response.json()
+
+        // followed user "follower" count also increases
+        const response2 = await fetch('http://'+data.ipAddress+':3000/user/edit/'+route.params.user._id,{
+          method: "PATCH",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },  
+          body: makeAddJSON2()
+        })
         return json
     }
 
@@ -40,6 +50,16 @@ export default function OtherUser({navigation, route})  {
           body: makeDeleteJSON()
         })
         const json = await response.json()
+
+        // followed user "follower" count also decreases
+        const response2 = await fetch('http://'+data.ipAddress+':3000/user/edit/'+route.params.user._id,{
+          method: "PATCH",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },  
+          body: makeDeleteJSON2()
+        })
         return json
     }
 
@@ -53,6 +73,20 @@ export default function OtherUser({navigation, route})  {
         return JSON.stringify(data)
     }
 
+    // followed user "follower" count also increases
+    const makeAddJSON2 = () => {
+        let prevFollowing = route.params.user.followers
+        if (route.params.user.followers.includes(user._id)) {
+            return JSON.stringify(prevFollowing)
+        }
+        prevFollowing.push(user._id)
+        let data = {
+            followers: prevFollowing
+        }
+        return JSON.stringify(data)
+    }
+
+
     const makeDeleteJSON = () => {
         let prevFollowing = user.following
         for(var i = prevFollowing.length - 1; i >= 0; i--) {
@@ -60,9 +94,22 @@ export default function OtherUser({navigation, route})  {
                 prevFollowing.splice(i, 1);
             }
         }
-        console.log(prevFollowing)
         let data = {
             following: prevFollowing
+        }
+        return JSON.stringify(data)
+    }
+
+    // followed user "follower" count also increases
+    const makeDeleteJSON2 = () => {
+        let prevFollowing = route.params.user.followers
+        for(var i = prevFollowing.length - 1; i >= 0; i--) {
+            if(prevFollowing[i] === user._id) {
+                prevFollowing.splice(i, 1);
+            }
+        }
+        let data = {
+            followers: prevFollowing
         }
         return JSON.stringify(data)
     }

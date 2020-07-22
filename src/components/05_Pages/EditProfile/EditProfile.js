@@ -1,10 +1,11 @@
 import React, {useState, useContext} from 'react'
-import {ScrollView, View, Text} from 'react-native'
+import {ScrollView, View, Text, Image} from 'react-native'
 import InputField from '../../02_Molecules/InputField/InputField'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import validator from 'validator'
 import {colors, fonts, utilities, dimensions} from '../../../settings/all_settings';
 import GlobalState from '../../globalState'
+import {styles} from './EditProfile.styling'
 
 export default function({navigation}) {
     const {user, setUser} = useContext(GlobalState)
@@ -69,7 +70,7 @@ export default function({navigation}) {
     return (
         <ScrollView>
             <View>
-                <Text>Edit Profile</Text>
+                <Image source={{uri:user.profilePicture}} style={styles.profilePic}></Image>
 
                 <InputField 
                     label="Name" 

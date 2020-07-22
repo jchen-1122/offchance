@@ -26,7 +26,7 @@ function Profile({navigation}) {
     } else {
         name = user.name
         username = user.username
-        profilePic = "https://i.pinimg.com/originals/dc/24/88/dc2488feb2d6dc4750a95a1f715c67d8.jpg"
+        profilePic = user.profilePicture
         email = user.email
         followers = user.followers
         following = user.following
