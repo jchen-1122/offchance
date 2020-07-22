@@ -13,7 +13,6 @@ import validator from 'validator'
 
 export default function Login({ navigation, route }) {
   const data = require('../../../IP_ADDRESS.json');
-
   const loginUser = async () => {
     const response = await fetch('http://'+data.ipAddress+':3000/user/login',{
       method: "POST",
@@ -103,7 +102,7 @@ export default function Login({ navigation, route }) {
       {/* TODO: Links to Home (no home page currently, button is not functional) */}
       <BlockButton 
         title="LOG IN" 
-        color="primary"
+        color="secondary"
         onPress={async () => {
           if (!generateErrors()) {
             const userObj = await loginUser()

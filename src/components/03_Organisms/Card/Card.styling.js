@@ -10,7 +10,6 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width * 0.85,
         borderRadius: borderRadius,
         flex: 0,
-        flexDirection:'row',
         margin: 15,
         paddingBottom: 15
     },
@@ -22,7 +21,7 @@ const styles = StyleSheet.create({
     itemDesc: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     image: {
         height: imageDimensions,

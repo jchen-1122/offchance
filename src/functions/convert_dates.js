@@ -18,3 +18,12 @@ export function unix_to_date(unix_timestamp){
     }
     return str
 }
+
+export function is_expired(unix_timestamp){
+    let expired = false
+    var date = (new Date(unix_timestamp * 1000)).getTime(); // convert to date in ms
+    if (Date.now() > date){
+        expired = true
+    }
+    return expired
+}

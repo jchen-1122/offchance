@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image } from 'react-native';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import TextLink from '../../01_Atoms/Buttons/TextLinks/TextLinks';
@@ -15,18 +15,18 @@ export default function HomeScreen({ navigation }) {
     .then((data) => console.log(data))
     .catch((e) => console.log(e))
   }, [])
-  
+
   return (
     <View style={[utilities.flexCenter, styles.container]}>
       {/* TODO: image should be aligned closer to the top */}
       <Image style={styles.logo} source={require('../../../../assets/images/logo.png')}/>
       <Text style={[fonts.h1, {textAlign: 'center', marginBottom: 15}]}>Limited Flash-Drawings for Collectibles</Text>
       <Text style={fonts.p}>Donate to Make Change and Win.</Text>
-      
+
       {/* Links to Signup */}
-      <BlockButton 
-        title="SIGN UP" 
-        color="primary"
+      <BlockButton
+        title="SIGN UP FOR 5 FREE CHANCES"
+        color="secondary"
         onPress={() => navigation.navigate('Signup')}/>
 
       <View style={{flexDirection: 'row'}}>

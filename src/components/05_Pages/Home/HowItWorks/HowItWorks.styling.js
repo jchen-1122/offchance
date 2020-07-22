@@ -3,8 +3,9 @@ import {dimensions} from '../../../../settings/all_settings';
 
 const styles = StyleSheet.create({
    content: {
-       paddingLeft: '8%',
-       paddingRight: '8%',
+       marginLeft: '8%',
+       marginRight: '8%',
+       alignItems: 'center'
    },
    subView: {
     position: "absolute",
@@ -13,17 +14,7 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: "#FFFFFF",
     height: 100,
-  },
-
-  pickSize: {
-    flex: 0, 
-    flexDirection:'row', 
-    alignItems: 'center', 
-    justifyContent: 'space-between', 
-    marginTop: 15, 
-    marginBottom: 15,
-    zIndex: 2
-  },
+  }
 
 })
 
