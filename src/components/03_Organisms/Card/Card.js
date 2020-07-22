@@ -12,7 +12,7 @@ import {colors, fonts, utilities, dimensions} from '../../../settings/all_settin
 import {unix_to_date, is_expired} from '../../../functions/convert_dates';
 import { top5_raffle } from '../../../functions/explore_functions';
 
-function Card ({ navigation, data, onPress }) {
+function Card ({ navigation, data, viewType }) {
     const ip = require('../../IP_ADDRESS.json');
     const [host, setHost] = useState(null)
 
@@ -63,7 +63,11 @@ function Card ({ navigation, data, onPress }) {
     switch(type){
         // default is the regular card as seen in 'Home (free drawing)' in Figma
         case 'default':
-            like = <View style={styles.likeButton}><LikeButton /></View>;
+            like = (
+                <View style={styles.likeButton}>
+                    {(viewType==0)?<CardBanner title='MANY CHANCES TO WIN' color='lightGreen'/>:null}
+                    <LikeButton />
+                </View>);
             if (donationGoal){
                 pgBar = 
                 <View style={{marginTop: 15}}>
@@ -82,7 +86,7 @@ function Card ({ navigation, data, onPress }) {
         case 'buy':
             like = (
                 <View style={styles.likeButton}>
-                    <CardBanner title='ENTER TO BUY' color='green' icon='usd'/>
+                    {(viewType==0)?<CardBanner title='ENTER TO BUY' color='darkGreen' icon='usd'/>:null}
                     <LikeButton />
                 </View>);
             startData = (<View><Text style={[styles.startData_grey,fonts.p]}>{expired ? 'DRAWING STARTED' : 'DRAWING STARTS'}</Text><Text style={styles.freeDraw_date}>{date}</Text></View>);
