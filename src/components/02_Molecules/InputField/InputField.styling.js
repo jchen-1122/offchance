@@ -4,23 +4,25 @@ import {colors} from "../../../settings/colors";
 const styles = StyleSheet.create({
     // container for label and box
     InputField: {
-        marginTop: 12,
-        marginBottom: 12
+        marginTop: 10,
+        marginBottom: 10,
+        alignItems: 'center',
+        width: '90%',
     },
 
     InputField__labelContainer: {
         flex: 0, 
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        width: '100%'
     },
     
     InputField__box: {
         height: 45,
-        width: 300,
+        width: '100%',
         backgroundColor: 'white',
         borderColor: '#CCCCCC',
-        borderWidth: 2,
-        borderRadius: 10,
+        borderWidth: 1,
         padding: 5
     },
     // if input is a textArea (multiple lines)
