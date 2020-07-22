@@ -13,9 +13,9 @@ function TopNav(props) {
             <Button style={props.active == 'Your Feed' ? styles.active : null} onPress={() => props.navigation.navigate('YourFeed')}>
               <Text>Your Feed</Text>
             </Button>
-            <Button style={props.active == 'Explore' ? styles.active : null} onPress={() => props.navigation.navigate('Explore')}>
+            {/* <Button style={props.active == 'Explore' ? styles.active : null} onPress={() => props.navigation.navigate('Explore')}>
               <Text>Explore</Text>
-            </Button>
+            </Button> */}
           </FooterTab>
         </Footer>
       </View>
