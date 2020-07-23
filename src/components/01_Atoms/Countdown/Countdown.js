@@ -36,7 +36,7 @@ const Countdown = ({ unix_timestamp, type }) => {
     }, [timeLeft]);
   
     return (
-        <Text style={{fontWeight: 'bold'}}>{Math.floor((timeLeft / (1000 * 60 * 60)) % 24)}h {Math.floor((timeLeft / (1000 * 60)) % 60)}m {Math.floor((timeLeft / 1000) % 60)}s</Text>
+        (timeLeft <= 0) ? <Text>EXPIRED</Text> : <Text style={{fontWeight: 'bold'}}>{Math.floor((timeLeft / (1000 * 60 * 60)) % 24)}h {Math.floor((timeLeft / (1000 * 60)) % 60)}m {Math.floor((timeLeft / 1000) % 60)}s</Text>
     );
   };
 
