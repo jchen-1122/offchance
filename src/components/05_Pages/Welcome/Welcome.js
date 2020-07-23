@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, ImageBackground } from 'react-native';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import TextLink from '../../01_Atoms/Buttons/TextLinks/TextLinks';
 import {styles} from './Welcome.styling';
@@ -16,32 +16,39 @@ export default function HomeScreen({ navigation }) {
     .catch((e) => console.log(e))
   }, [])
 
+  var image = require('../../../../assets/images/background.jpg')
+
   return (
-    <View style={[utilities.flexCenter, styles.container]}>
-      {/* TODO: image should be aligned closer to the top */}
-      <Image style={styles.logo} source={require('../../../../assets/images/logo.png')}/>
-      <Text style={[fonts.h1, {textAlign: 'center', marginBottom: 15}]}>Limited Flash-Drawings for Collectibles</Text>
-      <Text style={fonts.p}>Donate to Make Change and Win.</Text>
+      <ImageBackground source={image} style={styles.image} imageStyle= {{opacity:0.5}}>
+          <View style={[utilities.flexCenter, styles.container]}>
 
-      {/* Links to Signup */}
-      <BlockButton
-        title="SIGN UP FOR 5 FREE CHANCES"
-        color="secondary"
-        onPress={() => navigation.navigate('Signup')}/>
+                  {/* TODO: image should be aligned closer to the top */}
+                  <Image style={styles.logo} source={require('../../../../assets/images/logo2.png')}/>
+                  <Text style={[fonts.h1, {textAlign: 'center', marginBottom: 15}]}>Limited Flash-Drawings for Collectibles</Text>
+                  <Text style={fonts.p}>Donate to Make Change and Win.</Text>
 
-      <View style={{flexDirection: 'row'}}>
-        {/* Links to Login */}
-        <TextLink
-          title="Log in"
-          style={fonts.link}
-          onPress={() => navigation.navigate('Login', { reset: false })}/>
-        {/* TODO: Links to Explore (no explore page currently, button is not functional) */}
-        <Text> or</Text>
-        <TextLink
-          title="Start Exploring"
-          style={fonts.link}
-          onPress={() => navigation.navigate('Home')}/>
-      </View>
-    </View>
+                  {/* Links to Signup */}
+                  <BlockButton
+                    title="SIGN UP FOR 5 FREE CHANCES"
+                    color="secondary"
+                    onPress={() => navigation.navigate('Signup')}/>
+
+                  <View style={{flexDirection: 'row'}}>
+                    {/* Links to Login */}
+                    <TextLink
+                      title="Log in"
+                      style={fonts.link}
+                      onPress={() => navigation.navigate('Login', { reset: false })}/>
+                    {/* TODO: Links to Explore (no explore page currently, button is not functional) */}
+                    <Text> or</Text>
+                    <TextLink
+                      title="Start Exploring"
+                      style={fonts.link}
+                      onPress={() => navigation.navigate('Home')}/>
+                  </View>
+
+          </View>
+      </ImageBackground>
+
   );
 }
