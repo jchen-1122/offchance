@@ -6,7 +6,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     DropDown__picker: {
-        height: 40,
+        height: 45,
+        zIndex: 1,
     },
     DropDown__picker_small: {
         width: 75,

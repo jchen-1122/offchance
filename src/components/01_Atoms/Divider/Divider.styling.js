@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     // actual line
     Divider__line: {
         height: 2,
-        width: 125,
+        width: '38.5%',
         borderWidth: 1,
         borderColor: colors.darkGray,
         marginLeft: 10,

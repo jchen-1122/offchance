@@ -5,23 +5,26 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import ProgressBar from '../../02_Molecules/ProgressBar/ProgressBar';
 import LikeButton from '../../01_Atoms/Buttons/LikeButton/LikeButton';
 import UsernameDisplay from '../../01_Atoms/UsernameDisplay/UsernameDisplay';
+import Countdown from '../../01_Atoms/Countdown/Countdown';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import CardBanner from '../../01_Atoms/CardBanner/CardBanner';
 import EnteredUsersDisplay from '../../01_Atoms/EnteredUsersDisplay/EnteredUsersDisplay';
 import {colors, fonts, utilities, dimensions} from '../../../settings/all_settings';
-import {unix_to_date, is_expired} from '../../../functions/convert_dates';
+import {in_a_day, is_expired} from '../../../functions/convert_dates';
+import { top5_raffle } from '../../../functions/explore_functions';
 
-function Card ({ navigation, data, onPress, host }) {
+function Card ({ navigation, data, viewType }) {
     const ip = require('../../IP_ADDRESS.json');
-    const [user, setUser] = useState(null)
+    const [host, setHost] = useState(null)
 
     React.useEffect(() => {
         async function getHost() {
           let response = await fetch('http://'+ip.ipAddress+':3000/user/id/' + data.hostedBy)
           response = await response.json()
-          setUser(response)
+          setHost(response)
         }
         getHost()
+
       }, [])
     
     // width for card content
@@ -29,9 +32,8 @@ function Card ({ navigation, data, onPress, host }) {
 
     // maps numerical types to actual types of cards
     let typeMap = new Map()
-    typeMap.set(1, 'default') // donation goal
-    typeMap.set(2, 'default') // set time
-    typeMap.set(3, 'buy') // enter to buy
+    typeMap.set(1, 'default') // donate to enter
+    typeMap.set(2, 'buy') // enter to buy
 
     // get fields from data passed in from fetch
     let title;
@@ -40,27 +42,34 @@ function Card ({ navigation, data, onPress, host }) {
     let type;
     let expired;
     let donationGoal;
+    let enteredUsers;
     if (data){
         title = data.name
         imageURI = data.images[0]
-        date = unix_to_date(data.startTime)
+        date = data.startTime
         expired = is_expired(data.startTime)
+        today = in_a_day(data.startTime)
         type = typeMap.get(data.type)
-        donationGoal = (data.donationGoal) ? data.donationGoal : null
+        donationGoal = (data.donationGoal) ? data.donationGoal : null,
+        enteredUsers = data.users.children
     }
-
+    
     // set default values for card
     let startData = null;
     let like = null;
     let pgBar = null;
     let button = <BlockButton title='Enter Drawing' color="primary" onPress={() => navigation.navigate('Raffle', data)}/>;
-    let friendsEntered = <EnteredUsersDisplay navigation={navigation}/>
+    let friendsEntered = <EnteredUsersDisplay enteredUsers={enteredUsers} navigation={navigation}/>
 
     // CHECK WHAT TYPE OF CARD--------------------------------------------------------------
     switch(type){
         // default is the regular card as seen in 'Home (free drawing)' in Figma
         case 'default':
-            like = <View style={styles.likeButton}><LikeButton /></View>;
+            like = (
+                <View style={styles.likeButton}>
+                    {(viewType==0)?<CardBanner title='MANY CHANCES TO WIN' color='lightGreen'/>:null}
+                    <LikeButton />
+                </View>);
             if (donationGoal){
                 pgBar = 
                 <View style={{marginTop: 15}}>
@@ -69,27 +78,28 @@ function Card ({ navigation, data, onPress, host }) {
             }
             startData = (
                 <View>
-                    <Text style={[styles.startData_grey,fonts.p]}>
-                        {(expired) ? 'DRAWING STARTED' : 'DRAWING STARTS ONCE TIMER REACHES 0 OR DONATION GOAL IS MET'}   
+                    <Text style={{marginTop: 15}}>
+                        {(expired) ? <Text style={[styles.grey_text,fonts.p]}>DRAWING STARTED</Text> : (today ? <Text style={[styles.startData_grey,fonts.p]}>DRAWING STARTS IN </Text> : <Text style={[styles.startData_grey,fonts.p]}>DRAWING STARTS AT </Text>)}   
+                        {!expired && <Countdown unix_timestamp={date}/>}
                     </Text>
-                    <Text style={styles.freeDraw_date}>{date}</Text>
+                    {!expired && <Text style={[styles.grey_text,fonts.p]}>OR WHEN DONATION GOAL IS MET</Text>}
                 </View>);
             break;
         // enter to buy drawings
         case 'buy':
             like = (
                 <View style={styles.likeButton}>
-                    <CardBanner title='ENTER TO BUY' color='green' icon='usd'/>
+                    {(viewType==0)?<CardBanner title='ENTER TO BUY' color='darkGreen' icon='usd'/>:null}
                     <LikeButton />
                 </View>);
-            startData = (<View><Text style={[styles.startData_grey,fonts.p]}>{expired ? 'DRAWING STARTED' : 'DRAWING STARTS'}</Text><Text style={styles.freeDraw_date}>{date}</Text></View>);
+            startData = (<View><Text style={[styles.startData_grey,fonts.p]}>{expired ? 'DRAWING STARTED' : 'DRAWING STARTS'}</Text><Countdown unix_timestamp={date}/></View>);
             break;
         // for upcoming 4 raffles
         case 'upcoming':
             like = <View style={styles.upcoming_placeholder} />
             friendsEntered = null;
             button = <TouchableOpacity style={styles.upcoming_notifyMe} onPress={() => navigation.navigate('Raffle')}><Text>NOTIFY ME</Text></TouchableOpacity>;
-            startData = <View><Text style={[styles.startData_grey,fonts.p]} >DRAWING STARTS</Text><Text style={styles.freeDraw_date}>{date}</Text></View>;
+            startData = <View><Text style={[styles.startData_grey,fonts.p]} >DRAWING STARTS</Text><Countdown unix_timestamp={date}/></View>;
             break;
         // for simplified cards in your feed
         case 'notification':
@@ -113,18 +123,24 @@ function Card ({ navigation, data, onPress, host }) {
     //if (host) {
     //    username = <UsernameDisplay username={host.name} profPic={host.pic} size='hostedBy'/>
     //}
-    if (user) {
-        username = <UsernameDisplay username={user.username} profPic={{uri: user.profilePicture}} size='hostedBy'/>
+    if (host) {
+        username = <UsernameDisplay username={host.username} profPic={{uri: host.profilePicture}} size='hostedBy'/>
     }
 
     return (
           <ScrollView style={[styles.card]}>
               {like}
               <View style={styles.itemDesc}>
-                <Image style={styles.image} source={{uri: imageURI}}/>
+                <Image style={styles.image} source={{uri: imageURI}} onPress={() => {
+                }}/>
                 <View style={{flex: 1, width: contentWidth}}>
                     <Text style={[fonts.h1,{textAlign: 'center'}]}>{title}</Text>
-                    {username}
+                    <TouchableOpacity
+                    onPress={() => {
+                        navigation.navigate('OtherUser', {user: host})
+                    }}>
+                        {username}
+                    </TouchableOpacity>
                     {friendsEntered}
                     {startData}
                 </View>

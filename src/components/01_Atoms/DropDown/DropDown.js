@@ -25,6 +25,11 @@ function DropDown(props) {
             containerStyles.push(styles.DropDown__picker_large);
             break;
     }
+
+    const onChange = (item) =>{
+        setSelectedValue(item.value)
+        props.set_us_state(item.value)
+    }
     return (
         <View style={styles.DropDown}>
             <DropDownPicker

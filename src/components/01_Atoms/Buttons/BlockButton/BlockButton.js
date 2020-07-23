@@ -1,44 +1,50 @@
 // insta button + facebook button + login button
 
 import React from 'react';
-import {TouchableOpacity, Text} from 'react-native';
-import {styles} from "./BlockButton.styling";
+import { TouchableOpacity, Text } from 'react-native';
+import { styles } from "./BlockButton.styling";
 import { SocialIcon } from 'react-native-elements';
 
-function BlockButton(props){
+function BlockButton(props) {
 
     let icon; // for fb and insta
     let buttonStyle = [styles.BlockButton];
-    let buttonTitleStyle=[styles.BlockButton__title_primary];
+    let buttonTitleStyle = [styles.BlockButton__title_primary];
 
     // determine what kind/color of button it is
-    switch(props.color){
+    switch (props.color) {
         case "primary":
             buttonStyle.push(styles.BlockButton_primary);
             break;
         case "secondary":
             buttonStyle.push(styles.BlockButton_secondary);
-            buttonTitleStyle=[styles.BlockButton__title_secondary];
+            buttonTitleStyle = [styles.BlockButton__title_secondary];
+            break;
+        case "tertiary":
+            buttonStyle.push(styles.BlockButton_tertiary);
+            buttonTitleStyle = [styles.BlockButton__title_tertiary];
             break;
         case "highlight": // Off Chance Orange
             buttonStyle.push(styles.BlockButton_highlight);
             break;
         case "facebook":
             buttonStyle.push(styles.BlockButton_facebook);
+            buttonTitleStyle=[styles.BlockButton__title_tertiary];
             icon = <SocialIcon type='facebook' raised={false} iconStyle={styles.icon} style={styles.iconBg} iconSize={30}/>
             break;
-        case "instagram":
+        case "google":
             buttonStyle.push(styles.BlockButton_insta);
-            icon = <SocialIcon type='instagram' raised={false} iconStyle={styles.icon} style={styles.iconBg} iconSize={30}/>
+            buttonTitleStyle=[styles.BlockButton__title_tertiary];
+            icon = <SocialIcon type='google' raised={false} iconStyle={styles.icon} style={styles.iconBg} iconSize={30}/>
             break;
         case "transparent":
             buttonStyle = [styles.BlockButton_transparent];
-            buttonTitleStyle=[styles.BlockButton__title_transparent];
+            buttonTitleStyle = [styles.BlockButton__title_transparent];
             break;
     }
 
     // determing what size (large by default)
-    switch(props.size){
+    switch (props.size) {
         case "short":
             buttonStyle.push(styles.BlockButton_short);
             break;

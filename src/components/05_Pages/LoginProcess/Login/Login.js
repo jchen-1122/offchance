@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Component} from 'react';
+import React, {useState, useContext} from 'react';
 import {  View, Text, Linking, Dimensions } from 'react-native';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../../../01_Atoms/Divider/Divider.js';
@@ -10,8 +10,11 @@ import {fonts, utilities} from '../../../../settings/all_settings';
 import { styles } from '../../../01_Atoms/Buttons/BlockButton/BlockButton.styling';
 import { ScrollView } from 'react-native-gesture-handler';
 import validator from 'validator'
+import GlobalState from '../../../globalState'
 
 export default function Login({ navigation, route }) {
+  const {user, setUser} = useContext(GlobalState)
+
   const data = require('../../../IP_ADDRESS.json');
   const loginUser = async () => {
     const response = await fetch('http://'+data.ipAddress+':3000/user/login',{
@@ -72,8 +75,8 @@ export default function Login({ navigation, route }) {
         title="You have successfully signed up!" />}
       {/* TODO: need to implement OAUTH functionality (currently links to instagram) */}
       <BlockButton  
-        title="Log in With Instagram" 
-        color="instagram"
+        title="Log in With Google" 
+        color="google"
         onPress={() => Linking.openURL('https://www.instagram.com/')}/>
 
       {/* TODO: need to implement OAUTH functionality (currently links to facebook) */}
@@ -107,7 +110,8 @@ export default function Login({ navigation, route }) {
           if (!generateErrors()) {
             const userObj = await loginUser()
             if (userObj.error == null) {
-              navigation.navigate('Profile', userObj)
+              setUser(userObj)
+              navigation.navigate('Home')
             } else {
               let errors = []
               errors.push(<Text style={fonts.error}>Password is not valid</Text>)
