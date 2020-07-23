@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, BackHandler, Alert } from 'react-native';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import TextLink from '../../01_Atoms/Buttons/TextLinks/TextLinks';
 import {styles} from './Welcome.styling';
@@ -14,6 +14,25 @@ export default function HomeScreen({ navigation }) {
     .then((response) => response.json())
     .then((data) => console.log(data))
     .catch((e) => console.log(e))
+
+    // BACKHANDLING FOR ANDROID BOTTOM NAV
+    const backAction = () => {
+      Alert.alert("Hold on!", "Are you sure you want to exit the app?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel"
+        },
+        { text: "YES", onPress: () => BackHandler.exitApp() }
+      ]);
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
+    
   }, [])
 
   return (
