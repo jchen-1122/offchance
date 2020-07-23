@@ -12,6 +12,7 @@ import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import BuyOptions from '../../../02_Molecules/BuyOptions/BuyOptions'
 import CountDown from '../../../01_Atoms/Countdown/Countdown'
 import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
+import SizeCarousel from '../../../01_Atoms/SizeCarousel/SizeCarousel'
 import { unix_to_date, is_expired } from '../../../../functions/convert_dates';
 import { top5_raffle } from '../../../../functions/explore_functions';
 import GlobalState from '../../../globalState';
@@ -258,7 +259,7 @@ export default function Raffle({ navigation, route }) {
                         <View>
                             {/* !!!!!!!!!!!!! TODO: conditionally show progress bar !!!!!!!!!!!!!!*/}
                             <ProgressBar progress={230 / 500} color={colors.primaryColor} raised={230} goal={500} width={315} />
-
+                            <SizeCarousel></SizeCarousel>
                             <View style={styles.pickSize}>
                                 <Text>PICK YOUR SIZE</Text>
                                 {(sizeTypes.length > 0) ? <DropDown options={sizeTypes} size='small' /> : null}
