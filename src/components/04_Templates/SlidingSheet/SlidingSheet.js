@@ -52,7 +52,7 @@ function SlidingSheet(props) {
                           options={options1}
                           size='large'
                           arrowSize={18}
-                          zIndex={50000}
+                          zIndex={500000}
                           isVisible={false}
                           />
                     </View>

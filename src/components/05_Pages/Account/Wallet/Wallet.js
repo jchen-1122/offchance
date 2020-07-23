@@ -10,9 +10,6 @@ import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import { get_user } from '../../../fake_users/stub-users';
 import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
 
-import SlidingUpPanel from 'rn-sliding-up-panel';
-import SlidingPanel from 'react-native-sliding-up-down-panels';
-
 export default function Wallet({navigation}) {
 
   const [sheetOpen, setSheetOpen] = useState(false); // isHidden
