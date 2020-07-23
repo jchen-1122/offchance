@@ -262,6 +262,7 @@ export default function Raffle({ navigation, route }) {
 
                             <View style={styles.pickSizeSlide}>
                                 <Text>PICK YOUR SIZE</Text>
+                                <SizeCarousel sizes={sizeTypes}></SizeCarousel>
                                 <SizeCarousel sizes={sizes}></SizeCarousel>
                             </View> 
 

@@ -6,13 +6,20 @@ import styles from './SizeCarousel.styling'
 
 export default function SizeCarousel({sizes}) {
 
-    const [_selected, setSelected] = useState(-1)
+    const [_selected, setSelected] = useState([])
 
     const generateSizeCircle = (i) => {
         return (
             <TouchableHighlight onPress={() => {
-                setSelected(i)
-            }} underlayColor={colors.lightGreen} style={_selected === i ? styles.green_button : styles.white_button}>
+                let temp = _selected
+                const index = temp.indexOf(i);
+                if (index > -1) {
+                    temp.splice(index, 1);
+                } else {
+                    temp.push(i)
+                }
+                setSelected(temp)
+            }} underlayColor={colors.lightGreen} style={_selected.includes(i) ? styles.green_button : styles.white_button}>
                 <View >
                     <Text style={{textAlign: 'center', marginTop: 7}}>{sizes[i]}</Text>
                 </View>
@@ -21,7 +28,6 @@ export default function SizeCarousel({sizes}) {
     }
 
     let display = [];
-    const [color, setColor] = useState(new Array(sizes.length).fill('white'))
     if (sizes[0] != null){
         for (var i=0; i<sizes.length; i++){
             display.push(
