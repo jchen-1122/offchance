@@ -164,7 +164,7 @@ export default function Raffle({ navigation, route }) {
                 <Animated.View
                     style={[styles.subView,
                     { transform: [{ translateY: bounceValue }] }]}>
-                    <SlidingSheet title='Enter Drawing' context={['abc']} visible={sheetOpen} toggleSheet={toggleSheet} />
+                    <SlidingSheet title='Enter Drawing' content={['abc']} visible={sheetOpen} toggleSheet={toggleSheet} />
                 </Animated.View>
 
             </ScrollView>

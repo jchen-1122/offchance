@@ -32,10 +32,15 @@ function DropDown(props) {
                 multiple={false}
                 min={0}
                 max={10}
+                isVisible={props.isVisible}
+                arrowSize={props.arrowSize}
                 defaultValue={selectedValue}
                 containerStyle={containerStyles}
+                selectedLabelStyle={props.selectedLabelStyle}
+                zIndex={props.zIndex}
                 itemStyle={{
                     justifyContent: 'flex-start',
+
                 }}
                 onChangeItem={item => setSelectedValue(item.value)}
             />

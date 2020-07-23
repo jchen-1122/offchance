@@ -54,6 +54,8 @@ export default function Wallet({navigation}) {
     //     <Text>Hello from Overlay!</Text>
     // </Overlay>
 
+    let sizeTypes = ['W', 'M', 'Y'];
+
     return (
         <View style={containerStyle}>
 
@@ -84,7 +86,7 @@ export default function Wallet({navigation}) {
                 { transform: [{ translateY: bounceValue }] }]}>
                     <SlidingSheet
                     title='Add Chances'
-                    content={['Wallet Balance', 'Reload Source', ]}
+                    content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
                     toggleSheet={toggleSheet} />
             </Animated.View>
 
