@@ -1,29 +1,27 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
 const styles = StyleSheet.create({
-    row: {
+    StatsBar: {
+        width: '100%',
         flexDirection: 'row'
     },
-    follower: {
-        marginLeft: 70,
+
+    StatsBar__item: {
+        width: '33%',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+
+    // values in item
+    number: {
         fontSize: 22,
         fontWeight: '800'
     },
-    followerTitle: {
-        marginLeft: 40,
-        fontSize: 18,
-        fontWeight: '500'
-    },
     title: {
-        marginLeft: 50,
         fontSize: 18,
         fontWeight: '500'
     },
-    number: {
-        marginLeft: 108,
-        fontSize: 20,
-        fontWeight: '800'
-    }
 })
 
 export {styles}
