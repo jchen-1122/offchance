@@ -130,7 +130,7 @@ function Card ({ navigation, data, viewType }) {
     }
 
     return (
-          <ScrollView style={[styles.card]}>
+          <View style={[styles.card]}>
               {like}
               <View style={styles.itemDesc}>
                 <Image style={styles.image} source={{uri: imageURI}} onPress={() => {
@@ -149,7 +149,7 @@ function Card ({ navigation, data, viewType }) {
                 {pgBar}
                 {button}
               </View>
-          </ScrollView>
+          </View>
     )
 }
 
