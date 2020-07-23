@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native'
-import {colors, dimensions} from "../../../../settings/all_settings.js";
+import {colors} from "../../../../settings/all_settings.js";
 
 var buttonHeight = 50;
 var buttonWidth = '90%';
@@ -14,7 +14,6 @@ const styles = StyleSheet.create({
         margin: 15,
         flexDirection: 'row',
         borderRadius: borderRadius,
-        flex: 0,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -23,7 +22,7 @@ const styles = StyleSheet.create({
 
     // if button is disabled
     BlockButton_disabled : {
-        backgroundColor: 'gray'
+        backgroundColor: colors.gray
     },
 
     // different colors for button background
@@ -46,12 +45,6 @@ const styles = StyleSheet.create({
     BlockButton_insta:{
         backgroundColor: colors.instaPurple
     },
-    BlockButton_transparent:{
-        height: '12%',
-        marginLeft:'8%',
-        backgroundColor: 'transparent',
-        justifyContent: 'center',
-    },
 
     // different colors for button text
     BlockButton__title: {
@@ -70,37 +63,14 @@ const styles = StyleSheet.create({
         fontSize: 12,
         textAlign: 'center'
     },
-    BlockButton__title_transparent: {
-        fontSize: 22,
-        color: 'black',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-    },
 
     // different sizes for the button
     BlockButton_short: {
-        width: 150
+        width: '45%'
     },
     BlockButton_small: {
-        width: 80,
+        width: '25%',
         height: 25
-    },
-    BlockButton_smallShort: {
-        width: 80,
-        marginRight: -5
-    },
-    BlockButton_smallLongLeft: {
-        width: 170,
-        height: 33,
-        marginRight: -15,
-        borderBottomRightRadius: 0,
-        borderTopRightRadius: 0
-    },
-    BlockButton_smallLongRight: {
-        width: 170,
-        height: 33,
-        borderBottomLeftRadius: 0,
-        borderTopLeftRadius: 0
     },
 
     // styles for icon in the button
@@ -111,6 +81,21 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         height: 30,
         width: 30
+    },
+
+    // styles for banner on BlockButton
+    BlockButton__banner: {
+        backgroundColor: 'black',
+        paddingHorizontal: 8,
+        paddingVertical: 5,
+        borderTopRightRadius: borderRadius,
+        position: 'absolute',
+        top: 0,
+        right: 0
+    },
+    BlockButton__bannerTitle: {
+        fontSize: 8,
+        color: 'white'
     }
 })
 
