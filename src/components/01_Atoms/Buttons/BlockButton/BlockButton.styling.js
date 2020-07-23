@@ -79,28 +79,12 @@ const styles = StyleSheet.create({
 
     // different sizes for the button
     BlockButton_short: {
-        width: 150
+        width: 150,
+        margin: 0
     },
     BlockButton_small: {
         width: 80,
         height: 25
-    },
-    BlockButton_smallShort: {
-        width: 80,
-        marginRight: -5
-    },
-    BlockButton_smallLongLeft: {
-        width: 170,
-        height: 33,
-        marginRight: -15,
-        borderBottomRightRadius: 0,
-        borderTopRightRadius: 0
-    },
-    BlockButton_smallLongRight: {
-        width: 170,
-        height: 33,
-        borderBottomLeftRadius: 0,
-        borderTopLeftRadius: 0
     },
 
     // styles for icon in the button

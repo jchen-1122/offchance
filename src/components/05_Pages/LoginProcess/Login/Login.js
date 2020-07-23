@@ -5,9 +5,7 @@ import Divider from '../../../01_Atoms/Divider/Divider.js';
 import InputField from '../../../02_Molecules/InputField/InputField.js';
 import TextLink from '../../../01_Atoms/Buttons/TextLinks/TextLinks';
 import Banner from '../../../01_Atoms/Banner/Banner.js';
-import users, { get_user } from '../..//../fake_users/stub-users'
 import {fonts, utilities} from '../../../../settings/all_settings';
-import { styles } from '../../../01_Atoms/Buttons/BlockButton/BlockButton.styling';
 import { ScrollView } from 'react-native-gesture-handler';
 import validator from 'validator'
 import GlobalState from '../../../globalState'

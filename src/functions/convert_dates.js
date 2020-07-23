@@ -1,5 +1,6 @@
+const monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
+
 export function unix_to_date(unix_timestamp){
-    const monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
 
     var date = new Date(unix_timestamp * 1000); // convert to date object
     var ampm = (date.getHours() >= 12) ? "PM" : "AM"; // am or pm
@@ -14,7 +15,7 @@ export function unix_to_date(unix_timestamp){
     }
     // display as date if its more than 24 hours away
     else {
-        str = monthNames[date.getMonth()] + ' ' + date.getDate() + ', ' + hour + ':'+date.getMinutes()+ampm
+        str = format_date(timer)
     }
     return str
 }
@@ -38,4 +39,12 @@ export function is_expired(unix_timestamp){
         expired = true
     }
     return expired
+}
+
+// returns nice, formatted string from a date object
+export function format_date(date){
+    var hour = date.getHours() > 12 ? date.getHours() - 12 : date.getHours() // hour in AM or PM instead of military
+    var ampm = (date.getHours() >= 12) ? "PM" : "AM"; // am or pm
+
+    return monthNames[date.getMonth()] + ' ' + date.getDate() + ', ' + hour +':'+ date.getMinutes() + ampm
 }
