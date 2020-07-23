@@ -10,6 +10,7 @@ import DropDown from '../../../01_Atoms/DropDown/DropDown'
 import ImageCarousel from '../../../02_Molecules/ImageCarousel/ImageCarousel'
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import BuyOptions from '../../../02_Molecules/BuyOptions/BuyOptions'
+import CountDown from '../../../01_Atoms/Countdown/Countdown'
 import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
 import { unix_to_date, is_expired } from '../../../../functions/convert_dates';
 import { top5_raffle } from '../../../../functions/explore_functions';
@@ -202,7 +203,7 @@ export default function Raffle({ navigation, route }) {
                 <View style={styles.content}>
                     <View style={{ marginTop: 15 }}>
                         {(expired) ? <Text style={[fonts.bold, fonts.error,{ marginBottom: 10 }]}>THIS DRAWING HAS EXPIRED</Text> : <Text style={fonts.italic}>Drawing Starts:</Text>}
-                        {(expired) ? null : <Text style={{ fontWeight: 'bold', marginBottom: 15 }}>{date}</Text>}
+                        {(expired) ? null : <CountDown unix_timestamp={route.params.startTime}/>}
                     </View>
 
                     <View style={{ marginRight: '-5%', marginBottom: 15 }}>
@@ -247,7 +248,11 @@ export default function Raffle({ navigation, route }) {
                     <Text style={{ marginBottom: 15 }}>$200</Text>
 
                     {/* !!!!!!!!!!!!! TODO: top 5 donors !!!!!!!!!!!!!!*/}
-                    <Top5Donors users={top5} />
+                    <TouchableOpacity onPress={() => {
+                        navigation.navigate("Top5List", {users: top5})
+                    }}>
+                        <Top5Donors users={top5} />
+                    </TouchableOpacity>
 
                     {(expired) ? null :
                         <View>
