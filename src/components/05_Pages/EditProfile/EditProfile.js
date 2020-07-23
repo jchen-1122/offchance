@@ -15,8 +15,8 @@ export default function({navigation}) {
     const [_username, setUsername] = useState(user.username)
     const [_address, setAddress] = useState(user.shippingAddress)
     const [_email, setEmail] = useState(user.email)
-    const [_shoeSize, setShoe] = useState(user.shoeSize)
-    const [_shirtSize, setShirt] = useState(user.shirtSize)
+    const [_shoeSize, setShoe] = useState(user.shoeSize != null ? user.shoeSize : "")
+    const [_shirtSize, setShirt] = useState(user.shirtSize != null ? user.shirtSize: "")
 
     const [_errors, setErrors] = useState([])
 

@@ -45,12 +45,6 @@ function Profile({navigation}) {
         shoeSize = user.shoeSize
         shirtSize = user.shirtSize
     }
-    if (user.shoeSize == null) {
-        user.shoeSize = 15
-    } 
-    if (user.shirtSize == null) {
-        user.shirtSize = 15
-    } 
     return (
         <View style={utilities.container}>
             <ScrollView>
@@ -93,14 +87,6 @@ function Profile({navigation}) {
                             color="secondary"
                             size="short"
                             onPress={() => navigation.navigate("RaffleResult", {name:name, setViewing:setViewing})}></BlockButton>
-                        </View>
-                        <View style={styles.payment}>
-                            <BlockButton
-                            title="EDIT PROFILE"
-                            color="secondary"
-                            size="short"
-                            onPress={() => {
-                                navigation.navigate("EditProfile", user)}}></BlockButton>
                         </View>
                     </View>
 
