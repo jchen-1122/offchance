@@ -259,12 +259,18 @@ export default function Raffle({ navigation, route }) {
                         <View>
                             {/* !!!!!!!!!!!!! TODO: conditionally show progress bar !!!!!!!!!!!!!!*/}
                             <ProgressBar progress={230 / 500} color={colors.primaryColor} raised={230} goal={500} width={315} />
-                            <SizeCarousel></SizeCarousel>
-                            <View style={styles.pickSize}>
+
+                            <View style={styles.pickSizeSlide}>
+                                <Text>PICK YOUR SIZE</Text>
+                                <SizeCarousel sizes={sizes}></SizeCarousel>
+                            </View> 
+
+                            {/* dropdown disabled for now */}
+                            {/* <View style={styles.pickSize}>
                                 <Text>PICK YOUR SIZE</Text>
                                 {(sizeTypes.length > 0) ? <DropDown options={sizeTypes} size='small' /> : null}
                                 <DropDown options={sizes} size='small' />
-                            </View>
+                            </View> */}
 
                             <BuyOptions bonusAmount={10} bonusChances={40} bonusLimit={10} options={options} />
                             <Text style={{ marginRight: -10 }}>*We we will never show donation amounts for any user</Text>

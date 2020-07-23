@@ -1,25 +1,44 @@
-import React from 'react'
-import {ScrollView, View, Text} from 'react-native'
+import React, {useState, useEffect} from 'react'
+import {ScrollView, View, Text, TouchableHighlight} from 'react-native'
+import {colors} from '../../../settings/colors'
 
 export default function SizeCarousel({sizes}) {
+    useEffect(() => {
+        setColor(color)
+    }, [color])
+
+    const generateSizeCircle = (i) => {
+        return (
+            <TouchableHighlight onPress={() => {
+                let temp = color
+                temp[i] = (temp[i] === 'white') ? colors.lightGreen : 'white'
+                setColor(temp)
+                console.log(temp)
+            }} underlayColor={colors.lightGreen} style={{marginRight: 30, width: 35, height: 35, borderRadius: 35/2, borderWidth: 1, borderColor: 'black', backgroundColor: color[i]}}>
+                <View >
+                    <Text style={{textAlign: 'center', marginTop: 7}}>{sizes[i]}</Text>
+                </View>
+            </TouchableHighlight>
+        )
+    }
+
+    let display = [];
+    const [color, setColor] = useState(new Array(sizes.length).fill('white'))
+    if (sizes[0] != null){
+        for (var i=0; i<sizes.length; i++){
+            display.push(
+                generateSizeCircle(i)
+            )
+        }
+    }
     return (
-        <View>
+        <View style={{marginTop:20}}>
             <ScrollView
             horizontal={true}
-            contentContainerStyle={{width:50}}
             showsHorizontalScrollIndicator={false}
             scrollEventThrottle={200}
-            decelerationRate="fast"
-            pagingEnabled>
-                <View style={{marginRight: 20}}>
-                    <Text>1111111112312312471212704919104812941028491409124801908412901948012984091804910824908129481</Text>
-                </View>
-                <View style={{marginRight: 20}}>
-                    <Text>2W1</Text>
-                </View>
-                <View style={{marginRight: 20}}>
-                    <Text>2W1</Text>
-                </View>
+            decelerationRate="normal">
+                {display}
             </ScrollView>
         </View>
     )
