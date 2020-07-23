@@ -50,7 +50,7 @@ function App() {
   return (
     <GlobalState.Provider value={{ user, setUser }}>
       <NavigationContainer>
-        <StatusBar barStyle="default"/>
+        <StatusBar backgroundColor="white" barStyle="dark-content"/>
         <Stack.Navigator initialRouteName="Welcome"
           screenOptions={{
             headerStyle: {

@@ -1,16 +1,12 @@
 import React, { useContext } from 'react'
 import { View, Text, Footer, FooterTab, Button } from 'native-base';
-import { StatusBar} from "react-native";
 import { styles } from './TopNav.styling';
 import {user_logged_in} from '../../../functions/user_functions'
 import GlobalState from '../../globalState';
 
 function TopNav(props) {
-  var statusBarHeight = ('statusBarHeight: ', StatusBar.currentHeight);
-
     const {user, setUser} = useContext(GlobalState)
     return (
-      // <View  style={{marginTop: statusBarHeight}}>
       <View>
         <Footer>
           <FooterTab>
