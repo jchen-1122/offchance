@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     logo: {
         height:300,
         width: 300,
-        marginTop: '-5%',
+        
         // marginBottom: '-5%',
         // backgroundColor: 'red',
         resizeMode:'contain'

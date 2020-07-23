@@ -48,7 +48,7 @@ function Home({navigation}) {
             backAction
           );
           return () => backHandler.remove();
-          
+
       }, [viewType])
 
     return (
@@ -60,7 +60,7 @@ function Home({navigation}) {
                     <View style={{width: Dimensions.get('window').width * 0.85, alignItems: 'flex-end', marginTop: '5%'}}>
                         <ToggleType viewType={viewType} toggleMenuOpen={toggleMenuOpen} setToggleMenuOpen={setToggleMenuOpen}/>
                     </View>
-                    {raffles.map((raffle, index) => 
+                    {raffles.map((raffle, index) =>
                         <Card
                             data={raffle}
                             viewType={viewType}
@@ -69,11 +69,11 @@ function Home({navigation}) {
                             currUserG={user}
                             setUserG={setUser}
                         />
-                    )} 
+                    )}
                 </View>
             </ScrollView>
             {toggleMenuOpen ? <ToggleTypeMenu setToggleMenuOpen={setToggleMenuOpen} viewType={viewType} setViewType={setViewType}/> : null}
-            
+
             <BottomNav navigation={navigation} active={'Home'} />
         </View>
 
