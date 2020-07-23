@@ -5,11 +5,13 @@ import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import ProgressBar from '../../02_Molecules/ProgressBar/ProgressBar';
 import LikeButton from '../../01_Atoms/Buttons/LikeButton/LikeButton';
 import UsernameDisplay from '../../01_Atoms/UsernameDisplay/UsernameDisplay';
+import Countdown from '../../01_Atoms/Countdown/Countdown';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import CardBanner from '../../01_Atoms/CardBanner/CardBanner';
 import EnteredUsersDisplay from '../../01_Atoms/EnteredUsersDisplay/EnteredUsersDisplay';
 import {colors, fonts, utilities, dimensions} from '../../../settings/all_settings';
-import {unix_to_date, is_expired} from '../../../functions/convert_dates';
+import {in_a_day, is_expired} from '../../../functions/convert_dates';
+import { top5_raffle } from '../../../functions/explore_functions';
 
 function Card ({ navigation, data, onPress }) {
     const ip = require('../../IP_ADDRESS.json');
@@ -50,8 +52,9 @@ function Card ({ navigation, data, onPress }) {
     if (data){
         title = data.name
         imageURI = data.images[0]
-        date = unix_to_date(data.startTime)
+        date = data.startTime
         expired = is_expired(data.startTime)
+        today = in_a_day(data.startTime)
         type = typeMap.get(data.type)
         donationGoal = (data.donationGoal) ? data.donationGoal : null,
         enteredUsers = data.users.children
@@ -102,10 +105,11 @@ function Card ({ navigation, data, onPress }) {
             }
             startData = (
                 <View>
-                    <Text style={[styles.startData_grey,fonts.p]}>
-                        {(expired) ? 'DRAWING STARTED' : 'DRAWING STARTS ONCE TIMER REACHES 0 OR DONATION GOAL IS MET'}   
+                    <Text style={{marginTop: 15}}>
+                        {(expired) ? <Text style={[styles.grey_text,fonts.p]}>DRAWING STARTED</Text> : (today ? <Text style={[styles.startData_grey,fonts.p]}>DRAWING STARTS IN </Text> : <Text style={[styles.startData_grey,fonts.p]}>DRAWING STARTS AT </Text>)}   
+                        {!expired && <Countdown unix_timestamp={date}/>}
                     </Text>
-                    <Text style={styles.freeDraw_date}>{date}</Text>
+                    {!expired && <Text style={[styles.grey_text,fonts.p]}>OR WHEN DONATION GOAL IS MET</Text>}
                 </View>);
             break;
         // enter to buy drawings
@@ -115,14 +119,14 @@ function Card ({ navigation, data, onPress }) {
                     <CardBanner title='ENTER TO BUY' color='green' icon='usd'/>
                     <LikeButton />
                 </View>);
-            startData = (<View><Text style={[styles.startData_grey,fonts.p]}>{expired ? 'DRAWING STARTED' : 'DRAWING STARTS'}</Text><Text style={styles.freeDraw_date}>{date}</Text></View>);
+            startData = (<View><Text style={[styles.startData_grey,fonts.p]}>{expired ? 'DRAWING STARTED' : 'DRAWING STARTS'}</Text><Countdown unix_timestamp={date}/></View>);
             break;
         // for upcoming 4 raffles
         case 'upcoming':
             like = <View style={styles.upcoming_placeholder} />
             friendsEntered = null;
             button = <TouchableOpacity style={styles.upcoming_notifyMe} onPress={() => navigation.navigate('Raffle')}><Text>NOTIFY ME</Text></TouchableOpacity>;
-            startData = <View><Text style={[styles.startData_grey,fonts.p]} >DRAWING STARTS</Text><Text style={styles.freeDraw_date}>{date}</Text></View>;
+            startData = <View><Text style={[styles.startData_grey,fonts.p]} >DRAWING STARTS</Text><Countdown unix_timestamp={date}/></View>;
             break;
         // for simplified cards in your feed
         case 'notification':

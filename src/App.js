@@ -13,6 +13,8 @@ import PlayGame from './components/05_Pages/Home/PlayGame/PlayGame'
 import Game from './components/05_Pages/Home/Game/Game'
 import Drawings from './components/05_Pages/Drawings/Drawings'
 import Likes from './components/05_Pages/Likes/Likes'
+import Social from './components/05_Pages/Social/Social'
+
 import EditProfile from './components/05_Pages/EditProfile/EditProfile'
 import Following from './components/05_Pages/Following/Following'
 import Followers from './components/05_Pages/Followers/Followers'
@@ -62,6 +64,7 @@ function App() {
           <Stack.Screen name="Game" component={Game} />
           <Stack.Screen name="Drawings" component={Drawings} />
           <Stack.Screen name="Likes" component={Likes} />
+          <Stack.Screen name="Social" component={Social} />
           <Stack.Screen name="Account" component={Account} />
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="Wallet" component={Wallet} />
