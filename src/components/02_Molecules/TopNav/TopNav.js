@@ -10,11 +10,11 @@ function TopNav(props) {
       <View>
         <Footer>
           <FooterTab>
-            <Button style={props.active == 'Home' ? styles.active : null} onPress={() => props.navigation.navigate('Home')}>
-              <Text>Home</Text>
+            <Button style={props.active == 'Home' ? [styles.TopNav, styles.active] : styles.TopNav} onPress={() => props.navigation.navigate('Home')}>
+              <Text style={{color: 'black'}}>Home</Text>
             </Button>
-            <Button style={props.active == 'Your Feed' ? styles.active : null} onPress={() => (user_logged_in(user)) ? props.navigation.navigate('YourFeed') : props.navigation.navigate('NotLogin')}>
-              <Text>Your Feed</Text>
+            <Button style={props.active == 'Your Feed' ? [styles.TopNav, styles.active] : styles.TopNav} onPress={() => (user_logged_in(user)) ? props.navigation.navigate('YourFeed') : props.navigation.navigate('NotLogin')}>
+              <Text style={{color: 'black'}}>Your Feed</Text>
             </Button>
           </FooterTab>
         </Footer>

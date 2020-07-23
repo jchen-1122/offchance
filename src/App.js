@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { StatusBar} from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Welcome from './components/05_Pages/Welcome/Welcome'
@@ -49,6 +50,7 @@ function App() {
   return (
     <GlobalState.Provider value={{ user, setUser }}>
       <NavigationContainer>
+        <StatusBar backgroundColor="white" barStyle="dark-content"/>
         <Stack.Navigator initialRouteName="Welcome"
           screenOptions={{
             headerStyle: {
