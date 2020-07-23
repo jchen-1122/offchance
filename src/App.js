@@ -41,6 +41,7 @@ import NotLogin from './components/05_Pages/Account/NotLogin/NotLogin';
 
 
 const Stack = createStackNavigator();
+console.disableYellowBox = true;
 
 function App() {
   const [user, setUser] = useState({})

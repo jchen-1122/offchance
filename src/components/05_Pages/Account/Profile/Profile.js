@@ -12,6 +12,8 @@ import GlobalState from '../../../globalState';
 
 function Profile({navigation}) {
     const {user, setUser} = useContext(GlobalState)
+
+    // add edit button in topbar
     React.useLayoutEffect(() => {
         navigation.setOptions({
           headerRight: () => (
