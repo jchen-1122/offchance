@@ -10,23 +10,25 @@ import CardBanner from '../../01_Atoms/CardBanner/CardBanner';
 import EnteredUsersDisplay from '../../01_Atoms/EnteredUsersDisplay/EnteredUsersDisplay';
 import {colors, fonts, utilities, dimensions} from '../../../settings/all_settings';
 import {unix_to_date, is_expired} from '../../../functions/convert_dates';
-import { top5_raffle } from '../../../functions/explore_functions';
 
 function Card ({ navigation, data, onPress }) {
     const ip = require('../../IP_ADDRESS.json');
     const [host, setHost] = useState(null)
-    const [top5, setTop5] = useState([])
 
-    React.useEffect(() => {
+    React.useEffect(async () => {
         async function getHost() {
           let response = await fetch('http://'+ip.ipAddress+':3000/user/id/' + data.hostedBy)
           response = await response.json()
           setHost(response)
-          setTop5(response.users.children)
         }
         getHost()
-
       }, [])
+    
+    const getUser = async (id) => {
+        let response = await fetch('http://'+ip.ipAddress+':3000/user/id/' + id)
+        let json = await response.json()
+        return json
+    }
     
     // width for card content
     let contentWidth = Dimensions.get('window').width * 0.65;
@@ -44,6 +46,7 @@ function Card ({ navigation, data, onPress }) {
     let expired;
     let donationGoal;
     let enteredUsers;
+    let top5;
     if (data){
         title = data.name
         imageURI = data.images[0]
@@ -52,6 +55,7 @@ function Card ({ navigation, data, onPress }) {
         type = typeMap.get(data.type)
         donationGoal = (data.donationGoal) ? data.donationGoal : null,
         enteredUsers = data.users.children
+        top5 = data.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,5)
     }
     
     // set default values for card
@@ -59,8 +63,31 @@ function Card ({ navigation, data, onPress }) {
     let like = null;
     let pgBar = null;
     data['host'] = host
-    data['top5'] = top5
-    let button = <BlockButton title='Enter Drawing' color="primary" onPress={() => navigation.navigate('Raffle', data)}/>;
+    let button = <BlockButton title='Enter Drawing' color="primary" onPress={async () => {
+        let top5Pics = []
+        if (top5.length >= 1) {
+            let curr1 = await getUser(top5[0].userID)
+            top5Pics.push(curr1);
+        }
+        if (top5.length >= 2) {
+            let curr2 = await getUser(top5[1].userID)
+            top5Pics.push(curr2);
+        }
+        if (top5.length >= 3) {
+            let curr3 = await getUser(top5[2].userID)
+            top5Pics.push(curr3);
+        }
+        if (top5.length >= 4) {
+            let curr4 = await getUser(top5[3].userID)
+            top5Pics.push(curr4)
+        }
+        if (top5.length >= 5) {
+            let curr5 = await getUser(top5[4].userID)
+            top5Pics.push(curr5)
+        }
+        data['top5'] = top5Pics
+        console.log('here')
+        navigation.navigate('Raffle', data)}}/>
     let friendsEntered = <EnteredUsersDisplay enteredUsers={enteredUsers} navigation={navigation}/>
 
     // CHECK WHAT TYPE OF CARD--------------------------------------------------------------

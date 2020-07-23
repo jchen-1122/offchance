@@ -118,7 +118,7 @@ export default function({navigation}) {
                 </View>
                 {_errors}
 
-                <View style={{flexDirection: 'row', marginLeft: 20}}>
+                <View style={{flexDirection: 'row', marginLeft: 20, zIndex:-1}}>
                     <View >
                         <BlockButton
                         title="CANCEL"

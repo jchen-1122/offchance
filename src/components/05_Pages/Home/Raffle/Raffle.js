@@ -228,7 +228,9 @@ export default function Raffle({ navigation, route }) {
                     <Text style={{ marginBottom: 15 }}>$200</Text>
 
                     {/* !!!!!!!!!!!!! TODO: top 5 donors !!!!!!!!!!!!!!*/}
-                    <Top5Donors images={route.params.top5} />
+                    <TouchableOpacity onPress={navigation.navigate("Top5List", {users: route.params.top5})}>
+                        <Top5Donors users={route.params.top5} navigation={navigation}/>
+                    </TouchableOpacity>
 
                     {(expired) ? null :
                         <View>

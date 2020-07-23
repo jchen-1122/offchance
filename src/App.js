@@ -13,10 +13,10 @@ import PlayGame from './components/05_Pages/Home/PlayGame/PlayGame'
 import Game from './components/05_Pages/Home/Game/Game'
 import Drawings from './components/05_Pages/Drawings/Drawings'
 import Likes from './components/05_Pages/Likes/Likes'
-
 import EditProfile from './components/05_Pages/EditProfile/EditProfile'
 import Following from './components/05_Pages/Following/Following'
 import Followers from './components/05_Pages/Followers/Followers'
+import Top5List from './components/02_Molecules/Top5List/Top5List'
 import YourFeed from './components/05_Pages/Home/YourFeed/YourFeed';
 import Explore from './components/05_Pages/Home/Explore/Explore';
 import OtherUser from './components/05_Pages/OtherUser/OtherUser'
@@ -74,6 +74,7 @@ function App() {
           <Stack.Screen name="Following" component={Following} />
           <Stack.Screen name="Followers" component={Followers} />
           <Stack.Screen name="OtherUser" component={OtherUser} />
+          <Stack.Screen name="Top5List" component={Top5List} />
           <Stack.Screen name="GameController" component={GameController} />
           <Stack.Screen name="RaffleResult" component={RaffleResult} />
           <Stack.Screen name="EnteredUsers" component={EnteredUsers} />
