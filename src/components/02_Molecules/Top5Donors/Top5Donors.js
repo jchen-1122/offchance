@@ -15,7 +15,7 @@ function Top5Donors({ navigation, users}) {
     
     return (
             <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={[fonts.italic,{textAlign: 'left'}]}>Top 5 Donors: </Text>
+                <Text style={[fonts.italic,{textAlign: 'left'}]}>Top {users.length} Donors: </Text>
                 {donors}
             </View>
     )
