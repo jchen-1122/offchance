@@ -86,7 +86,6 @@ function Card ({ navigation, data, onPress }) {
             top5Pics.push(curr5)
         }
         data['top5'] = top5Pics
-        console.log('here')
         navigation.navigate('Raffle', data)}}/>
     let friendsEntered = <EnteredUsersDisplay enteredUsers={enteredUsers} navigation={navigation}/>
 
