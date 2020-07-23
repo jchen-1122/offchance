@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react'
-import { View, ScrollView, Text, Image } from 'react-native'
+import { View, ScrollView, Text, Image,Button } from 'react-native'
 import {colors, fonts, utilities} from '../../../../settings/all_settings';
 import InfoFeed from '../../../02_Molecules/InfoFeed/InfoFeed'
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
@@ -12,7 +12,17 @@ import GlobalState from '../../../globalState';
 
 function Profile({navigation}) {
     const {user, setUser} = useContext(GlobalState)
-    console.log(user)
+
+    // add edit button in topbar
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+          headerRight: () => (
+            <Button onPress={() => {
+                navigation.navigate("EditProfile", user)}} title="Edit" />
+          ),
+        });
+      }, [navigation]);
+
     const [info, setInfo] = useState(true)
     const [viewing, setViewing] = useState((user != null) ? user.viewing : false)
     let name, username, profilePic, email, followers, following, enteredRaffles, address, shoeSize, shirtSize

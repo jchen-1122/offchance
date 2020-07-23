@@ -12,7 +12,7 @@ function EnteredUsers({navigation, route}){
     return (
         <View style={utilities.container}>
             <ScrollView>
-                <ListView users={userObjs} title="Entered Users" navigation={navigation} currUser={user} setUser={setUser}/>
+                <ListView users={userObjs} navigation={navigation} currUser={user} setUser={setUser}/>
             </ScrollView>
         </View>
 

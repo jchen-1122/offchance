@@ -3,6 +3,9 @@ import {colors} from "../../../settings/all_settings";
 
 
 const styles = StyleSheet.create({
+    TopNav: {
+        backgroundColor: 'white'
+    },
     active: {
         borderBottomColor: 'black',
         borderBottomWidth: 3,
