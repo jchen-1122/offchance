@@ -17,16 +17,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around'
     },
+
+    // different colors for banner text
     CardBanner__title: {
         color: 'white'
     },
+    carBanner__titleDark: {
+        color: colors.darkGreen
+    },
 
     // different colors of banner
-    CardBanner_black: {
-        backgroundColor: 'black'
+    CardBanner_lightGreen: {
+        backgroundColor: colors.lightGreen
     },
-    CardBanner_green: {
-        backgroundColor: colors.green
+    CardBanner_darkGreen: {
+        backgroundColor: colors.darkGreen
     }
 })
 

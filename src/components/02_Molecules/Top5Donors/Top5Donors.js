@@ -5,7 +5,7 @@ import { fonts } from '../../../settings/all_settings'
 
 function Top5Donors({ navigation, users}) {
     let donors = [];
-    if (users){
+    if (users[0] != null){
         for (var i=0; i<5; i++){
             donors.push(
             <Image source={{uri:users[i].profilePicture}} style={styles.donor} />
@@ -15,7 +15,7 @@ function Top5Donors({ navigation, users}) {
     
     return (
             <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                <Text style={[fonts.italic,{textAlign: 'left'}]}>Top {users.length} Donors: </Text>
+                <Text style={[fonts.italic,{textAlign: 'left'}]}>Top 5 Donors: </Text>
                 {donors}
             </View>
     )

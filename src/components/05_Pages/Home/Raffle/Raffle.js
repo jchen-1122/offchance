@@ -12,12 +12,33 @@ import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import BuyOptions from '../../../02_Molecules/BuyOptions/BuyOptions'
 import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
 import { unix_to_date, is_expired } from '../../../../functions/convert_dates';
+import { top5_raffle } from '../../../../functions/explore_functions';
 import GlobalState from '../../../globalState';
 
 export default function Raffle({ navigation, route }) {
     const {user, setUser} = useContext(GlobalState)
     // get host of raffle from db
+    const [top5, setTop5] = useState([])
     const ip = require('../../../IP_ADDRESS.json');
+
+    React.useEffect(() => {
+        async function getTop5(ids) {
+            // get top 5 donors of this raffle
+            let temp = []
+            for (var i = 0; i < ids.length; i++) {
+                const user = await getUser(ids[i].userID)
+                temp.push(user)
+            }
+            setTop5(temp)
+        }
+        getTop5(route.params.top5)
+    }, [])
+
+    async function getUser(id) {
+        let response = await fetch('http://' + ip.ipAddress + ':3000/user/id/' + id)
+        response = await response.json()
+        return response
+    }
 
     const addFollower = async (host) => {
         if (user.following.includes(host._id)) {
@@ -98,7 +119,7 @@ export default function Raffle({ navigation, route }) {
             }
         }
         let res = {
-            following: prevFollowings
+            following: prevFollowing
         }
         return JSON.stringify(res)
     }
@@ -122,16 +143,16 @@ export default function Raffle({ navigation, route }) {
     let date;
     let expired;
     let images_strs; // string rep of images for carousel
-    let sizeTypes;
     let sizes;
+    let sizeTypes;
     if (route.params != null) {
         name = route.params.name
         description = route.params.description
         date = unix_to_date(route.params.startTime)
         expired = is_expired(route.params.startTime)
         images_strs = route.params.images
-        sizeTypes = route.params.sizeTypes
         sizes = route.params.sizes
+        sizeTypes = route.params.sizeTypes
     }
 
     let images = [];
@@ -184,7 +205,6 @@ export default function Raffle({ navigation, route }) {
                         {(expired) ? null : <Text style={{ fontWeight: 'bold', marginBottom: 15 }}>{date}</Text>}
                     </View>
 
-                    {/* hosted by component with functional follow button */}
                     <View style={{ marginRight: '-5%', marginBottom: 15 }}>
                         <Text style={fonts.italic}>Hosted by:</Text>
                         <View style={styles.hostedby}>
@@ -214,8 +234,7 @@ export default function Raffle({ navigation, route }) {
                     {expired ?
                         <View style={{ backgroundColor: colors.lightGreen, marginRight: '-5%', marginBottom: 15,}}>
                             <Text style={fonts.italic}>Won by:</Text>
-                            {/* TODO: won by does not work because live drawing has not been implemented */}
-                            {/* <HostedBy data={host} navigation={navigation} currUser={currUser} setUser={setCurrUser}/> */}
+                            <HostedBy data={route.params.host} navigation={navigation}/>
                         </View>
                         :
                         null
@@ -228,9 +247,7 @@ export default function Raffle({ navigation, route }) {
                     <Text style={{ marginBottom: 15 }}>$200</Text>
 
                     {/* !!!!!!!!!!!!! TODO: top 5 donors !!!!!!!!!!!!!!*/}
-                    <TouchableOpacity onPress={() => navigation.navigate("Top5List", {users: route.params.top5})}>
-                        <Top5Donors users={route.params.top5} navigation={navigation}/>
-                    </TouchableOpacity>
+                    <Top5Donors users={top5} />
 
                     {(expired) ? null :
                         <View>

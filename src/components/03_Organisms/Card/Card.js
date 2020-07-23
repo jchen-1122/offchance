@@ -13,24 +13,19 @@ import {colors, fonts, utilities, dimensions} from '../../../settings/all_settin
 import {in_a_day, is_expired} from '../../../functions/convert_dates';
 import { top5_raffle } from '../../../functions/explore_functions';
 
-function Card ({ navigation, data, onPress }) {
+function Card ({ navigation, data, viewType }) {
     const ip = require('../../IP_ADDRESS.json');
     const [host, setHost] = useState(null)
 
-    React.useEffect(async () => {
+    React.useEffect(() => {
         async function getHost() {
           let response = await fetch('http://'+ip.ipAddress+':3000/user/id/' + data.hostedBy)
           response = await response.json()
           setHost(response)
         }
         getHost()
+
       }, [])
-    
-    const getUser = async (id) => {
-        let response = await fetch('http://'+ip.ipAddress+':3000/user/id/' + id)
-        let json = await response.json()
-        return json
-    }
     
     // width for card content
     let contentWidth = Dimensions.get('window').width * 0.65;
@@ -48,7 +43,6 @@ function Card ({ navigation, data, onPress }) {
     let expired;
     let donationGoal;
     let enteredUsers;
-    let top5;
     if (data){
         title = data.name
         imageURI = data.images[0]
@@ -58,45 +52,26 @@ function Card ({ navigation, data, onPress }) {
         type = typeMap.get(data.type)
         donationGoal = (data.donationGoal) ? data.donationGoal : null,
         enteredUsers = data.users.children
-        top5 = data.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,5)
+        data['host'] = host;
+        data['top5'] = data.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,5)
     }
     
     // set default values for card
     let startData = null;
     let like = null;
     let pgBar = null;
-    data['host'] = host
-    let button = <BlockButton title='Enter Drawing' color="primary" onPress={async () => {
-        let top5Pics = []
-        if (top5.length >= 1) {
-            let curr1 = await getUser(top5[0].userID)
-            top5Pics.push(curr1);
-        }
-        if (top5.length >= 2) {
-            let curr2 = await getUser(top5[1].userID)
-            top5Pics.push(curr2);
-        }
-        if (top5.length >= 3) {
-            let curr3 = await getUser(top5[2].userID)
-            top5Pics.push(curr3);
-        }
-        if (top5.length >= 4) {
-            let curr4 = await getUser(top5[3].userID)
-            top5Pics.push(curr4)
-        }
-        if (top5.length >= 5) {
-            let curr5 = await getUser(top5[4].userID)
-            top5Pics.push(curr5)
-        }
-        data['top5'] = top5Pics
-        navigation.navigate('Raffle', data)}}/>
+    let button = <BlockButton title='Enter Drawing' color="primary" onPress={() => navigation.navigate('Raffle', data)}/>;
     let friendsEntered = <EnteredUsersDisplay enteredUsers={enteredUsers} navigation={navigation}/>
 
     // CHECK WHAT TYPE OF CARD--------------------------------------------------------------
     switch(type){
         // default is the regular card as seen in 'Home (free drawing)' in Figma
         case 'default':
-            like = <View style={styles.likeButton}><LikeButton /></View>;
+            like = (
+                <View style={styles.likeButton}>
+                    {(viewType==0)?<CardBanner title='MANY CHANCES TO WIN' color='lightGreen'/>:null}
+                    <LikeButton />
+                </View>);
             if (donationGoal){
                 pgBar = 
                 <View style={{marginTop: 15}}>
@@ -116,7 +91,7 @@ function Card ({ navigation, data, onPress }) {
         case 'buy':
             like = (
                 <View style={styles.likeButton}>
-                    <CardBanner title='ENTER TO BUY' color='green' icon='usd'/>
+                    {(viewType==0)?<CardBanner title='ENTER TO BUY' color='darkGreen' icon='usd'/>:null}
                     <LikeButton />
                 </View>);
             startData = (<View><Text style={[styles.startData_grey,fonts.p]}>{expired ? 'DRAWING STARTED' : 'DRAWING STARTS'}</Text><Countdown unix_timestamp={date}/></View>);

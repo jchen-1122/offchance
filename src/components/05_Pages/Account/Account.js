@@ -1,6 +1,7 @@
 import React, {useContext} from 'react';
 import { ScrollView, View, Text, Image, Animated, Button, Dimensions} from 'react-native'
 import {utilities, fonts, colors} from '../../../settings/all_settings';
+import NavButton from '../../01_Atoms/Buttons/NavButton/NavButton';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import BottomNav from '../../02_Molecules/BottomNav/BottomNav'
 import { COLOR } from 'react-native-material-ui';
@@ -14,86 +15,18 @@ export default function Account({navigation}) {
     return (
         <View style={utilities.container}>
             <View>
-                <BlockButton
-                title="Profile                                                          >"
-                color="transparent"
-                onPress={() => {
-                  let page = "NotLogin"
-                  if (user._id != null) {
-                    page = "Profile"
-                  }
-                  navigation.navigate(page)}}/>
-                <View
-                  style={{
-                    borderBottomColor: 'rgba(52, 52, 52, 0.3)',
-                    borderBottomWidth: 1,
-                  }}
-                />
-                <BlockButton
-                title="Wallet                                                          >"
-                color="transparent"
-                onPress={() => navigation.navigate('Wallet')}/>
-                <View
-                  style={{
-                    borderBottomColor: 'rgba(52, 52, 52, 0.3)',
-                    borderBottomWidth: 1,
-                  }}
-                />
-                <BlockButton
-                title="How It Works                                            >"
-                color="transparent"
-                onPress={() => navigation.navigate('HowItWorks')}/>
-                <View
-                  style={{
-                    borderBottomColor: 'rgba(52, 52, 52, 0.3)',
-                    borderBottomWidth: 1,
-                  }}
-                />
-                <BlockButton
-                title="FAQ                                                             >"
-                color="transparent"
-                onPress={() => navigation.navigate('FAQ')}/>
-                <View
-                  style={{
-                    borderBottomColor: 'rgba(52, 52, 52, 0.3)',
-                    borderBottomWidth: 1,
-                  }}
-                />
-                <BlockButton
-                title="Request Business Account                 >"
-                color="transparent"
-                onPress={() => navigation.navigate('ReqBesAcct')}/>
-                <View
-                  style={{
-                    borderBottomColor: 'rgba(52, 52, 52, 0.3)',
-                    borderBottomWidth: 1,
-                  }}
-                />
-                {user._id == null ? null : <BlockButton
-                title="My Drawings                                            >"
-                color="transparent"
-                onPress={() => navigation.navigate('MyDrawings')}/>}
-                <View
-                  style={{
-                    borderBottomColor: 'rgba(52, 52, 52, 0.3)',
-                    borderBottomWidth: 1,
-                  }}
-                />
-                <BlockButton
-                title="Log Out                                                     >"
-                color="transparent"
-                onPress={() => {
+              <NavButton title="Profile" icon="account" onPress={() => navigation.navigate('Profile')}/>
+              <NavButton title="Wallet" icon="cash" onPress={() => navigation.navigate('Wallet')}/>
+              <NavButton title="How It Works" icon="help-box" onPress={() => navigation.navigate('HowItWorks')}/>
+              <NavButton title="FAQ" icon="frequently-asked-questions"onPress={() => navigation.navigate('FAQ')}/>
+              {user.isHost ? null : <NavButton title="Request Business Account" icon="briefcase" onPress={() => navigation.navigate('ReqBesAcct')}/>}
+              {user.isHost ? <NavButton title="My Drawings" icon = "ticket-outline" onPress={() => navigation.navigate('MyDrawings')}/>:null}
+              <NavButton title="Log Out" icon="logout-variant"onPress={() => {
                   setUser({})
                   navigation.navigate(' ')}}/>
-                <View
-                  style={{
-                    borderBottomColor: 'rgba(52, 52, 52, 0.3)',
-                    borderBottomWidth: 1,
-                  }}
-                />
             </View>
 
-            <BottomNav navigation={navigation} active={'Account'}></BottomNav>
+            <BottomNav navigation={navigation} active={'Account'}/>
         </View>
     )
 }
