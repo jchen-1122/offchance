@@ -38,7 +38,6 @@ function Home({navigation}) {
             <ScrollView contentContainerStyle={utilities.scrollview}>
                 <TopNav navigation={navigation} active='Home'/>
 
-
                 <View style={utilities.flexCenter}>
                     <View style={{width: Dimensions.get('window').width * 0.85, alignItems: 'flex-end', marginTop: '5%'}}>
                         <ToggleType viewType={viewType} toggleMenuOpen={toggleMenuOpen} setToggleMenuOpen={setToggleMenuOpen}/>
