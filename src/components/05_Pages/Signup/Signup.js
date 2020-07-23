@@ -46,7 +46,7 @@ export default function Signup({ navigation }) {
   const [_email, setEmail] = useState(null)
   const [_instaHandle, setInstaHandle] = useState(null)
   const [_password, setPassword] = useState(null)
-  const [_us_state, set_us_state] = useState(us_states[0])
+  const [_us_state, set_us_state] = useState(null)
   const [_city, setCity] = useState(null)
 
   // validates email input
@@ -57,6 +57,11 @@ export default function Signup({ navigation }) {
   // validates phone input
   const isValidPhoneNumber = () => {
     return validator.isMobilePhone(String(_phoneNumber).toLowerCase());
+  }
+
+  // validates the US state
+  const isValidState = () => {
+    return us_states.includes(_us_state)
   }
 
   // check for any errors in input, returns array of errors
@@ -77,6 +82,10 @@ export default function Signup({ navigation }) {
     // must agree to terms of service
     if (!state.agreement) {
       errors.push(<Text style={fonts.error}>Must agree to terms of services</Text>)
+    }
+    // must be a valid US state
+    if (!isValidState()){
+      errors.push(<Text style={fonts.error}>Must be a valid US state (abbreviation)</Text>)
     }
     setErrors(errors)
     if (errors.length > 0) return true
@@ -129,19 +138,24 @@ export default function Signup({ navigation }) {
         <InputField
           label="Instagram Handle"
           value={_instaHandle} onChangeText={(text) => { setInstaHandle(text) }}
-          required
           tooltip={true}
           tooltipContent="We use this to to give you bonus chances when you share with friends" />
 
         <View style={{ flex: 0, flexDirection: 'row', justifyContent: 'center', zIndex: 5 }}>
           <InputField
             autoCapitalize="words"
-            style={{ width: '70%' }}
+            style={{ width: '65%' }}
             label="City"
             value={_city} onChangeText={(text) => { setCity(text) }} />
-          <View style={{ marginTop: 34, zIndex: 10 }}>
+          <InputField
+            autoCapitalize="characters"
+            style={{width: '25%'}}
+            label="State (abbr)"
+            value={_us_state} onChangeText={(text) => { set_us_state(text) }} />
+
+          {/* <View style={{ marginTop: 34, zIndex: 10 }}>
             <Dropdown options={us_states} size="small" set_us_state={set_us_state}/>
-          </View>
+          </View> */}
         </View>
 
         <InputField

@@ -28,17 +28,19 @@ export default function(props) {
     }
 
     return (
-    <View>
-        <View style={styles.row}>
-            <TouchableOpacity onPress={() => handleFollowers()}><Text style={styles.follower}>{props.followers.length}</Text></TouchableOpacity>
-            <TouchableOpacity onPress={() => handleFollowing()}><Text style={styles.number}>{props.following.length}</Text></TouchableOpacity>
-            <TouchableOpacity><Text style={styles.number}>{props.enteredRaffles.length}</Text></TouchableOpacity>
-        </View>
-        <View style={styles.row}>
-            <TouchableOpacity onPress={() => handleFollowers()}><Text style={styles.followerTitle}>followers</Text></TouchableOpacity>
-            <TouchableOpacity onPress={() => handleFollowing()}><Text style={styles.title}>following</Text></TouchableOpacity>
-            <TouchableOpacity><Text style={styles.title}>entered</Text></TouchableOpacity>
-        </View>
+    <View style={styles.StatsBar}>
+        <TouchableOpacity style={styles.StatsBar__item} onPress={() => handleFollowers()}>
+            <Text style={styles.number}>{props.followers.length}</Text>
+            <Text style={styles.title}>followers</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.StatsBar__item} onPress={() => handleFollowing()}>
+            <Text style={styles.number}>{props.following.length}</Text>
+            <Text style={styles.title}>following</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.StatsBar__item} >
+            <Text style={styles.number}>{props.enteredRaffles.length}</Text>
+            <Text style={styles.title}>entered</Text>
+        </TouchableOpacity>
     </View>
     )
 }

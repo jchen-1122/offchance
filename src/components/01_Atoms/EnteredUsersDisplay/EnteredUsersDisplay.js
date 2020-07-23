@@ -3,7 +3,8 @@ import React, { useState, useContext, useEffect } from 'react'
 import { TouchableOpacity, Text, Image, View, ScrollView } from 'react-native';
 import { fonts, utilities } from '../../../settings/all_settings';
 import styles from './EnteredUsersDisplay.styling';
-import GlobalState from '../../globalState'
+import GlobalState from '../../globalState';
+import {user_logged_in} from '../../../functions/user_functions'
 
 function EnteredUsersDisplay(props) {
     const ip = require('../../IP_ADDRESS.json')
@@ -17,7 +18,7 @@ function EnteredUsersDisplay(props) {
 
     // sort entered users so the people you're following show up at the front
     const sortUsers = (users) => {
-        if (Object.keys(user).length === 0 && user.constructor === Object) {
+        if (!user_logged_in(user)) {
             return users
         }
         var entered = []

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { View, Text, Image, ImageBackground, Linking} from 'react-native';
+import { View, Text, Image, ImageBackground, Linking, BackHandler, Alert } from 'react-native';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import TextLink from '../../01_Atoms/Buttons/TextLinks/TextLinks';
 import {styles} from './Welcome.styling';
@@ -10,6 +10,26 @@ import Divider from '../../01_Atoms/Divider/Divider.js';
 export default function HomeScreen({ navigation }) {
 
   var image = require('../../../../assets/images/background.jpg')
+
+    // BACKHANDLING FOR ANDROID BOTTOM NAV
+    const backAction = () => {
+      Alert.alert("Hold on!", "Are you sure you want to exit the app?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel"
+        },
+        { text: "YES", onPress: () => BackHandler.exitApp() }
+      ]);
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
+
+  }, [])
 
   return (
       <ImageBackground source={image} style={styles.image} imageStyle= {{opacity:0}}>
