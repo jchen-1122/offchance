@@ -1,20 +1,18 @@
 import React, {useState, useEffect} from 'react'
-import {ScrollView, View, Text, TouchableHighlight} from 'react-native'
+import {ScrollView, View, Text, TouchableHighlight, StyleSheet} from 'react-native'
 import {colors} from '../../../settings/colors'
+import styles from './SizeCarousel.styling'
+
 
 export default function SizeCarousel({sizes}) {
-    useEffect(() => {
-        setColor(color)
-    }, [color])
+
+    const [_selected, setSelected] = useState(-1)
 
     const generateSizeCircle = (i) => {
         return (
             <TouchableHighlight onPress={() => {
-                let temp = color
-                temp[i] = (temp[i] === 'white') ? colors.lightGreen : 'white'
-                setColor(temp)
-                console.log(temp)
-            }} underlayColor={colors.lightGreen} style={{marginRight: 30, width: 35, height: 35, borderRadius: 35/2, borderWidth: 1, borderColor: 'black', backgroundColor: color[i]}}>
+                setSelected(i)
+            }} underlayColor={colors.lightGreen} style={_selected === i ? styles.green_button : styles.white_button}>
                 <View >
                     <Text style={{textAlign: 'center', marginTop: 7}}>{sizes[i]}</Text>
                 </View>
