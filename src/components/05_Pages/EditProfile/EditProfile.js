@@ -1,19 +1,22 @@
 import React, {useState, useContext} from 'react'
-import {ScrollView, View, Text} from 'react-native'
+import {ScrollView, View, Text, Image} from 'react-native'
 import InputField from '../../02_Molecules/InputField/InputField'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
+import Dropdown from '../../01_Atoms/DropDown/DropDown'
 import validator from 'validator'
 import {colors, fonts, utilities, dimensions} from '../../../settings/all_settings';
 import GlobalState from '../../globalState'
+import {styles} from './EditProfile.styling'
 
 export default function({navigation}) {
+    var shirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
     const {user, setUser} = useContext(GlobalState)
     const [_name, setName] = useState(user.name)
     const [_username, setUsername] = useState(user.username)
-    const [_address, setAddress] = useState(user.address)
+    const [_address, setAddress] = useState(user.shippingAddress)
     const [_email, setEmail] = useState(user.email)
-    const [_shoeSize, setShoe] = useState(user.shoeSize)
-    const [_shirtSize, setShirt] = useState(user.shirtSize)
+    const [_shoeSize, setShoe] = useState(user.shoeSize != null ? user.shoeSize : "")
+    const [_shirtSize, setShirt] = useState(user.shirtSize != null ? user.shirtSize: "")
 
     const [_errors, setErrors] = useState([])
 
@@ -59,7 +62,7 @@ export default function({navigation}) {
         name: _name,
         username: _username,
         email: _email,
-        address: _address,
+        shippingAddress: _address,
         shoeSize: _shoeSize,
         shirtSize: _shirtSize
         }
@@ -68,9 +71,9 @@ export default function({navigation}) {
 
     return (
         <ScrollView>
-            <View>
-                <Text>Edit Profile</Text>
-
+            <View style={{zIndex: 5}}>
+                <Image source={{uri:user.profilePicture}} style={styles.profilePic}></Image>
+                <View style={styles.inputs}>
                 <InputField 
                     label="Name" 
                     autoCapitalize="words" 
@@ -101,14 +104,21 @@ export default function({navigation}) {
                     value={_shoeSize.toString()} 
                     onChangeText={(text) => {setShoe(text)}}  />
 
-                <InputField 
+                {/* <InputField 
                     label="Shirt Size" 
                     autoCapitalize="words" 
                     value={_shirtSize.toString()} 
-                    onChangeText={(text) => {setShirt(text)}}  />
+                    onChangeText={(text) => {setShirt(text)}}  /> */}
+                <View style={{zIndex: 5}}>
+                    <Text style={{fontSize: 16, marginBottom: 5, fontWeight: '500'}}>Shirt Size</Text>
+                    <View style={{zIndex: 10, marginBottom: 10}}>
+                        <Dropdown options={shirtSizes} size="xlarge" set_us_state={setShirt}/>
+                    </View>
+                </View>
+                </View>
                 {_errors}
 
-                <View style={{flexDirection: 'row'}}>
+                <View style={{flexDirection: 'row', marginLeft: 20, zIndex:-1}}>
                     <View >
                         <BlockButton
                         title="CANCEL"
@@ -124,6 +134,7 @@ export default function({navigation}) {
                         onPress={async () => {
                             if (!generateErrors()) {
                                 const userObj = await editUser()
+                                console.log(userObj)
                                 setUser(userObj)
                                 if (userObj.keyValue == null) {
                                     navigation.navigate('Profile')

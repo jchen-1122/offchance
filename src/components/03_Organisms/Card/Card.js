@@ -52,6 +52,8 @@ function Card ({ navigation, data, viewType }) {
         type = typeMap.get(data.type)
         donationGoal = (data.donationGoal) ? data.donationGoal : null,
         enteredUsers = data.users.children
+        data['host'] = host;
+        data['top5'] = data.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,5)
     }
     
     // set default values for card

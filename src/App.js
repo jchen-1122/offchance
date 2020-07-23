@@ -19,6 +19,7 @@ import Social from './components/05_Pages/Social/Social'
 import EditProfile from './components/05_Pages/EditProfile/EditProfile'
 import Following from './components/05_Pages/Following/Following'
 import Followers from './components/05_Pages/Followers/Followers'
+import Top5List from './components/02_Molecules/Top5List/Top5List'
 import YourFeed from './components/05_Pages/Home/YourFeed/YourFeed';
 import Explore from './components/05_Pages/Home/Explore/Explore';
 import OtherUser from './components/05_Pages/OtherUser/OtherUser'
@@ -85,6 +86,7 @@ function App() {
           <Stack.Screen name="EditProfile" component={EditProfile} options={{title: 'Edit Profile'}}/>
           <Stack.Screen name="Following" component={Following} />
           <Stack.Screen name="Followers" component={Followers} />
+          <Stack.Screen name="Top5List" component={Top5List} />
           <Stack.Screen name="OtherUser" component={OtherUser} options={({ route }) => ({ title: route.params.user.name })} />
           <Stack.Screen name="GameController" component={GameController} options={{ title: '' }}/>
           <Stack.Screen name="RaffleResult" component={RaffleResult} />

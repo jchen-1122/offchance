@@ -25,6 +25,15 @@ function ListView(props) {
           body: makeAddJSON(user)
         })
         const json = await response.json()
+        // followed user "follower" count also increases
+        const response2 = await fetch('http://'+data.ipAddress+':3000/user/edit/'+user._id,{
+          method: "PATCH",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },  
+          body: makeAddJSON2(user)
+        })
         return json
     }
 
@@ -42,6 +51,15 @@ function ListView(props) {
           body: makeDeleteJSON(user)
         })
         const json = await response.json()
+        // followed user "follower" count also decreases
+        const response2 = await fetch('http://'+data.ipAddress+':3000/user/edit/'+user._id,{
+          method: "PATCH",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },  
+          body: makeDeleteJSON2(user)
+        })
         return json
     }
 
@@ -53,6 +71,18 @@ function ListView(props) {
         }
         return JSON.stringify(data)
     }
+    
+    const makeAddJSON2 = (user) => {
+        let prevFollowing = user.followers
+        if (user.followers.includes(currUser._id)) {
+            return JSON.stringify(prevFollowing)
+        }
+        prevFollowing.push(currUser._id)
+        let data = {
+            followers: prevFollowing
+        }
+        return JSON.stringify(data)
+    }
 
     const makeDeleteJSON = (user) => {
         let prevFollowing = currUser.following
@@ -61,12 +91,25 @@ function ListView(props) {
                 prevFollowing.splice(i, 1);
             }
         }
-        console.log(prevFollowing)
         let data = {
             following: prevFollowing
         }
         return JSON.stringify(data)
     }
+
+    const makeDeleteJSON2 = (user) => {
+        let prevFollowing = user.followers
+        for(var i = prevFollowing.length - 1; i >= 0; i--) {
+            if(prevFollowing[i] === currUser._id) {
+                prevFollowing.splice(i, 1);
+            }
+        }
+        let data = {
+            followers: prevFollowing
+        }
+        return JSON.stringify(data)
+    }
+
     // build rows of usernames and profile pics
     let usernameList = [];
     for (let user in props.users) {
