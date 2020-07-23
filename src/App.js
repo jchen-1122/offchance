@@ -33,6 +33,7 @@ import Account from './components/05_Pages/Account/Account';
 import Profile from './components/05_Pages/Account/Profile/Profile';
 import Wallet from './components/05_Pages/Account/Wallet/Wallet';
 import HowItWorks from './components/05_Pages/Account/HowItWorks/HowItWorks';
+import HowItWorksLOGIN from './components/05_Pages/Account/HowItWorksLOGIN/HowItWorksLOGIN';
 import FAQ from './components/05_Pages/Account/FAQ/FAQ';
 import ReqBesAcct from './components/05_Pages/Account/ReqBesAcct/ReqBesAcct';
 import MyDrawings from './components/05_Pages/Account/MyDrawings/MyDrawings';
@@ -68,6 +69,7 @@ function App() {
           <Stack.Screen name="Profile" component={Profile} />
           <Stack.Screen name="Wallet" component={Wallet} />
           <Stack.Screen name="HowItWorks" component={HowItWorks} />
+          <Stack.Screen name="Journey Begins" component={HowItWorksLOGIN} />
           <Stack.Screen name="FAQ" component={FAQ} />
           <Stack.Screen name="ReqBesAcct" component={ReqBesAcct} />
           <Stack.Screen name="MyDrawings" component={MyDrawings} />

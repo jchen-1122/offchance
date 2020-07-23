@@ -1,4 +1,4 @@
-Bug #1 & #2: 
+#1 & #2: 
     On Expo: Account->Wallet->Add Chances->Reload Source Dropdown
 	- Dropdown zIndex error
 	- ScrollView does not remain static when select Reload Amount 
@@ -6,4 +6,9 @@ Bug #1 & #2:
 	- Wallet: 05_Pages/Account/Wallet
 	- SlidingSheet: 04_Templates/SlidingSheet
 	- DropDown: 01_Atoms/DropDown
+
+#3: 
+    On Expo: Welcome->SIGN UP FOR 5 FREE CHANCES
+	- Text Input boxes looks ugly
+	- Instagram handle
 

@@ -1,31 +1,24 @@
 import React, { useEffect } from 'react';
-import { View, Text, Image, ImageBackground } from 'react-native';
+import { View, Text, Image, ImageBackground, Linking} from 'react-native';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import TextLink from '../../01_Atoms/Buttons/TextLinks/TextLinks';
 import {styles} from './Welcome.styling';
-// import {fonts} from '../../../settings/fonts';
 import {colors, fonts, utilities} from '../../../settings/all_settings';
+import Divider from '../../01_Atoms/Divider/Divider.js';
 
 
 export default function HomeScreen({ navigation }) {
 
-  React.useEffect(() => {
-    fetch('http://192.168.0.22:3000/signup/5f0cf346718f40cc64419ed7')
-    .then((response) => response.json())
-    .then((data) => console.log(data))
-    .catch((e) => console.log(e))
-  }, [])
-
   var image = require('../../../../assets/images/background.jpg')
 
   return (
-      <ImageBackground source={image} style={styles.image} imageStyle= {{opacity:0.5}}>
-          <View style={[utilities.flexCenter, styles.container]}>
+      <ImageBackground source={image} style={styles.image} imageStyle= {{opacity:0}}>
+          <View style={styles.container}>
 
                   {/* TODO: image should be aligned closer to the top */}
                   <Image style={styles.logo} source={require('../../../../assets/images/logo2.png')}/>
-                  <Text style={[fonts.h1, {textAlign: 'center', marginBottom: 15}]}>Limited Flash-Drawings for Collectibles</Text>
-                  <Text style={fonts.p}>Donate to Make Change and Win.</Text>
+                  <Text style={[fonts.h1, styles.title]}>Daily Live Drawings for the Hottest Sneakers and Collectables</Text>
+                  <Text style={fonts.p, {fontSize: 18, marginBottom: '5%', }}>Donate to Important Causes and Win</Text>
 
                   {/* Links to Signup */}
                   <BlockButton
@@ -33,7 +26,19 @@ export default function HomeScreen({ navigation }) {
                     color="secondary"
                     onPress={() => navigation.navigate('Signup')}/>
 
-                  <View style={{flexDirection: 'row'}}>
+                  <Divider />
+
+                  <BlockButton
+                    title="Sign Up With Facebook"
+                    color="facebook"
+                    onPress={() => Linking.openURL('https://www.facebook.com/')}/>
+
+                  <BlockButton
+                    title="Sign Up With Google"
+                    color="google"
+                    onPress={() => Linking.openURL('https://www.google.com/')}/>
+
+                  <View style={{flexDirection: 'row', marginTop:'1%',}}>
                     {/* Links to Login */}
                     <TextLink
                       title="Log in"
