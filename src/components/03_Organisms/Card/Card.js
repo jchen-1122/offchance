@@ -43,6 +43,7 @@ function Card ({ navigation, data, viewType }) {
     let expired;
     let donationGoal;
     let enteredUsers;
+    let raffleid;
     if (data){
         title = data.name
         imageURI = data.images[0]
@@ -50,10 +51,11 @@ function Card ({ navigation, data, viewType }) {
         expired = is_expired(data.startTime)
         today = in_a_day(data.startTime)
         type = typeMap.get(data.type)
-        donationGoal = (data.donationGoal) ? data.donationGoal : null,
+        donationGoal = (data.donationGoal) ? data.donationGoal : null
         enteredUsers = data.users.children
-        data['host'] = host;
+        data['host'] = host
         data['top5'] = data.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,5)
+        raffleid = data._id
     }
     
     // set default values for card
@@ -70,7 +72,7 @@ function Card ({ navigation, data, viewType }) {
             like = (
                 <View style={styles.likeButton}>
                     {(viewType==0)?<CardBanner title='MANY CHANCES TO WIN' color='lightGreen'/>:null}
-                    <LikeButton />
+                    <LikeButton raffle={raffleid}/>
                 </View>);
             if (donationGoal){
                 pgBar = 
@@ -92,7 +94,7 @@ function Card ({ navigation, data, viewType }) {
             like = (
                 <View style={styles.likeButton}>
                     {(viewType==0)?<CardBanner title='ENTER TO BUY' color='darkGreen' icon='usd'/>:null}
-                    <LikeButton />
+                    <LikeButton raffle={raffleid}/>
                 </View>);
             startData = (<View><Text style={[styles.startData_grey,fonts.p]}>{expired ? 'DRAWING STARTED' : 'DRAWING STARTS'}</Text><Countdown unix_timestamp={date}/></View>);
             break;

@@ -13,9 +13,11 @@ function LikeButton(props){
     * https://react-native-elements.github.io/react-native-elements/docs/icon.html#available-icon-sets
     */
 
+    console.log(props.raffle)
+
     return (
         <TouchableOpacity style={styles.LikeButton}>
-            <Tooltip label={<Icon name='heart-outline' type='material-community' />} content={"You will get a notification when this drawing becomes available/live"} like={true}/>
+            <Icon name='heart-outline' type='material-community' />
         </TouchableOpacity>
     )
 }
