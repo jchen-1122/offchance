@@ -298,7 +298,7 @@ export default function Raffle({ navigation, route }) {
                             <Text style={{ marginRight: -10 }}>*We we will never show donation amounts for any user</Text>
                         </View>
                     }
-                    <View style={{backgroundColor: colors.lightGreen}}>
+                    <View style={{backgroundColor: colors.lightGreen, marginVertical: '5%',marginHorizontal: '-10%', paddingHorizontal:'10%' }}>
                     <Text style={[fonts.p, { marginTop: 20, textAlign: 'justify' }]}>Off Chance is a for-good company that hosts drawings for incredible products to raise money for charities and important causes that affect us all. All net proceeds (after hosting and platform fees) for this drawing will benefit the partners below:</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, marginBottom: 20 }}>
                         <Image source={donors[0]} />
