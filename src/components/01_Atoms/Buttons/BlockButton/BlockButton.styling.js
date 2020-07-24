@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
         fontSize: 12,
         textAlign: 'center'
     },
-<<<<<<< HEAD
+    
     BlockButton__title_transparent: {
         fontSize: 22,
         color: 'black',
@@ -91,8 +91,6 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
     },
-=======
->>>>>>> origin
 
     // different sizes for the button
     BlockButton_short: {
