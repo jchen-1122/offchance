@@ -24,6 +24,10 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     zIndex: 2
   },
+  pickSizeSlide: {
+    marginTop: 15, 
+    marginBottom: 15
+  },
   hostedby: {
     flexDirection:'row', 
     alignItems:'center', 

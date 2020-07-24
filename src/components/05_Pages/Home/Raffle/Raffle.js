@@ -12,6 +12,7 @@ import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import BuyOptions from '../../../02_Molecules/BuyOptions/BuyOptions'
 import CountDown from '../../../01_Atoms/Countdown/Countdown'
 import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
+import SizeCarousel from '../../../01_Atoms/SizeCarousel/SizeCarousel'
 import { unix_to_date, is_expired } from '../../../../functions/convert_dates';
 import { top5_raffle } from '../../../../functions/explore_functions';
 import GlobalState from '../../../globalState';
@@ -201,8 +202,8 @@ export default function Raffle({ navigation, route }) {
                 <Text style={[fonts.h1, { marginLeft: '8%', marginBottom: 0 }]}>{name}</Text>
 
                 <View style={styles.content}>
-                    <View style={{ marginTop: 15 }}>
-                        {(expired) ? <Text style={[fonts.bold, fonts.error,{ marginBottom: 10 }]}>THIS DRAWING HAS EXPIRED</Text> : <Text style={fonts.italic}>Drawing Starts:</Text>}
+                    <View style={{ marginVertical: 15 }}>
+                        {(expired) ? <Text style={[fonts.bold, fonts.error]}>THIS DRAWING HAS EXPIRED</Text> : <Text style={[fonts.italic]}>Drawing Starts:</Text>}
                         {(expired) ? null : <CountDown unix_timestamp={route.params.startTime}/>}
                     </View>
 
@@ -216,13 +217,13 @@ export default function Raffle({ navigation, route }) {
                             </View>
                         </TouchableOpacity>
                         {typeof user._id === 'undefined' ? null : user.following.includes(route.params.host._id)  ? 
-                            <BlockButton color="primary" size="small" title='FOLLOWED'
+                            <BlockButton color="secondary" size="small" title='FOLLOWED'
                             onPress={async () => {
                                 const userObj = await removeFollower(route.params.host)
                                 setUser(userObj)
                             }}
                             /> :
-                            <BlockButton color="secondary" size="small" title='FOLLOW'
+                            <BlockButton color="primary" size="small" title='FOLLOW'
                             onPress={async () => {
                                 const userObj = await addFollower(route.params.host)
                                 setUser(userObj)
@@ -233,9 +234,29 @@ export default function Raffle({ navigation, route }) {
                     {/* !!!!!!!!!!!!! TODO: connect to db and format !!!!!!!!!!!!!!*/}
                     {/* winner of raffle if expired */}
                     {expired ?
-                        <View style={{ backgroundColor: colors.lightGreen, marginRight: '-5%', marginBottom: 15,}}>
+                        <View style={{ marginRight: '-5%', marginBottom: 15, backgroundColor: colors.limeGreen }}>
                             <Text style={fonts.italic}>Won by:</Text>
-                            <HostedBy data={route.params.host} navigation={navigation}/>
+                            <View style={styles.hostedby}>
+                            <TouchableOpacity onPress={() => navigation.navigate('OtherUser',{user: route.params.host})}>
+                                <View style={styles.hostedby__profile}>
+                                <Image source={{ uri: route.params.host.profilePicture }} style={styles.hostedby__image}></Image>
+                                <Text style={fonts.link}>{'@' + route.params.host.username}</Text>
+                                </View>
+                            </TouchableOpacity>
+                            {typeof user._id === 'undefined' ? null : user.following.includes(route.params.host._id)  ? 
+                                <BlockButton color="secondary" size="small" title='FOLLOWED'
+                                onPress={async () => {
+                                    const userObj = await removeFollower(route.params.host)
+                                    setUser(userObj)
+                                }}
+                                /> :
+                                <BlockButton color="primary" size="small" title='FOLLOW'
+                                onPress={async () => {
+                                    const userObj = await addFollower(route.params.host)
+                                    setUser(userObj)
+                                }}
+                                />}
+                            </View>
                         </View>
                         :
                         null
@@ -259,17 +280,25 @@ export default function Raffle({ navigation, route }) {
                             {/* !!!!!!!!!!!!! TODO: conditionally show progress bar !!!!!!!!!!!!!!*/}
                             <ProgressBar progress={230 / 500} color={colors.primaryColor} raised={230} goal={500} width={315} />
 
-                            <View style={styles.pickSize}>
+                            <View style={styles.pickSizeSlide}>
+                                <Text>PICK YOUR SIZE</Text>
+                                <SizeCarousel sizes={sizeTypes} type='single'></SizeCarousel>
+                                {/* <SizeCarousel sizes={sizes} type='multiple'></SizeCarousel> */}
+                                <SizeCarousel sizes={sizes} type='single'></SizeCarousel>
+                            </View> 
+
+                            {/* dropdown disabled for now */}
+                            {/* <View style={styles.pickSize}>
                                 <Text>PICK YOUR SIZE</Text>
                                 {(sizeTypes.length > 0) ? <DropDown options={sizeTypes} size='small' /> : null}
                                 <DropDown options={sizes} size='small' />
-                            </View>
+                            </View> */}
 
                             <BuyOptions bonusAmount={10} bonusChances={40} bonusLimit={10} options={options} />
                             <Text style={{ marginRight: -10 }}>*We we will never show donation amounts for any user</Text>
                         </View>
                     }
-                    <View style={{backgroundColor: colors.lightGreen}}>
+                    <View style={{backgroundColor: colors.lightGreen, marginVertical: '5%',marginHorizontal: '-10%', paddingHorizontal:'10%' }}>
                     <Text style={[fonts.p, { marginTop: 20, textAlign: 'justify' }]}>Off Chance is a for-good company that hosts drawings for incredible products to raise money for charities and important causes that affect us all. All net proceeds (after hosting and platform fees) for this drawing will benefit the partners below:</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, marginBottom: 20 }}>
                         <Image source={donors[0]} />
@@ -285,19 +314,19 @@ export default function Raffle({ navigation, route }) {
                         color="primary"
                         onPress={() => navigation.navigate('GameController')}
                         disabled={expired} />
-                    <BlockButton
+                    {/* <BlockButton
                         title="ENTER DRAWING"
                         color="highlight"
                         onPress={() => toggleSheet()}
-                        disabled={expired} />
+                        disabled={expired} /> */}
                 </View>
 
                 {/* sliding sheet */}
-                <Animated.View
+                {/* <Animated.View
                     style={[styles.subView,
                     { transform: [{ translateY: bounceValue }] }]}>
                     <SlidingSheet title='Enter Drawing' context={['abc']} visible={sheetOpen} toggleSheet={toggleSheet} />
-                </Animated.View>
+                </Animated.View> */}
 
             </ScrollView>
             <BottomNav navigation={navigation} active={'Home'}></BottomNav>

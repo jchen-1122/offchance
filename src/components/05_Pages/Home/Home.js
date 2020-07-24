@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import { View, Dimensions, ScrollView, BackHandler, Alert} from 'react-native'
+import { Text, View, Dimensions, ScrollView, BackHandler, Alert} from 'react-native'
 // import {fonts} from '../../../settings/fonts';
 import {colors, fonts, utilities} from '../../../settings/all_settings';
 import BottomNav from '../../02_Molecules/BottomNav/BottomNav';
@@ -7,7 +7,9 @@ import TopNav from '../../02_Molecules/TopNav/TopNav';
 import Card from '../../03_Organisms/Card/Card';
 import ToggleType from '../../01_Atoms/Buttons/ToggleType/ToggleType';
 import ToggleTypeMenu from '../../03_Organisms/ToggleTypeMenu/ToggleTypeMenu'
-import GlobalState from '../../globalState'
+import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
+import GlobalState from '../../globalState';
+import {user_logged_in} from '../../../functions/user_functions';
 
 import {get_user} from '../../fake_users/stub-users';
 function Home({navigation}) {
@@ -30,7 +32,7 @@ function Home({navigation}) {
           setRaffles(response)
         }
         getRaffle()
-
+        
         // BACKHANDLING FOR ANDROID BOTTOM NAV
         const backAction = () => {
             Alert.alert("Hold on!", "Are you sure you want to exit the app?", [
@@ -48,19 +50,29 @@ function Home({navigation}) {
             backAction
           );
           return () => backHandler.remove();
-          
+
       }, [viewType])
 
+    // if is a host
+    let hostRaffle;
+    if (user_logged_in(user) && user.isHost){
+      hostRaffle = (
+        <View style={{backgroundColor: 'white', width: '100%', paddingHorizontal: '5%', paddingBottom: '5%'}}>
+        <Text style={fonts.h1}>Host Your Own Raffles to Raise Money For Your Cause.</Text>
+        <BlockButton color="primary" title="NEW RAFFLE" size="short" onPress={()=>navigation.navigate('AskRaffleType')}/>
+      </View>
+      )
+    }
     return (
         <View style={utilities.container}>
             <ScrollView contentContainerStyle={utilities.scrollview}>
                 <TopNav navigation={navigation} active='Home'/>
-
                 <View style={utilities.flexCenter}>
+                  {hostRaffle}
                     <View style={{width: Dimensions.get('window').width * 0.85, alignItems: 'flex-end', marginTop: '5%'}}>
                         <ToggleType viewType={viewType} toggleMenuOpen={toggleMenuOpen} setToggleMenuOpen={setToggleMenuOpen}/>
                     </View>
-                    {raffles.map((raffle, index) => 
+                    {raffles.map((raffle, index) =>
                         <Card
                             data={raffle}
                             viewType={viewType}
@@ -69,11 +81,11 @@ function Home({navigation}) {
                             currUserG={user}
                             setUserG={setUser}
                         />
-                    )} 
+                    )}
                 </View>
             </ScrollView>
             {toggleMenuOpen ? <ToggleTypeMenu setToggleMenuOpen={setToggleMenuOpen} viewType={viewType} setViewType={setViewType}/> : null}
-            
+
             <BottomNav navigation={navigation} active={'Home'} />
         </View>
 

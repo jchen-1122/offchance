@@ -10,7 +10,7 @@ var baseFontSize = 16;
 
 const fonts = StyleSheet.create({
     h1: {
-        fontSize: baseFontSize * 1.5, 
+        fontSize: baseFontSize * 1.5,
         fontWeight:'bold',
         marginTop: 15,
         marginBottom: 15
@@ -41,7 +41,8 @@ const fonts = StyleSheet.create({
     },
     link: {
         color: 'black',
-        textDecorationLine: 'underline'
+        textDecorationLine: 'underline',
+        fontSize: 14,
     },
     error: {
         width: dimensions.width,

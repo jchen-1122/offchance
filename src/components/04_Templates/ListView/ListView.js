@@ -121,13 +121,13 @@ function ListView(props) {
                     <UsernameDisplay username={props.users[user].username} profPic={{uri: props.users[user].profilePicture}} size="large"/>
                 </TouchableOpacity>
                 {typeof currUser._id === 'undefined' ? null : currUser.following.includes(props.users[user]._id)  ? 
-                <BlockButton color="primary" size="small" title='FOLLOWED'
+                <BlockButton color="secondary" size="small" title='FOLLOWED'
                 onPress={async () => {
                     const userObj = await removeFollower(props.users[user])
                     setUser(userObj)
                 }}
                 /> :
-                <BlockButton color="secondary" size="small" title='FOLLOW'
+                <BlockButton color="primary" size="small" title='FOLLOW'
                 onPress={async () => {
                     const userObj = await addFollower(props.users[user])
                     setUser(userObj)

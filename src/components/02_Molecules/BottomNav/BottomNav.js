@@ -17,19 +17,19 @@ function BottomNav(props) {
       <View>
         <Footer>
           <FooterTab style={{backgroundColor: 'black'}}>
-          <Button onPress={() => {props.navigation.navigate('Home')}}>
+          <Button onPress={() => {(props.active === 'Home') ? props.navigation.navigate('Home') : props.navigation.reset({index: 0, routes: [{ name: 'Home' }]})}}>
               {(props.active === 'Home') ? <Icon name='home' type='material-community' color='white' /> : <Icon name='home-outline' type='material-community' color='grey' />}
               <Text style={[styles.textFont, (props.active === 'Home') ? {color:'white'} : null]}>Home</Text>
             </Button>
-            <Button onPress={() => {props.navigation.navigate('Social')}}>
+            <Button onPress={() => {(props.active === 'Social') ? props.navigation.navigate('Social') : props.navigation.reset({index: 0, routes: [{ name: 'Social' }]})}}>
               {(props.active === 'Social') ? <Icon name='chat' type='material-community' color='white' /> : <Icon name='chat-outline' type='material-community' color='grey' />}
               <Text style={[styles.textFont, (props.active === 'Social') ? {color:'white'} : null]}>Social</Text>
             </Button>
-            <Button onPress={() => {props.navigation.navigate('Drawings')}}>
+            <Button onPress={() => {(props.active === 'Drawings') ? props.navigation.navigate('Drawings') : props.navigation.reset({index: 0, routes: [{ name: 'Drawings' }]})}}>
               {(props.active === 'Drawings') ? <Icon name='magnify' type='material-community' color='white' /> : <Icon name='magnify' type='material-community' color='grey' />}
               <Text style={[styles.textFont, (props.active === 'Drawings') ? {color:'white'} : null]}>Search</Text>
             </Button>
-            <Button onPress={() => props.navigation.navigate('Likes')}>
+            <Button onPress={() => {(props.active === 'Likes') ? props.navigation.navigate('Likes') : props.navigation.reset({index: 0, routes: [{ name: 'Likes' }]})}}>
             {(props.active === 'Likes') ? <Icon name='heart' type='material-community' color='white' /> : <Icon name='heart-outline' type='material-community' color='grey' />}
             <Text style={[styles.textFont, (props.active === 'Likes') ? {color:'white'} : null]}>Likes</Text>
             </Button>
