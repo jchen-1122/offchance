@@ -88,7 +88,7 @@ function Profile({navigation}) {
                     <Text style={styles.descriptor}>Payment Information</Text>
                     <Text style={styles.description}>**** **** **** 1234</Text>
 
-                    <View style={{flexDirection: 'row'}}>
+                    {/* <View style={{flexDirection: 'row'}}>
                         <View style={styles.payment}>
                             <BlockButton
                             title="ADD PAYMENT"
@@ -96,7 +96,7 @@ function Profile({navigation}) {
                             size="short"
                             onPress={() => navigation.navigate("RaffleResult", {name:name, setViewing:setViewing})}></BlockButton>
                         </View>
-                    </View>
+                    </View> */}
 
                     </View> : null}
                 </View> :
