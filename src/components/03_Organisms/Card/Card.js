@@ -13,9 +13,11 @@ import {colors, fonts, utilities, dimensions} from '../../../settings/all_settin
 import {in_a_day, is_expired} from '../../../functions/convert_dates';
 import { top5_raffle } from '../../../functions/explore_functions';
 
-function Card ({ navigation, data, viewType }) {
+function Card ({ navigation, data, viewType, currUserG, setUserG }) {
     const ip = require('../../IP_ADDRESS.json');
     const [host, setHost] = useState(null)
+    const currUser = currUserG
+    const setUser = setUserG
 
     React.useEffect(() => {
         async function getHost() {
@@ -44,6 +46,7 @@ function Card ({ navigation, data, viewType }) {
     let donationGoal;
     let enteredUsers;
     let raffleid;
+    let today;
     if (data){
         title = data.name
         imageURI = data.images[0]
@@ -72,7 +75,7 @@ function Card ({ navigation, data, viewType }) {
             like = (
                 <View style={styles.likeButton}>
                     {(viewType==0)?<CardBanner title='MANY CHANCES TO WIN' color='lightGreen'/>:null}
-                    <LikeButton raffle={raffleid}/>
+                    <LikeButton currUser={currUser} setUser={setUser} raffle={raffleid}/>
                 </View>);
             if (donationGoal){
                 pgBar = 
@@ -94,7 +97,7 @@ function Card ({ navigation, data, viewType }) {
             like = (
                 <View style={styles.likeButton}>
                     {(viewType==0)?<CardBanner title='ENTER TO BUY' color='darkGreen' icon='usd'/>:null}
-                    <LikeButton raffle={raffleid}/>
+                    <LikeButton currUser={currUser} setUser={setUser} raffle={raffleid}/>
                 </View>);
             startData = (<View><Text style={[styles.startData_grey,fonts.p]}>{expired ? 'DRAWING STARTED' : 'DRAWING STARTS'}</Text><Countdown unix_timestamp={date}/></View>);
             break;
