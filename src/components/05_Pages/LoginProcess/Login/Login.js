@@ -109,7 +109,11 @@ export default function Login({ navigation, route }) {
             const userObj = await loginUser()
             if (userObj.error == null) {
               setUser(userObj)
-              navigation.navigate('HowItWorks')
+              {/* https://stackoverflow.com/questions/42831685/disable-back-button-in-react-navigation */}
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'How It Works' }]
+              })
             } else {
               let errors = []
               errors.push(<Text style={fonts.error}>Password is not valid</Text>)

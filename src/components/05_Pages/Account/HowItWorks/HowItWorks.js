@@ -3,6 +3,7 @@ import { ScrollView, View, Text, Image, Animated, Button, Dimensions} from 'reac
 import {utilities, fonts, colors} from '../../../../settings/all_settings';
 import styles from './HowItWorks.styling';
 import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
+import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import { COLOR } from 'react-native-material-ui';
 import { color } from 'react-native-reanimated';
 
@@ -15,7 +16,7 @@ export default function HowItWorks({navigation}) {
     const gif = require('../../../../../assets/images/vanfleet.gif');
 
     const windowWidth = Dimensions.get('window').width;
-    const windowHeight = Dimensions.get('window').height * 0.81;
+    const windowHeight = Dimensions.get('window').height;
 
     // uncomment for one image example
     // const images = [require('../../../../assets/images/dwightSchrute.jpg')]
@@ -34,7 +35,7 @@ export default function HowItWorks({navigation}) {
                 <View style={{width: windowWidth, height:windowHeight, backgroundColor:"black"}}>
                     <View style={styles.content}>
                         <Text style={[fonts.p, {marginTop: windowHeight * 0.07, textAlign: 'center', fontSize: 18, color: 'white'}]}>2. Use Lives to play Rock, Paper, Scissors against others and earn additional chances to win drawing prizes. </Text>
-                        <Image source={images[1]} style={{height: windowHeight * .7, marginTop: windowHeight * 0.07, justifyContent: 'center', alignItems: 'center',}}></Image>
+                        <Image source={images[1]} style={{marginTop: windowHeight * 0.07, justifyContent: 'center', alignItems: 'center',}}></Image>
                     </View>
                 </View>
 
@@ -57,6 +58,16 @@ export default function HowItWorks({navigation}) {
                         <Text style={[fonts.p, {marginTop: windowHeight * 0.13, textAlign: 'center', fontSize: 18}]}>5. The most important part is to HAVE FUN and GOOD LUCK! </Text>
                         <Image source={gif} style={styles.gifStyle, {marginTop: windowHeight * 0.13, justifyContent: 'center', alignItems: 'center', width: 350, height:300}}></Image>
                     </View>
+                    {navigation.fromLogin ? <View style={{marginTop: '15%', alignItems:'center'}}>
+                      <BlockButton
+                        title="Start Exploring!"
+                        color="primary"
+                        size='short'
+                        onPress={() => navigation.reset({
+                          index: 0,
+                          routes: [{ name: 'Home' }]
+                        })}/>
+                    </View> : null}
                 </View>
 
             </ScrollView>

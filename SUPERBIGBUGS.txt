@@ -8,7 +8,8 @@
 	- DropDown: 01_Atoms/DropDown
 
 #3: 
-    On Expo: Welcome->SIGN UP FOR 5 FREE CHANCES
-	- Text Input boxes looks ugly
-	- Instagram handle
+    How It Works page.
+
+#4:
+    Other user green checkmark
 

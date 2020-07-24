@@ -7,7 +7,7 @@ import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import { COLOR } from 'react-native-material-ui';
 import { color } from 'react-native-reanimated';
 
-export default function HowItWorksLOGINa({navigation}) {
+export default function HowItWorksLOGIN({navigation}) {
     const images = [require('../../../../../assets/images/10-chance-lives.png'),
                     require('../../../../../assets/images/RPS-Game.png'),
                     require('../../../../../assets/images/wins-chance.png'),
@@ -17,6 +17,7 @@ export default function HowItWorksLOGINa({navigation}) {
 
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height * 0.81;
+
 
     // uncomment for one image example
     // const images = [require('../../../../assets/images/dwightSchrute.jpg')]
@@ -63,13 +64,14 @@ export default function HowItWorksLOGINa({navigation}) {
                         title="Start Exploring!"
                         color="primary"
                         size='short'
-                        onPress={() => navigation.navigate('Home')}/>
+                        onPress={() => navigation.reset({
+                          index: 0,
+                          routes: [{ name: 'Home' }]
+                        })}/>
                     </View>
                 </View>
 
-
             </ScrollView>
-            <BottomNav navigation={navigation} active={'Home'}></BottomNav>
         </View>
     )
 }

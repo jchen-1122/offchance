@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native'
-import {colors, dimensions} from "../../../../settings/all_settings.js";
+import {colors} from "../../../../settings/all_settings.js";
 
 var buttonHeight = 50;
 var buttonWidth = '90%';
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 
     // if button is disabled
     BlockButton_disabled : {
-        backgroundColor: 'gray'
+        backgroundColor: colors.gray
     },
 
     // different colors for button background
@@ -52,6 +52,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         justifyContent: 'center',
     },
+    BlockButton_logOut:{
+        backgroundColor: 'red'
+    },
 
     // different colors for button text
     BlockButton__title: {
@@ -70,9 +73,16 @@ const styles = StyleSheet.create({
         fontSize: 12,
         textAlign: 'center'
     },
+
     BlockButton__title_transparent: {
         fontSize: 22,
         color: 'black',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+    },
+    BlockButton__title_logOut: {
+        fontSize: 18,
+        color: 'white',
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
     },
@@ -111,6 +121,21 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         height: 30,
         width: 30
+    },
+
+    // styles for banner on BlockButton
+    BlockButton__banner: {
+        backgroundColor: 'black',
+        paddingHorizontal: 8,
+        paddingVertical: 5,
+        borderTopRightRadius: borderRadius,
+        position: 'absolute',
+        top: 0,
+        right: 0
+    },
+    BlockButton__bannerTitle: {
+        fontSize: 8,
+        color: 'white'
     }
 })
 

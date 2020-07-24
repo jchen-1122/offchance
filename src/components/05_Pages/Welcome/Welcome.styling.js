@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     logo: {
         height:300,
         width: 300,
-        marginTop: '-5%',
+
         // marginBottom: '-5%',
         // backgroundColor: 'red',
         resizeMode:'contain'
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
       flex: 1,
       height:200, // delete later
       width: 400, // delete later
-      marginLeft: '1.5%',
+      marginTop: '4%',
       resizeMode: "cover",
       justifyContent: "center",
     }
