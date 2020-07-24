@@ -124,7 +124,7 @@ export default function Signup({ navigation }) {
             style={{margin: 0, marginLeft: 7.5}}/>
         </View>
 
-        <View style={{marginVertical: '2.5%'}}>
+        <View style={{marginVertical: '2.5%', alignItems: 'center'}}>
         <Divider />
         </View>
 
