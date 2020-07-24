@@ -5,16 +5,20 @@ const styles = StyleSheet.create({
         flex:1,
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: 'rgba(0, 0, 0, 0.01)'
+        backgroundColor: '#fafafa'
     },
 
     logo: {
-      height: Dimensions.get('window').height*0.3,
-        width: Dimensions.get('window').width*0.6,
+      height: Dimensions.get('window').height*0.25,
+      width: Dimensions.get('window').width*0.5,
+      resizeMode:'contain'
+    },
 
-        // marginBottom: '-5%',
-        // backgroundColor: 'red',
-        resizeMode:'contain'
+    welcomeImage: {
+      height: Dimensions.get('window').height*0.4
+      ,
+      width: Dimensions.get('window').width,
+      resizeMode:'contain'
     },
 
     title: {
@@ -22,7 +26,6 @@ const styles = StyleSheet.create({
       marginTop: '-5%',
       marginLeft: '10%',
       marginRight: '10%',
-      fontSize: 26,
     },
 
     image: {

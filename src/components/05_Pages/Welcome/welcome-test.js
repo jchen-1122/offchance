@@ -16,9 +16,9 @@ export default function HomeScreen({ navigation }) {
           <View style={styles.container}>
 
                   {/* TODO: image should be aligned closer to the top */}
-                  <Image style={styles.logo} source={require('../../../../assets/images/logo2.png')}/>
-                  <Text style={[fonts.h1, {textAlign: 'center', marginBottom: 15, fontSize: 25}]}>Daily Live Drawings for the Hottest Sneakers and Collectables</Text>
-                  <Text style={fonts.p, {fontSize: 18}}>Donate to Important Causes and Win</Text>
+                  <Image style={styles.logo} source={{uri: 'https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/oc-logo.png'}}/>
+                  <Text style={[fonts.h1, {marginBottom: 15}]}>Daily Live Drawings for the Hottest Sneakers and Collectables</Text>
+                  <Text style={[fonts.h3, {color: 'pink'}]}>Donate to  Causes and Win</Text>
 
                   {/* Links to Signup */}
                   <BlockButton
