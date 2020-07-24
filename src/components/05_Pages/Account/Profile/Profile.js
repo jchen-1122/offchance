@@ -10,7 +10,6 @@ import StatsBar from '../../../02_Molecules/StatsBar/StatsBar'
 import Nswitch from '../../../../../assets/images/switch.jpeg'
 import {styles} from './Profile.styling'
 import GlobalState from '../../../globalState';
-import Octicon, { Octicons } from 'octicons-react'
 
 function Profile({navigation}) {
     const {user, setUser} = useContext(GlobalState)

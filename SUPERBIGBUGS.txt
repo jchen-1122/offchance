@@ -7,5 +7,9 @@
 	- SlidingSheet: 04_Templates/SlidingSheet
 	- DropDown: 01_Atoms/DropDown
 
+#3: 
+    How It Works page.
 
+#4:
+    Other user green checkmark
 
