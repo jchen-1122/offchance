@@ -51,7 +51,8 @@ function Card({ navigation, data, viewType }) {
         today = in_a_day(data.startTime)
         type = typeMap.get(data.type)
         donationGoal = (data.donationGoal) ? data.donationGoal : null,
-            enteredUsers = data.users.children
+        enteredUsers = data.users.children,
+        data['host'] = host
     }
 
     // set default values for card
