@@ -1,5 +1,6 @@
 import React, {useState, useContext}from 'react'
-import { View, ScrollView, Text, Image } from 'react-native'
+import { View, ScrollView, Text, Image, } from 'react-native'
+import { Icon } from 'react-native-elements'
 import {colors, fonts, utilities} from '../../../settings/all_settings'
 import StatsBar from '../../02_Molecules/StatsBar/StatsBar'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
@@ -19,7 +20,7 @@ export default function OtherUser({navigation, route})  {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-          },  
+          },
           body: makeAddJSON()
         })
         const json = await response.json()
@@ -30,7 +31,7 @@ export default function OtherUser({navigation, route})  {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-          },  
+          },
           body: makeAddJSON2()
         })
         return json
@@ -46,7 +47,7 @@ export default function OtherUser({navigation, route})  {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-          },  
+          },
           body: makeDeleteJSON()
         })
         const json = await response.json()
@@ -57,7 +58,7 @@ export default function OtherUser({navigation, route})  {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-          },  
+          },
           body: makeDeleteJSON2()
         })
         return json
@@ -119,10 +120,17 @@ export default function OtherUser({navigation, route})  {
             <ScrollView>
                 <Image source={{uri:route.params.user.profilePicture}} style={styles.profilePic}></Image>
                 <Text style={styles.header_name}>{route.params.user.name}</Text>
-                <Text style={styles.header_username}>@{route.params.user.username}</Text>
+                <View style={{flexDirection:'row', justifyContent:'center', }}>
+                    <Text style={styles.header_username}>@{route.params.user.username}</Text>
+                    {route.params.user.isHost ? <Icon name={'check-circle'}
+                          type='octicons'
+                          color={colors.primaryColor}
+                          backgroundColor='transparent'
+                          style={{marginTop:'19%', marginLeft:'3%'}}/> : null}
+                </View>
 
                 <StatsBar currUser={user} followers={route.params.user.followers} following={route.params.user.following} enteredRaffles={route.params.user.enteredRaffles} navigation={navigation}></StatsBar>
-                
+
                 {user._id == null ? null : follow ? <View style={styles.followButton}>
                     <BlockButton
                     title="FOLLOW"
@@ -133,7 +141,7 @@ export default function OtherUser({navigation, route})  {
                         setFollow(false)
                     }}
                     ></BlockButton>
-                </View> : 
+                </View> :
                 <View style={styles.followButton}>
                     <BlockButton
                     title="FOLLOWED"
