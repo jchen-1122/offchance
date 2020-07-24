@@ -75,7 +75,7 @@ export default function Login({ navigation, route }) {
       <BlockButton
         title="Log in With Google"
         color="google"
-        onPress={() => Linking.openURL('https://www.instagram.com/')}/>
+        onPress={() => Linking.openURL('https://www.yourdictionary.com/signed-up#:~:text=signed%2Dup-,signed%2Dup,past%20participle%20of%20sign%20up')}/>
 
       {/* TODO: need to implement OAUTH functionality (currently links to facebook) */}
       <BlockButton

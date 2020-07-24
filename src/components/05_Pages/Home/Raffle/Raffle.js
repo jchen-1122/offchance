@@ -217,13 +217,13 @@ export default function Raffle({ navigation, route }) {
                             </View>
                         </TouchableOpacity>
                         {typeof user._id === 'undefined' ? null : user.following.includes(route.params.host._id)  ? 
-                            <BlockButton color="primary" size="small" title='FOLLOWED'
+                            <BlockButton color="secondary" size="small" title='FOLLOWED'
                             onPress={async () => {
                                 const userObj = await removeFollower(route.params.host)
                                 setUser(userObj)
                             }}
                             /> :
-                            <BlockButton color="secondary" size="small" title='FOLLOW'
+                            <BlockButton color="primary" size="small" title='FOLLOW'
                             onPress={async () => {
                                 const userObj = await addFollower(route.params.host)
                                 setUser(userObj)
@@ -234,9 +234,29 @@ export default function Raffle({ navigation, route }) {
                     {/* !!!!!!!!!!!!! TODO: connect to db and format !!!!!!!!!!!!!!*/}
                     {/* winner of raffle if expired */}
                     {expired ?
-                        <View style={{ backgroundColor: colors.lightGreen, marginRight: '-5%', marginBottom: 15,}}>
+                        <View style={{ marginRight: '-5%', marginBottom: 15, backgroundColor: colors.limeGreen }}>
                             <Text style={fonts.italic}>Won by:</Text>
-                            <HostedBy data={route.params.host} navigation={navigation}/>
+                            <View style={styles.hostedby}>
+                            <TouchableOpacity onPress={() => navigation.navigate('OtherUser',{user: route.params.host})}>
+                                <View style={styles.hostedby__profile}>
+                                <Image source={{ uri: route.params.host.profilePicture }} style={styles.hostedby__image}></Image>
+                                <Text style={fonts.link}>{'@' + route.params.host.username}</Text>
+                                </View>
+                            </TouchableOpacity>
+                            {typeof user._id === 'undefined' ? null : user.following.includes(route.params.host._id)  ? 
+                                <BlockButton color="secondary" size="small" title='FOLLOWED'
+                                onPress={async () => {
+                                    const userObj = await removeFollower(route.params.host)
+                                    setUser(userObj)
+                                }}
+                                /> :
+                                <BlockButton color="primary" size="small" title='FOLLOW'
+                                onPress={async () => {
+                                    const userObj = await addFollower(route.params.host)
+                                    setUser(userObj)
+                                }}
+                                />}
+                            </View>
                         </View>
                         :
                         null

@@ -126,7 +126,7 @@ export default function OtherUser({navigation, route})  {
                 {user._id == null ? null : follow ? <View style={styles.followButton}>
                     <BlockButton
                     title="FOLLOW"
-                    color="secondary"
+                    color="primary"
                     onPress={async () => {
                         const updatedObj = await addFollower()
                         setUser(updatedObj)
@@ -137,7 +137,7 @@ export default function OtherUser({navigation, route})  {
                 <View style={styles.followButton}>
                     <BlockButton
                     title="FOLLOWED"
-                    color="primary"
+                    color="secondary"
                     onPress={async () => {
                         const updatedObj = await removeFollower()
                         setUser(updatedObj)
