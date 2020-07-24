@@ -35,11 +35,15 @@ import Account from './components/05_Pages/Account/Account';
 import Profile from './components/05_Pages/Account/Profile/Profile';
 import Wallet from './components/05_Pages/Account/Wallet/Wallet';
 import HowItWorks from './components/05_Pages/Account/HowItWorks/HowItWorks';
+import HowItWorksLOGIN from './components/05_Pages/Account/HowItWorksLOGIN/HowItWorksLOGIN';
 import FAQ from './components/05_Pages/Account/FAQ/FAQ';
 import ReqBesAcct from './components/05_Pages/Account/ReqBesAcct/ReqBesAcct';
 import MyDrawings from './components/05_Pages/Account/MyDrawings/MyDrawings';
 import NotLogin from './components/05_Pages/Account/NotLogin/NotLogin';
-// Account page import
+
+// Host pages import
+import AskRaffleType from './components/05_Pages/Host/AskRaffleType/AskRaffleType';
+import NewRaffle from './components/05_Pages/Host/NewRaffle/NewRaffle';
 
 
 const Stack = createStackNavigator();
@@ -51,7 +55,7 @@ function App() {
   return (
     <GlobalState.Provider value={{ user, setUser }}>
       <NavigationContainer>
-        <StatusBar backgroundColor="white" barStyle="dark-content"/>
+        <StatusBar backgroundColor="white" barStyle="light-content"/>
         <Stack.Navigator initialRouteName="Welcome"
           screenOptions={{
             headerStyle: {
@@ -91,6 +95,8 @@ function App() {
           <Stack.Screen name="GameController" component={GameController} options={{ title: '' }}/>
           <Stack.Screen name="RaffleResult" component={RaffleResult} />
           <Stack.Screen name="EnteredUsers" component={EnteredUsers} options={{ title: 'Entered' }}/>
+          <Stack.Screen name="AskRaffleType" component={AskRaffleType} options={{ title: 'New Raffle' }}/>
+          <Stack.Screen name="NewRaffle" component={NewRaffle} options={{ title: 'Submit Raffle' }}/>
         </Stack.Navigator>
       </NavigationContainer>
     </GlobalState.Provider>

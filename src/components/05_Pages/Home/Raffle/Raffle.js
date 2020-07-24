@@ -202,8 +202,8 @@ export default function Raffle({ navigation, route }) {
                 <Text style={[fonts.h1, { marginLeft: '8%', marginBottom: 0 }]}>{name}</Text>
 
                 <View style={styles.content}>
-                    <View style={{ marginTop: 15 }}>
-                        {(expired) ? <Text style={[fonts.bold, fonts.error,{ marginBottom: 10 }]}>THIS DRAWING HAS EXPIRED</Text> : <Text style={fonts.italic}>Drawing Starts:</Text>}
+                    <View style={{ marginVertical: 15 }}>
+                        {(expired) ? <Text style={[fonts.bold, fonts.error]}>THIS DRAWING HAS EXPIRED</Text> : <Text style={[fonts.italic]}>Drawing Starts:</Text>}
                         {(expired) ? null : <CountDown unix_timestamp={route.params.startTime}/>}
                     </View>
 
@@ -262,7 +262,9 @@ export default function Raffle({ navigation, route }) {
 
                             <View style={styles.pickSizeSlide}>
                                 <Text>PICK YOUR SIZE</Text>
-                                <SizeCarousel sizes={sizes}></SizeCarousel>
+                                <SizeCarousel sizes={sizeTypes} type='multiple'></SizeCarousel>
+                                <SizeCarousel sizes={sizes} type='multiple'></SizeCarousel>
+                                <SizeCarousel sizes={sizes} type='single'></SizeCarousel>
                             </View> 
 
                             {/* dropdown disabled for now */}
@@ -292,19 +294,19 @@ export default function Raffle({ navigation, route }) {
                         color="primary"
                         onPress={() => navigation.navigate('GameController')}
                         disabled={expired} />
-                    <BlockButton
+                    {/* <BlockButton
                         title="ENTER DRAWING"
                         color="highlight"
                         onPress={() => toggleSheet()}
-                        disabled={expired} />
+                        disabled={expired} /> */}
                 </View>
 
                 {/* sliding sheet */}
-                <Animated.View
+                {/* <Animated.View
                     style={[styles.subView,
                     { transform: [{ translateY: bounceValue }] }]}>
                     <SlidingSheet title='Enter Drawing' context={['abc']} visible={sheetOpen} toggleSheet={toggleSheet} />
-                </Animated.View>
+                </Animated.View> */}
 
             </ScrollView>
             <BottomNav navigation={navigation} active={'Home'}></BottomNav>

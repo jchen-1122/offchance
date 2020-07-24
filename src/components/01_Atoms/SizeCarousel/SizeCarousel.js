@@ -4,15 +4,17 @@ import {colors} from '../../../settings/colors'
 import styles from './SizeCarousel.styling'
 
 
-export default function SizeCarousel({sizes}) {
+export default function SizeCarousel({sizes, type}) {
 
-    const [_selected, setSelected] = useState(-1)
+    const [_selected, setSelected] = useState({})
 
     const generateSizeCircle = (i) => {
         return (
             <TouchableHighlight onPress={() => {
+
                 setSelected(i)
-            }} underlayColor={colors.lightGreen} style={_selected === i ? styles.green_button : styles.white_button}>
+
+            }} underlayColor={colors.lightGreen} style={(_selected === i) ? styles.green_button : styles.white_button}>
                 <View >
                     <Text style={{textAlign: 'center', marginTop: 7}}>{sizes[i]}</Text>
                 </View>
@@ -21,12 +23,14 @@ export default function SizeCarousel({sizes}) {
     }
 
     let display = [];
-    const [color, setColor] = useState(new Array(sizes.length).fill('white'))
     if (sizes[0] != null){
         for (var i=0; i<sizes.length; i++){
-            display.push(
-                generateSizeCircle(i)
-            )
+            if (type == 'multiple') {
+                display.push(fkme(sizes[i]))
+            }
+            else {
+                display.push(generateSizeCircle(i))
+            }
         }
     }
     return (
@@ -39,5 +43,21 @@ export default function SizeCarousel({sizes}) {
                 {display}
             </ScrollView>
         </View>
+    )
+}
+
+function fkme( i ) {
+    const [_green, setGreen] = useState(false)
+
+    return (
+        <TouchableHighlight onPress={() => {
+
+            setGreen(!_green)
+
+        }} underlayColor={colors.lightGreen} style={_green ? styles.green_button : styles.white_button}>
+            <View >
+                <Text style={{textAlign: 'center', marginTop: 7}}>{i}</Text>
+            </View>
+        </TouchableHighlight>
     )
 }
