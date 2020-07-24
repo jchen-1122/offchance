@@ -1,5 +1,5 @@
 import React, {useState, useContext, useEffect} from 'react'
-import { View, ScrollView, Text, Image } from 'react-native'
+import { View, ScrollView, Text, Image,Button } from 'react-native'
 import {colors, fonts, utilities} from '../../../../settings/all_settings';
 import InfoFeed from '../../../02_Molecules/InfoFeed/InfoFeed'
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
@@ -12,7 +12,17 @@ import GlobalState from '../../../globalState';
 
 function Profile({navigation}) {
     const {user, setUser} = useContext(GlobalState)
-    console.log(user)
+
+    // add edit button in topbar
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+          headerRight: () => (
+            <Button onPress={() => {
+                navigation.navigate("EditProfile", user)}} title="Edit" />
+          ),
+        });
+      }, [navigation]);
+
     const [info, setInfo] = useState(true)
     const [viewing, setViewing] = useState((user != null) ? user.viewing : false)
     let name, username, profilePic, email, followers, following, enteredRaffles, address, shoeSize, shirtSize
@@ -26,21 +36,15 @@ function Profile({navigation}) {
     } else {
         name = user.name
         username = user.username
-        profilePic = "https://i.pinimg.com/originals/dc/24/88/dc2488feb2d6dc4750a95a1f715c67d8.jpg"
+        profilePic = user.profilePicture
         email = user.email
         followers = user.followers
         following = user.following
         enteredRaffles = user.enteredRaffles
-        address = user.address
+        address = user.shippingAddress
         shoeSize = user.shoeSize
         shirtSize = user.shirtSize
     }
-    if (user.shoeSize == null) {
-        user.shoeSize = 15
-    } 
-    if (user.shirtSize == null) {
-        user.shirtSize = 15
-    } 
     return (
         <View style={utilities.container}>
             <ScrollView>
@@ -83,14 +87,6 @@ function Profile({navigation}) {
                             color="secondary"
                             size="short"
                             onPress={() => navigation.navigate("RaffleResult", {name:name, setViewing:setViewing})}></BlockButton>
-                        </View>
-                        <View style={styles.payment}>
-                            <BlockButton
-                            title="EDIT PROFILE"
-                            color="secondary"
-                            size="short"
-                            onPress={() => {
-                                navigation.navigate("EditProfile", user)}}></BlockButton>
                         </View>
                     </View>
 

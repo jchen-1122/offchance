@@ -15,6 +15,9 @@ const styles = StyleSheet.create({
     DropDown__picker_large: {
         width: 300,
         zIndex: 50000,
+    },
+    DropDown__picker_xlarge: {
+        width: 340
     }
 
 })

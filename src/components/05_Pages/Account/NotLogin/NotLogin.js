@@ -16,7 +16,7 @@ export default function NotLogin({navigation}) {
     return (
         <View style={utilities.container}>
             <View style={styles.content}>
-                <Text style={[fonts.h1, {marginTop: windowHeight*.2, textAlign: "center", fontSize: 23}]}>Sign Up or Log In to Enter Drawings!:</Text>
+                <Text style={[fonts.h1, {marginTop: windowHeight*.2, textAlign: "center", fontSize: 23}]}>Sign Up or Log In to Enter Drawings!</Text>
                 <BlockButton
                 title="SIGN UP"
                 color="primary"

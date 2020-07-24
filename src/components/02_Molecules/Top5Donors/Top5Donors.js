@@ -3,19 +3,21 @@ import { View, Image, Text } from 'react-native'
 import styles from './Top5Donors.styling'
 import { fonts } from '../../../settings/all_settings'
 
-function Top5Donors({ images, account }) {
+function Top5Donors({ navigation, users}) {
     let donors = [];
-    if (images){
+    if (users[0] != null){
         for (var i=0; i<5; i++){
-            donors.push(<Image source={{uri:images[i]}} style={styles.donor} />)
+            donors.push(
+            <Image source={{uri:users[i].profilePicture}} style={styles.donor} />
+            )
         }
     }
     
     return (
-        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-            <Text style={[fonts.italic,{textAlign: 'left'}]}>Top 5 Donors:{account} </Text>
-            {donors}
-        </View>
+            <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                <Text style={[fonts.italic,{textAlign: 'left'}]}>Top 5 Donors: </Text>
+                {donors}
+            </View>
     )
 }
 

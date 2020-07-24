@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import { View, Dimensions, ScrollView } from 'react-native'
+import { View, Dimensions, ScrollView, BackHandler, Alert} from 'react-native'
 // import {fonts} from '../../../settings/fonts';
 import {colors, fonts, utilities} from '../../../settings/all_settings';
 import BottomNav from '../../02_Molecules/BottomNav/BottomNav';
@@ -31,13 +31,30 @@ function Home({navigation}) {
         }
         getRaffle()
 
+        // BACKHANDLING FOR ANDROID BOTTOM NAV
+        const backAction = () => {
+            Alert.alert("Hold on!", "Are you sure you want to exit the app?", [
+              {
+                text: "Cancel",
+                onPress: () => null,
+                style: "cancel"
+              },
+              { text: "YES", onPress: () => BackHandler.exitApp() }
+            ]);
+            return true;
+          };
+          const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+          );
+          return () => backHandler.remove();
+          
       }, [viewType])
 
     return (
         <View style={utilities.container}>
             <ScrollView contentContainerStyle={utilities.scrollview}>
                 <TopNav navigation={navigation} active='Home'/>
-
 
                 <View style={utilities.flexCenter}>
                     <View style={{width: Dimensions.get('window').width * 0.85, alignItems: 'flex-end', marginTop: '5%'}}>
