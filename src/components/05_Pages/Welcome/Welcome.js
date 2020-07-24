@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { View, Text, Image, ImageBackground, Linking, BackHandler, Alert } from 'react-native';
+import { View, Text, Image, ImageBackground, Linking, BackHandler, Alert, } from 'react-native';
+import { Icon } from 'react-native-elements';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import TextLink from '../../01_Atoms/Buttons/TextLinks/TextLinks';
 import {styles} from './Welcome.styling';

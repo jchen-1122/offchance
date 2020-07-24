@@ -52,7 +52,6 @@ function SlidingSheet(props) {
                           options={options1}
                           size='large'
                           arrowSize={18}
-                          zIndex={500000}
                           isVisible={false}
                           />
                     </View>
@@ -63,7 +62,6 @@ function SlidingSheet(props) {
                           options={options2}
                           size='large'
                           arrowSize={18}
-                          zIndex={40000}
                           isVisible={false}
                           />
                     </View>
@@ -71,8 +69,7 @@ function SlidingSheet(props) {
                     <View style={styles.button}>
                         <BlockButton
                             title="ADD CHANCES"
-                            color="primary"
-                            onPress={() => toggleSheet()}/>
+                            color="primary"/>
                     </View>
 
                 </ScrollView>

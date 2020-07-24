@@ -44,6 +44,10 @@ function BlockButton(props) {
             buttonStyle = [styles.BlockButton_transparent];
             buttonTitleStyle = [styles.BlockButton__title_transparent];
             break;
+        case "logOut":
+            buttonStyle.push(styles.BlockButton_logOut);
+            buttonTitleStyle = [styles.BlockButton__title_logOut];
+            break;
     }
 
     // determing what size (large by default)

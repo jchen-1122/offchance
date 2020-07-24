@@ -16,7 +16,7 @@ import { top5_raffle } from '../../../functions/explore_functions';
 function Card ({ navigation, data, viewType }) {
     const ip = require('../../IP_ADDRESS.json');
     const [host, setHost] = useState(null)
-
+    // console.log(data);
     React.useEffect(() => {
         async function getHost() {
           let response = await fetch('http://'+ip.ipAddress+':3000/user/id/' + data.hostedBy)
@@ -26,7 +26,7 @@ function Card ({ navigation, data, viewType }) {
         getHost()
 
       }, [])
-    
+
     // width for card content
     let contentWidth = Dimensions.get('window').width * 0.65;
 
@@ -55,7 +55,7 @@ function Card ({ navigation, data, viewType }) {
         data['host'] = host;
         data['top5'] = data.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,5)
     }
-    
+
     // set default values for card
     let startData = null;
     let like = null;
@@ -73,7 +73,7 @@ function Card ({ navigation, data, viewType }) {
                     <LikeButton />
                 </View>);
             if (donationGoal){
-                pgBar = 
+                pgBar =
                 <View style={{marginTop: 15}}>
                     <ProgressBar progress={230 / donationGoal} color={colors.primaryColor} raised={230} goal={donationGoal} width={contentWidth} />
                 </View>
@@ -81,7 +81,7 @@ function Card ({ navigation, data, viewType }) {
             startData = (
                 <View>
                     <Text style={{marginTop: 15}}>
-                        {(expired) ? <Text style={[styles.grey_text,fonts.p]}>DRAWING STARTED</Text> : (today ? <Text style={[styles.startData_grey,fonts.p]}>DRAWING STARTS IN </Text> : <Text style={[styles.startData_grey,fonts.p]}>DRAWING STARTS AT </Text>)}   
+                        {(expired) ? <Text style={[styles.grey_text,fonts.p]}>DRAWING STARTED</Text> : (today ? <Text style={[styles.startData_grey,fonts.p]}>DRAWING STARTS IN </Text> : <Text style={[styles.startData_grey,fonts.p]}>DRAWING STARTS AT </Text>)}
                         {!expired && <Countdown unix_timestamp={date}/>}
                     </Text>
                     {!expired && <Text style={[styles.grey_text,fonts.p]}>OR WHEN DONATION GOAL IS MET</Text>}
@@ -107,7 +107,7 @@ function Card ({ navigation, data, viewType }) {
         case 'notification':
             return (
                 <ScrollView style={[styles.card]}>
-                    <View style={styles.notif}>                    
+                    <View style={styles.notif}>
                         <Image style={styles.notif_host} source={host.pic} />
                         <View>
                         <Text>@{host.name} {title}</Text>

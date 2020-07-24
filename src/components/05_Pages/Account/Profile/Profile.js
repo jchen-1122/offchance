@@ -1,5 +1,6 @@
 import React, {useState, useContext, useEffect} from 'react'
-import { View, ScrollView, Text, Image,Button } from 'react-native'
+import { View, ScrollView, Text, Image, Button, } from 'react-native'
+import { Icon } from 'react-native-elements';
 import {colors, fonts, utilities} from '../../../../settings/all_settings';
 import InfoFeed from '../../../02_Molecules/InfoFeed/InfoFeed'
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
@@ -9,6 +10,7 @@ import StatsBar from '../../../02_Molecules/StatsBar/StatsBar'
 import Nswitch from '../../../../../assets/images/switch.jpeg'
 import {styles} from './Profile.styling'
 import GlobalState from '../../../globalState';
+import Octicon, { Octicons } from 'octicons-react'
 
 function Profile({navigation}) {
     const {user, setUser} = useContext(GlobalState)
@@ -50,7 +52,14 @@ function Profile({navigation}) {
             <ScrollView>
                 <Image source={{uri:profilePic}} style={styles.profilePic}></Image>
                 <Text style={styles.header_name}>{name}</Text>
-                <Text style={styles.header_username}>@{username}</Text>
+                <View style={{flexDirection:'row', justifyContent:'center', }}>
+                    <Text style={styles.header_username}>@{username}</Text>
+                    <Icon name={'check-circle'}
+                          type='octicons'
+                          color={colors.primaryColor}
+                          backgroundColor='transparent'
+                          style={{marginTop:'19%', marginLeft:'3%'}}/>
+                </View>
 
                 <StatsBar currUser={user} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>
 

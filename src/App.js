@@ -79,8 +79,8 @@ function App() {
           <Stack.Screen name="Profile" component={Profile} options={{
             title: user.name, }} />
           <Stack.Screen name="Wallet" component={Wallet} />
-          <Stack.Screen name="HowItWorks" component={HowItWorks} />
-          <Stack.Screen name="Journey Begins" component={HowItWorksLOGIN} />
+          <Stack.Screen name="HowItWorks" component={HowItWorks} options={{ title: 'How It Works' }}/>
+          <Stack.Screen name="How It Works" component={HowItWorksLOGIN} options={{ headerLeft: null }}/>
           <Stack.Screen name="FAQ" component={FAQ} />
           <Stack.Screen name="ReqBesAcct" component={ReqBesAcct} options={{ title: 'Request' }}/>
           <Stack.Screen name="MyDrawings" component={MyDrawings} options={{ title: 'My Drawings' }}/>
