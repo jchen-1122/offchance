@@ -1,7 +1,7 @@
 // insta button + facebook button + login button
 
 import React from 'react';
-import { TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 import { styles } from "./BlockButton.styling";
 import { SocialIcon } from 'react-native-elements';
 
@@ -25,9 +25,6 @@ function BlockButton(props) {
         case "tertiary":
             buttonStyle.push(styles.BlockButton_tertiary);
             buttonTitleStyle = [styles.BlockButton__title_tertiary];
-            break;
-        case "highlight": // Off Chance Orange
-            buttonStyle.push(styles.BlockButton_highlight);
             break;
         case "facebook":
             buttonStyle.push(styles.BlockButton_facebook);
@@ -59,18 +56,6 @@ function BlockButton(props) {
             buttonStyle.push(styles.BlockButton_small);
             buttonTitleStyle.push(styles.BlockButton__title_small)
             break;
-        case "shortSmall": // ex. buy chance buttons (second row)
-            buttonStyle.push(styles.BlockButton_smallShort);
-            buttonTitleStyle.push(styles.BlockButton__title_small)
-            break;
-        case "smallLongLeft": // ex. buy chance buttons (second row)
-            buttonStyle.push(styles.BlockButton_smallLongLeft);
-            buttonTitleStyle.push(styles.BlockButton__title_small)
-            break;
-        case "smallLongRight": // ex. buy chance buttons (second row)
-            buttonStyle.push(styles.BlockButton_smallLongRight);
-            buttonTitleStyle.push(styles.BlockButton__title_small)
-            break;
     }
 
     // if button is disabled
@@ -78,10 +63,21 @@ function BlockButton(props) {
         buttonStyle.push(styles.BlockButton_disabled)
     }
 
+    // if there's a banner on the button
+    let banner;
+    if (props.bannerTitle) {
+        banner = (
+            <View style={styles.BlockButton__banner}>
+                <Text style={styles.BlockButton__bannerTitle}>{props.bannerTitle}</Text>
+            </View>
+        )
+    }
+
     return (
         <TouchableOpacity style={buttonStyle} onPress={props.onPress} disabled={props.disabled}>
             {icon}
             <Text style={[styles.BlockButton__title, buttonTitleStyle]}>{props.title}</Text>
+            {banner}
         </TouchableOpacity>
     )
 }

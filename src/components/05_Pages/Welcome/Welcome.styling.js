@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
       flex: 1,
       height:200, // delete later
       width: 400, // delete later
-      marginLeft: '1.5%',
       marginTop: '4%',
       resizeMode: "cover",
       justifyContent: "center",
