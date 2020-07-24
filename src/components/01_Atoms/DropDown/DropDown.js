@@ -29,10 +29,6 @@ function DropDown(props) {
             break;
     }
 
-    const onChange = (item) =>{
-        setSelectedValue(item.value)
-        props.set_us_state(item.value)
-    }
     return (
         <View style={styles.DropDown}>
             <DropDownPicker
@@ -43,7 +39,7 @@ function DropDown(props) {
                 defaultValue={selectedValue}
                 containerStyle={containerStyles}
                 itemStyle={{justifyContent: 'flex-start'}}
-                onChangeItem={item => onChange(item)}
+                onChangeItem={item => setSelectedValue(item.value)}
             />
         </View>
     )

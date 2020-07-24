@@ -21,8 +21,8 @@ export default function NewRaffle({ navigation, route }) {
     const [_startTime, setStartTime] = useState(null)
     const [_goal, setGoal] = useState(null)
     const [_charities, setCharities] = useState([])
-    const [_sizeTypes, setSizeTypes] = useState([])
-    const [_sizes, setSizes] = useState([])
+    const [_sizeTypes, setSizeTypes] = useState(['One Size'])
+    const [_sizes, setSizes] = useState(['One Size'])
     const [_productType, setProductType] = useState('sneaker')
 
     // stuff for date picker (start time)
@@ -40,6 +40,7 @@ export default function NewRaffle({ navigation, route }) {
 
     const productTypes = ['sneaker', 'streetwear', 'collectibles', 'art']
     const { user, setUser } = useContext(GlobalState)
+    console.log(typeof user._id)
 
     // METHOD FOR POSTING RAFFLE
     const data = require('../../../IP_ADDRESS.json');
@@ -94,7 +95,10 @@ export default function NewRaffle({ navigation, route }) {
             startTime: _startTime.getTime() / 1000, // convert to unix timestamp
             donationGoal: _goal,
             charities: (_charities.length > 0) ? _charities.split(',').map(item => item.trim()) : null,
-            productType: _productType
+            productType: _productType,
+            // CHANGE LATER
+            sizeTypes: _sizeTypes,
+            sizes: _sizes
         }
         console.log(JSON.stringify(data))
         return JSON.stringify(data)
