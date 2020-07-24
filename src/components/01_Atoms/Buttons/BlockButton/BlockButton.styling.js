@@ -41,19 +41,12 @@ const styles = StyleSheet.create({
         borderWidth: 2
     },
     BlockButton_facebook:{
-        backgroundColor: colors.facebookBlue
+        backgroundColor: colors.facebookBlue,
+        width: '43%',
     },
     BlockButton_google:{
-        backgroundColor: 'white'
-    },
-    // BlockButton_insta:{
-    //     backgroundColor: colors.instaPurple
-    // },
-    BlockButton_transparent:{
-        height: '12%',
-        marginLeft:'8%',
-        backgroundColor: 'transparent',
-        justifyContent: 'center',
+        backgroundColor: 'white',
+        width: '43%',
     },
     BlockButton_logOut:{
         backgroundColor: 'red'
