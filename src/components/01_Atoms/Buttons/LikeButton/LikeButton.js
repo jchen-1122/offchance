@@ -7,10 +7,11 @@ import { Icon } from 'react-native-elements';
 import Tooltip from '../../../02_Molecules/Tooltip/Tooltip';
 
 function LikeButton(props){
-    const [color, setColor] = useState(false)
     const currUser = props.currUser
     const setUser = props.setUser
     const raffle = props.raffle
+    const inLikesPage = (props.inLikesPage != null) ? props.inLikesPage : false
+    const [color, setColor] = useState((typeof currUser._id === 'undefined' ? true : currUser.likedRaffles.includes(raffle)))
 
     const setLike = async () => {
         const ip = require('../../../IP_ADDRESS.json')
@@ -23,7 +24,6 @@ function LikeButton(props){
           body: makeAddJSON()
         })
         const json = await response.json()
-        console.log(json)
         return json
     }
 
@@ -38,7 +38,6 @@ function LikeButton(props){
           body: makeDeleteJSON()
         })
         const json = await response.json()
-        console.log(json)
         return json
     }
 
@@ -70,7 +69,7 @@ function LikeButton(props){
     * Link of available icons
     * https://react-native-elements.github.io/react-native-elements/docs/icon.html#available-icon-sets
     */
-    if (typeof currUser._id === 'undefined') {
+    if (typeof currUser._id === 'undefined' || inLikesPage) {
         return null
     }
     
@@ -85,7 +84,7 @@ function LikeButton(props){
             }
             setUser(currUser)
         }}>
-            {currUser.likedRaffles.includes(raffle) ? <Icon name='heart' type='material-community' color={'red'}/> : 
+            {color ? <Icon name='heart' type='material-community' color={'red'}/> : 
             <Icon name='heart-outline' type='material-community'/>}
         </TouchableOpacity>
     )

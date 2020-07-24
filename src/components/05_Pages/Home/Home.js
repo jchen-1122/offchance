@@ -50,7 +50,7 @@ function Home({navigation}) {
           return () => backHandler.remove();
           
       }, [viewType])
-
+      // ^^ home not updating because its locked on viewtype
     return (
         <View style={utilities.container}>
             <ScrollView contentContainerStyle={utilities.scrollview}>
