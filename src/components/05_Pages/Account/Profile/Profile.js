@@ -54,11 +54,11 @@ function Profile({navigation}) {
                 <Text style={styles.header_name}>{name}</Text>
                 <View style={{flexDirection:'row', justifyContent:'center', }}>
                     <Text style={styles.header_username}>@{username}</Text>
-                    <Icon name={'check-circle'}
+                    {user.isHost ? <Icon name={'check-circle'}
                           type='octicons'
                           color={colors.primaryColor}
                           backgroundColor='transparent'
-                          style={{marginTop:'19%', marginLeft:'3%'}}/>
+                          style={{marginTop:'19%', marginLeft:'3%'}}/> : null}
                 </View>
 
                 <StatsBar currUser={user} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>
