@@ -113,6 +113,20 @@ export default function Signup({ navigation }) {
   return (
     <ScrollView>
       <View style={[utilities.flexCenter, { marginTop: '5%', marginBottom: 25 }]}>
+        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+        <BlockButton
+            color="facebook"
+            title="Facebook" 
+            style={{margin: 0, marginRight: 7.5}}/>
+        <BlockButton
+            color="google"
+            title="Google"
+            style={{margin: 0, marginLeft: 7.5}}/>
+        </View>
+
+        <View style={{marginVertical: '2.5%', alignItems: 'center'}}>
+        <Divider />
+        </View>
 
         <InputField
           label="Full Name"

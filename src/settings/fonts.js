@@ -10,17 +10,15 @@ var baseFontSize = 16;
 
 const fonts = StyleSheet.create({
     h1: {
-        fontSize: baseFontSize * 1.5,
+        fontSize: 20,
         fontWeight:'bold',
-        marginTop: 15,
-        marginBottom: 15
     },
     h2: {
-        fontSize: baseFontSize * 1.25,
+        fontSize: 18,
         fontWeight: 'bold'
     },
     h3: {
-        fontSize: baseFontSize,
+        fontSize: 16,
         fontWeight: 'bold'
     },
     light: {
