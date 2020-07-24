@@ -21,7 +21,7 @@ export default function Account({navigation}) {
               <NavButton title="Profile" icon="account" onPress={() => navigation.navigate('Profile')}/>
               <NavButton title="Wallet" icon="cash" onPress={() => navigation.navigate('Wallet')}/>
 
-              <NavButton title="How It Works" icon="help-box" onPress={() => navigation.navigate('HowItWorks')}/>
+              <NavButton title="How It Works" icon="help-box" onPress={() => navigation.navigate('HowItWorks', {fromLogin: false})}/>
 
               <NavButton title="FAQ" icon="frequently-asked-questions"onPress={() => navigation.navigate('FAQ')}/>
               {user.isHost ? null : <NavButton title="Request Business Account" icon="briefcase" onPress={() => navigation.navigate('ReqBesAcct')}/>}

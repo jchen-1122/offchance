@@ -46,7 +46,7 @@ function SlidingSheet(props) {
                         />
                     </View>
 
-                    <View style={styles.slidingSheet__content}>
+                    <View style={[styles.slidingSheet__content, {zIndex: 1}]}>
                         <Text style={styles.slidingSheet__content_text}>{props.content[1]}</Text>
                         <DropDown
                           options={options1}
