@@ -10,6 +10,7 @@ function LikeButton(props){
     const currUser = props.currUser
     const setUser = props.setUser
     const raffle = props.raffle
+    const navigation = props.navigation
     const inLikesPage = (props.inLikesPage != null) ? props.inLikesPage : false
     const [color, setColor] = useState((typeof currUser._id === 'undefined' ? true : currUser.likedRaffles.includes(raffle)))
 
@@ -69,8 +70,18 @@ function LikeButton(props){
     * Link of available icons
     * https://react-native-elements.github.io/react-native-elements/docs/icon.html#available-icon-sets
     */
-    if (typeof currUser._id === 'undefined' || inLikesPage) {
+    if (inLikesPage) {
         return null
+    }
+    if (typeof currUser._id === 'undefined' || inLikesPage) {
+        return (
+            <TouchableOpacity style={styles.LikeButton} 
+            onPress={() => {
+                navigation.navigate('NotLogin')
+            }}>
+                <Icon name='heart-outline' type='material-community'/>
+            </TouchableOpacity>
+        )
     }
     
     return (

@@ -75,7 +75,7 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
             like = (
                 <View style={styles.likeButton}>
                     {(viewType==0)?<CardBanner title='MANY CHANCES TO WIN' color='lightGreen'/>:null}
-                    <LikeButton inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid}/>
+                    <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid}/>
                 </View>);
             if (donationGoal){
                 pgBar = 
@@ -97,7 +97,7 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
             like = (
                 <View style={styles.likeButton}>
                     {(viewType==0)?<CardBanner title='ENTER TO BUY' color='darkGreen' icon='usd'/>:null}
-                    <LikeButton inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid}/>
+                    <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid}/>
                 </View>);
             startData = (<View><Text style={[styles.startData_grey,fonts.p]}>{expired ? 'DRAWING STARTED' : 'DRAWING STARTS'}</Text><Countdown unix_timestamp={date}/></View>);
             break;

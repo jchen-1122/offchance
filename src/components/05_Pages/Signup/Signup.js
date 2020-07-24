@@ -26,6 +26,7 @@ export default function Signup({ navigation }) {
       body: makeJSON()
     })
     const json = await response.json()
+    console.log(json)
     return json
   }
 
@@ -102,7 +103,8 @@ export default function Signup({ navigation }) {
       instaHandle: _instaHandle,
       city: _city,
       state: jsonData[_us_state],
-      password: _password
+      password: _password,
+      isHost: state.businessAccount
     }
     return JSON.stringify(data)
   };

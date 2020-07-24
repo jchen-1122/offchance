@@ -49,7 +49,7 @@ function Home({navigation}) {
           );
           return () => backHandler.remove();
           
-      }, [viewType])
+      }, [viewType, raffles, user, toggleMenuOpen])
       // ^^ home not updating because its locked on viewtype
     return (
         <View style={utilities.container}>
