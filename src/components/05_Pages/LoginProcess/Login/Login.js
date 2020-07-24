@@ -114,8 +114,7 @@ export default function Login({ navigation, route }) {
               {/* https://stackoverflow.com/questions/42831685/disable-back-button-in-react-navigation */}
               navigation.reset({
                 index: 0,
-                routes: [{ name: 'HowItWorks' }],
-                fromLogin: true
+                actions: [navigation.navigate('HowItWorks', {fromLogin: true})],
               })
             } else {
               let errors = []
