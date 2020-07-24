@@ -71,7 +71,7 @@ export default function HowItWorks({navigation, route}) {
                 </View>
 
             </ScrollView>
-            <BottomNav navigation={navigation} active={'Home'}></BottomNav>
+            {route.params.fromLogin ? null : <BottomNav navigation={navigation} active={'Home'}></BottomNav>}
         </View>
     )
 }
