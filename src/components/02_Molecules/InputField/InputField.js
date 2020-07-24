@@ -1,12 +1,12 @@
 import React from 'react';
-import {TextInput, Text, View} from 'react-native';
-import {styles} from "./InputField.styling";
-import {Icon} from 'react-native-elements';
+import { TextInput, Text, View } from 'react-native';
+import { styles } from "./InputField.styling";
+import { Icon } from 'react-native-elements';
 import Tooltip from '../Tooltip/Tooltip';
 import LikeButton from '../../01_Atoms/Buttons/LikeButton/LikeButton';
 
 
-function InputField(props){
+function InputField(props) {
 
     // increase size of box if its a textArea
     let inputBoxSizes = [styles.InputField__box]
@@ -15,31 +15,33 @@ function InputField(props){
     }
 
     // if input is supposed to have an icon with a tooltip (i.e. insta handle)
-    let icon = (props.tooltip) ? (<Tooltip label={<Icon name='info'/>} content={props.tooltipContent}/>) : null;
+    let icon = (props.tooltip) ? (<Tooltip label={<Icon name='info' />} content={props.tooltipContent} />) : null;
 
     return (
         <View style={[styles.InputField, props.style]}>
             <View style={styles.InputField__labelContainer}>
-                <Text style={styles.InputField__label}>
-                    {props.label} {(props.required) ? <Text style={{color: 'red'}}>*</Text> : null}
-                </Text>
+                {props.label ?
+                    <Text style={styles.InputField__label}>
+                        {props.label} {(props.required) ? <Text style={{ color: 'red' }}>*</Text> : null}
+                    </Text> : null
+                }
                 {icon}
             </View>
 
-            <TextInput 
+            <TextInput
                 value={props.value}
                 textContentType={props.textContentType}
                 returnKeyType="next"
                 keyboardAppearance="dark"
                 autoCorrect={false}
                 autoCapitalize={props.autoCapitalize || "none"}
-                secureTextEntry={props.password} 
-                multiline={props.textArea} 
+                secureTextEntry={props.password}
+                multiline={props.textArea}
                 numberOfLines={4}
                 keyboardType={props.keyboardType}
-                style={inputBoxSizes} 
+                style={inputBoxSizes}
                 maxLength={props.maxLength}
-                onChangeText={props.onChangeText}/>
+                onChangeText={props.onChangeText} />
         </View>
     )
 }

@@ -1,27 +1,26 @@
 import React, {useState, useEffect} from 'react';
 import {  View, Text, StyleSheet } from 'react-native';
+import {format_date} from '../../../functions/convert_dates';
 
 const Countdown = ({ unix_timestamp, type }) => {
-    // initialize timeLeft with the seconds prop
-
     const monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
 
-    var date = new Date(unix_timestamp * 1000); // convert to date object
-    var ampm = (date.getHours() >= 12) ? "PM" : "AM"; // am or pm
-    var hour = date.getHours() > 12 ? date.getHours() - 12 : date.getHours() // hour in AM or PM instead of military
-    var diff = date.getTime() - Date.now() // calc time until date 
+    // convert to date object
+    var date = new Date(unix_timestamp * 1000); 
+
+    // calculate the time until date
+    var diff = date.getTime() - Date.now()
+
+    // if it's more than 24 hours from now
     if (diff > (24*3.6*Math.pow(10,6))) {
-        var placeholder = ''
-        if (date.getMinutes() < 10) placeholder = '0'
-        var str = monthNames[date.getMonth()] + ' ' + date.getDate() + ', ' + hour + ':' + placeholder + date.getMinutes() + ampm
-        return <Text style={{fontWeight: 'bold'}}>{str}</Text>
+      return <Text style={{fontWeight: 'bold'}}>{format_date(date)}</Text>
     }
     const [timeLeft, setTimeLeft] = useState(diff);
     //console.log(unix_timestamp)
   
     useEffect(() => {
       // exit early when we reach 0
-      if (timeLeft <= 0) return;
+      // if (timeLeft <= 0) return;
   
       // save intervalId to clear the interval when the
       // component re-renders
@@ -36,7 +35,7 @@ const Countdown = ({ unix_timestamp, type }) => {
     }, [timeLeft]);
   
     return (
-        (timeLeft <= 0) ? <Text>EXPIRED</Text> : <Text style={{fontWeight: 'bold'}}>{Math.floor((timeLeft / (1000 * 60 * 60)) % 24)}h {Math.floor((timeLeft / (1000 * 60)) % 60)}m {Math.floor((timeLeft / 1000) % 60)}s</Text>
+        (timeLeft <= 0) ? <Text style={{fontWeight: 'bold'}}>{format_date(date)}</Text> : <Text style={{fontWeight: 'bold'}}>{Math.floor((timeLeft / (1000 * 60 * 60)) % 24)}h {Math.floor((timeLeft / (1000 * 60)) % 60)}m {Math.floor((timeLeft / 1000) % 60)}s</Text>
     );
   };
 

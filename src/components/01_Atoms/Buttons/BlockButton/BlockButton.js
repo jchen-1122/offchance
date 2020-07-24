@@ -26,9 +26,6 @@ function BlockButton(props) {
             buttonStyle.push(styles.BlockButton_tertiary);
             buttonTitleStyle = [styles.BlockButton__title_tertiary];
             break;
-        case "highlight": // Off Chance Orange
-            buttonStyle.push(styles.BlockButton_highlight);
-            break;
         case "facebook":
             buttonStyle.push(styles.BlockButton_facebook);
             buttonTitleStyle=[styles.BlockButton__title_tertiary];
@@ -40,10 +37,6 @@ function BlockButton(props) {
             icon = <SocialIcon type='google' raised={false} iconStyle={styles.google_icon} style={styles.iconBg} iconSize={30}/>
             // icon = google_icon;
             break;
-        case "transparent":
-            buttonStyle = [styles.BlockButton_transparent];
-            buttonTitleStyle = [styles.BlockButton__title_transparent];
-            break;
     }
 
     // determing what size (large by default)
@@ -53,18 +46,6 @@ function BlockButton(props) {
             break;
         case "small": // ex. follow button
             buttonStyle.push(styles.BlockButton_small);
-            buttonTitleStyle.push(styles.BlockButton__title_small)
-            break;
-        case "shortSmall": // ex. buy chance buttons (second row)
-            buttonStyle.push(styles.BlockButton_smallShort);
-            buttonTitleStyle.push(styles.BlockButton__title_small)
-            break;
-        case "smallLongLeft": // ex. buy chance buttons (second row)
-            buttonStyle.push(styles.BlockButton_smallLongLeft);
-            buttonTitleStyle.push(styles.BlockButton__title_small)
-            break;
-        case "smallLongRight": // ex. buy chance buttons (second row)
-            buttonStyle.push(styles.BlockButton_smallLongRight);
             buttonTitleStyle.push(styles.BlockButton__title_small)
             break;
     }
