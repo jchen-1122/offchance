@@ -4,12 +4,13 @@ import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
 import {utilities, fonts, colors} from '../../../../settings/all_settings';
 import { set } from 'react-native-reanimated';
 import { get_user } from '../../../fake_users/stub-users';
+import Construction from '../../../04_Templates/Construction/Construction'
 
 export default function Wallet({navigation}) {
 
     return (
         <View style={utilities.container}>
-            <Text>This is a placeholder for MYDRAWINGS page.</Text>
+            <Construction></Construction>
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>
         </View>
     )

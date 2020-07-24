@@ -54,7 +54,7 @@ function TextCollapser(props){
                       </View>
 
                       <View style={{width:'15%',alignItems:'flex-end'}}>
-                          <Image source={(expanded) ? up_arrow : down_arrow} />
+                          <Image source={(expanded) ? up_arrow : down_arrow} style={{height: 20, width: 20}}/>
                       </View>
 
                   </CollapseHeader>

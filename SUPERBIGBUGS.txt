@@ -1,0 +1,8 @@
+#1 
+    On Expo: Account->Wallet->Add Chances->Reload Source Dropdown
+	- ScrollView does not remain static when select Reload Amount 
+    Path: 
+	- Wallet: 05_Pages/Account/Wallet
+	- SlidingSheet: 04_Templates/SlidingSheet
+	- DropDown: 01_Atoms/DropDown
+

@@ -112,7 +112,7 @@ export default function({navigation}) {
                 <View style={{zIndex: 5}}>
                     <Text style={{fontSize: 16, marginBottom: 5, fontWeight: '500'}}>Shirt Size</Text>
                     <View style={{zIndex: 10, marginBottom: 10}}>
-                        <Dropdown options={shirtSizes} size="xlarge" set_us_state={setShirt}/>
+                        <Dropdown options={shirtSizes} size="small" set_us_state={setShirt}/>
                     </View>
                 </View>
                 </View>
