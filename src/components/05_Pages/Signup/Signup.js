@@ -110,19 +110,7 @@ export default function Signup({ navigation }) {
   // ============================================================================================
   return (
     <ScrollView>
-      <View style={[utilities.flexCenter, { marginBottom: 25 }]}>
-        {/* TODO: need to implement OAUTH functionality (currently links to instagram) */}
-        <BlockButton
-          title="Log in With Google"
-          color="google"
-          onPress={() => Linking.openURL('https://www.instagram.com/')} />
-        {/* TODO: need to implement OAUTH functionality (currently links to facebook) */}
-        <BlockButton
-          title="Log in With Facebook"
-          color="facebook"
-          onPress={() => Linking.openURL('https://www.facebook.com/')} />
-
-        <Divider />
+      <View style={[utilities.flexCenter, { marginTop: '5%', marginBottom: 25 }]}>
 
         <InputField
           label="Full Name"

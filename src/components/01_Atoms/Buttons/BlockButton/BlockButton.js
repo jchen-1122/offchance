@@ -11,6 +11,8 @@ function BlockButton(props) {
     let buttonStyle = [styles.BlockButton];
     let buttonTitleStyle = [styles.BlockButton__title_primary];
 
+    let google_icon = require('../../../../../assets/images/google-icon.jpg')
+
     // determine what kind/color of button it is
     switch (props.color) {
         case "primary":
@@ -30,12 +32,13 @@ function BlockButton(props) {
         case "facebook":
             buttonStyle.push(styles.BlockButton_facebook);
             buttonTitleStyle=[styles.BlockButton__title_tertiary];
-            icon = <SocialIcon type='facebook' raised={false} iconStyle={styles.icon} style={styles.iconBg} iconSize={30}/>
+            icon = <SocialIcon type='facebook' raised={false} iconStyle={styles.facebook_icon} style={styles.iconBg} iconSize={30}/>
             break;
         case "google":
-            buttonStyle.push(styles.BlockButton_insta);
-            buttonTitleStyle=[styles.BlockButton__title_tertiary];
-            icon = <SocialIcon type='google' raised={false} iconStyle={styles.icon} style={styles.iconBg} iconSize={30}/>
+            buttonStyle.push(styles.BlockButton_google);
+            buttonTitleStyle=[styles.BlockButton__title_google];
+            icon = <SocialIcon type='google' raised={false} iconStyle={styles.google_icon} style={styles.iconBg} iconSize={30}/>
+            // icon = google_icon;
             break;
         case "transparent":
             buttonStyle = [styles.BlockButton_transparent];
