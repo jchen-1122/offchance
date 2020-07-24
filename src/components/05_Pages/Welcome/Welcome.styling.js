@@ -1,4 +1,4 @@
-import {StyleSheet} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
@@ -9,8 +9,8 @@ const styles = StyleSheet.create({
     },
 
     logo: {
-        height:300,
-        width: 300,
+      height: Dimensions.get('window').height*0.3,
+        width: Dimensions.get('window').width*0.6,
 
         // marginBottom: '-5%',
         // backgroundColor: 'red',

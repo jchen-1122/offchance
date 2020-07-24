@@ -32,7 +32,7 @@ export default function HomeScreen({ navigation }) {
 
 
   return (
-      <ImageBackground source={image} style={styles.image} imageStyle= {{opacity:0}}>
+      // <ImageBackground source={image} style={styles.image} imageStyle= {{opacity:0}}>
           <View style={styles.container}>
 
                   {/* TODO: image should be aligned closer to the top */}
@@ -73,7 +73,7 @@ export default function HomeScreen({ navigation }) {
                   </View>
 
           </View>
-      </ImageBackground>
+      // </ImageBackground>
 
   );
 }

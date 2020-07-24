@@ -43,9 +43,12 @@ const styles = StyleSheet.create({
     BlockButton_facebook:{
         backgroundColor: colors.facebookBlue
     },
-    BlockButton_insta:{
-        backgroundColor: colors.instaPurple
+    BlockButton_google:{
+        backgroundColor: 'white'
     },
+    // BlockButton_insta:{
+    //     backgroundColor: colors.instaPurple
+    // },
     BlockButton_transparent:{
         height: '12%',
         marginLeft:'8%',
@@ -68,6 +71,9 @@ const styles = StyleSheet.create({
     },
     BlockButton__title_tertiary: {
         color: 'white'
+    },
+    BlockButton__title_google: {
+        color: '#747474'
     },
     BlockButton__title_small: {
         fontSize: 12,
@@ -114,9 +120,13 @@ const styles = StyleSheet.create({
     },
 
     // styles for icon in the button
-    icon:{
+    facebook_icon:{
         color: 'white'
     },
+    google_icon:{
+        color: colors.primaryColor
+    },
+
     iconBg:{
         backgroundColor: 'transparent',
         height: 30,
