@@ -138,7 +138,6 @@ export default function Signup({ navigation }) {
         <InputField
           label="Instagram Handle"
           value={_instaHandle} onChangeText={(text) => { setInstaHandle(text) }}
-          required
           tooltip={true}
           tooltipContent="We use this to to give you bonus chances when you share with friends" />
 
