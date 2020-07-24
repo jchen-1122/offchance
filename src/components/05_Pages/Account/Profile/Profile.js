@@ -10,10 +10,11 @@ import StatsBar from '../../../02_Molecules/StatsBar/StatsBar'
 import Nswitch from '../../../../../assets/images/switch.jpeg'
 import {styles} from './Profile.styling'
 import GlobalState from '../../../globalState';
+import Construction from '../../../04_Templates/Construction/Construction'
 
 function Profile({navigation}) {
     const {user, setUser} = useContext(GlobalState)
-
+    console.log(user)
     // add edit button in topbar
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -100,23 +101,8 @@ function Profile({navigation}) {
 
                     </View> : null}
                 </View> :
-
-                <View style={utilities.flexCenter}>
-                    <Card
-                        type='notification'
-                        title="barbequeued Appa. btw This is Notification Card"
-                        date='18hr'
-                        host={{ name: "theAvatar", pic: Nswitch }}
-                        navigation={navigation}
-                        imageURI={Nswitch} />
-                    <Card
-                        type='notification'
-                        title="barbequeued Appa. btw This is Notification Card"
-                        date='26hr'
-                        host={{ name: "theAvatar", pic: Nswitch }}
-                        navigation={navigation}
-                        imageURI={Nswitch} />
-                </View>}
+                    <Construction></Construction>
+                }
             </ScrollView>
 
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>

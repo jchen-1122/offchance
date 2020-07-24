@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'red'
     },
 
-    // different colors for button text
+    // different colors for button text 
     BlockButton__title: {
         fontSize: 16
     },
