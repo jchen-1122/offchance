@@ -125,24 +125,24 @@ export default function({navigation}) {
                     <Text style={{fontSize: 16, marginBottom: '5%', marginTop: '5%', fontWeight: '700'}}>Payment Information</Text>
                 </View>
 
+                <View style={styles.paymentStyle}>
 
+                        {modifyMode ?
+                            <View style={styles.paymentStyle}>
+                                <InputField
+                                value={_payment}
+                                onChangeText={(text) => {setPayment(text)}}/>
+                                <Icon name={'trashcan'}
+                                      type='octicon'
+                                      color={'grey'}
+                                      backgroundColor='transparent'
+                                      size={22}
+                                      style={{marginLeft:10, }}
+                                      />
+                            </View> : null }
 
-                {modifyMode ?
-                    <View style={styles.paymentStyle}>
-                        <InputField
-                        value={_payment}
-                        onChangeText={(text) => {setPayment(text)}}/>
-                        <Icon name={'check'}
-                              type='octicon'
-                              color={colors.primaryColor}
-                              backgroundColor='transparent'
-                              size={30}
-                              style={{marginLeft:20, marginBottom:15}}
-                              onPress={() => {setModifyMode(!modifyMode)}}/>
-                    </View>
-                             :
-                    <View style={styles.paymentStyle}>
                         <Text style={{fontSize: 16, marginBottom: 5, fontWeight: '500'}}>{_payment}</Text>
+
                         <View style={{flexDirection: 'row',}}>
                             <Icon name={'pencil'}
                                   type='octicon'
@@ -158,7 +158,9 @@ export default function({navigation}) {
                                   style={{marginLeft:10, }}
                                   />
                         </View>
-                    </View> }
+
+
+                </View>
 
                 <View style={{marginLeft: '-3%'}}>
                     <BlockButton
