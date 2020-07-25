@@ -1,8 +1,8 @@
-import React, {useState} from 'react'
+import React, { useContext, useState } from 'react'
 import { View, ScrollView, Text, Image, Animated, Button, TouchableHighlight, Dimensions} from 'react-native'
 import { set } from 'react-native-reanimated';
 import { Overlay } from 'react-native-elements';
-
+import GlobalState from '../../../globalState';
 import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
 import {utilities, fonts, colors} from '../../../../settings/all_settings';
 import styles from './Wallet.styling';
@@ -12,6 +12,7 @@ import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
 
 export default function Wallet({navigation}) {
 
+  const {user, setUser} = useContext(GlobalState)
   const [sheetOpen, setSheetOpen] = useState(false); // isHidden
   const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet
   const [containerStyle, setContainerStyle] = useState(styles.container);
@@ -60,7 +61,7 @@ export default function Wallet({navigation}) {
             <View>
                 <Text style={styles.header}>Balance:</Text>
                 {/* TODO: Retrieve user remaining chance from backend. */}
-                <Text style={styles.chance}>40 CHANCES</Text>
+                <Text style={styles.chance}>{user.walletChances} CHANCES</Text>
                 <Text style={styles.appendix}>*Chances can be used toward raffle entries</Text>
             </View>
 
