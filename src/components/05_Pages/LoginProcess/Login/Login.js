@@ -113,11 +113,13 @@ export default function Login({ navigation, route }) {
             const userObj = await loginUser()
             if (userObj.error == null) {
               setUser(userObj)
-              {/* https://stackoverflow.com/questions/42831685/disable-back-button-in-react-navigation */}
+              navigation.navigate('Home')
+              {/* TODO: Comment out for the sake of convenience. At the end of the day modify plz.
+                 {/* https://stackoverflow.com/questions/42831685/disable-back-button-in-react-navigation}
               navigation.reset({
                 index: 0,
                 // routes: [{ name: 'HowItWorks' }],
-                actions: [navigation.navigate('HowItWorks', {fromLogin: true})]})
+                actions: [navigation.navigate('HowItWorks', {fromLogin: true})]}) */}
             } else {
               let errors = []
               errors.push(<Text style={fonts.error}>Password is not valid</Text>)
