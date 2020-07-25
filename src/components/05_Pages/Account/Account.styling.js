@@ -1,4 +1,7 @@
-import {StyleSheet} from 'react-native'
+import { StyleSheet, Dimensions, } from 'react-native'
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
 
@@ -15,6 +18,12 @@ const styles = StyleSheet.create({
       height: 40
     },
 
+    background: {
+      flex: 1,
+      backgroundColor: 'grey',
+
+    },
+
     logOutText: {
       fontSize: 22,
       marginTop:'5%',
@@ -23,6 +32,17 @@ const styles = StyleSheet.create({
       justifyContent:'center',
       alignItems:'center'
     },
+
+    // Sliding Sheet Style
+    subView: {
+       position: 'absolute',
+       bottom: '-7%',
+       left: 0,
+       right: 0,
+       backgroundColor: "#FFFFFF",
+       height: 600,
+       borderRadius: 20,
+   },
 
     // <View style={{alignItems:'flex-end'}}>
     //     <Image source={down_arrow} />
