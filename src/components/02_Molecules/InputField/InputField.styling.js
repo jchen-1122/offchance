@@ -2,6 +2,16 @@ import {StyleSheet} from 'react-native';
 import {colors} from "../../../settings/colors";
 
 const styles = StyleSheet.create({
+    container: {
+      flex: 1
+    },
+
+    inner: {
+    padding: 24,
+    flex: 1,
+    justifyContent: "space-around"
+    },
+
     // container for label and box
     InputField: {
         marginTop: 10,
@@ -11,12 +21,12 @@ const styles = StyleSheet.create({
     },
 
     InputField__labelContainer: {
-        flex: 0, 
+        flex: 0,
         flexDirection: 'row',
         justifyContent: 'space-between',
         width: '100%'
     },
-    
+
     InputField__box: {
         height: 45,
         width: '100%',
@@ -33,8 +43,8 @@ const styles = StyleSheet.create({
     InputField__label: {
         fontSize: 16,
         marginBottom: 5,
-        fontWeight: '500', 
-    }
+        fontWeight: '500',
+    },
 
 })
 

@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react'
-import {ScrollView, View, Text, Image} from 'react-native'
+import {ScrollView, View, Text, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard} from 'react-native'
 import { Icon } from 'react-native-elements';
 import InputField from '../../02_Molecules/InputField/InputField'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
@@ -125,24 +125,25 @@ export default function({navigation}) {
                     <Text style={{fontSize: 16, marginBottom: '5%', marginTop: '5%', fontWeight: '700'}}>Payment Information</Text>
                 </View>
 
-                <View style={styles.paymentStyle}>
 
-                        {modifyMode ?
-                            <View style={styles.paymentStyle}>
-                                <InputField
-                                value={_payment}
-                                onChangeText={(text) => {setPayment(text)}}/>
-                                <Icon name={'trashcan'}
-                                      type='octicon'
-                                      color={'grey'}
-                                      backgroundColor='transparent'
-                                      size={22}
-                                      style={{marginLeft:10, }}
-                                      />
-                            </View> : null }
-
-                        <Text style={{fontSize: 16, marginBottom: 5, fontWeight: '500'}}>{_payment}</Text>
-
+                {/* TODO: Limit card number length */}
+                {modifyMode ?
+                    <View style={styles.paymentStyle}>
+                        <InputField
+                        value={_payment}
+                        keyboardType = 'numeric'
+                        onChangeText={(text) => {setPayment(text)}}/>
+                        <Icon name={'check'}
+                              type='octicon'
+                              color={colors.primaryColor}
+                              backgroundColor='transparent'
+                              size={30}
+                              style={{marginLeft:20, marginBottom:15}}
+                              onPress={() => {setModifyMode(!modifyMode)}}/>
+                    </View>
+                             :
+                    <View style={styles.paymentStyle}>
+                        <Text style={{fontSize: 16, marginBottom: 5, fontWeight: '500'}}>{'**** **** **** ' + _payment.slice(-4)}</Text>
                         <View style={{flexDirection: 'row',}}>
                             <Icon name={'pencil'}
                                   type='octicon'
@@ -158,9 +159,7 @@ export default function({navigation}) {
                                   style={{marginLeft:10, }}
                                   />
                         </View>
-
-
-                </View>
+                    </View> }
 
                 <View style={{marginLeft: '-3%'}}>
                     <BlockButton
