@@ -30,6 +30,24 @@ export default function Signup({ navigation }) {
     return json
   }
 
+  const mailingList = async () => {
+    var bearer = 'Bearer ' + data.sendGrid;
+    const response = await fetch('https://api.sendgrid.com/v3/marketing/contacts', {
+      method: "PUT",
+      withCredentials: true,
+      credentials: 'include',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        "Authorization": bearer
+      },
+      body: emailJSON()
+    })
+    const json = await response.json()
+    console.log(json)
+    return json
+  }
+
   const [state, setState] = useState({
     businessAccount: false,
     futureDrawings: false,
@@ -105,6 +123,17 @@ export default function Signup({ navigation }) {
       state: jsonData[_us_state],
       password: _password,
       isHost: state.businessAccount
+    }
+    return JSON.stringify(data)
+  };
+
+  const emailJSON = () => {
+    let data = {
+      contacts: [
+        {
+          email: _email
+        }
+      ]
     }
     return JSON.stringify(data)
   };
@@ -231,6 +260,9 @@ export default function Signup({ navigation }) {
               const userObj = await postUser()
               if (userObj.keyValue == null) {
                 console.log("signed up")
+                if (state.futureDrawings) {
+                  mailingList()
+                }
                 navigation.navigate('Login', { signedUp: true })
               } else {
                 let errors = []
