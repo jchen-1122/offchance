@@ -2,18 +2,10 @@ import {StyleSheet} from 'react-native';
 import {colors} from "../../../settings/colors";
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1
-    },
-
-    inner: {
-    padding: 24,
-    flex: 1,
-    justifyContent: "space-around"
-    },
 
     // container for label and box
     InputField: {
+        // flex:1, 
         marginTop: 10,
         marginBottom: 10,
         alignItems: 'center',

@@ -88,7 +88,7 @@ export default function Login({ navigation, route }) {
         <Divider />
         </View>
 
-      <InputField label="Email / Username" onChangeText={(text) => {
+      <InputField label="Email" onChangeText={(text) => {
         setEmail(text)}}/>
       <InputField label="Password" password onChangeText={(text) => {
         setPassword(text)}}/>

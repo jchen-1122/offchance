@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react'
-import {ScrollView, View, Text, Image, KeyboardAvoidingView, } from 'react-native'
+import {ScrollView, View, Text, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard} from 'react-native'
 import { Icon } from 'react-native-elements';
 import InputField from '../../02_Molecules/InputField/InputField'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
