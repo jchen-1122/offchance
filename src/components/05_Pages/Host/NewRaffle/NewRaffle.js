@@ -45,7 +45,7 @@ export default function NewRaffle({ navigation, route }) {
     // METHOD FOR POSTING RAFFLE
     const data = require('../../../IP_ADDRESS.json');
     const postRaffle = async () => {
-        const response = await fetch('http://' + data.ipAddress + ':3000/raffle/new', {
+        const response = await fetch('http://' + data.ipAddress + '/raffle/new', {
             method: "POST",
             headers: {
                 'Accept': 'application/json',

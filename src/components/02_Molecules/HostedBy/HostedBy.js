@@ -20,7 +20,7 @@ function HostedBy({ navigation, data, backColor, currUser, setUser }) {
     if (currUser.following.includes(data._id)) {
         return
     }
-    const response = await fetch('http://'+ip.ipAddress+':3000/user/edit/'+currUser._id,{
+    const response = await fetch('http://'+ip.ipAddress+'/user/edit/'+currUser._id,{
       method: "PATCH",
       headers: {
         'Accept': 'application/json',
@@ -30,7 +30,7 @@ function HostedBy({ navigation, data, backColor, currUser, setUser }) {
     })
     const json = await response.json()
     // followed user "follower" count also increases
-    const response2 = await fetch('http://'+ip.ipAddress+':3000/user/edit/'+data._id,{
+    const response2 = await fetch('http://'+ip.ipAddress+'/user/edit/'+data._id,{
       method: "PATCH",
       headers: {
         'Accept': 'application/json',
@@ -46,7 +46,7 @@ function HostedBy({ navigation, data, backColor, currUser, setUser }) {
       if (!currUser.following.includes(data._id)) {
           return
       }
-      const response = await fetch('http://'+ip.ipAddress+':3000/user/edit/'+currUser._id,{
+      const response = await fetch('http://'+ip.ipAddress+'/user/edit/'+currUser._id,{
         method: "PATCH",
         headers: {
           'Accept': 'application/json',
@@ -56,7 +56,7 @@ function HostedBy({ navigation, data, backColor, currUser, setUser }) {
       })
       const json = await response.json()
       // followed user "follower" count also decreases
-      const response2 = await fetch('http://'+data.ipAddress+':3000/user/edit/'+data._id,{
+      const response2 = await fetch('http://'+data.ipAddress+'/user/edit/'+data._id,{
         method: "PATCH",
         headers: {
           'Accept': 'application/json',

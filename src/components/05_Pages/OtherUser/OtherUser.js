@@ -15,7 +15,7 @@ export default function OtherUser({navigation, route})  {
         if (user.following.includes(route.params.user._id)) {
             return
         }
-        const response = await fetch('http://'+data.ipAddress+':3000/user/edit/'+user._id,{
+        const response = await fetch('http://'+data.ipAddress+'/user/edit/'+user._id,{
           method: "PATCH",
           headers: {
             'Accept': 'application/json',
@@ -26,7 +26,7 @@ export default function OtherUser({navigation, route})  {
         const json = await response.json()
 
         // followed user "follower" count also increases
-        const response2 = await fetch('http://'+data.ipAddress+':3000/user/edit/'+route.params.user._id,{
+        const response2 = await fetch('http://'+data.ipAddress+'/user/edit/'+route.params.user._id,{
           method: "PATCH",
           headers: {
             'Accept': 'application/json',
@@ -42,7 +42,7 @@ export default function OtherUser({navigation, route})  {
         if (!user.following.includes(route.params.user._id)) {
             return
         }
-        const response = await fetch('http://'+data.ipAddress+':3000/user/edit/'+user._id,{
+        const response = await fetch('http://'+data.ipAddress+'/user/edit/'+user._id,{
           method: "PATCH",
           headers: {
             'Accept': 'application/json',
@@ -53,7 +53,7 @@ export default function OtherUser({navigation, route})  {
         const json = await response.json()
 
         // followed user "follower" count also decreases
-        const response2 = await fetch('http://'+data.ipAddress+':3000/user/edit/'+route.params.user._id,{
+        const response2 = await fetch('http://'+data.ipAddress+'/user/edit/'+route.params.user._id,{
           method: "PATCH",
           headers: {
             'Accept': 'application/json',

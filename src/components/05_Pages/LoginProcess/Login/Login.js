@@ -15,7 +15,7 @@ export default function Login({ navigation, route }) {
 
   const data = require('../../../IP_ADDRESS.json');
   const loginUser = async () => {
-    const response = await fetch('http://'+data.ipAddress+':3000/user/login',{
+    const response = await fetch('http://'+data.ipAddress+'/user/login',{
       method: "POST",
       headers: {
         'Accept': 'application/json',
