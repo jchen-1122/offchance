@@ -24,7 +24,6 @@ export default function HomeScreen({ navigation }) {
       if (currUserid != null) {
         const loggedinUser = await getUser(currUserid)
         setUser(loggedinUser)
-        console.log(user)
         navigation.navigate('Home')
       }
     }

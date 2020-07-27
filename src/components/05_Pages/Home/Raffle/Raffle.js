@@ -19,6 +19,7 @@ import GlobalState from '../../../globalState';
 
 export default function Raffle({ navigation, route }) {
     const {user, setUser} = useContext(GlobalState)
+    console.log(user)
     // get host of raffle from db
     const [top5, setTop5] = useState([])
     const ip = require('../../../IP_ADDRESS.json');
@@ -219,14 +220,22 @@ export default function Raffle({ navigation, route }) {
                         {typeof user._id === 'undefined' ? null : user.following.includes(route.params.host._id)  ? 
                             <BlockButton color="secondary" size="small" title='FOLLOWED'
                             onPress={async () => {
-                                const userObj = await removeFollower(route.params.host)
-                                setUser(userObj)
+                                if (enabled) {
+                                    setEnabled(false)
+                                    const userObj = await removeFollower(route.params.host)
+                                    setUser(userObj)
+                                    setEnabled(true)
+                                }
                             }}
                             /> :
                             <BlockButton color="primary" size="small" title='FOLLOW'
                             onPress={async () => {
-                                const userObj = await addFollower(route.params.host)
-                                setUser(userObj)
+                                if (enabled) {
+                                    setEnabled(false)
+                                    const userObj = await addFollower(route.params.host)
+                                    setUser(userObj)
+                                    setEnabled(true)
+                                }
                             }}
                             />}
                         </View>
