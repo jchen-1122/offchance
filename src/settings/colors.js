@@ -5,11 +5,14 @@ var colors = {
     lightGray: '#EFEFEF',
     gray: '#878787',
     darkGray: '#545454',
-    instaPurple: '#983E9B', // for login/sign in to instagram
     facebookBlue: '#3B5998', // for login/sign in to fb
     green: '#1D9000',
     red: '#FF0000',
     darkGreen: '#0E4A26',
+
+    // colors for the WinnerCard
+    gold1: '#D0912E',
+    gold2: '#F9F4AF',
 
     get primaryColor(){
         return this.limeGreen

@@ -32,15 +32,6 @@ const styles = StyleSheet.create({
         backgroundColor: '#410550'
     },
 
-    overlay: {
-        width: Dimensions.get('window').width * 0.6,
-        height: Dimensions.get('window').height * 0.6,
-        alignItems: 'center',
-        justifyContent: 'center',
-        margin: spacing,
-        backgroundColor: 'black'
-    },
-
     circle_outline: {
         width: 40,
         height: 40,
