@@ -3,7 +3,6 @@ import { ScrollView, View, Text, Image, Dimensions, TouchableOpacity } from 'rea
 import { Overlay } from 'react-native-elements';
 import styles from './RaffleResult.styling';
 import TextLink from '../../../01_Atoms/Buttons/TextLinks/TextLinks';
-import LinearGradient from 'react-native-linear-gradient';
 
 
 
@@ -140,11 +139,6 @@ export default function RaffleResult({navigation, route}) {
                 {CardArray}
                 <Overlay isVisible={overlay} onBackdropPress={() => setoverlay(false)}>
                     <View style={styles.overlay}>
-                    <LinearGradient colors={['#4c669f', '#3b5998', '#192f6a']}>
-                        <Text>
-                            Sign in with Facebook
-                        </Text>
-                    </LinearGradient>
                         {/* This is what is displayed within the overlay */}
                         <TextLink
                         title={selected}
