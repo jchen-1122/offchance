@@ -1,14 +1,35 @@
-import React, { useEffect } from 'react';
-import { View, Text, Image, ImageBackground, Linking, BackHandler, Alert, } from 'react-native';
+import React, { useEffect, useContext } from 'react';
+import { View, Text, Image, ImageBackground, Linking, BackHandler, Alert, AsyncStorage } from 'react-native';
 import { Icon } from 'react-native-elements';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import TextLink from '../../01_Atoms/Buttons/TextLinks/TextLinks';
 import { styles } from './Welcome.styling';
 import { colors, fonts, utilities } from '../../../settings/all_settings';
 import Divider from '../../01_Atoms/Divider/Divider.js';
+import GlobalState from '../../globalState';
 
 
 export default function HomeScreen({ navigation }) {
+  const data = require('../../IP_ADDRESS.json');
+  const {user, setUser} = useContext(GlobalState)
+  const getUser = async (id) => {
+    const response = await fetch('http://'+data.ipAddress+':3000/user/id/' + id)
+    const json = await response.json()
+    return json
+  }
+
+  useEffect(() => {
+    async function logInRemUser() {
+      const currUserid = await AsyncStorage.getItem('user')
+      if (currUserid != null) {
+        const loggedinUser = await getUser(currUserid)
+        setUser(loggedinUser)
+        console.log(user)
+        navigation.navigate('Home')
+      }
+    }
+    logInRemUser()
+  }, [])
 
   var image = require('../../../../assets/images/background.jpg')
 

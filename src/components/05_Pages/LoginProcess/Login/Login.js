@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {  View, Text, Linking, Dimensions } from 'react-native';
+import {  View, Text, Linking, Dimensions, AsyncStorage } from 'react-native';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../../../01_Atoms/Divider/Divider.js';
 import InputField from '../../../02_Molecules/InputField/InputField.js';
@@ -113,6 +113,7 @@ export default function Login({ navigation, route }) {
             const userObj = await loginUser()
             if (userObj.error == null) {
               setUser(userObj)
+              await AsyncStorage.setItem('user', userObj._id)
               navigation.navigate('Home')
             } else {
               let errors = []

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { ScrollView, View, Text, Image, Animated, Button, Dimensions, } from 'react-native'
+import { ScrollView, View, Text, Image, Animated, Button, Dimensions, AsyncStorage} from 'react-native'
 import { Overlay } from 'react-native-elements';
 import {utilities, fonts, colors} from '../../../settings/all_settings';
 import NavButton from '../../01_Atoms/Buttons/NavButton/NavButton';
@@ -42,7 +42,9 @@ export default function Account({navigation}) {
                               title="Log Out"
                               color="logOut"
                               size='short'
-                              onPress={() => {setUser({})
+                              onPress={async () => {
+                                  await AsyncStorage.removeItem('user')
+                                  setUser({})
                               navigation.reset({
                                 index: 0,
                                 routes: [{ name: ' ' }]
