@@ -26,6 +26,15 @@ export default function Raffle({ navigation, route }) {
     const ip = require('../../../IP_ADDRESS.json');
 
     React.useEffect(() => {
+        async function getCurrentRaffle() {
+            route.params = await getRaffle(route.params._id)
+            route.params['host'] = await getUser(route.params.hostedBy)
+            route.params['top5'] = route.params.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,5)
+        }
+        getCurrentRaffle()
+    })
+
+    React.useEffect(() => {
         async function getTop5(ids) {
             // get top 5 donors of this raffle
             let temp = []
@@ -38,10 +47,110 @@ export default function Raffle({ navigation, route }) {
         getTop5(route.params.top5)
     }, [])
 
+    const getWinners = () => {
+        const enteredUsers = route.params.users.children
+
+        const winners = []
+        
+        // will change based on the number of rewards
+        // rewards[0] = grand prize (1)
+        // rewards[1] = 50 chances (2)
+        // rewards[2] = 20 chanes (3)
+        // rewards[3] = 10 chances (4)
+        let rewards = [1,2,3,4]
+        let numRewards = 10
+        let currPrize = 0
+
+        // const winners = route.params.raffle.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,numWinners)
+
+        // randomly and proportionally assign rewards to users
+
+        while (numRewards !== 0) {
+            // 1. assign everyone a range of numbers based on the number of chances
+            let ranges = {}
+            let count = 1
+            let numChances = 0
+            for (var i = 0; i < enteredUsers.length; i++) {
+                ranges[enteredUsers[i].userID] = [count, count + enteredUsers[i].chances - 1]
+                count += enteredUsers[i].chances
+                numChances += enteredUsers[i].chances
+            }
+
+            // 2. Generate a random number from 0 to numChances
+            const rand = Math.floor((Math.random() * numChances) + 1)
+
+            // 3. determine who's range qualifies (both ends inclusive)
+            let winner = -1
+            for (var i = 0; i < enteredUsers.length; i++) {
+                if (ranges[enteredUsers[i].userID][0] <= rand && ranges[enteredUsers[i].userID][1] >= rand) {
+                    winner = enteredUsers[i].userID
+                    winners.push({userID: enteredUsers[i].userID, reward: currPrize})
+                    break
+                }
+            }
+
+            // 4. update variables for next loop
+            numRewards--;
+            rewards[currPrize] -= 1
+            if (rewards[currPrize] == 0) {
+                currPrize += 1
+            }
+
+            // 5. delete current winner from array
+            for(var i = enteredUsers.length - 1; i >= 0; i--) {
+                if(enteredUsers[i].userID === winner) {
+                    // console.log('deleted')
+                    enteredUsers.splice(i, 1);
+                    break
+                }
+            }
+        }
+        return winners
+    }
+
+    React.useEffect(() => {
+        async function loadWinners () {
+            // route.params.winners.children.length == 0
+            if (route.params.startTime - Math.floor(Date.now() / 1000) <= 600) {
+                const winners = getWinners()
+                await postWinners(winners)
+            }
+        }
+        loadWinners()
+    }, [])
+
+    async function getRaffle(id) {
+        let response = await fetch('http://' + ip.ipAddress + ':3000/raffle/id/' + id)
+        response = await response.json()
+        return response
+    }
+
     async function getUser(id) {
         let response = await fetch('http://' + ip.ipAddress + ':3000/user/id/' + id)
         response = await response.json()
         return response
+    }
+
+    async function postWinners(winners) {
+        let response = await fetch('http://' + ip.ipAddress + ':3000/raffle/edit/' + route.params._id, {
+            method: "PATCH",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: makeJSON(winners)
+        })
+        const json = await response.json()
+        return json
+    }
+
+    const makeJSON = (winners) => {
+        let res = {
+            winners: {
+                children: winners
+            }
+        }
+        return JSON.stringify(res)
     }
 
     const addFollower = async (host) => {
@@ -221,7 +330,7 @@ export default function Raffle({ navigation, route }) {
                         {typeof user._id === 'undefined' ? null : user.following.includes(route.params.host._id)  ? 
                             <BlockButton color="secondary" size="small" title='FOLLOWING'
                             onPress={async () => {
-                                if (enabled) {
+                                if (enabled && route.params.host.profilePicture != null) {
                                     setEnabled(false)
                                     const userObj = await removeFollower(route.params.host)
                                     setUser(userObj)
@@ -231,7 +340,7 @@ export default function Raffle({ navigation, route }) {
                             /> :
                             <BlockButton color="primary" size="small" title='FOLLOW'
                             onPress={async () => {
-                                if (enabled) {
+                                if (enabled && route.params.host.profilePicture != null) {
                                     setEnabled(false)
                                     const userObj = await addFollower(route.params.host)
                                     setUser(userObj)
@@ -323,6 +432,12 @@ export default function Raffle({ navigation, route }) {
                         title="PLAY GAME"
                         color="primary"
                         onPress={() => navigation.navigate('GameController')}
+                        disabled={expired} />
+                    <BlockButton
+                        title="LIVE DRAWING EXP"
+                        color="primary"
+                        onPress={() => {
+                            navigation.navigate('RaffleResult')}}
                         disabled={expired} />
                     {/* <BlockButton
                         title="ENTER DRAWING"

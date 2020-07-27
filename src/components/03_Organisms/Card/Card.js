@@ -58,6 +58,7 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
         enteredUsers = data.users.children
         data['host'] = host
         data['top5'] = data.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,5)
+        data['winners'] = data.winners
         raffleid = data._id
     }
 
