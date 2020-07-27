@@ -37,7 +37,7 @@ export default function Raffle({ navigation, route }) {
     }, [])
 
     async function getUser(id) {
-        let response = await fetch('http://' + ip.ipAddress + ':3000/user/id/' + id)
+        let response = await fetch('http://' + ip.ipAddress + '/user/id/' + id)
         response = await response.json()
         return response
     }
@@ -46,7 +46,7 @@ export default function Raffle({ navigation, route }) {
         if (user.following.includes(host._id)) {
             return
         }
-        const response = await fetch('http://'+ip.ipAddress+':3000/user/edit/'+user._id,{
+        const response = await fetch('http://'+ip.ipAddress+'/user/edit/'+user._id,{
           method: "PATCH",
           headers: {
             'Accept': 'application/json',
@@ -56,7 +56,7 @@ export default function Raffle({ navigation, route }) {
         })
         const json = await response.json()
         // followed user "follower" count also increases
-        const response2 = await fetch('http://'+ip.ipAddress+':3000/user/edit/'+host._id,{
+        const response2 = await fetch('http://'+ip.ipAddress+'/user/edit/'+host._id,{
           method: "PATCH",
           headers: {
             'Accept': 'application/json',
@@ -71,7 +71,7 @@ export default function Raffle({ navigation, route }) {
         if (!user.following.includes(host._id)) {
             return
         }
-        const response = await fetch('http://'+ip.ipAddress+':3000/user/edit/'+user._id,{
+        const response = await fetch('http://'+ip.ipAddress+'/user/edit/'+user._id,{
         method: "PATCH",
         headers: {
             'Accept': 'application/json',
@@ -81,7 +81,7 @@ export default function Raffle({ navigation, route }) {
         })
         const json = await response.json()
         // followed user "follower" count also decreases
-        const response2 = await fetch('http://'+ip.ipAddress+':3000/user/edit/'+host._id,{
+        const response2 = await fetch('http://'+ip.ipAddress+'/user/edit/'+host._id,{
         method: "PATCH",
         headers: {
             'Accept': 'application/json',
@@ -313,6 +313,11 @@ export default function Raffle({ navigation, route }) {
                         title="PLAY GAME"
                         color="primary"
                         onPress={() => navigation.navigate('GameController')}
+                        disabled={expired} />
+                    <BlockButton
+                        title="Live Drawing Experience"
+                        color="primary"
+                        onPress={() => navigation.navigate('RaffleResult', {raffle: route.params})}
                         disabled={expired} />
                     {/* <BlockButton
                         title="ENTER DRAWING"
