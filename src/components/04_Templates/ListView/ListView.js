@@ -130,7 +130,7 @@ function ListView(props) {
                     <UsernameDisplay username={props.users[user].username} profPic={{uri: props.users[user].profilePicture}} size="large"/>
                 </TouchableOpacity>
                 {typeof currUser._id === 'undefined' ? null : currUser.following.includes(props.users[user]._id)  ? 
-                <BlockButton color="secondary" size="small" title='FOLLOWED'
+                <BlockButton color="secondary" size="small" title='FOLLOWING'
                 onPress={async () => {
                     if (enabled[user._id]) {
                         let temp = enabled

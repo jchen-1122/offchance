@@ -16,12 +16,13 @@ import SizeCarousel from '../../../01_Atoms/SizeCarousel/SizeCarousel'
 import { unix_to_date, is_expired } from '../../../../functions/convert_dates';
 import { top5_raffle } from '../../../../functions/explore_functions';
 import GlobalState from '../../../globalState';
+import { set } from 'react-native-reanimated';
 
 export default function Raffle({ navigation, route }) {
     const {user, setUser} = useContext(GlobalState)
-    console.log(user)
     // get host of raffle from db
     const [top5, setTop5] = useState([])
+    const [enabled, setEnabled] = useState(true)
     const ip = require('../../../IP_ADDRESS.json');
 
     React.useEffect(() => {
@@ -38,7 +39,7 @@ export default function Raffle({ navigation, route }) {
     }, [])
 
     async function getUser(id) {
-        let response = await fetch('http://' + ip.ipAddress + '/user/id/' + id)
+        let response = await fetch('http://' + ip.ipAddress + ':3000/user/id/' + id)
         response = await response.json()
         return response
     }
@@ -47,7 +48,7 @@ export default function Raffle({ navigation, route }) {
         if (user.following.includes(host._id)) {
             return
         }
-        const response = await fetch('http://'+ip.ipAddress+'/user/edit/'+user._id,{
+        const response = await fetch('http://'+ip.ipAddress+':3000/user/edit/'+user._id,{
           method: "PATCH",
           headers: {
             'Accept': 'application/json',
@@ -57,7 +58,7 @@ export default function Raffle({ navigation, route }) {
         })
         const json = await response.json()
         // followed user "follower" count also increases
-        const response2 = await fetch('http://'+ip.ipAddress+'/user/edit/'+host._id,{
+        const response2 = await fetch('http://'+ip.ipAddress+':3000/user/edit/'+host._id,{
           method: "PATCH",
           headers: {
             'Accept': 'application/json',
@@ -72,7 +73,7 @@ export default function Raffle({ navigation, route }) {
         if (!user.following.includes(host._id)) {
             return
         }
-        const response = await fetch('http://'+ip.ipAddress+'/user/edit/'+user._id,{
+        const response = await fetch('http://'+ip.ipAddress+':3000/user/edit/'+user._id,{
         method: "PATCH",
         headers: {
             'Accept': 'application/json',
@@ -82,7 +83,7 @@ export default function Raffle({ navigation, route }) {
         })
         const json = await response.json()
         // followed user "follower" count also decreases
-        const response2 = await fetch('http://'+ip.ipAddress+'/user/edit/'+host._id,{
+        const response2 = await fetch('http://'+ip.ipAddress+':3000/user/edit/'+host._id,{
         method: "PATCH",
         headers: {
             'Accept': 'application/json',
@@ -218,7 +219,7 @@ export default function Raffle({ navigation, route }) {
                             </View>
                         </TouchableOpacity>
                         {typeof user._id === 'undefined' ? null : user.following.includes(route.params.host._id)  ? 
-                            <BlockButton color="secondary" size="small" title='FOLLOWED'
+                            <BlockButton color="secondary" size="small" title='FOLLOWING'
                             onPress={async () => {
                                 if (enabled) {
                                     setEnabled(false)
@@ -253,7 +254,7 @@ export default function Raffle({ navigation, route }) {
                                 </View>
                             </TouchableOpacity>
                             {typeof user._id === 'undefined' ? null : user.following.includes(route.params.host._id)  ? 
-                                <BlockButton color="secondary" size="small" title='FOLLOWED'
+                                <BlockButton color="secondary" size="small" title='FOLLOWING'
                                 onPress={async () => {
                                     const userObj = await removeFollower(route.params.host)
                                     setUser(userObj)
@@ -322,11 +323,6 @@ export default function Raffle({ navigation, route }) {
                         title="PLAY GAME"
                         color="primary"
                         onPress={() => navigation.navigate('GameController')}
-                        disabled={expired} />
-                    <BlockButton
-                        title="Live Drawing Experience"
-                        color="primary"
-                        onPress={() => navigation.navigate('RaffleResult', {raffle: route.params})}
                         disabled={expired} />
                     {/* <BlockButton
                         title="ENTER DRAWING"

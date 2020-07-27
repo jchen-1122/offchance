@@ -151,7 +151,7 @@ export default function OtherUser({navigation, route})  {
                 </View> :
                 <View style={styles.followButton}>
                     <BlockButton
-                    title="FOLLOWED"
+                    title="FOLLOWING"
                     color="secondary"
                     onPress={async () => {
                         if (enabled) {
