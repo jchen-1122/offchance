@@ -67,6 +67,7 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
     let like = null;
     let pgBar = null;
     let button = <BlockButton title='Enter Drawing' color="primary" onPress={() => navigation.navigate('Raffle', data)} />;
+
     let friendsEntered = <EnteredUsersDisplay enteredUsers={enteredUsers} navigation={navigation} />
 
     // CHECK WHAT TYPE OF CARD--------------------------------------------------------------
@@ -111,6 +112,7 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
             break;
         // for upcoming 4 raffles
         case 'upcoming':
+            console.log('here')
             like = <View style={styles.upcoming_placeholder} />
             friendsEntered = null;
             button = <TouchableOpacity style={styles.upcoming_notifyMe} onPress={() => navigation.navigate('Raffle')}><Text>NOTIFY ME</Text></TouchableOpacity>;
