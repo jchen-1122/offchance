@@ -14,6 +14,7 @@ export default function RaffleResult({ navigation, route }) {
     const [prize, setPrize] = useState(null)
     const [enteredUsers, setEnteredUsers] = useState([])
     const [winners, setWinners] = useState({})
+    const [raffle, setRaffle] = useState({})
     const ip = require('../../../IP_ADDRESS.json');
 
     // test user and raffle for Chelly's card
@@ -24,6 +25,7 @@ export default function RaffleResult({ navigation, route }) {
         async function getRaffle(id) {
             let response = await fetch('http://' + ip.ipAddress + ':3000/raffle/id/' + id)
             response = await response.json()
+            setRaffle(response)
             setEnteredUsers(response.users.children)
         }
         getRaffle(route.params.raffle._id)
@@ -97,7 +99,7 @@ export default function RaffleResult({ navigation, route }) {
     let CardArray = []
     let count = 0
 
-    for (var key in winners) {
+    for (let key in winners) {
         //console.log('1')
         // check if the property/key is defined in the object itself, not in parent
         if (winners.hasOwnProperty(key)) {
@@ -141,13 +143,12 @@ export default function RaffleResult({ navigation, route }) {
         }
     }
 
-
     return (
         <ScrollView>
             <View style={styles.container, {flexDirection: 'row', justifyContent: 'center'}}>
                 {CardArray}
                 <Overlay isVisible={overlay} onBackdropPress={() => setoverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
-                    <WinnerCard color="gold" prize={prize} winner={dummy_user} raffle={dummy_raffle} host={dummy_user} selected={selected} navigation={navigation} />
+                    <WinnerCard prize={prize} winner={dummy_user} raffle={raffle} host={dummy_user} selected={selected} navigation={navigation} />
                 </Overlay>
             </View>
         </ScrollView>

@@ -29,7 +29,7 @@ export default function WinnerCard(props) {
     let hostNameColor;
     let prizeTitleColor = 'black'
     let winnerLabelColor = colors.darkGreen
-    switch (props.color) {
+    switch (colorMap[props.prize]) {
         case "gold":
             gradient = ['#444444', , 'black', '#444444']
             borderGradient = colors.goldGradient
@@ -39,16 +39,19 @@ export default function WinnerCard(props) {
             winnerLabelColor = colors.lightGreen
             break;
         case "silver":
+            console.log('oh')
             gradient = colors.silverGradientBg
             borderGradient = colors.silverGradient
             headerImage = "https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/winnercard-images/silver.png"
             hostNameColor = '#9E9E9E'
+            break;
         case "bronze":
             gradient= colors.bronzeGradientBg
             borderGradient = colors.bronzeGradient
             headerImage = "https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/winnercard-images/bronze.png"
             headerColor = "#44270A"
             hostNameColor = "#44270A"
+            break;
         case "blue":
             gradient = colors.whiteGradientBg
             borderGradient = [colors.limeGreen, colors.limeGreen]
@@ -57,6 +60,7 @@ export default function WinnerCard(props) {
             hostNameColor = colors.blue
             prizeTitleColor = colors.blue
             winnerLabelColor = colors.blue
+            break;
     }
     return (
         <LinearGradient start={[0, 0]} end={[1, 0]}
