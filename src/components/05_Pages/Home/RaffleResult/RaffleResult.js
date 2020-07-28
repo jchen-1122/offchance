@@ -1,12 +1,14 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { Overlay } from 'react-native-elements';
 import styles from './RaffleResult.styling';
+import { colors } from '../../../../settings/all_settings';
 import TextLink from '../../../01_Atoms/Buttons/TextLinks/TextLinks';
 import WinnerCard from '../../../03_Organisms/WinnerCard/WinnerCard';
-import {get_user, get_raffle} from '../../../fake_users/live-drawing-test';
+import { LinearGradient } from 'expo-linear-gradient';
+import { get_user, get_raffle } from '../../../fake_users/live-drawing-test';
 
-export default function RaffleResult({navigation, route}) {
+export default function RaffleResult({ navigation, route }) {
     const [selected, setSelected] = useState(null)
     const [overlay, setoverlay] = useState(false)
     const [prize, setPrize] = useState(null)
@@ -26,13 +28,13 @@ export default function RaffleResult({navigation, route}) {
         }
         getRaffle(route.params.raffle._id)
     }, [])
-    
+
     // will change based on the number of rewards
     // rewards[0] = grand prize (1)
     // rewards[1] = 50 chances (2)
     // rewards[2] = 20 chanes (3)
     // rewards[3] = 10 chances (4)
-    let rewards = [1,2,3,4]
+    let rewards = [1, 2, 3, 4]
     let numRewards = 10
     let currPrize = 0
 
@@ -75,8 +77,8 @@ export default function RaffleResult({navigation, route}) {
             }
 
             // 5. delete current winner from array
-            for(var i = enteredUsers.length - 1; i >= 0; i--) {
-                if(enteredUsers[i].userID === winner) {
+            for (var i = enteredUsers.length - 1; i >= 0; i--) {
+                if (enteredUsers[i].userID === winner) {
                     // console.log('deleted')
                     enteredUsers.splice(i, 1);
                     break
@@ -98,39 +100,43 @@ export default function RaffleResult({navigation, route}) {
     for (var key in winners) {
         //console.log('1')
         // check if the property/key is defined in the object itself, not in parent
-        if (winners.hasOwnProperty(key)) {    
-            var color
+        if (winners.hasOwnProperty(key)) {
+            var gradient;
             count++
             switch (winners[key]) {
                 case 0:
-                    color = styles.gold;
+                    gradient = colors.goldGradientBg
                     break;
                 case 1:
-                    color = styles.silver;
+                    gradient = colors.silverGradientBg
                     break;
                 case 2:
-                    color = styles.orange;
+                    gradient = colors.bronzeGradientBg
                     break;
                 default:
-                    color = styles.purple;
+                    gradient = [colors.blue, colors.blue]
                     break;
             }
             CardArray.push(
-                <TouchableOpacity style={[styles.card, color]} 
-                    onPress={() => {
-                        setoverlay(true)
-                        setSelected(count)
-                        setPrize(winners[key])
-                    }}>
+                <LinearGradient start={[0, 0]} end={[1, 0]} colors={gradient} style={{margin: Dimensions.get('window').width * 0.005}}>
+                    <TouchableOpacity style={[styles.card]}
+                        onPress={() => {
+                            setoverlay(true)
+                            setSelected(count)
+                            setPrize(winners[key])
+                            console.log(winners[key])
+                        }}>
+
                         <View style={styles.circle_outline} >
-                            <Image 
+                            <Image
                                 style={styles.circle_pic}
                                 source={{ uri: 'https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/oc-logo.png' }}
                             />
                         </View>
-        
+
                         {/* This is what will be displayed on the back of the cards */}
-                </TouchableOpacity>
+                    </TouchableOpacity>
+                </LinearGradient>
             )
         }
     }
@@ -138,10 +144,10 @@ export default function RaffleResult({navigation, route}) {
 
     return (
         <ScrollView>
-            <View style={styles.container}>
+            <View style={styles.container, {flexDirection: 'row', justifyContent: 'center'}}>
                 {CardArray}
-                <Overlay isVisible={overlay} onBackdropPress={() => setoverlay(false)} overlayStyle={{backgroundColor: 'transparent'}}>
-                    <WinnerCard color="blue" winner={dummy_user} raffle={dummy_raffle} host={dummy_user} selected={selected} navigation={navigation}/>
+                <Overlay isVisible={overlay} onBackdropPress={() => setoverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
+                    <WinnerCard color="gold" prize={prize} winner={dummy_user} raffle={dummy_raffle} host={dummy_user} selected={selected} navigation={navigation} />
                 </Overlay>
             </View>
         </ScrollView>

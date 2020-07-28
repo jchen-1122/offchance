@@ -13,8 +13,8 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
     },
     card: {
-        width: Dimensions.get('window').width * 0.15,
-        height: Dimensions.get('window').height * 0.15,
+        width: Dimensions.get('window').width * 0.13,
+        height: Dimensions.get('window').height * 0.13,
         alignItems: 'center',
         justifyContent: 'center',
         margin: spacing,
@@ -30,6 +30,15 @@ const styles = StyleSheet.create({
     },
     purple: {
         backgroundColor: '#410550'
+    },
+
+    overlay: {
+        width: Dimensions.get('window').width * 0.6,
+        height: Dimensions.get('window').height * 0.6,
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: spacing,
+        backgroundColor: 'black'
     },
 
     circle_outline: {

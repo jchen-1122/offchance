@@ -19,6 +19,8 @@ export default function WinnerCard(props) {
         return null;
     }
 
+    const colorMap = ["gold", "silver", "bronze", "blue"]
+    console.log(colorMap[props.prize])
     // set styles based on the color of the card
     let gradient; // gradient for the background of the card
     let borderGradient;
