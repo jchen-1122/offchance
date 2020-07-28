@@ -97,7 +97,7 @@ export default function RaffleResult({ navigation, route }) {
     let CardArray = []
     let count = 0
 
-    for (var key in winners) {
+    for (let key in winners) {
         //console.log('1')
         // check if the property/key is defined in the object itself, not in parent
         if (winners.hasOwnProperty(key)) {
