@@ -9,6 +9,7 @@ import { useFonts } from 'expo-font';
 import * as Font from 'expo-font';
 
 export default function WinnerCard(props) {
+
     // load fonts for the cards
     const [loaded, error] = useFonts({
         'Steelfish': require('../../../../assets/fonts/Steelfish.ttf'),
@@ -113,7 +114,7 @@ export default function WinnerCard(props) {
                             <Image style={styles.hostPic} source={{ uri: props.host.profilePicture }} />
                             <View>
                                 <Text style={[styles.hostLabel, { fontFamily: 'Josefin Sans' }]}>DRAWING BY:</Text>
-                                <Text style={[styles.hostName, { color: hostNameColor, fontFamily: 'Josefin Sans' }]}>@{props.host.username.toUpperCase()}</Text>
+                                <Text style={[styles.hostName, { color: hostNameColor, fontFamily: 'Josefin Sans' }]}>@{props.host.username}</Text>
                             </View>
                         </View>
                         <View style={[utilities.flexCenter]}>
