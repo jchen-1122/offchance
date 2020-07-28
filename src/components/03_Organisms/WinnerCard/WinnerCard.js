@@ -10,45 +10,47 @@ import * as Font from 'expo-font';
 
 export default function WinnerCard(props) {
 
+    // load fonts for the cards
     const [loaded, error] = useFonts({
         'Steelfish': require('../../../../assets/fonts/Steelfish.ttf'),
         'Josefin Sans': require('../../../../assets/fonts/JosefinSans.ttf'),
 
     });
-
     if (!loaded) {
         return null;
     }
 
-    var FontDisplay = {
-        AUTO: 'auto',
-        BLOCK: 'block',
-        SWAP: 'swap',
-        FALLBACK: 'fallback',
-        OPTIONAL: 'optional',
-    }
-
+    const colors = ["gold", "silver", "bronze", "blue"]
     // set styles based on the color of the card
-    let gradient; // gradient for the background
+    let gradient; // gradient for the background of the card
     let borderGradient;
-    let headerColor;
+    let headerColor = "#2E2E2E";
     let headerImage;
     let hostNameColor;
+    let prizeTitleColor = 'black'
+    let winnerLabelColor = colors.darkGreen
     switch (props.color) {
         case "gold":
             gradient = ['#444444', , 'black', '#444444']
             borderGradient = [colors.gold1, colors.gold2]
-            headerColor = "#2E2E2E"
             headerImage = "https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/winnercard-images/gold.png"
             hostNameColor = colors.gold1
+            prizeTitleColor = 'white'
+            winnerLabelColor = colors.lightGreen
             break;
+        case "silver":
+            gradient = colors.silverGradient
+            borderGradient = [colors.silver1, colors.silver2]
+            headerImage = "https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/winnercard-images/silver.png"
+            hostNameColor = '#9E9E9E'
     }
     return (
-
+        // linear gradient for card border
         <LinearGradient start={[0, 0]} end={[1, 0]}
             colors={borderGradient}>
             <View style={styles.overlay}>
 
+                {/* linear gradient for card background */}
                 <LinearGradient
                     colors={gradient}
                     start={[0, 0]} end={[1, 0]}
@@ -67,29 +69,30 @@ export default function WinnerCard(props) {
                         start={[0, 0]} end={[1, 0]}
                         style={{ height: 3, marginTop: 5 }} />
 
-                    {/* <View style={{ width: '100%', justifyContent: 'space-around' }}> */}
+                    {/* product image */}
                     <View style={{ height: '35%', alignItems: 'center' }}>
                         <Image style={styles.WinnerCard__image} source={{ uri: props.raffle.images[0] }} />
                     </View>
 
                     {/* title of product */}
                     <View style={{ alignItems: 'center' }}>
-                        <View style={styles.WinnerCard__prizeTitleWrapper}>
-                            <Text style={[styles.WinnerCard__prizeTitle, { fontFamily: 'Steelfish' }]}>{props.raffle.name.toUpperCase()}</Text>
+                        <View style={[styles.WinnerCard__prizeTitleWrapper,{borderColor:prizeTitleColor}]}>
+                            <Text style={[styles.WinnerCard__prizeTitle, { color: prizeTitleColor, borderColor: prizeTitleColor, fontFamily: 'Steelfish' }]}>{props.raffle.name.toUpperCase()}</Text>
                         </View>
                     </View>
 
+                    {/* winner of prize */}
                     <View style={[utilities.flexCenter, { flexDirection: 'row', width: '100%' }]}>
                         <Image style={styles.winnerPic} source={{ uri: props.winner.profilePicture }} />
                         <View>
-                            <Text style={[styles.winnerLabel, { fontFamily: 'Josefin Sans' }]}>WINNER:</Text>
-                            <Text style={[styles.winnerName, { fontFamily: 'Josefin Sans' }]}>@{props.winner.username.toUpperCase()}</Text>
+                            <Text style={[styles.winnerLabel, { color: winnerLabelColor, fontFamily: 'Josefin Sans' }]}>WINNER:</Text>
+                            <Text style={[styles.winnerName, { color: winnerLabelColor, fontFamily: 'Josefin Sans' }]}>@{props.winner.username.toUpperCase()}</Text>
                         </View>
                     </View>
 
                     {/* card footer */}
                     <View style={styles.footer}>
-                        <View style={[utilities.flexCenter,{flexDirection: 'row'}]}>
+                        <View style={[utilities.flexCenter, { flexDirection: 'row', justifyContent: 'flex-end' }]}>
                             <Image style={styles.hostPic} source={{ uri: props.host.profilePicture }} />
                             <View>
                                 <Text style={[styles.hostLabel, { fontFamily: 'Josefin Sans' }]}>DRAWING BY:</Text>
@@ -98,15 +101,12 @@ export default function WinnerCard(props) {
                         </View>
                         <View style={[utilities.flexCenter]}>
                             <Text style={[styles.hostLabel, { fontFamily: 'Josefin Sans' }]}>BENEFITTING:</Text>
-                            <View style={{flexDirection: 'row'}}>
-                             <Image style={styles.charity} source={require('../../../../assets/images/aclu.png')} />
-                             <Image style={styles.charity} source={require('../../../../assets/images/naacp.png')} />
-
+                            <View style={{ flexDirection: 'row' }}>
+                                <Image style={styles.charity} source={require('../../../../assets/images/aclu.png')} />
+                                <Image style={styles.charity} source={require('../../../../assets/images/naacp.png')} />
                             </View>
-
                         </View>
                     </View>
-
                 </LinearGradient>
 
             </View>

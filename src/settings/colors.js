@@ -13,7 +13,16 @@ var colors = {
     // colors for the WinnerCard
     gold1: '#D0912E',
     gold2: '#F9F4AF',
+    silver1: '#595959',
+    silver2: '#F1F1F1',
 
+    get goldGradient(){
+        return [this.gold1, this,gold2, this.gold1]
+    },
+    get silverGradient(){
+        return ['#9E9E9E', '#EDEDED', '#9E9E9E']
+    },
+    
     get primaryColor(){
         return this.limeGreen
     },

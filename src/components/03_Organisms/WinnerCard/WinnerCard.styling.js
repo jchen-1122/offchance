@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native'
 import {colors, dimensions} from '../../../settings/all_settings';
 
 let profilePicSize = Dimensions.get('window').width*0.15
-let hostPicSize = Dimensions.get('window').width*0.12
+let hostPicSize = Dimensions.get('window').width*0.1
 
 const styles = StyleSheet.create({
     overlay: {
@@ -35,21 +35,17 @@ const styles = StyleSheet.create({
     },
 
     WinnerCard__prizeTitle: {
-        color: 'white',
         fontSize: 24,
         letterSpacing: 4,
         textAlign: 'center',
-        borderColor: 'white',
         borderWidth: 2,
         padding: 5,
     },
     WinnerCard__prizeTitleWrapper: {
-        color: 'white',
         width: '90%',
         fontSize: 24,
         letterSpacing: 4,
         textAlign: 'center',
-        borderColor: 'white',
         borderWidth: 2,
         paddingBottom: 5,
         paddingRight: 5
@@ -62,11 +58,9 @@ const styles = StyleSheet.create({
         marginRight: '3%'
     },
     winnerLabel: {
-        color: colors.lightGreen,
         fontSize: 10
     },
     winnerName: {
-        color: colors.lightGreen,
         fontSize: 16
     },
 
