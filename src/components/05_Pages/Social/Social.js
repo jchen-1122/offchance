@@ -1,46 +1,53 @@
-import React, {useState, useEffect} from 'react'
-import { View, Text, TextInput, ScrollView } from 'react-native'
-import {colors, fonts, utilities} from '../../../settings/all_settings';
-import BottomNav from '../../02_Molecules/BottomNav/BottomNav'
-import Construction from '../../04_Templates/Construction/Construction'
-import io from 'socket.io-client'
+import React, { Component } from "react";
+import { TextInput, StyleSheet, Text, View } from "react-native";
+import io from "socket.io-client";
 
-function Social({navigation}) {
-    const [chatMessage, setchatMessage] = useState('')
-    const [chatMessages, setchatMessages] = useState([])
-    const ip = require('../../IP_ADDRESS.json');
-    const [socket, setSocket] = useState(io('http://'+ip.ipAddress+':3000'))
+export default class Social extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      chatMessage: "",
+      chatMessages: []
+    };
+  }
 
-    useEffect(() => {
-        socket.on('message', message => {
-            let temp = chatMessages
-            temp.push(message)
-            setchatMessages(temp)
-        })
-    }, [])
+  componentDidMount() {
+    this.socket = io("http://192.168.0.22:3000");
+    this.socket.on("message", msg => {
+      this.setState({ chatMessages: [...this.state.chatMessages, msg] });
+    });
+  }
 
-    const submitChatMessages = () => {
-        socket.emit('message', chatMessage)
-        setchatMessage('')
-    }
+  submitChatMessage() {
+    this.socket.emit("message", this.state.chatMessage);
+    this.setState({ chatMessage: "" });
+  }
+
+  render() {
+    const chatMessages = this.state.chatMessages.map(chatMessage => (
+      <Text key={chatMessage}>{chatMessage}</Text>
+    ));
 
     return (
-        <View style={utilities.container}>
-            <TextInput style={{height: 40, width: 200, borderWidth: 2, margin: 20, alignSelf: "center"}} 
-            onSubmitEditing={() => {
-                submitChatMessages()
-            }}
-            value={chatMessage}
-            onChangeText={chatMessage => {
-                setchatMessage(chatMessage)
-            }}></TextInput>
-            <ScrollView>
-                <Text>{chatMessages.length}</Text>
-                {chatMessages.map(msg => <View><Text key={msg}>{msg}</Text></View>)}
-            </ScrollView>
-            <BottomNav navigation={navigation} active={'Social'}></BottomNav>
-        </View>
-    )
+      <View style={styles.container}>
+        <TextInput
+          style={{ height: 40, borderWidth: 2 }}
+          autoCorrect={false}
+          value={this.state.chatMessage}
+          onSubmitEditing={() => this.submitChatMessage()}
+          onChangeText={chatMessage => {
+            this.setState({ chatMessage });
+          }}
+        />
+        {chatMessages}
+      </View>
+    );
+  }
 }
 
-export default Social;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#F5FCFF"
+  }
+});

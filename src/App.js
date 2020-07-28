@@ -43,15 +43,17 @@ import NotLogin from './components/05_Pages/Account/NotLogin/NotLogin';
 // Host pages import
 import AskRaffleType from './components/05_Pages/Host/AskRaffleType/AskRaffleType';
 import NewRaffle from './components/05_Pages/Host/NewRaffle/NewRaffle';
+import io from 'socket.io-client'
 
 const Stack = createStackNavigator();
 console.disableYellowBox = true;
 
 function App() {
   const [user, setUser] = useState({})
-
+  const ip = require('./components/IP_ADDRESS.json')
+  const [socket, setSocket] = useState(io('http://'+ip.ipAddress+':3000'))
   return (
-    <GlobalState.Provider value={{ user, setUser }}>
+    <GlobalState.Provider value={{ user, setUser, socket }}>
       <NavigationContainer>
         <StatusBar backgroundColor="white" barStyle="light-content"/>
         <Stack.Navigator initialRouteName="Welcome"
