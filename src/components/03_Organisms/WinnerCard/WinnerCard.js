@@ -5,15 +5,19 @@ import { Overlay } from 'react-native-elements';
 import styles from './WinnerCard.styling';
 import TextLink from '../../01_Atoms/Buttons/TextLinks/TextLinks';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useFonts } from 'expo-font';
-
+// import { useFonts } from 'expo-font';
+import * as Font from 'expo-font';
 
 export default function WinnerCard(props) {
 
-    let [fontsLoaded] = useFonts({
-        'Steelfish': require('../../../../assets/fonts/Steelfish.ttf'),
-    });
-
+    // const [loaded, error] = useFonts({
+    //     'Steelfish': require('../../../../assets/fonts/Steelfish.ttf'),
+    // });
+    Font.loadAsync({
+        'Steelfish': {
+          uri: require('../../../../assets/fonts/Steelfish.ttf'),
+        },
+      });
 
     // set styles based on the color of the card
     let gradient; // gradient for the background
