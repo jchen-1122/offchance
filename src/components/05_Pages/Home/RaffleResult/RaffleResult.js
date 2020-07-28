@@ -14,6 +14,7 @@ export default function RaffleResult({ navigation, route }) {
     const [prize, setPrize] = useState(null)
     const [enteredUsers, setEnteredUsers] = useState([])
     const [winners, setWinners] = useState({})
+    const [winnerObjs, setWinnerObjs] = useState({})
     const [raffle, setRaffle] = useState({})
     const [host, setHost] = useState({})
     const [currWinner, setCurrWinner] = useState({})
@@ -21,6 +22,7 @@ export default function RaffleResult({ navigation, route }) {
 
     // test user and raffle for Chelly's card
     let dummy_user = get_user("Chelly")
+
 
     React.useEffect(() => {
         async function getRaffle(id) {
@@ -34,7 +36,6 @@ export default function RaffleResult({ navigation, route }) {
             setHost(hostResp)
         }
         getRaffle(route.params.raffle._id)
-        console.log('oh')
     }, [])
 
     // will change based on the number of rewards
@@ -93,12 +94,28 @@ export default function RaffleResult({ navigation, route }) {
                 }
             }
         }
+
+        async function getWinnerObjs(ids) {
+            // get top 5 donors of this raffle
+            let temp = []
+            for (var i = 0; i < ids.length; i++) {
+                console.log('i',i)
+                const user = await fetch('http://' + ip.ipAddress + '/user/id/' + ids[i])
+                user = await user.json()
+                console.log('user',user)
+                temp.push(user)
+            }
+            // console.log('temp', temp)
+            setWinnerObjs(temp)
+        }
+        getWinnerObjs(Object.keys(temp))
         setWinners(temp)
 
         // @Matt the winners object is {key: userId, value: reward}, reward rn is just a number (see top of file)
         
     }, [enteredUsers])
     console.log('winners',winners)
+    console.log('winnerObjs', winnerObjs)
     //const customData = require('../../../fake_users/stub-users.json');
     //let plswork = customData.users[2].name
 
@@ -132,8 +149,6 @@ export default function RaffleResult({ navigation, route }) {
                             setoverlay(true)
                             setSelected(count)
                             setPrize(winners[key])
-                            setCurrWinner(key)
-                            console.log(currWinner)
                         }}>
 
                         <View style={styles.circle_outline} >
@@ -155,7 +170,7 @@ export default function RaffleResult({ navigation, route }) {
             <View style={styles.container, {flexDirection: 'row', justifyContent: 'center'}}>
                 {CardArray}
                 <Overlay isVisible={overlay} onBackdropPress={() => setoverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
-                    <WinnerCard prize={prize} winner={dummy_user} raffle={raffle} host={host} selected={selected} navigation={navigation} />
+                    <WinnerCard prize={prize} winner={dummy_user} dummy_winner={dummy_user} raffle={raffle} host={host} selected={selected} navigation={navigation} />
                 </Overlay>
             </View>
         </ScrollView>

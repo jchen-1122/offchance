@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { colors, utilities } from '../../../settings/all_settings';
 import { Overlay } from 'react-native-elements';
@@ -9,6 +9,11 @@ import { useFonts } from 'expo-font';
 import * as Font from 'expo-font';
 
 export default function WinnerCard(props) {
+    console.log('winner', props.winner)
+    let winner;
+    if (props.winner){
+        winner = props.winner
+    }
 
     // load fonts for the cards
     const [loaded, error] = useFonts({
@@ -21,7 +26,7 @@ export default function WinnerCard(props) {
     }
 
     const colorMap = ["gold", "silver", "bronze", "blue"]
-    console.log(colorMap[props.prize])
+
     // set styles based on the color of the card
     let gradient; // gradient for the background of the card
     let borderGradient;
@@ -40,7 +45,6 @@ export default function WinnerCard(props) {
             winnerLabelColor = colors.lightGreen
             break;
         case "silver":
-            console.log('oh')
             gradient = colors.silverGradientBg
             borderGradient = colors.silverGradient
             headerImage = "https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/winnercard-images/silver.png"
@@ -101,10 +105,10 @@ export default function WinnerCard(props) {
 
                     {/* winner of prize */}
                     <View style={[utilities.flexCenter, { flexDirection: 'row', width: '100%' }]}>
-                        <Image style={styles.winnerPic} source={{ uri: props.winner.profilePicture }} />
+                        <Image style={styles.winnerPic} source={{ uri: winner.profilePicture }} />
                         <View>
                             <Text style={[styles.winnerLabel, { color: winnerLabelColor, fontFamily: 'Josefin Sans' }]}>WINNER:</Text>
-                            <Text style={[styles.winnerName, { color: winnerLabelColor, fontFamily: 'Josefin Sans' }]}>@{props.winner.username.toUpperCase()}</Text>
+                            <Text style={[styles.winnerName, { color: winnerLabelColor, fontFamily: 'Josefin Sans' }]}>@{winner.username.toUpperCase()}</Text>
                         </View>
                     </View>
 
