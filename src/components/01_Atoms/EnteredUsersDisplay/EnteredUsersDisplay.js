@@ -16,8 +16,7 @@ function EnteredUsersDisplay(props) {
     const [userIds, setuserIds] = useState([])
     var enteredUsers;
     
-    console.log("YOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
-    console.log(props.enteredUsers)
+    
 
     // sort entered users so the people you're following show up at the front
     const sortUsers = (users) => {
@@ -94,7 +93,7 @@ function EnteredUsersDisplay(props) {
         return res
     }
 
-    console.log(userIds)
+    
 
     return (
         <TouchableOpacity onPress={async () => {

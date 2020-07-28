@@ -48,6 +48,7 @@
     "react-native-zoom-view": "^1.0.2",
     "request": "^2.88.2",
     "rn-sliding-up-panel": "^2.4.3",
+    "socket.io-client": "^2.3.0",
     "url": "^0.11.0",
     "validator": "^13.1.1"
   },

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar} from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -43,7 +43,6 @@ import NotLogin from './components/05_Pages/Account/NotLogin/NotLogin';
 // Host pages import
 import AskRaffleType from './components/05_Pages/Host/AskRaffleType/AskRaffleType';
 import NewRaffle from './components/05_Pages/Host/NewRaffle/NewRaffle';
-
 
 const Stack = createStackNavigator();
 console.disableYellowBox = true;
