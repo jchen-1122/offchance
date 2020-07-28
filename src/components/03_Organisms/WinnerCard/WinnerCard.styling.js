@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     },
 
     header: {
-        height: '15%',
+        height: '17%',
         width: '100%',
         flexDirection: 'column',
         alignItems: 'center',

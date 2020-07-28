@@ -9,7 +9,6 @@ import { useFonts } from 'expo-font';
 import * as Font from 'expo-font';
 
 export default function WinnerCard(props) {
-
     // load fonts for the cards
     const [loaded, error] = useFonts({
         'Steelfish': require('../../../../assets/fonts/Steelfish.ttf'),
@@ -20,7 +19,6 @@ export default function WinnerCard(props) {
         return null;
     }
 
-    const colors = ["gold", "silver", "bronze", "blue"]
     // set styles based on the color of the card
     let gradient; // gradient for the background of the card
     let borderGradient;
@@ -32,20 +30,33 @@ export default function WinnerCard(props) {
     switch (props.color) {
         case "gold":
             gradient = ['#444444', , 'black', '#444444']
-            borderGradient = [colors.gold1, colors.gold2]
+            borderGradient = colors.goldGradient
             headerImage = "https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/winnercard-images/gold.png"
             hostNameColor = colors.gold1
             prizeTitleColor = 'white'
             winnerLabelColor = colors.lightGreen
             break;
         case "silver":
-            gradient = colors.silverGradient
-            borderGradient = [colors.silver1, colors.silver2]
+            gradient = colors.silverGradientBg
+            borderGradient = colors.silverGradient
             headerImage = "https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/winnercard-images/silver.png"
             hostNameColor = '#9E9E9E'
+        case "bronze":
+            gradient= colors.bronzeGradientBg
+            borderGradient = colors.bronzeGradient
+            headerImage = "https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/winnercard-images/bronze.png"
+            headerColor = "#44270A"
+            hostNameColor = "#44270A"
+        case "blue":
+            gradient = colors.whiteGradientBg
+            borderGradient = [colors.limeGreen, colors.limeGreen]
+            headerImage = "https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/winnercard-images/lime.png"
+            headerColor = colors.blue
+            hostNameColor = colors.blue
+            prizeTitleColor = colors.blue
+            winnerLabelColor = colors.blue
     }
     return (
-        // linear gradient for card border
         <LinearGradient start={[0, 0]} end={[1, 0]}
             colors={borderGradient}>
             <View style={styles.overlay}>
