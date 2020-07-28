@@ -250,7 +250,7 @@ export default function RaffleResult({navigation, route}) {
             <View style={styles.container}>
                 {CardArray}
                 <Overlay isVisible={overlay} onBackdropPress={() => setoverlay(false)} overlayStyle={{backgroundColor: 'transparent'}}>
-                    <WinnerCard color="gold" winner={dummy_user} raffle={dummy_raffle} selected={selected} navigation={navigation}/>
+                    <WinnerCard color="gold" winner={dummy_user} raffle={dummy_raffle} host={dummy_user} selected={selected} navigation={navigation}/>
                 </Overlay>
             </View>
         </ScrollView>

@@ -2,11 +2,12 @@ import { StyleSheet, Dimensions } from 'react-native'
 import {colors, dimensions} from '../../../settings/all_settings';
 
 let profilePicSize = Dimensions.get('window').width*0.15
+let hostPicSize = Dimensions.get('window').width*0.12
 
 const styles = StyleSheet.create({
     overlay: {
         width: Dimensions.get('window').width*0.8,
-        height: Dimensions.get('window').height * 0.75,
+        height: Dimensions.get('window').height * 0.8,
         alignItems: 'center',
         justifyContent: 'center',
         margin: 3,
@@ -57,7 +58,44 @@ const styles = StyleSheet.create({
     winnerPic: {
         height: profilePicSize,
         width: profilePicSize,
-        borderRadius: profilePicSize
+        borderRadius: profilePicSize,
+        marginRight: '3%'
+    },
+    winnerLabel: {
+        color: colors.lightGreen,
+        fontSize: 10
+    },
+    winnerName: {
+        color: colors.lightGreen,
+        fontSize: 16
+    },
+
+    footer: {
+        height: '12%',
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+
+    hostPic: {
+        height: hostPicSize,
+        width: hostPicSize,
+        borderRadius: hostPicSize,
+        marginRight: '1%'
+    },
+    hostLabel: {
+        fontSize: 10,
+        color: colors.darkGray
+    },
+    hostName: {
+        fontSize: 12
+    },
+
+    charity: {
+        height: Dimensions.get('window').height*0.05,
+        width: Dimensions.get('window').width*0.1,
+        resizeMode: 'contain',
+        margin: 0
     }
 })
 
