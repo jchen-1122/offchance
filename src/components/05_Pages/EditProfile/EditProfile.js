@@ -93,7 +93,7 @@ export default function({navigation}) {
                     onChangeText={(text) => {setEmail(text)}}  />
 
                 <InputField 
-                    label="Address" 
+                    label="Shipping Address" 
                     autoCapitalize="words" 
                     value={_address} 
                     onChangeText={(text) => {setAddress(text)}}  />

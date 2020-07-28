@@ -18,23 +18,27 @@ const styles = StyleSheet.create({
     },
     
     InputField__box: {
-        height: 45,
+        height: 40,
         width: '100%',
-        backgroundColor: 'white',
-        borderColor: '#CCCCCC',
-        borderWidth: 1,
+        // backgroundColor: 'white',
+        borderBottomColor: '#CCCCCC',
+        borderBottomWidth: 1,
         padding: 5
     },
     // if input is a textArea (multiple lines)
     InputField__box_textArea: {
         height: 125
     },
-
-    InputField__label: {
-        fontSize: 16,
-        marginBottom: 5,
-        fontWeight: '500', 
+    InputField__box_Green: {
+        borderBottomColor: colors.limeGreen
     }
+
+    // InputField__label: {
+    //     fontSize: 16,
+    //     marginBottom: 5,
+    //     fontWeight: '500', 
+    //     color: colors.gray
+    // }
 
 })
 
