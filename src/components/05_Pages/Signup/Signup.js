@@ -15,38 +15,57 @@ export default function Signup({ navigation }) {
   var us_states = []
   for (var i in jsonData) us_states.push(i)
 
-  // posts user to database
-  const postUser = async () => {
-    const response = await fetch('http://' + data.ipAddress + ':3000/user/signup/', {
+  const sendsms = async () => {
+    const response = await fetch('http://'+data.ipAddress+':3000/user/sendphone',{
       method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      },
+      },  
       body: makeJSON()
     })
-    const json = await response.json()
-    console.log(json)
-    return json
   }
 
-  const mailingList = async () => {
-    var bearer = 'Bearer ' + data.sendGrid;
-    const response = await fetch('https://api.sendgrid.com/v3/marketing/contacts', {
-      method: "PUT",
-      withCredentials: true,
-      credentials: 'include',
+  const checkValid = async () => {
+    let errors = []
+    const email = await fetch('http://' + data.ipAddress + ':3000/user/query?query=email&val=' + _email, {
+      method: "GET",
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        "Authorization": bearer
-      },
-      body: emailJSON()
+        'Content-Type': 'application/json'
+      }
     })
-    const json = await response.json()
-    console.log(json)
-    return json
+    const emailjson = await email.json()
+    if (emailjson.length !== 0) {
+      errors.push(<Text style={fonts.error}>Email is taken. Please try again.</Text>)
+    }
+    const usr = await fetch('http://' + data.ipAddress + ':3000/user/query?query=username&val=' + _username, {
+      method: "GET",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    const usrjson = await usr.json()
+    if (usrjson.length !== 0) {
+      errors.push(<Text style={fonts.error}>Username is taken. Please try again.</Text>)
+    }
+    const phone = await fetch('http://' + data.ipAddress + ':3000/user/query?query=phoneNumber&val=' + _phoneNumber, {
+      method: "GET",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    const phonejson = await phone.json()
+    if (phonejson.length !== 0) {
+      errors.push(<Text style={fonts.error}>Phone number already registered.</Text>)
+    }
+    setErrors(errors)
+    if (errors.length > 0) return true
+    return false
   }
+
 
   const [state, setState] = useState({
     businessAccount: false,
@@ -123,17 +142,6 @@ export default function Signup({ navigation }) {
       state: jsonData[_us_state],
       password: _password,
       isHost: state.businessAccount
-    }
-    return JSON.stringify(data)
-  };
-
-  const emailJSON = () => {
-    let data = {
-      contacts: [
-        {
-          email: _email
-        }
-      ]
     }
     return JSON.stringify(data)
   };
@@ -252,12 +260,18 @@ export default function Signup({ navigation }) {
           title="SIGN UP FOR 5 FREE CHANCES"
           color="secondary"
           onPress={async () => {
-            console.log(_city)
-            console.log(jsonData[_us_state])
+            //console.log(_city)
+            //console.log(jsonData[_us_state])
             let isError = generateErrors()
             setState({ businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true })
             if (!isError) {
-              const userObj = await postUser()
+              let postErrors = await checkValid()
+              if (!postErrors) {
+                sendsms()
+                const data = makeJSON()
+                navigation.navigate('PhoneVerify', { signup: data, mailing: state.futureDrawings, phone: _phoneNumber, email: _email })
+              }
+              /*const userObj = await postUser()
               if (userObj.keyValue == null) {
                 console.log("signed up")
                 if (state.futureDrawings) {
@@ -276,7 +290,7 @@ export default function Signup({ navigation }) {
                 }
                 errors.push(<Text style={fonts.error}>{errMsg}</Text>)
                 setErrors(errors)
-              }
+              }*/
             }
           }} />
         {state.signedUp && _errors.length == 0 ? <Text>Signing Up...</Text> : null}
