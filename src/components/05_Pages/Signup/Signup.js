@@ -165,15 +165,11 @@ export default function Signup({ navigation }) {
             style={{ width: '65%' }}
             label="City"
             value={_city} onChangeText={(text) => { setCity(text) }} />
-          <InputField
-            autoCapitalize="characters"
-            style={{ width: '25%' }}
-            label="State (abbr)"
-            value={_us_state} onChangeText={(text) => { set_us_state(text) }} />
-
-          {/* <View style={{ marginTop: 34, zIndex: 10 }}>
-            <Dropdown options={us_states} size="small" set_us_state={set_us_state}/>
-          </View> */}
+          <Dropdown 
+          options={us_states} 
+          size="small" 
+          placeholder="State"
+          setValue={set_us_state}/>
         </View>
 
         <InputField
@@ -225,8 +221,7 @@ export default function Signup({ navigation }) {
           title="SIGN UP FOR 5 FREE CHANCES"
           color="secondary"
           onPress={async () => {
-            console.log(_city)
-            console.log(jsonData[_us_state])
+            console.log(_us_state)
             let isError = generateErrors()
             setState({ businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true })
             if (!isError) {
