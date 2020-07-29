@@ -84,7 +84,7 @@ function Profile({ navigation }) {
                             <View style={{ flexDirection: 'row', width: Dimensions.get('window').width*0.83, justifyContent: 'space-between' }}>
                                 <View>
                                     <Text style={styles.descriptor}>Size Type</Text>
-                                    <Text style={styles.description}>{sizeType.charAt(0).toUpperCase() + sizeType.slice(1)}</Text>
+                                    <Text style={styles.description}>{(sizeType) ? sizeType.charAt(0).toUpperCase() + sizeType.slice(1) : ''}</Text>
                                 </View>
                                 <View>
                                     <Text style={styles.descriptor}>Shoe Size</Text>
