@@ -6,8 +6,8 @@ let spacing = 10; // for margin and padding
 
 const styles = StyleSheet.create({
     FlatCard: {
-        width: Dimensions.get('window').width * 0.45,
-        height: Dimensions.get('window').height * 0.38,
+        // width: Dimensions.get('window').width * 0.3,
+        height: Dimensions.get('window').height * 0.3,
         backgroundColor: 'white',
         flex: 1,
         alignItems: 'center',

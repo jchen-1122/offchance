@@ -96,6 +96,7 @@ function FlatCard ({ navigation, data, viewType, inLikesPage }) {
 
     return (
       <TouchableOpacity
+        style={{borderWidth: 5,  }}
         onPress={() => navigation.navigate('Raffle', data)}>
           <View style={{flexDirection:'row', }}>
               <View style={styles.FlatCard}>
