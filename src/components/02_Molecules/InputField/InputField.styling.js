@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
     },
     // if input is a textArea (multiple lines)
     InputField__box_textArea: {
-        height: 125
+        height: 75
     },
     InputField__box_Green: {
         borderBottomColor: colors.limeGreen

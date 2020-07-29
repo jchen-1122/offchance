@@ -194,9 +194,9 @@ export default function Signup({ navigation }) {
         </View>
         {state.businessAccount ? (
           <View style={[utilities.flexCenter, { width: '100%' }]}>
-            <InputField label="Describe the item you would like to use in a drawing" required />
-            <InputField label="Please provide the charity/foundation name(s) you are raising donations for" required />
-            <InputField label="Please provide any additional details below (business website, social media links)" />
+            <InputField label="Describe the item you would like to use in a drawing" textArea required />
+            <InputField label="Please provide the charity/foundation name(s) you are raising donations for" textArea required />
+            <InputField label="Please provide any additional details below (business website, social media links)" textArea />
           </View>) : null}
         <View style={{ width: '90%' }}>
           <CheckBox
