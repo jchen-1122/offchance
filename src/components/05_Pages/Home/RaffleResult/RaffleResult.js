@@ -95,21 +95,27 @@ export default function RaffleResult({ navigation, route }) {
             }
         }
 
-        async function getWinnerObjs(ids) {
-            // get top 5 donors of this raffle
-            let temp = []
-            for (var i = 0; i < ids.length; i++) {
-                console.log('i',i)
-                const user = await fetch('http://' + ip.ipAddress + '/user/id/' + ids[i])
-                user = await user.json()
-                console.log('user',user)
-                temp.push(user)
-            }
-            // console.log('temp', temp)
-            setWinnerObjs(temp)
+        async function matttest() {
+            const winnerRes = await fetch('http://'+ip.ipAddress+':3000/user/ids/' ,{
+                method: "PATCH",
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },  
+                body: winnerJSON()
+            })
+            const matt = await winnerRes.json()
+            console.log(matt)
         }
-        getWinnerObjs(Object.keys(temp))
-        setWinners(temp)
+
+        const winnerJSON = () => {
+            let data = {
+                ids: Object.keys(temp)
+            }
+            return JSON.stringify(data)
+        }
+
+        matttest()
 
         // @Matt the winners object is {key: userId, value: reward}, reward rn is just a number (see top of file)
         
