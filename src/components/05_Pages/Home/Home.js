@@ -32,7 +32,7 @@ function Home({navigation}) {
           setRaffles(response)
         }
         getRaffle()
-        
+
         // BACKHANDLING FOR ANDROID BOTTOM NAV
         const backAction = () => {
             Alert.alert("Hold on!", "Are you sure you want to exit the app?", [

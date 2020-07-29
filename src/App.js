@@ -12,7 +12,7 @@ import Home from './components/05_Pages/Home/Home'
 import Raffle from './components/05_Pages/Home/Raffle/Raffle'
 import PlayGame from './components/05_Pages/Home/PlayGame/PlayGame'
 import Game from './components/05_Pages/Home/Game/Game'
-import Drawings from './components/05_Pages/Drawings/Drawings'
+import Search from './components/05_Pages/Search/Search'
 import Likes from './components/05_Pages/Likes/Likes'
 import Social from './components/05_Pages/Social/Social'
 
@@ -74,7 +74,7 @@ function App() {
           <Stack.Screen name="Raffle" component={Raffle} options={({ route }) => ({ title: route.params.name })}/>
           <Stack.Screen name="PlayGame" component={PlayGame} />
           <Stack.Screen name="Game" component={Game} />
-          <Stack.Screen name="Drawings" component={Drawings} options={{ headerLeft: null }}/>
+          <Stack.Screen name="Search" component={Search} options={{ headerLeft: null }}/>
           <Stack.Screen name="Social" component={Social}  options={{ headerLeft: null }}/>
           <Stack.Screen name="Likes" component={Likes}  options={{ headerLeft: null }}/>
           <Stack.Screen name="Account" component={Account} options={{ headerLeft: null }}/>

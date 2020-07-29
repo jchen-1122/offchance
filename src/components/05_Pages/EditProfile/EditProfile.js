@@ -18,7 +18,7 @@ export default function({navigation}) {
     const [_email, setEmail] = useState(user.email)
     const [_shoeSize, setShoe] = useState(user.shoeSize != null ? user.shoeSize : "")
     const [_shirtSize, setShirt] = useState(user.shirtSize != null ? user.shirtSize: "")
-    const [_payment, setPayment] = useState('**** **** **** 1234') // TODO
+    const [_payment, setPayment] = useState('**** **** **** 1234') // TODO: retrieve payment info
 
     const [_errors, setErrors] = useState([])
 

@@ -12,47 +12,28 @@ import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
 
 export default function Wallet({navigation}) {
 
-  const {user, setUser} = useContext(GlobalState)
-  const [sheetOpen, setSheetOpen] = useState(false); // isHidden
-  const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet
-  const [containerStyle, setContainerStyle] = useState(styles.container);
+    const {user, setUser} = useContext(GlobalState)
+    const [containerStyle, setContainerStyle] = useState(styles.container);
+    const [sheetController, setSheetController] = useState(0); // 0 - close, 1 - open. TODO: GLOBAL STATE
 
-  const { width, height } = Dimensions.get('window');
+    const { width, height } = Dimensions.get('window');
+    
+    const trigger = () => {
+        setSheetController(sheetController^1);
 
-  const toggleSheet = () => {
-      var toValue = 1000;
-      if (sheetOpen == false) {
-          toValue = 0
+        setContainerStyle( sheetController === 0 ?
+          { // light on
+          flex: 1,
+          justifyContent: 'space-between',
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+        } : { // light off
+          flex: 1,
+          justifyContent: 'space-between',
+          backgroundColor: "rgba(255, 255, 255, 0.1)",
+          });
+
+        // console.log(sheetController); 101010
       }
-
-      Animated.spring(
-          bounceValue, {
-          toValue: toValue,
-          velocity: 3,
-          tension: 2,
-          friction: 8,
-          useNativeDriver: true
-      }).start();
-
-      setContainerStyle( !sheetOpen ?
-        {
-        flex: 1,
-        justifyContent: 'space-between',
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-      } : {
-        flex: 1,
-        justifyContent: 'space-between',
-        backgroundColor: "rgba(255, 255, 255, 0.1)",
-        });
-      setSheetOpen(!sheetOpen);
-  };
-
-    // https://react-native-elements.github.io/react-native-elements/docs/overlay.html
-    // <Overlay isVisible={isVisible}>
-    //     <Text>Hello from Overlay!</Text>
-    // </Overlay>
-
-    let sizeTypes = ['W', 'M', 'Y'];
 
     return (
         <View style={containerStyle}>
@@ -75,18 +56,15 @@ export default function Wallet({navigation}) {
                     title="ADD CHANCES"
                     color="secondary"
                     size='short'
-                    onPress={() => toggleSheet()}/>
+                    onPress={() => trigger()}/>
             </View>
 
             {/* sliding sheet */}
-            <Animated.View
-                style={[styles.subView,
-                { transform: [{ translateY: bounceValue }] }]}>
-                    <SlidingSheet
-                    title='Add Chances'
-                    content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
-                    toggleSheet={toggleSheet} />
-            </Animated.View>
+            <SlidingSheet
+            title='Add Chances'
+            sheet={sheetController}
+            content={['Wallet Balance', 'Reload Source', 'Reload Amount']}/>
+
 
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>
         </View>

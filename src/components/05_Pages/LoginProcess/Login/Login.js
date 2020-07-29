@@ -26,7 +26,6 @@ export default function Login({ navigation, route }) {
       body: makeJSON()
     })
     const json = await response.json()
-    console.log(json)
     return json
   }
 
