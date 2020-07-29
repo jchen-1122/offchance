@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { ScrollView, View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { Overlay } from 'react-native-elements';
 import styles from './RaffleResult.styling';
@@ -8,6 +8,7 @@ import WinnerCard from '../../../03_Organisms/WinnerCard/WinnerCard';
 import { LinearGradient } from 'expo-linear-gradient';
 import { get_user, get_raffle } from '../../../fake_users/live-drawing-test';
 import Social from '../../Social/Social'
+import GlobalState from '../../../globalState';
 
 export default function RaffleResult({ navigation, route }) {
     const [selected, setSelected] = useState(null)
@@ -16,6 +17,7 @@ export default function RaffleResult({ navigation, route }) {
     const [enteredUsers, setEnteredUsers] = useState([])
     const [winners, setWinners] = useState({})
     const ip = require('../../../IP_ADDRESS.json');
+    const {user, setUser} = useContext(GlobalState)
 
     // test user and raffle for Chelly's card
     let dummy_user = get_user("Chelly")
@@ -183,7 +185,7 @@ export default function RaffleResult({ navigation, route }) {
                 </Overlay>
             </View>
         </ScrollView>
-        <Social></Social>
+        <Social currUser={user}></Social>
         </View>
     )
 }
