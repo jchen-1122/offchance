@@ -437,7 +437,7 @@ export default function Raffle({ navigation, route }) {
                         title="LIVE DRAWING EXP"
                         color="primary"
                         onPress={() => {
-                            navigation.navigate('RaffleResult')}}
+                            navigation.navigate('RaffleResult', {raffle: route.params})}}
                         disabled={expired} />
                     {/* <BlockButton
                         title="ENTER DRAWING"

@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { TextInput, StyleSheet, Text, ScrollView } from "react-native";
+import { TextInput, StyleSheet, Text, ScrollView, View } from "react-native";
+import BottomNav from '../../02_Molecules/BottomNav/BottomNav'
 import io from "socket.io-client";
 
 export default class Social extends Component {
@@ -26,13 +27,22 @@ export default class Social extends Component {
 
   render() {
     const chatMessages = this.state.chatMessages.map(chatMessage => (
-      <Text key={chatMessage}>{chatMessage}</Text>
+      <Text style={{fontSize: 40}} key={chatMessage}>{chatMessage}</Text>
     ));
 
     return (
-      <ScrollView style={styles.container}>
-        <TextInput
-          style={{ height: 40, borderWidth: 2 }}
+      <View >
+      <ScrollView contentContainerStyle={{backgroundColor: 'green'}}>
+        <Text style={{fontSize: 40}}>lol</Text>
+        <Text style={{fontSize: 40}}>lol</Text>
+        <Text style={{fontSize: 40}}>lol</Text>
+        <Text style={{fontSize: 40}}>lol</Text>
+        <Text style={{fontSize: 40}}>lol</Text>
+        <Text style={{fontSize: 40}}>lol</Text>
+      </ScrollView>
+      <View style={{position: "absolute"}}>
+      <TextInput
+          style={{ height: 40, borderWidth: 2, width: 300, marginTop: 300 }}
           autoCorrect={false}
           value={this.state.chatMessage}
           onSubmitEditing={() => this.submitChatMessage()}
@@ -40,8 +50,8 @@ export default class Social extends Component {
             this.setState({ chatMessage });
           }}
         />
-        {chatMessages}
-      </ScrollView>
+      </View>
+      </View>
     );
   }
 }
