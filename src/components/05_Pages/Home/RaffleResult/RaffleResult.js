@@ -145,7 +145,31 @@ export default function RaffleResult({ navigation, route }) {
 
     return (
         <View>
-        <ScrollView>
+        <ScrollView contentContainerStyle={{maxHeight: Dimensions.get('screen').height * 0.78}}>
+            <View style={styles.container, {flexDirection: 'row', justifyContent: 'center'}}>
+                {CardArray}
+                <Overlay isVisible={overlay} onBackdropPress={() => setoverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
+                    <WinnerCard color="gold" prize={prize} winner={dummy_user} raffle={dummy_raffle} host={dummy_user} selected={selected} navigation={navigation} />
+                </Overlay>
+            </View>
+            <View style={styles.container, {flexDirection: 'row', justifyContent: 'center'}}>
+                {CardArray}
+                <Overlay isVisible={overlay} onBackdropPress={() => setoverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
+                    <WinnerCard color="gold" prize={prize} winner={dummy_user} raffle={dummy_raffle} host={dummy_user} selected={selected} navigation={navigation} />
+                </Overlay>
+            </View>
+            <View style={styles.container, {flexDirection: 'row', justifyContent: 'center'}}>
+                {CardArray}
+                <Overlay isVisible={overlay} onBackdropPress={() => setoverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
+                    <WinnerCard color="gold" prize={prize} winner={dummy_user} raffle={dummy_raffle} host={dummy_user} selected={selected} navigation={navigation} />
+                </Overlay>
+            </View>
+            <View style={styles.container, {flexDirection: 'row', justifyContent: 'center'}}>
+                {CardArray}
+                <Overlay isVisible={overlay} onBackdropPress={() => setoverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
+                    <WinnerCard color="gold" prize={prize} winner={dummy_user} raffle={dummy_raffle} host={dummy_user} selected={selected} navigation={navigation} />
+                </Overlay>
+            </View>
             <View style={styles.container, {flexDirection: 'row', justifyContent: 'center'}}>
                 {CardArray}
                 <Overlay isVisible={overlay} onBackdropPress={() => setoverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
