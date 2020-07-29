@@ -46,7 +46,9 @@ function DropDown(props) {
                     justifyContent: 'flex-start',
 
                 }}
-                onChangeItem={item => setSelectedValue(item.value)}
+                // For payment button
+                onChangeItem={(item) => {setSelectedValue(item.value);
+                              (item.value === '+ Add Payment Method') ? console.log('works') : console.log('nvm')}}
             />
         </View>
     )

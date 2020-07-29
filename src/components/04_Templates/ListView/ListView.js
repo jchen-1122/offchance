@@ -7,7 +7,7 @@ import UsernameDisplay from '../../01_Atoms/UsernameDisplay/UsernameDisplay';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 
 // e.g. the "top 10 donors" section
-function ListView(props) {   
+function ListView(props) {
     const currUser = props.currUser
     const setUser = props.setUser
     const [enabled, setEnabled] = useState({})
@@ -30,7 +30,7 @@ function ListView(props) {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-          },  
+          },
           body: makeAddJSON(user)
         })
         const json = await response.json()
@@ -40,7 +40,7 @@ function ListView(props) {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-          },  
+          },
           body: makeAddJSON2(user)
         })
         return json
@@ -56,7 +56,7 @@ function ListView(props) {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-          },  
+          },
           body: makeDeleteJSON(user)
         })
         const json = await response.json()
@@ -66,7 +66,7 @@ function ListView(props) {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-          },  
+          },
           body: makeDeleteJSON2(user)
         })
         return json
@@ -80,7 +80,7 @@ function ListView(props) {
         }
         return JSON.stringify(data)
     }
-    
+
     const makeAddJSON2 = (user) => {
         let prevFollowing = user.followers
         if (user.followers.includes(currUser._id)) {

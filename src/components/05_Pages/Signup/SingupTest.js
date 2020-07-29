@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Linking, ScrollView, KeyboardAvoidingView, } from 'react-native';
+import { View, Text, Linking, ScrollView } from 'react-native';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../../01_Atoms/Divider/Divider.js';
 import InputField from '../../02_Molecules/InputField/InputField.js';
@@ -24,24 +24,6 @@ export default function Signup({ navigation }) {
         'Content-Type': 'application/json'
       },
       body: makeJSON()
-    })
-    const json = await response.json()
-    console.log(json)
-    return json
-  }
-
-  const mailingList = async () => {
-    var bearer = 'Bearer ' + data.sendGrid;
-    const response = await fetch('https://api.sendgrid.com/v3/marketing/contacts', {
-      method: "PUT",
-      withCredentials: true,
-      credentials: 'include',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        "Authorization": bearer
-      },
-      body: emailJSON()
     })
     const json = await response.json()
     console.log(json)
@@ -127,25 +109,8 @@ export default function Signup({ navigation }) {
     return JSON.stringify(data)
   };
 
-  const emailJSON = () => {
-    let data = {
-      contacts: [
-        {
-          email: _email
-        }
-      ]
-    }
-    return JSON.stringify(data)
-  };
-
   // ============================================================================================
   return (
-    <KeyboardAvoidingView
-      behavior={"padding"}
-      keyboardVerticalOffset={100}
-      style={{ flex: 1, }}>
-
-      <View style={{justifyContent: "flex-end", flex: 1}}>
 
     <ScrollView>
       <View style={[utilities.flexCenter, { marginTop: '5%', marginBottom: 25 }]}>
@@ -267,9 +232,6 @@ export default function Signup({ navigation }) {
               const userObj = await postUser()
               if (userObj.keyValue == null) {
                 console.log("signed up")
-                if (state.futureDrawings) {
-                  mailingList()
-                }
                 navigation.navigate('Login', { signedUp: true })
               } else {
                 let errors = []
@@ -289,9 +251,5 @@ export default function Signup({ navigation }) {
         {state.signedUp && _errors.length == 0 ? <Text>Signing Up...</Text> : null}
       </View>
     </ScrollView>
-
-    <View style={{ flex : 1 }} />
-  </View>
-  </KeyboardAvoidingView>
   );
 }

@@ -1,4 +1,4 @@
-  
+
 import React, { useState, useContext, useEffect } from 'react'
 import { TouchableOpacity, Text, Image, View, ScrollView } from 'react-native';
 import { fonts, utilities } from '../../../settings/all_settings';
@@ -34,7 +34,7 @@ function EnteredUsersDisplay(props) {
             else {
                 entered.push(enteredUser)
             }
-        }   
+        }
         return entered
     }
 

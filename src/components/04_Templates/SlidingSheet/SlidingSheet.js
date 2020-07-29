@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import { View, Text, TouchableOpacity, TextInput, ScrollView, Picker} from 'react-native'
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Picker, Animated, } from 'react-native'
 import { Icon } from 'react-native-elements';
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -17,19 +17,49 @@ import styles from './SlidingSheet.styles';
 // Sliding Sheet update: Removed visible prop, since the sheet will be invisible after sliding off the screen.
 function SlidingSheet(props) {
 
-    const [value, onChangeText] = React.useState('Enter here');
+    const [value, onChangeText] = React.useState('');
     const [selectedValue, setSelectedValue] = useState("**** **** **** 1234");
+    // const [sheetOpen, setSheetOpen] = useState(true); // isHidden
+    const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet (1000 is at the bottom)
 
     let options1 = ['**** **** **** 1234', 'Google Pay', 'Apple Pay', 'Paypal', '+ Add Payment Method']
     let options2 = ['$5 = 10 chances', '$10 = 40 chances', '$20 = 50 chances', '$50 = 150 chances', '$100 = 400 chances']
 
+    var toValue = 1000;
+    const toggleSheet = () => {
+
+        Animated.spring(
+            bounceValue, {
+            toValue: toValue,
+            velocity: 3,
+            tension: 2,
+            friction: 8,
+            useNativeDriver: true
+        }).start();
+
+    };
+
+    if (props.sheet === 1) {
+      toValue = 0;
+      toggleSheet();
+    } else {
+      null;
+    }
+
+
+    // console.log(props.sheet); 101010
+
     return (
-        <View style={styles.container}>
-            <View style={{height: 800}}>
+      <View style={styles.container}>
+        <Animated.View
+            style={[styles.subView,
+            { transform: [{ translateY: bounceValue }] }]}>
+
+            <View style={styles.container}>
                 <ScrollView style={styles.slidingSheet}>
                     {/* Title part with a close button */}
                     <View style={styles.slidingSheet__header}>
-                        <TouchableOpacity onPress={() => props.toggleSheet()}>
+                        <TouchableOpacity onPress={() => {toValue = 1000; toggleSheet()}}>
                             <Icon name='close' />
                         </TouchableOpacity>
                         <Text style={fonts.h1}>{props.title}</Text>
@@ -41,6 +71,7 @@ function SlidingSheet(props) {
                         <Text style={styles.slidingSheet__content_text}>{props.content[0]}</Text>
                         <TextInput
                           style={{ height: 40, lineHeight: 23, }}
+                          placeholder='Enter here'
                           onChangeText={text => onChangeText(text)}
                           value={value}
                         />
@@ -74,7 +105,9 @@ function SlidingSheet(props) {
 
                 </ScrollView>
             </View>
-        </View>
+
+        </Animated.View>
+      </View>
     )
 }
 
