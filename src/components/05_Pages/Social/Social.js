@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { TextInput, StyleSheet, Text, View } from "react-native";
+import { TextInput, StyleSheet, Text, ScrollView } from "react-native";
 import io from "socket.io-client";
 
 export default class Social extends Component {
@@ -12,7 +12,8 @@ export default class Social extends Component {
   }
 
   componentDidMount() {
-    this.socket = io("http://192.168.0.22:3000");
+    const ip = require('../../IP_ADDRESS.json')
+    this.socket = io("http://" +ip.ipAddress+ ":3000");
     this.socket.on("message", msg => {
       this.setState({ chatMessages: [...this.state.chatMessages, msg] });
     });
@@ -29,7 +30,7 @@ export default class Social extends Component {
     ));
 
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <TextInput
           style={{ height: 40, borderWidth: 2 }}
           autoCorrect={false}
@@ -40,7 +41,7 @@ export default class Social extends Component {
           }}
         />
         {chatMessages}
-      </View>
+      </ScrollView>
     );
   }
 }
