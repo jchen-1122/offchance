@@ -4,6 +4,7 @@ import InputField from '../../02_Molecules/InputField/InputField'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import Dropdown from '../../01_Atoms/DropDown/DropDown';
 import SizeCarousel from '../../01_Atoms/SizeCarousel/SizeCarousel';
+import Checkbox from '../../02_Molecules/Checkbox/Checkbox';
 import validator from 'validator'
 import { colors, fonts, utilities, dimensions } from '../../../settings/all_settings';
 import GlobalState from '../../globalState'
@@ -11,14 +12,19 @@ import { styles } from './EditProfile.styling'
 
 export default function ({ navigation }) {
     var shirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
+    var shoeSizes = [];
+    for (var i = 4; i <= 14; i += 0.5) {
+        shoeSizes.push(i.toString())
+    }
+
     const { user, setUser } = useContext(GlobalState)
     const [_name, setName] = useState(user.name)
     const [_username, setUsername] = useState(user.username)
     const [_address, setAddress] = useState(user.shippingAddress)
     const [_email, setEmail] = useState(user.email)
     const [_shoeSize, setShoeSize] = useState(user.shoeSize != null ? user.shoeSize : "")
-    const [_shirtSize, setShirt] = useState(user.shirtSize != null ? user.shirtSize : "")
-
+    const [_shirtSize, setShirtSize] = useState(user.shirtSize != null ? user.shirtSize : "")
+    const [_sizeType, setSizeType] = useState(user.sizeType != null ? user.sizeType : "")
     const [_errors, setErrors] = useState([])
 
     const data = require('../../IP_ADDRESS.json');
@@ -65,7 +71,8 @@ export default function ({ navigation }) {
             email: _email,
             shippingAddress: _address,
             shoeSize: _shoeSize,
-            shirtSize: _shirtSize
+            shirtSize: _shirtSize,
+            sizeType: _sizeType
         }
         return JSON.stringify(data)
     };
@@ -99,38 +106,41 @@ export default function ({ navigation }) {
                         value={_address}
                         onChangeText={(text) => { setAddress(text) }} />
 
-                    {/* <InputField 
-                    label="Shoe Size" 
-                    autoCapitalize="words" 
-                    value={_shoeSize.toString()} 
-                    onChangeText={(text) => {setShoe(text)}}  /> */}
-
-                    <SizeCarousel sizes={['XS', 'S', 'M', 'L', 'XL']} default={'XS'} type='single'setSize={setShoeSize}></SizeCarousel>
-
-                    <View style={{ zIndex: 5 }}>
-                        <Text style={{ fontSize: 16, marginBottom: 5, fontWeight: '500' }}>Shirt Size</Text>
-                        <View style={{ zIndex: 10, marginBottom: 10 }}>
-                            <Dropdown options={shirtSizes} size="small" set_us_state={setShirt} />
+                    <View style={{ marginVertical: '5%' }}>
+                        <Text style={styles.label}>Size Type</Text>
+                        <View style={{flexDirection: 'row'}}>
+                        {['male', 'female', 'youth'].map((type, index) =>
+                            <Checkbox
+                                selected={_sizeType == type}
+                                onPress={() => setSizeType(type)}
+                                text={type.charAt(0).toUpperCase() + type.slice(1)}
+                            />
+                        )}
                         </View>
+                        <Text style={[styles.label, { marginTop: '5%' }]}>Shirt Size</Text>
+                        <SizeCarousel sizes={shirtSizes} default={_shirtSize} type='single' setSize={setShirtSize} />
+                        <Text style={[styles.label, { marginTop: '5%' }]}>Shirt Size</Text>
+                        <SizeCarousel sizes={shoeSizes} default={_shoeSize} type='single' setSize={setShoeSize} />
                     </View>
+
                 </View>
                 {_errors}
 
-                <View style={{ flexDirection: 'row', marginLeft: 20, zIndex: -1 }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                     <View >
                         <BlockButton
                             title="CANCEL"
                             color="secondary"
                             size="short"
-                            onPress={() => navigation.navigate("Profile")}></BlockButton>
+                            onPress={() => { navigation.navigate("Profile"); console.log(_shoeSize) }}></BlockButton>
                     </View>
+
                     <View >
                         <BlockButton
                             title="SAVE"
                             color="secondary"
                             size="short"
                             onPress={async () => {
-                                console.log(_shoeSize)
                                 if (!generateErrors()) {
                                     const userObj = await editUser()
                                     console.log(userObj)

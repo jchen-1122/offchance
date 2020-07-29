@@ -19,10 +19,9 @@ export default function SizeCarousel(props) {
                 props.setSize(sizes[i])
                 // setSelected(i)
                 // setSelectedSize(sizes[i])
-            }} underlayColor={colors.lightGreen} style={(selectedValue == sizes[i]) ? styles.green_button : styles.white_button}>
-            {/* }} underlayColor={colors.lightGreen} style={(_selected === i) ? styles.green_button : styles.white_button}> */}
+            }} underlayColor={colors.lightGreen} style={[styles.button, (selectedValue == sizes[i]) ? styles.green_button : styles.white_button]}>
                 <View >
-                    <Text style={{ textAlign: 'center', marginTop: 7 }}>{sizes[i]}</Text>
+                    <Text style={styles.buttonText}>{sizes[i]}</Text>
                 </View>
             </TouchableHighlight>
         )
@@ -60,9 +59,9 @@ function fkme(i) {
 
             setGreen(!_green)
 
-        }} underlayColor={colors.lightGreen} style={_green ? styles.green_button : styles.white_button}>
+        }} underlayColor={colors.lightGreen} style={[styles.button, _green ? styles.green_button : styles.white_button]}>
             <View >
-                <Text style={{ textAlign: 'center', marginTop: 7 }}>{i}</Text>
+                <Text style={styles.buttonText}>{i}</Text>
             </View>
         </TouchableHighlight>
     )

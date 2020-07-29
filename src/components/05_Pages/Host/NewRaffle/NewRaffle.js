@@ -122,12 +122,6 @@ export default function NewRaffle({ navigation, route }) {
                             onChangeText={(text) => { setPrice(text) }}
                             required /> : null
                     }
-                    <InputField
-                        label="Description"
-                        value={_description}
-                        onChangeText={(text) => { setDescription(text) }}
-                        required
-                        textArea />
                     {(route.params.type == 1) ?
                         <InputField
                             label="Donation Goal ($)"
@@ -136,7 +130,12 @@ export default function NewRaffle({ navigation, route }) {
                             onChangeText={(text) => { setGoal(text) }}
                             required /> : null
                     }
-
+                    <InputField
+                        label="Description"
+                        value={_description}
+                        onChangeText={(text) => { setDescription(text) }}
+                        required
+                        textArea />
                     <View style={{ width: '100%', marginLeft: '10%', marginVertical: 15 }}>
                         <Text style={styles.InputField__label}>Drawing Time<Text style={{ color: 'red' }}>*</Text></Text>
                         <BlockButton color="secondary" size="short" title={_startTime == null ? "Pick A Start Date" : format_date(_startTime)} onPress={showDatePicker} />

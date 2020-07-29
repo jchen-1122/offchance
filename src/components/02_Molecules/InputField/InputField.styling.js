@@ -23,7 +23,8 @@ const styles = StyleSheet.create({
         // backgroundColor: 'white',
         borderBottomColor: '#CCCCCC',
         borderBottomWidth: 1,
-        padding: 5
+        padding: 5,
+        paddingLeft: 0
     },
     // if input is a textArea (multiple lines)
     InputField__box_textArea: {
