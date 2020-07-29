@@ -41,7 +41,7 @@ function Search({navigation}) {
         getRaffle()
 
         async function getUser() {
-          let response = await fetch('http://' + data.ipAddress + ':3000/user/all');
+          let response = await fetch('http://' + data.ipAddress + ':3000/user/query');
           response = await response.json()
           setUsers(response);
         }
