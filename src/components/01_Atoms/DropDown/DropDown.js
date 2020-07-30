@@ -48,7 +48,7 @@ function DropDown(props) {
                 }}
                 // For payment button
                 onChangeItem={(item) => {setSelectedValue(item.value);
-                              (item.value === '+ Add Payment Method') ? props.parentFunction() : null}}
+                              (item.value === '+ Add Payment Method') ? (setSelectedValue((props.options[0]).toString()), props.parentFunction()) : null }}
             />
         </View>
     )

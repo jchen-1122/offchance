@@ -56,6 +56,12 @@ function SlidingSheet(props) {
         props.trigger();
     }
 
+    // summon payment page
+    const payMe = () => {
+      closeSlidingSheet();
+      props.paymentTrigger();
+    }
+
 
     // console.log(props.sheet); 101010
 
@@ -94,7 +100,7 @@ function SlidingSheet(props) {
                           size='large'
                           arrowSize={18}
                           isVisible={false}
-                          parentFunction={closeSlidingSheet}
+                          parentFunction={payMe}
                           />
                     </View>
 

@@ -81,6 +81,7 @@ export default function Wallet({navigation}) {
             title='Add Chances'
             sheet={sheetController}
             trigger={trigger}
+            paymentTrigger={paymentTrigger}
             height={480}
             content={['Wallet Balance', 'Reload Source', 'Reload Amount']}/>
 

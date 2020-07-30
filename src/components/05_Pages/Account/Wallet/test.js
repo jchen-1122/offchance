@@ -15,13 +15,14 @@ export default function Wallet({navigation}) {
     const {user, setUser} = useContext(GlobalState)
     const [containerStyle, setContainerStyle] = useState(styles.container);
     const [sheetController, setSheetController] = useState(false); // 0 - close, 1 - open. TODO: GLOBAL STATE
+    const [paymentController, setPaymentController] = useState(false);
 
     const { width, height } = Dimensions.get('window');
 
     const trigger = () => {
-        setSheetController(sheetController^1);
+        setSheetController(!sheetController);
 
-        setContainerStyle( sheetController === 0 ?
+        setContainerStyle( !sheetController ?
           { // light on
           flex: 1,
           justifyContent: 'space-between',
@@ -33,6 +34,22 @@ export default function Wallet({navigation}) {
           });
 
         // console.log(sheetController); 101010
+      }
+
+    const paymentTrigger = () => {
+        setPaymentController(!paymentController);
+
+        setContainerStyle( !paymentController ?
+          { // light on
+          flex: 1,
+          justifyContent: 'space-between',
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+        } : { // light off
+          flex: 1,
+          justifyContent: 'space-between',
+          backgroundColor: "rgba(255, 255, 255, 0.1)",
+          });
+
       }
 
     return (
@@ -64,13 +81,14 @@ export default function Wallet({navigation}) {
             title='Add Chances'
             sheet={sheetController}
             trigger={trigger}
+            paymentTrigger={paymentTrigger}
             height={480}
             content={['Wallet Balance', 'Reload Source', 'Reload Amount']}/>
 
             <SlidingSheet
             title='Payment'
-            sheet={!sheetController}
-            trigger={trigger}
+            sheet={paymentController}
+            trigger={paymentTrigger}
             height={700}
             content={['Wallet Balance', 'Reload Source', 'Reload Amount']}/>
 
