@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Welcome from './components/05_Pages/Welcome/Welcome'
 import Login from './components/05_Pages/LoginProcess/Login/Login'
 import Signup from './components/05_Pages/Signup/Signup'
+import PhoneVerify from './components/05_Pages/Signup/PhoneVerify'
 import EnterEmail from './components/05_Pages/LoginProcess/EnterEmail/EnterEmail';
 import EnterCode from './components/04_Templates/EnterCode/EnterCode';
 import ChangePassword from './components/05_Pages/LoginProcess/ChangePassword/ChangePassword';
@@ -65,6 +66,7 @@ function App() {
           }}>
           <Stack.Screen name=" " component={Welcome} options={{ headerShown: false }} />
           <Stack.Screen name="Signup" component={Signup} options={{ title: 'Sign Up' }} />
+          <Stack.Screen name="PhoneVerify" component={PhoneVerify} options={{ title: 'Verify Account' }} />
           <Stack.Screen name="Login" component={Login} options={{ title: 'Log In' }} />
           <Stack.Screen name="EnterEmail" component={EnterEmail} options={{ title: 'Forgot Password' }}/>
           <Stack.Screen name="EnterCode" component={EnterCode} options={{ title: 'Forgot Password' }}/>
