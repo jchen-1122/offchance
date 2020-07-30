@@ -9,7 +9,7 @@ export default class Social extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      chatMessage: {},
+      chatMessage: "",
       chatMessages: [],
       chatOn: true
     };
@@ -24,8 +24,10 @@ export default class Social extends Component {
   }
 
   submitChatMessage() {
-    this.socket.emit("message", {message: this.state.chatMessage, profilePicture: this.props.currUser.profilePicture, username: this.props.currUser.username});
-    this.setState({ chatMessage: {} });
+    if (this.state.chatMessage.length !== 0) {
+      this.socket.emit("message", {message: this.state.chatMessage, profilePicture: this.props.currUser.profilePicture, username: this.props.currUser.username});
+      this.setState({ chatMessage: "" });
+    }
   }
 
   render() {
@@ -33,7 +35,7 @@ export default class Social extends Component {
       <View style={{flexDirection: 'row', marginBottom: Dimensions.get('screen').height * 0.02, backgroundColor: 'rgba(255,250,250,0.7)', borderRadius: '22/2', padding: '2%', paddingBottom: '1%', maxWidth: Dimensions.get('screen').width * 0.82, width: Math.max(chatMessage.message.length * 11, chatMessage.username.length * 13)}}>
         <Image source={{uri: chatMessage.profilePicture}} style={{width: 40, height: 40, borderRadius: 40/2 }}></Image>
         <View style={{marginLeft: Dimensions.get('screen').width * 0.01, marginRight: (chatMessage.message.length * 11 < Dimensions.get('screen').width * 0.82) ? 0 : Dimensions.get('screen').width * 0.13}}>
-          <Text style={{fontSize: 14, color: 'black', fontWeight: '700'}}>{chatMessage.username}</Text>
+          <Text style={{fontSize: 14, color: 'black', fontWeight: '700'}}>@{chatMessage.username}</Text>
           <Text style={{fontSize: 14, color: 'black', fontWeight: '600'}}>{chatMessage.message}</Text>
         </View>
       </View>
