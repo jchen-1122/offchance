@@ -52,7 +52,7 @@ console.disableYellowBox = true;
 function App() {
   const [user, setUser] = useState({})
   const ip = require('./components/IP_ADDRESS.json')
-  const [socket, setSocket] = useState(io('http://'+ip.ipAddress+':3000'))
+  const [socket, setSocket] = useState(io('http://'+ip.ipAddress+''))
   return (
     <GlobalState.Provider value={{ user, setUser, socket }}>
       <NavigationContainer>

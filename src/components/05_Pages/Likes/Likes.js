@@ -26,7 +26,7 @@ function Likes({navigation}) {
     }, [])
 
     async function getRaffle(id) {
-        let response = await fetch('http://' + ip.ipAddress + ':3000/raffle/id/' + id)
+        let response = await fetch('http://' + ip.ipAddress + '/raffle/id/' + id)
         response = await response.json()
         return response
     }

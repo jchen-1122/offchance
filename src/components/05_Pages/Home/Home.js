@@ -24,7 +24,7 @@ function Home({navigation}) {
     // get all raffles and maybe filter them by type
     React.useEffect(() => {
         async function getRaffle() {
-          let response = await fetch('http://'+data.ipAddress+':3000/raffle/all')
+          let response = await fetch('http://'+data.ipAddress+'/raffle/all')
           response = await response.json()
           // filter raffles based on what type they want to see (donate, buy, all)
           response = (viewType == 1) ? response.filter((raffle)=>{return raffle.type==1}) : response

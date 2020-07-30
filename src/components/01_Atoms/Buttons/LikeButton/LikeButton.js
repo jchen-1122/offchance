@@ -16,7 +16,7 @@ function LikeButton(props){
 
     const setLike = async () => {
         const ip = require('../../../IP_ADDRESS.json')
-        const response = await fetch('http://'+ip.ipAddress+':3000/user/edit/'+currUser._id,{
+        const response = await fetch('http://'+ip.ipAddress+'/user/edit/'+currUser._id,{
           method: "PATCH",
           headers: {
             'Accept': 'application/json',
@@ -30,7 +30,7 @@ function LikeButton(props){
 
     const setUnlike = async () => {
         const ip = require('../../../IP_ADDRESS.json')
-        const response = await fetch('http://'+ip.ipAddress+':3000/user/edit/'+currUser._id,{
+        const response = await fetch('http://'+ip.ipAddress+'/user/edit/'+currUser._id,{
           method: "PATCH",
           headers: {
             'Accept': 'application/json',

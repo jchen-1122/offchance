@@ -21,7 +21,7 @@ export default function PhoneVerify({ navigation, route }) {
 
       // posts user to database
     const postUser = async () => {
-        const response = await fetch('http://' + data.ipAddress + ':3000/user/signup/', {
+        const response = await fetch('http://' + data.ipAddress + '/user/signup/', {
         method: "POST",
         headers: {
             'Accept': 'application/json',
@@ -53,7 +53,7 @@ export default function PhoneVerify({ navigation, route }) {
       }
 
     const verifysms = async () => {
-        const response = await fetch('http://'+data.ipAddress+':3000/user/verifyphone',{
+        const response = await fetch('http://'+data.ipAddress+'/user/verifyphone',{
           method: "POST",
           headers: {
             'Accept': 'application/json',

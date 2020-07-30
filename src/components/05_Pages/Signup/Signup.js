@@ -16,7 +16,7 @@ export default function Signup({ navigation }) {
   for (var i in jsonData) us_states.push(i)
 
   const sendsms = async () => {
-    const response = await fetch('http://'+data.ipAddress+':3000/user/sendphone',{
+    const response = await fetch('http://'+data.ipAddress+'/user/sendphone',{
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -28,7 +28,7 @@ export default function Signup({ navigation }) {
 
   const checkValid = async () => {
     let errors = []
-    const email = await fetch('http://' + data.ipAddress + ':3000/user/query?query=email&val=' + _email, {
+    const email = await fetch('http://' + data.ipAddress + '/user/query?query=email&val=' + _email, {
       method: "GET",
       headers: {
         'Accept': 'application/json',
@@ -39,7 +39,7 @@ export default function Signup({ navigation }) {
     if (emailjson.length !== 0) {
       errors.push(<Text style={fonts.error}>Email is taken. Please try again.</Text>)
     }
-    const usr = await fetch('http://' + data.ipAddress + ':3000/user/query?query=username&val=' + _username, {
+    const usr = await fetch('http://' + data.ipAddress + '/user/query?query=username&val=' + _username, {
       method: "GET",
       headers: {
         'Accept': 'application/json',
@@ -50,7 +50,7 @@ export default function Signup({ navigation }) {
     if (usrjson.length !== 0) {
       errors.push(<Text style={fonts.error}>Username is taken. Please try again.</Text>)
     }
-    const phone = await fetch('http://' + data.ipAddress + ':3000/user/query?query=phoneNumber&val=' + _phoneNumber, {
+    const phone = await fetch('http://' + data.ipAddress + '/user/query?query=phoneNumber&val=' + _phoneNumber, {
       method: "GET",
       headers: {
         'Accept': 'application/json',

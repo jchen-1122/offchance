@@ -21,7 +21,7 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
 
     React.useEffect(() => {
         async function getHost() {
-            let response = await fetch('http://' + ip.ipAddress + ':3000/user/id/' + data.hostedBy)
+            let response = await fetch('http://' + ip.ipAddress + '/user/id/' + data.hostedBy)
             response = await response.json()
             setHost(response)
         }

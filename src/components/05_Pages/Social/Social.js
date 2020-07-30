@@ -16,7 +16,7 @@ export default class Social extends Component {
 
   componentDidMount() {
     const ip = require('../../IP_ADDRESS.json')
-    this.socket = io("http://" +ip.ipAddress+ ":3000");
+    this.socket = io("http://" +ip.ipAddress+ "");
     this.socket.on("message", msg => {
       this.setState({ chatMessages: [msg, ...this.state.chatMessages] });
     });

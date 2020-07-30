@@ -31,7 +31,7 @@ function Search({navigation}) {
     // Get all raffles & users from db
     React.useEffect(() => {
         async function getRaffle() {
-          let response = await fetch('http://'+data.ipAddress+':3000/raffle/all')
+          let response = await fetch('http://'+data.ipAddress+'/raffle/all')
           response = await response.json()
           // filter raffles based on what type they want to see (donate, buy, all)
           response = (viewType == 1) ? response.filter((raffle)=>{return raffle.type==1}) : response
@@ -41,7 +41,7 @@ function Search({navigation}) {
         getRaffle()
 
         async function getUser() {
-          let response = await fetch('http://' + data.ipAddress + ':3000/user/query');
+          let response = await fetch('http://' + data.ipAddress + '/user/query');
           response = await response.json()
           setUsers(response);
         }

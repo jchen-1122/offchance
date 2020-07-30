@@ -41,7 +41,7 @@ function EnteredUsersDisplay(props) {
     React.useEffect(() => {
         // gets prof picture and username from db given certain use id
         const getUserInfo = async (userID, field) => {
-            let response = await fetch('http://' + ip.ipAddress + ':3000/user/id/' + userID)
+            let response = await fetch('http://' + ip.ipAddress + '/user/id/' + userID)
             response = await response.json()
             if (field == 'profPic') {
                 return response.profilePicture
@@ -86,7 +86,7 @@ function EnteredUsersDisplay(props) {
     const getUserObj = async (ids) => {
         let res = []
         for (var i = 0; i < ids.length; i++) {
-            let response = await fetch('http://'+ip.ipAddress+':3000/user/id/'+ids[i])
+            let response = await fetch('http://'+ip.ipAddress+'/user/id/'+ids[i])
             response = await response.json()
             res.push(response)
         }
