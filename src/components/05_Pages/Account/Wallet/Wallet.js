@@ -79,6 +79,7 @@ export default function Wallet({navigation}) {
             {/* sliding sheet */}
             <SlidingSheet
             title='Add Chances'
+            type='default'
             sheet={sheetController}
             trigger={trigger}
             paymentTrigger={paymentTrigger}
@@ -87,6 +88,7 @@ export default function Wallet({navigation}) {
 
             <SlidingSheet
             title='Payment'
+            type='payment'
             sheet={paymentController}
             trigger={paymentTrigger}
             height={700}

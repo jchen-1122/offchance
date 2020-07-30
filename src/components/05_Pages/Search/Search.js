@@ -124,6 +124,7 @@ function Search({navigation}) {
 
             <Text style={{fontSize: 18, padding: 17, fontWeight: '700'}}> { searchTerm === '' ? 'Recent' : 'Results' } </Text>
 
+            {/* for raffle, bigger avatar, adjust margin, add like button; for users, add follow button */}
             {displayUser ?
               <ScrollView>
                 {filteredUsers.map(map_user => {
