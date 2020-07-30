@@ -101,7 +101,7 @@ export default function NewRaffle({ navigation, route }) {
             name: _name,
             productPrice: _price,
             description: _description,
-            startTime: _startTime.getTime() / 1000, // convert to unix timestamp
+            //startTime: _startTime.getTime() / 1000, // convert to unix timestamp
             donationGoal: _goal,
             charities: (_charities.length > 0) ? _charities.split(',').map(item => item.trim()) : null,
             productType: _productType,
