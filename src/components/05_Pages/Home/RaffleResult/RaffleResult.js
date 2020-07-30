@@ -276,6 +276,18 @@ export default function RaffleResult({ navigation, route }) {
                     <WinnerCard prize={prize} winner={dummy_user} dummy_winner={dummy_user} raffle={raffle} host={host} selected={selected} navigation={navigation} />
                 </Overlay>
             </View>
+            <View style={styles.container}>
+                {display}
+                <Overlay isVisible={overlay} onBackdropPress={() => setoverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
+                    <WinnerCard prize={prize} winner={dummy_user} dummy_winner={dummy_user} raffle={raffle} host={host} selected={selected} navigation={navigation} />
+                </Overlay>
+            </View>
+            <View style={styles.container}>
+                {display}
+                <Overlay isVisible={overlay} onBackdropPress={() => setoverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
+                    <WinnerCard prize={prize} winner={dummy_user} dummy_winner={dummy_user} raffle={raffle} host={host} selected={selected} navigation={navigation} />
+                </Overlay>
+            </View>
         </ScrollView>
         <Social currUser={user}></Social>
         </View>
