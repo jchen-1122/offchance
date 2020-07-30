@@ -142,7 +142,8 @@ export default function Signup({ navigation }) {
       city: _city,
       state: jsonData[_us_state],
       password: _password,
-      isHost: state.businessAccount
+      isHost: state.businessAccount,
+      profilePicture: 'https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/default-avatar.png'
     }
     return JSON.stringify(data)
   };
