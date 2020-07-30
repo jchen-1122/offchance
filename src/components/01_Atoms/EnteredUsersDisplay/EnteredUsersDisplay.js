@@ -1,4 +1,4 @@
-  
+
 import React, { useState, useContext, useEffect } from 'react'
 import { TouchableOpacity, Text, Image, View, ScrollView } from 'react-native';
 import { fonts, utilities } from '../../../settings/all_settings';
@@ -15,6 +15,8 @@ function EnteredUsersDisplay(props) {
     const [user1, setUser1] = useState(null)
     const [userIds, setuserIds] = useState([])
     var enteredUsers;
+    
+    
 
     // sort entered users so the people you're following show up at the front
     const sortUsers = (users) => {
@@ -32,7 +34,7 @@ function EnteredUsersDisplay(props) {
             else {
                 entered.push(enteredUser)
             }
-        }   
+        }
         return entered
     }
 
@@ -91,9 +93,10 @@ function EnteredUsersDisplay(props) {
         return res
     }
 
+    
+
     return (
         <TouchableOpacity onPress={async () => {
-            console.log(userIds)
             const userObjs = await getUserObj(userIds)
             props.navigation.navigate('EnteredUsers', {userObjs: userObjs})}}>
             <View style={styles.container}>

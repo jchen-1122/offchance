@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {  View, Text, Linking, Dimensions } from 'react-native';
+import {  View, Text, Linking, Dimensions, AsyncStorage } from 'react-native';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../../../01_Atoms/Divider/Divider.js';
 import InputField from '../../../02_Molecules/InputField/InputField.js';
@@ -22,11 +22,10 @@ export default function Login({ navigation, route }) {
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      },  
+      },
       body: makeJSON()
     })
     const json = await response.json()
-    console.log(json)
     return json
   }
 
@@ -34,7 +33,7 @@ export default function Login({ navigation, route }) {
   const [_email, setEmail] = useState(null)
   const [_password, setPassword] = useState(null)
   const [_errors, setErrors] = useState([])
- 
+
   // validates email input
   const isValidEmail = () => {
     return validator.isEmail(String(_email).toLowerCase());
@@ -52,7 +51,7 @@ export default function Login({ navigation, route }) {
       setErrors([])
       return false
     }
-    
+
   }
 
   // makes a json object with all the input fields
@@ -76,7 +75,7 @@ export default function Login({ navigation, route }) {
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
         <BlockButton
             color="facebook"
-            title="Facebook" 
+            title="Facebook"
             style={{margin: 0, marginRight: 7.5}}/>
         <BlockButton
             color="google"
@@ -88,8 +87,8 @@ export default function Login({ navigation, route }) {
         <Divider />
         </View>
 
-      <InputField label="Email / Username" onChangeText={(text) => {
-        setEmail(text)}}/>  
+      <InputField label="Email" onChangeText={(text) => {
+        setEmail(text)}}/>
       <InputField label="Password" password onChangeText={(text) => {
         setPassword(text)}}/>
       {/* DONE: Links to Forgot Password (no forgot password currently, button is not functional) */}
@@ -101,19 +100,26 @@ export default function Login({ navigation, route }) {
           onPress={() => navigation.navigate('EnterEmail')}/>
       </View>
 
-      {/* if some input field is invalid, a red error message will pop up */} 
+      {/* if some input field is invalid, a red error message will pop up */}
       {_errors}
-        
+
       {/* TODO: Links to Home (no home page currently, button is not functional) */}
-      <BlockButton 
-        title="LOG IN" 
+      <BlockButton
+        title="LOG IN"
         color="secondary"
         onPress={async () => {
           if (!generateErrors()) {
             const userObj = await loginUser()
             if (userObj.error == null) {
               setUser(userObj)
+              await AsyncStorage.setItem('user', userObj._id)
               navigation.navigate('Home')
+              {/* TODO: Comment out for the sake of convenience. At the end of the day modify plz.
+                 {/* https://stackoverflow.com/questions/42831685/disable-back-button-in-react-navigation}
+              navigation.reset({
+                index: 0,
+                // routes: [{ name: 'HowItWorks' }],
+                actions: [navigation.navigate('HowItWorks', {fromLogin: true})]}) */}
             } else {
               let errors = []
               errors.push(<Text style={fonts.error}>Password is not valid</Text>)

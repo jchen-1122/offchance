@@ -32,7 +32,7 @@ function Home({navigation}) {
           setRaffles(response)
         }
         getRaffle()
-        
+
         // BACKHANDLING FOR ANDROID BOTTOM NAV
         const backAction = () => {
             Alert.alert("Hold on!", "Are you sure you want to exit the app?", [
@@ -57,9 +57,9 @@ function Home({navigation}) {
     let hostRaffle;
     if (user_logged_in(user) && user.isHost){
       hostRaffle = (
-        <View style={{backgroundColor: 'white', width: '100%', paddingHorizontal: '5%', paddingBottom: '5%'}}>
+        <View style={{backgroundColor: 'white', width: '100%', padding: '5%'}}>
         <Text style={fonts.h1}>Host Your Own Raffles to Raise Money For Your Cause.</Text>
-        <BlockButton color="primary" title="NEW RAFFLE" size="short" onPress={()=>navigation.navigate('AskRaffleType')}/>
+        <BlockButton color="primary" title="NEW RAFFLE" size="short" onPress={()=>navigation.navigate('AskRaffleType')} style={{marginLeft: 0}}/>
       </View>
       )
     }
