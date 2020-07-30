@@ -1,8 +1,8 @@
-import React, {useState} from 'react'
+import React, { useContext, useState } from 'react'
 import { View, ScrollView, Text, Image, Animated, Button, TouchableHighlight, Dimensions} from 'react-native'
 import { set } from 'react-native-reanimated';
 import { Overlay } from 'react-native-elements';
-
+import GlobalState from '../../../globalState';
 import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
 import {utilities, fonts, colors} from '../../../../settings/all_settings';
 import styles from './Wallet.styling';
@@ -12,46 +12,28 @@ import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
 
 export default function Wallet({navigation}) {
 
-  const [sheetOpen, setSheetOpen] = useState(false); // isHidden
-  const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet
-  const [containerStyle, setContainerStyle] = useState(styles.container);
+    const {user, setUser} = useContext(GlobalState)
+    const [containerStyle, setContainerStyle] = useState(styles.container);
+    const [sheetController, setSheetController] = useState(0); // 0 - close, 1 - open. TODO: GLOBAL STATE
 
-  const { width, height } = Dimensions.get('window');
+    const { width, height } = Dimensions.get('window');
+    
+    const trigger = () => {
+        setSheetController(sheetController^1);
 
-  const toggleSheet = () => {
-      var toValue = 1000;
-      if (sheetOpen == false) {
-          toValue = 0
+        setContainerStyle( sheetController === 0 ?
+          { // light on
+          flex: 1,
+          justifyContent: 'space-between',
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+        } : { // light off
+          flex: 1,
+          justifyContent: 'space-between',
+          backgroundColor: "rgba(255, 255, 255, 0.1)",
+          });
+
+        // console.log(sheetController); 101010
       }
-
-      Animated.spring(
-          bounceValue, {
-          toValue: toValue,
-          velocity: 3,
-          tension: 2,
-          friction: 8,
-          useNativeDriver: true
-      }).start();
-
-      setContainerStyle( !sheetOpen ?
-        {
-        flex: 1,
-        justifyContent: 'space-between',
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-      } : {
-        flex: 1,
-        justifyContent: 'space-between',
-        backgroundColor: "rgba(255, 255, 255, 0.1)",
-        });
-      setSheetOpen(!sheetOpen);
-  };
-
-    // https://react-native-elements.github.io/react-native-elements/docs/overlay.html
-    // <Overlay isVisible={isVisible}>
-    //     <Text>Hello from Overlay!</Text>
-    // </Overlay>
-
-    let sizeTypes = ['W', 'M', 'Y'];
 
     return (
         <View style={containerStyle}>
@@ -60,7 +42,7 @@ export default function Wallet({navigation}) {
             <View>
                 <Text style={styles.header}>Balance:</Text>
                 {/* TODO: Retrieve user remaining chance from backend. */}
-                <Text style={styles.chance}>40 CHANCES</Text>
+                <Text style={styles.chance}>{user.walletChances} CHANCES</Text>
                 <Text style={styles.appendix}>*Chances can be used toward raffle entries</Text>
             </View>
 
@@ -74,18 +56,15 @@ export default function Wallet({navigation}) {
                     title="ADD CHANCES"
                     color="secondary"
                     size='short'
-                    onPress={() => toggleSheet()}/>
+                    onPress={() => trigger()}/>
             </View>
 
             {/* sliding sheet */}
-            <Animated.View
-                style={[styles.subView,
-                { transform: [{ translateY: bounceValue }] }]}>
-                    <SlidingSheet
-                    title='Add Chances'
-                    content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
-                    toggleSheet={toggleSheet} />
-            </Animated.View>
+            <SlidingSheet
+            title='Add Chances'
+            sheet={sheetController}
+            content={['Wallet Balance', 'Reload Source', 'Reload Amount']}/>
+
 
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>
         </View>

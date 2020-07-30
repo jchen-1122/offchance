@@ -4,7 +4,7 @@ export function top5_raffle(users){
 
     // gets actual user object based on their ID
     const getUser = async (userID) => {
-        let response = await fetch('http://' + ip.ipAddress + ':3000/user/id/' + userID)
+        let response = await fetch('http://' + ip.ipAddress + '/user/id/' + userID)
         response = await response.json()
         return response
     }

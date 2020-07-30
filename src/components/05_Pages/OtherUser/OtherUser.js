@@ -6,16 +6,19 @@ import StatsBar from '../../02_Molecules/StatsBar/StatsBar'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
 import {styles} from './OtherUser.styling'
 import GlobalState from '../../globalState'
+import { set } from 'react-native-reanimated'
 
 export default function OtherUser({navigation, route})  {
     const {user, setUser} = useContext(GlobalState)
     const [follow, setFollow] = useState(user.following != null && !user.following.includes(route.params.user._id))
+    const [enabled, setEnabled] = useState(true)
+
     const addFollower = async () => {
         const data = require('../../IP_ADDRESS.json')
         if (user.following.includes(route.params.user._id)) {
             return
         }
-        const response = await fetch('http://'+data.ipAddress+':3000/user/edit/'+user._id,{
+        const response = await fetch('http://'+data.ipAddress+'/user/edit/'+user._id,{
           method: "PATCH",
           headers: {
             'Accept': 'application/json',
@@ -26,7 +29,7 @@ export default function OtherUser({navigation, route})  {
         const json = await response.json()
 
         // followed user "follower" count also increases
-        const response2 = await fetch('http://'+data.ipAddress+':3000/user/edit/'+route.params.user._id,{
+        const response2 = await fetch('http://'+data.ipAddress+'/user/edit/'+route.params.user._id,{
           method: "PATCH",
           headers: {
             'Accept': 'application/json',
@@ -42,7 +45,7 @@ export default function OtherUser({navigation, route})  {
         if (!user.following.includes(route.params.user._id)) {
             return
         }
-        const response = await fetch('http://'+data.ipAddress+':3000/user/edit/'+user._id,{
+        const response = await fetch('http://'+data.ipAddress+'/user/edit/'+user._id,{
           method: "PATCH",
           headers: {
             'Accept': 'application/json',
@@ -53,7 +56,7 @@ export default function OtherUser({navigation, route})  {
         const json = await response.json()
 
         // followed user "follower" count also decreases
-        const response2 = await fetch('http://'+data.ipAddress+':3000/user/edit/'+route.params.user._id,{
+        const response2 = await fetch('http://'+data.ipAddress+'/user/edit/'+route.params.user._id,{
           method: "PATCH",
           headers: {
             'Accept': 'application/json',
@@ -136,20 +139,28 @@ export default function OtherUser({navigation, route})  {
                     title="FOLLOW"
                     color="primary"
                     onPress={async () => {
-                        const updatedObj = await addFollower()
-                        setUser(updatedObj)
-                        setFollow(false)
+                        if (enabled) {
+                            setEnabled(false)
+                            const updatedObj = await addFollower()
+                            setUser(updatedObj)
+                            setFollow(false)
+                            setEnabled(true)
+                        }
                     }}
                     ></BlockButton>
                 </View> :
                 <View style={styles.followButton}>
                     <BlockButton
-                    title="FOLLOWED"
+                    title="FOLLOWING"
                     color="secondary"
                     onPress={async () => {
-                        const updatedObj = await removeFollower()
-                        setUser(updatedObj)
-                        setFollow(true)
+                        if (enabled) {
+                            setEnabled(false)
+                            const updatedObj = await removeFollower()
+                            setUser(updatedObj)
+                            setFollow(true)
+                            setEnabled(true)
+                        }
                     }}
                     ></BlockButton>
                 </View>}

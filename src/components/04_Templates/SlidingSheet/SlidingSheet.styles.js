@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        marginTop: '5%',
-        marginBottom: '5%',
+        marginTop: '7%',
+        marginBottom: '7%',
 
     },
 
@@ -29,8 +29,6 @@ const styles = StyleSheet.create({
         marginRight: '10%',
         marginBottom: '7%',
         flexDirection: 'column',
-        justifyContent: 'space-evenly',
-        alignItems: 'flex-start',
         borderBottomColor: '#000000',
         borderBottomWidth: 1,
 
@@ -51,6 +49,17 @@ const styles = StyleSheet.create({
       marginBottom: '15%',
 
     },
+
+    // Sliding Sheet Style
+    subView: {
+       position: 'absolute',
+       bottom: '-7%',
+       left: 0,
+       right: 0,
+       backgroundColor: "#FFFFFF",
+       height: 600,
+       borderRadius: 20,
+   },
 })
 
 export default styles;
