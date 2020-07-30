@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import { ScrollView, View, Text, Image, Animated, TouchableOpacity } from 'react-native'
 import { utilities, fonts, colors } from '../../../../settings/all_settings';
 import styles from './Raffle.styling';
