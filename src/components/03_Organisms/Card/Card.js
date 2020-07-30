@@ -66,8 +66,7 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
     let startData = null;
     let like = null;
     let pgBar = null;
-    let button = <BlockButton title='Enter Drawing' color="primary" onPress={() => navigation.navigate('Raffle', data)} />;
-
+    let button = <BlockButton title='Enter Drawing' color="secondary" onPress={() => navigation.navigate('Raffle', data)} />;
     let friendsEntered = <EnteredUsersDisplay enteredUsers={enteredUsers} navigation={navigation} />
 
     // CHECK WHAT TYPE OF CARD--------------------------------------------------------------

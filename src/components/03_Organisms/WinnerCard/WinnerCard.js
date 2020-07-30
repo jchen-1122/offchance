@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { colors, utilities } from '../../../settings/all_settings';
 import { Overlay } from 'react-native-elements';
@@ -9,6 +9,12 @@ import { useFonts } from 'expo-font';
 import * as Font from 'expo-font';
 
 export default function WinnerCard(props) {
+    console.log('winner', props.winner)
+    let winner;
+    if (props.winner){
+        winner = props.winner
+    }
+
     // load fonts for the cards
     const [loaded, error] = useFonts({
         'Steelfish': require('../../../../assets/fonts/Steelfish.ttf'),
@@ -20,7 +26,7 @@ export default function WinnerCard(props) {
     }
 
     const colorMap = ["gold", "silver", "bronze", "blue"]
-    console.log(colorMap[props.prize])
+
     // set styles based on the color of the card
     let gradient; // gradient for the background of the card
     let borderGradient;
@@ -29,7 +35,7 @@ export default function WinnerCard(props) {
     let hostNameColor;
     let prizeTitleColor = 'black'
     let winnerLabelColor = colors.darkGreen
-    switch (props.color) {
+    switch (colorMap[props.prize]) {
         case "gold":
             gradient = ['#444444', , 'black', '#444444']
             borderGradient = colors.goldGradient
@@ -43,12 +49,14 @@ export default function WinnerCard(props) {
             borderGradient = colors.silverGradient
             headerImage = "https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/winnercard-images/silver.png"
             hostNameColor = '#9E9E9E'
+            break;
         case "bronze":
             gradient= colors.bronzeGradientBg
             borderGradient = colors.bronzeGradient
             headerImage = "https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/winnercard-images/bronze.png"
             headerColor = "#44270A"
             hostNameColor = "#44270A"
+            break;
         case "blue":
             gradient = colors.whiteGradientBg
             borderGradient = [colors.limeGreen, colors.limeGreen]
@@ -57,6 +65,7 @@ export default function WinnerCard(props) {
             hostNameColor = colors.blue
             prizeTitleColor = colors.blue
             winnerLabelColor = colors.blue
+            break;
     }
     return (
         <LinearGradient start={[0, 0]} end={[1, 0]}
@@ -96,10 +105,10 @@ export default function WinnerCard(props) {
 
                     {/* winner of prize */}
                     <View style={[utilities.flexCenter, { flexDirection: 'row', width: '100%' }]}>
-                        <Image style={styles.winnerPic} source={{ uri: props.winner.profilePicture }} />
+                        <Image style={styles.winnerPic} source={{ uri: winner.profilePicture }} />
                         <View>
                             <Text style={[styles.winnerLabel, { color: winnerLabelColor, fontFamily: 'Josefin Sans' }]}>WINNER:</Text>
-                            <Text style={[styles.winnerName, { color: winnerLabelColor, fontFamily: 'Josefin Sans' }]}>@{props.winner.username.toUpperCase()}</Text>
+                            <Text style={[styles.winnerName, { color: winnerLabelColor, fontFamily: 'Josefin Sans' }]}>@{winner.username.toUpperCase()}</Text>
                         </View>
                     </View>
 
@@ -109,7 +118,7 @@ export default function WinnerCard(props) {
                             <Image style={styles.hostPic} source={{ uri: props.host.profilePicture }} />
                             <View>
                                 <Text style={[styles.hostLabel, { fontFamily: 'Josefin Sans' }]}>DRAWING BY:</Text>
-                                <Text style={[styles.hostName, { color: hostNameColor, fontFamily: 'Josefin Sans' }]}>@{props.host.username.toUpperCase()}</Text>
+                                <Text style={[styles.hostName, { color: hostNameColor, fontFamily: 'Josefin Sans' }]}>@{props.host.username}</Text>
                             </View>
                         </View>
                         <View style={[utilities.flexCenter]}>
