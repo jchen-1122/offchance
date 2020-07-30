@@ -14,14 +14,15 @@ export default function Wallet({navigation}) {
 
     const {user, setUser} = useContext(GlobalState)
     const [containerStyle, setContainerStyle] = useState(styles.container);
-    const [sheetController, setSheetController] = useState(0); // 0 - close, 1 - open. TODO: GLOBAL STATE
+    const [sheetController, setSheetController] = useState(false); // 0 - close, 1 - open. TODO: GLOBAL STATE
+    const [paymentController, setPaymentController] = useState(false);
 
     const { width, height } = Dimensions.get('window');
-    
-    const trigger = () => {
-        setSheetController(sheetController^1);
 
-        setContainerStyle( sheetController === 0 ?
+    const trigger = () => {
+        setSheetController(!sheetController);
+
+        setContainerStyle( !sheetController ?
           { // light on
           flex: 1,
           justifyContent: 'space-between',
@@ -33,6 +34,22 @@ export default function Wallet({navigation}) {
           });
 
         // console.log(sheetController); 101010
+      }
+
+    const paymentTrigger = () => {
+        setPaymentController(!paymentController);
+
+        setContainerStyle( !paymentController ?
+          { // light on
+          flex: 1,
+          justifyContent: 'space-between',
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+        } : { // light off
+          flex: 1,
+          justifyContent: 'space-between',
+          backgroundColor: "rgba(255, 255, 255, 0.1)",
+          });
+
       }
 
     return (
@@ -47,11 +64,11 @@ export default function Wallet({navigation}) {
             </View>
 
             {/* Content */}
-            <View>
+            <View style={{marginTop: 80}}>
                 <Text style={styles.content}>Chances can be earned by sharing and inviting friends, playing games and reloading your wallet by donating!</Text>
             </View>
 
-            <View style={styles.button}>
+            <View style={[styles.button, {marginTop: 80}]}>
                 <BlockButton
                     title="ADD CHANCES"
                     color="secondary"
@@ -63,6 +80,15 @@ export default function Wallet({navigation}) {
             <SlidingSheet
             title='Add Chances'
             sheet={sheetController}
+            trigger={trigger}
+            height={480}
+            content={['Wallet Balance', 'Reload Source', 'Reload Amount']}/>
+
+            <SlidingSheet
+            title='Payment'
+            sheet={paymentController}
+            trigger={paymentTrigger}
+            height={700}
             content={['Wallet Balance', 'Reload Source', 'Reload Amount']}/>
 
 
