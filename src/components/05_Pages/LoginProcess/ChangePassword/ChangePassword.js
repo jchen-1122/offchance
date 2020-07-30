@@ -28,8 +28,8 @@ export default function ChangePassword({ navigation, route }) {
   }
 
   const changePW = async () => {
-    console.log('http://'+ipaddr.ipAddress+':3000/user/edit/' + userid)
-    const response = await fetch('http://'+ipaddr.ipAddress+':3000/user/edit/' + userid,{
+    console.log('http://'+ipaddr.ipAddress+'/user/edit/' + userid)
+    const response = await fetch('http://'+ipaddr.ipAddress+'/user/edit/' + userid,{
       method: "PATCH",
       headers: {
         'Accept': 'application/json',

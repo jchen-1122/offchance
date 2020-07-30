@@ -1,4 +1,4 @@
-  
+
 import React, { useState, useContext, useEffect } from 'react'
 import { TouchableOpacity, Text, Image, View, ScrollView } from 'react-native';
 import { fonts, utilities } from '../../../settings/all_settings';
@@ -15,6 +15,8 @@ function EnteredUsersDisplay(props) {
     const [user1, setUser1] = useState(null)
     const [userIds, setuserIds] = useState([])
     var enteredUsers;
+    
+    
 
     // sort entered users so the people you're following show up at the front
     const sortUsers = (users) => {
@@ -32,14 +34,14 @@ function EnteredUsersDisplay(props) {
             else {
                 entered.push(enteredUser)
             }
-        }   
+        }
         return entered
     }
 
     React.useEffect(() => {
         // gets prof picture and username from db given certain use id
         const getUserInfo = async (userID, field) => {
-            let response = await fetch('http://' + ip.ipAddress + ':3000/user/id/' + userID)
+            let response = await fetch('http://' + ip.ipAddress + '/user/id/' + userID)
             response = await response.json()
             if (field == 'profPic') {
                 return response.profilePicture
@@ -84,16 +86,17 @@ function EnteredUsersDisplay(props) {
     const getUserObj = async (ids) => {
         let res = []
         for (var i = 0; i < ids.length; i++) {
-            let response = await fetch('http://'+ip.ipAddress+':3000/user/id/'+ids[i])
+            let response = await fetch('http://'+ip.ipAddress+'/user/id/'+ids[i])
             response = await response.json()
             res.push(response)
         }
         return res
     }
 
+    
+
     return (
         <TouchableOpacity onPress={async () => {
-            console.log(userIds)
             const userObjs = await getUserObj(userIds)
             props.navigation.navigate('EnteredUsers', {userObjs: userObjs})}}>
             <View style={styles.container}>
