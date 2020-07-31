@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     circle_pic: {
         width: 30,
         height: 30,
+        borderRadius: 15,
         resizeMode: 'contain'
     }
 })

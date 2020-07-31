@@ -98,7 +98,7 @@ export default function RaffleResult({ navigation, route }) {
                         break;
                 }
                 CardArray.push(
-                    <BackCard color={element["prize"]} time={count * 1000}/>
+                    <BackCard user={element} time={count * 1000} setoverlay={setoverlay} setSelected={setSelected} setPrize={setPrize}/>
                     /*<LinearGradient start={[0, 0]} end={[1, 0]} colors={gradient} style={{ margin: Dimensions.get('window').width * 0.005 }}>
                         <TouchableOpacity style={[styles.card]}
                             onPress={() => {
