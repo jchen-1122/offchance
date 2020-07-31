@@ -5,6 +5,7 @@ import styles from './RaffleResult.styling';
 import { colors } from '../../../../settings/all_settings';
 import TextLink from '../../../01_Atoms/Buttons/TextLinks/TextLinks';
 import WinnerCard from '../../../03_Organisms/WinnerCard/WinnerCard';
+import BackCard from '../../../03_Organisms/BackCard/BackCard';
 import { LinearGradient } from 'expo-linear-gradient';
 import { get_user, get_raffle } from '../../../fake_users/live-drawing-test';
 import Social from '../../Social/Social'
@@ -97,7 +98,8 @@ export default function RaffleResult({ navigation, route }) {
                         break;
                 }
                 CardArray.push(
-                    <LinearGradient start={[0, 0]} end={[1, 0]} colors={gradient} style={{ margin: Dimensions.get('window').width * 0.005 }}>
+                    <BackCard color={element["prize"]} time={count * 1000}/>
+                    /*<LinearGradient start={[0, 0]} end={[1, 0]} colors={gradient} style={{ margin: Dimensions.get('window').width * 0.005 }}>
                         <TouchableOpacity style={[styles.card]}
                             onPress={() => {
                                 setoverlay(true)
@@ -112,15 +114,13 @@ export default function RaffleResult({ navigation, route }) {
                                 />
                             </View>
 
-                            {/* This is what will be displayed on the back of the cards */}
                         </TouchableOpacity>
-                    </LinearGradient>
+                    </LinearGradient>*/
                 )
             }
         });
         setDisplay(CardArray)
     }, [winners])
-
 
     return (
         <View>
