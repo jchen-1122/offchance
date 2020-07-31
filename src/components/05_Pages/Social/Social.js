@@ -25,6 +25,10 @@ export default class Social extends Component {
     });
   }
 
+  componentWillUnmount() {
+    this.socket.emit("broadcast", {message: 'has left the chat', profilePicture: this.props.currUser.profilePicture, username: this.props.currUser.username});
+  }
+
   submitChatMessage() {
     if (this.state.chatMessage.length !== 0) {
       this.socket.emit("message", {message: this.state.chatMessage, profilePicture: this.props.currUser.profilePicture, username: this.props.currUser.username});
@@ -44,7 +48,7 @@ export default class Social extends Component {
     ));
 
     return (
-      <ScrollView style={styles.abs}>
+      <View style={styles.abs}>
       <View>
       <ScrollView 
       directionalLockEnabled={false}
@@ -69,7 +73,7 @@ export default class Social extends Component {
         <Text style={styles.hide} onPress={() => this.setState({chatOn: !this.state.chatOn})}>SHOW</Text>
         }
       </View>
-      </ScrollView>
+      </View>
     );
   }
 }
