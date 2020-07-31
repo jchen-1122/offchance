@@ -9,6 +9,7 @@ export default function SizeCarousel(props) {
     var type = props.type
 
     const [selectedValue, setSelectedValue] = useState(props.default || null)
+    const [selectedValues, setSelectedValues] = useState([])
 
     const selectSingle = (i) => {
         return (
@@ -26,18 +27,19 @@ export default function SizeCarousel(props) {
     function selectMultiple(i) {
 
         const [_green, setGreen] = useState(false)
-        var selectedValues = []
     
         return (
             <TouchableHighlight onPress={() => {
-                setGreen(!_green)
-                if (_green){
-                    selectedValues.push(i)
+                var temp = selectedValues
+                if (!_green){
+                    temp.push(i)
                 }
                 else{
-                    selectedValues.splice(selectedValues.indexOf(i),1)
+                    temp.splice(temp.indexOf(i),1)
                 }
-                props.setSize(selectedValues)
+                props.setSize(temp)
+                setSelectedValues(temp)
+                setGreen(!_green)
             }} underlayColor={colors.lightGreen} style={[styles.button, _green ? styles.green_button : styles.white_button]}>
                 <View >
                     <Text style={styles.buttonText}>{i}</Text>
