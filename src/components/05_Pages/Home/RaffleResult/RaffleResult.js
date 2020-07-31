@@ -15,6 +15,10 @@ import ConfettiCannon from 'react-native-confetti-cannon';
 export default function RaffleResult({ navigation, route }) {
     const [selected, setSelected] = useState(0)
     const [overlay, setoverlay] = useState(false)
+    {/* JOSHUA START */}
+    const [winnerOverlay, setwinnerOverlay] = useState(false)
+    const [winnerPrize, setwinnerPrize] = useState(null)
+    {/* JOSHUA END */}
     const [prize, setPrize] = useState(null)
     const [enteredUsers, setEnteredUsers] = useState([])
     const [winners, setWinners] = useState([])
@@ -79,6 +83,13 @@ export default function RaffleResult({ navigation, route }) {
         let CardArray = []
         let count = 0
         winners.forEach(element => {
+            {/* JOSHUA START */}
+            // set current logged in user winner card
+            if (element._id === user._id) {
+                setwinnerOverlay(true)
+                setwinnerPrize(element.prize)
+            }
+            {/* JOSHUA END */}
             if (element.hasOwnProperty("prize")) {
                 var gradient;
                 count++
@@ -127,6 +138,21 @@ export default function RaffleResult({ navigation, route }) {
             <ScrollView>
                 <View style={styles.container}>
                     {display}
+                    {/* JOSHUA START */}
+                    {/* individual card if logged in user is a winner */}
+                    {(winnerOverlay) ? <Overlay isVisible={winnerOverlay} onBackdropPress={() => setwinnerOverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
+                        <WinnerCard prize={winnerPrize} winner={user} raffle={raffle} host={host} navigation={navigation} />
+                        <ConfettiCannon
+                            count={100}
+                            origin={{ x: Dimensions.get('window').width * 0.5, y: Dimensions.get('window').height}}
+                            autoStart={true}
+                            fadeOut={true}
+                            // fallSpeed={2500}
+                            explosionSpeed={25}
+                            colors={confetti_colors[prize]}
+                        />
+                    </Overlay> : null}
+                    {/* JOSHUA END */}
                     <Overlay isVisible={overlay} onBackdropPress={() => setoverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
                         <WinnerCard prize={prize} winner={selected} raffle={raffle} host={host} navigation={navigation} />
                         <ConfettiCannon

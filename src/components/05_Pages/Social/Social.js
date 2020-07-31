@@ -19,6 +19,7 @@ export default class Social extends Component {
   componentDidMount() {
     const ip = require('../../IP_ADDRESS.json')
     this.socket = io("http://" +ip.ipAddress+ "");
+    this.socket.emit("broadcast", {message: 'has joined the chat', profilePicture: this.props.currUser.profilePicture, username: this.props.currUser.username});
     this.socket.on("message", msg => {
       this.setState({ chatMessages: [msg, ...this.state.chatMessages] });
     });
@@ -43,7 +44,7 @@ export default class Social extends Component {
     ));
 
     return (
-      <View style={styles.abs}>
+      <ScrollView style={styles.abs}>
       <View>
       <ScrollView 
       directionalLockEnabled={false}
@@ -68,7 +69,7 @@ export default class Social extends Component {
         <Text style={styles.hide} onPress={() => this.setState({chatOn: !this.state.chatOn})}>SHOW</Text>
         }
       </View>
-      </View>
+      </ScrollView>
     );
   }
 }
