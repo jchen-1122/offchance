@@ -46,6 +46,7 @@
     "react-native-web": "~0.11.7",
     "react-native-zoom-view": "^1.0.2",
     "rn-sliding-up-panel": "^2.4.3",
+    "tipsi-stripe": "^7.5.3",
     "validator": "^13.1.1"
   },
   "devDependencies": {

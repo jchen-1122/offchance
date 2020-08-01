@@ -10,7 +10,14 @@ import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import { get_user } from '../../../fake_users/stub-users';
 import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
 
+import stripe from 'tipsi-stripe';
+
 export default function Wallet({navigation}) {
+
+    // stripe.setOptions({
+    //   publishableKey:
+    //   'pk_test_51HAiC0KuIZolMmjKL45leDQ1jlXegnbGEJaPQsnR44zU7JOUhWxte3jwLrS9wvP6y10Vu6vRaxaDZsWU9RAH9pLl00bYR2xNVG',
+    // });
 
     const {user, setUser} = useContext(GlobalState)
     const [containerStyle, setContainerStyle] = useState(styles.container);

@@ -50,6 +50,7 @@ console.disableYellowBox = true;
 
 function App() {
   const [user, setUser] = useState({})
+  
 
   return (
     <GlobalState.Provider value={{ user, setUser }}>

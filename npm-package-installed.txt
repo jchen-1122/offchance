@@ -1,0 +1,5 @@
+For branch: search
+- npm i tipsi-stripe
+- npm i react-native-pod
+- sudo gem install cocoapods (pre-req for pod)
+
