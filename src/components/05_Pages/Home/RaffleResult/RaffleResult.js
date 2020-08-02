@@ -33,6 +33,20 @@ export default function RaffleResult({ navigation, route }) {
     //let dummy_user = get_user("Chelly")
 
     let confetti_colors = [["black", "#ECB661"], [colors.silver1, colors.silver2], [colors.bronze1, colors.bronze2], [colors.blue]]
+    
+    const [localTime, localSetTime] = useState(20)
+
+    React.useEffect(() => {
+        let interval = null
+        if (localTime > 0) {
+            interval = setInterval(() => {
+                localSetTime(localTime => localTime - 1)
+            }, 1000)
+        }
+        return () => {
+            clearInterval(interval)
+        }
+    }, [localTime])
 
     React.useEffect(() => {
         async function getRaffle(id) {
@@ -138,6 +152,17 @@ export default function RaffleResult({ navigation, route }) {
             <ScrollView>
                 <View style={styles.container}>
                     {display}
+                    <Overlay isVisible={localTime > 0} overlayStyle={{ width: 434, height: 740, backgroundColor: 'transparent' }}>
+                        <View>
+                            <View style={{alignItems: 'center', marginTop:200}}>
+                                <Text style={{fontSize: 30, fontWeight: '900', marginBottom: 20, color: 'white'}}>DRAWING IS STARTING IN</Text>
+                                <Text style={{fontSize: 20, fontWeight: '900', color: 'white', marginBottom: 30}}>{localTime} seconds</Text>
+                                {(localTime > 10) ? <Text style={{fontSize: 14, fontWeight: '300', color: 'white'}}>determining winners...</Text> : 
+                                    <Text style={{fontSize: 14, fontWeight: '300', color: 'white'}}>populating cards...</Text>}
+                            </View>
+                            <Social currUser={user}></Social>
+                        </View>
+                    </Overlay>
                     {/* JOSHUA START */}
                     {/* individual card if logged in user is a winner */}
                     {(winnerOverlay) ? <Overlay isVisible={winnerOverlay} onBackdropPress={() => setwinnerOverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
@@ -168,7 +193,7 @@ export default function RaffleResult({ navigation, route }) {
 
                 </View>
             </ScrollView>
-            <Social currUser={user}></Social>
+            {(localTime <= 0) ? <Social currUser={user}></Social> : null}
         </View>
     )
 }

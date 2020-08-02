@@ -7,6 +7,7 @@ import CheckBox from '../../02_Molecules/Checkbox/Checkbox';
 import Dropdown from '../../01_Atoms/DropDown/DropDown';
 import { colors, fonts, utilities, dimensions } from '../../../settings/all_settings';
 import validator from 'validator';
+import * as Google from 'expo-google-app-auth';
 
 export default function Signup({ navigation }) {
   const data = require('../../IP_ADDRESS.json');
@@ -87,6 +88,8 @@ export default function Signup({ navigation }) {
   const [_password, setPassword] = useState(null)
   const [_us_state, set_us_state] = useState(null)
   const [_city, setCity] = useState(null)
+  const [_oauth, setOauth] = useState(false)
+  const [_proPic, setProPic] = useState(null)
 
   // validates email input
   const isValidEmail = () => {
@@ -143,7 +146,7 @@ export default function Signup({ navigation }) {
       state: jsonData[_us_state],
       password: _password,
       isHost: state.businessAccount,
-      profilePicture: 'https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/default-avatar.png'
+      profilePicture: (_proPic != null) ? _proPic : 'https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/default-avatar.png'
     }
     return JSON.stringify(data)
   };
@@ -157,7 +160,8 @@ export default function Signup({ navigation }) {
 
       <View style={{justifyContent: "flex-end", flex: 1}}>
 
-    <ScrollView>
+    <ScrollView
+      showsVerticalScrollIndicator={false}>
       <View style={[utilities.flexCenter, { marginTop: '5%', marginBottom: 25 }]}>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
           <BlockButton
@@ -167,7 +171,30 @@ export default function Signup({ navigation }) {
         <BlockButton
             color="google"
             title="Google"
-            style={{ margin: 0, marginLeft: 7.5 }} />
+            style={{ margin: 0, marginLeft: 7.5 }} 
+            onPress={async () => {
+                try {
+                  const result = await Google.logInAsync({
+                    androidClientId: '566995907890-o1h8kjbnrkc62k0ft6f1a7pgjvmcq282.apps.googleusercontent.com',
+                    iosClientId: '566995907890-nu7o5miq123rdqgks1v7bv2fph8ef94g.apps.googleusercontent.com',
+                    scopes: ['profile', 'email'],
+                  });
+              
+                  if (result.type === 'success') {
+                    setOauth(true)
+                    setName(result.user.name)
+                    setEmail(result.user.email)
+                    setProPic(result.user.photoUrl)
+                    setPassword(result.user.id)
+                    setPassword(result.user.id)
+                    setConfirm(result.user.id)
+                  } else {
+                    return { cancelled: true };
+                  }
+                } catch (e) {
+                  return { error: true };
+                }
+            }}/>
         </View>
 
         <View style={{ marginVertical: '2.5%', alignItems: 'center' }}>
@@ -216,8 +243,8 @@ export default function Signup({ navigation }) {
           placeholder="State"
           setValue={set_us_state}/>
         </View>
-
-        <InputField
+        
+        {(_oauth) ? null : <View><InputField
           label="Password"
           value={_password}
           onChangeText={(text) => { setPassword(text) }}
@@ -228,7 +255,7 @@ export default function Signup({ navigation }) {
           value={_confirm}
           onChangeText={(text) => { setConfirm(text) }}
           required
-          password />
+          password /></View>}
 
         <View style={{ width: '90%' }}>
           <CheckBox

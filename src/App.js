@@ -25,6 +25,7 @@ import YourFeed from './components/05_Pages/Home/YourFeed/YourFeed';
 import Explore from './components/05_Pages/Home/Explore/Explore';
 import OtherUser from './components/05_Pages/OtherUser/OtherUser'
 import GameController from './components/GameController';
+import LoadingScreen from './components/05_Pages/Home/Raffle/LoadingScreen/LoadingScreen'
 import RaffleResult from './components/05_Pages/Home/RaffleResult/RaffleResult'
 import EnteredUsers from './components/05_Pages/Home/EnteredUsers/EnteredUsers';
 import { Button, Text } from 'react-native'
@@ -95,6 +96,7 @@ function App() {
           <Stack.Screen name="Top5List" component={Top5List} />
           <Stack.Screen name="OtherUser" component={OtherUser} options={({ route }) => ({ title: route.params.user.name })} />
           <Stack.Screen name="GameController" component={GameController} options={{ title: '' }}/>
+          <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
           <Stack.Screen name="RaffleResult" component={RaffleResult} />
           <Stack.Screen name="EnteredUsers" component={EnteredUsers} options={{ title: 'Entered' }}/>
           <Stack.Screen name="AskRaffleType" component={AskRaffleType} options={{ title: 'New Raffle' }}/>
