@@ -11,9 +11,7 @@ Ejecting from Managed Workflow (easily reversible)
 - reverse it by deleting the ios and android directories
 https://docs.expo.io/bare/customizing/?redirected
 
-
-
 - npm i tipsi-stripe
 - npm i react-native-pod
 - sudo gem install cocoapods (pre-req for pod)
-
+- yarn add react-native-unimodules
