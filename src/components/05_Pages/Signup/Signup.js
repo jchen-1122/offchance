@@ -9,6 +9,7 @@ import { colors, fonts, utilities, dimensions } from '../../../settings/all_sett
 import validator from 'validator';
 import * as Google from 'expo-google-app-auth';
 
+
 export default function Signup({ navigation }) {
   const data = require('../../IP_ADDRESS.json');
   const jsonData = require('../../../functions/us_states.json')
