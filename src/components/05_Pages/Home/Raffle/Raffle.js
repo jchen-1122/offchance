@@ -16,13 +16,15 @@ import SizeCarousel from '../../../01_Atoms/SizeCarousel/SizeCarousel'
 import { unix_to_date, is_expired } from '../../../../functions/convert_dates';
 import { top5_raffle } from '../../../../functions/explore_functions';
 import GlobalState from '../../../globalState';
-import { set } from 'react-native-reanimated';
+import * as geolib from 'geolib';
 
 export default function Raffle({ navigation, route }) {
     const {user, setUser} = useContext(GlobalState)
+    const mapAPI = 'pk.eyJ1IjoiamNoZW4xMTIyIiwiYSI6ImNrMjZ4dXM0cDF4cnozY21sYnBwYjdzaTAifQ.ItVivcBhnM1Lz9GP5B0PSQ'
     // get host of raffle from db
     const [top5, setTop5] = useState([])
     const [enabled, setEnabled] = useState(true)
+    const [location, setLocation] = useState(null)
     const ip = require('../../../IP_ADDRESS.json');
 
     React.useEffect(() => {
@@ -30,6 +32,18 @@ export default function Raffle({ navigation, route }) {
             route.params = await getRaffle(route.params._id)
             route.params['host'] = await getUser(route.params.hostedBy)
             route.params['top5'] = route.params.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,5)
+            let coordsUser = await getCoords(user.shippingAddress)
+            let coordsHost = await getCoords(route.params['host'].shippingAddress)
+            
+            let longUser = coordsUser.features[0].geometry.coordinates[0]
+            let latUser = coordsUser.features[0].geometry.coordinates[1]
+
+            let longHost = coordsHost.features[0].geometry.coordinates[0]
+            let latHost = coordsHost.features[0].geometry.coordinates[1]
+
+            if (Object.keys(route.params).includes("radius")) {
+                setLocation(geolib.isPointWithinRadius({latitude: latHost, longitude: longHost}, {latitude: latUser, longitude: longUser}, route.params.radius * 0.621371 * 1000))
+            }
         }
         getCurrentRaffle()
     })
@@ -121,6 +135,12 @@ export default function Raffle({ navigation, route }) {
 
     async function getRaffle(id) {
         let response = await fetch('http://' + ip.ipAddress + '/raffle/id/' + id)
+        response = await response.json()
+        return response
+    }
+
+    async function getCoords(query) {
+        let response = await fetch('https://api.mapbox.com/geocoding/v5/mapbox.places/' + query + '.json?access_token=' + mapAPI)
         response = await response.json()
         return response
     }
@@ -313,6 +333,7 @@ export default function Raffle({ navigation, route }) {
                 <Text style={[fonts.h1, { marginLeft: '8%', marginBottom: 0 }]}>{name}</Text>
 
                 <View style={styles.content}>
+                    {(!location && location != null) ? <Text style={[fonts.bold, fonts.error]}>THIS RAFFLE IS OUT OF YOUR LOCATION</Text> : null}
                     <View style={{ marginVertical: 15 }}>
                         {(expired) ? <Text style={[fonts.bold, fonts.error]}>THIS DRAWING HAS EXPIRED</Text> : <Text style={[fonts.italic]}>Drawing Starts:</Text>}
                         {(expired) ? null : <CountDown unix_timestamp={route.params.startTime}/>}
@@ -441,13 +462,14 @@ export default function Raffle({ navigation, route }) {
                             navigation.navigate('RaffleResult', {raffle: route.params})
                         }}
                         disabled={expired} />
+                    
                     {/* <BlockButton
                         title="ENTER DRAWING"
                         color="highlight"
                         onPress={() => toggleSheet()}
                         disabled={expired} /> */}
                 </View>
-
+                {/* disable enter drawing if a person is not within the radius (state: location) */}
                 {/* sliding sheet */}
                 {/* <Animated.View
                     style={[styles.subView,

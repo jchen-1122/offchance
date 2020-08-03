@@ -33,6 +33,7 @@ export default function NewRaffle({ navigation, route }) {
     const [_sizes, setSizes] = useState(['One Size'])
     const [_productType, setProductType] = useState('sneaker')
     const [_drawingDuration, setDrawingDuration] = useState(null)
+    const [_drawingRadius, setDrawingRadius] = useState(null)
 
     // stuff for date picker (start time)
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -49,7 +50,7 @@ export default function NewRaffle({ navigation, route }) {
 
     const productTypes = ['sneaker', 'streetwear', 'collectibles', 'art']
     const { user, setUser } = useContext(GlobalState)
-    console.log(typeof user._id)
+    //console.log(typeof user._id)
 
     // METHOD FOR POSTING RAFFLE
     const data = require('../../../IP_ADDRESS.json');
@@ -63,7 +64,7 @@ export default function NewRaffle({ navigation, route }) {
             body: makeJSON()
         })
         const json = await response.json()
-        console.log(json)
+        //console.log(json)
         return json
     }
 
@@ -106,11 +107,12 @@ export default function NewRaffle({ navigation, route }) {
             charities: (_charities.length > 0) ? _charities.split(',').map(item => item.trim()) : null,
             productType: _productType,
             drawingDuration: _drawingDuration,
+            radius: _drawingRadius === 'None' ? -1 : _drawingRadius,
             // CHANGE LATER
             sizeTypes: _sizeTypes,
             sizes: _sizes
         }
-        console.log(JSON.stringify(data))
+        //console.log(JSON.stringify(data))
         return JSON.stringify(data)
     };
 
@@ -161,6 +163,11 @@ export default function NewRaffle({ navigation, route }) {
                         <Dropdown options={[1, 3, 5, 7, 14, 21, 30]} placeholder="Days" setValue={setDrawingDuration} />
                     </View>
 
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 1 }}>
+                        <Text style={styles.InputField__label}>Drawing Radius (mi) <Text style={{ color: 'red' }}>*</Text></Text>
+                        <Dropdown options={['None', 50, 100, 200, 1000]} placeholder="Miles" setValue={setDrawingRadius} />
+                    </View>
+
                     {_productType == 'sneaker' ?
                         <View style={{ height: 75, marginLeft: '5%'}}>
                             <Text style={[styles.InputField__label]}>Sneaker Sizes <Text style={{ color: 'red' }}>*</Text></Text>
@@ -209,10 +216,12 @@ export default function NewRaffle({ navigation, route }) {
                                 onChangeText={(text) => { setProductType(text) }} /> : null}
                     </View>
 
+                    
+
                     <BlockButton title="SUBMIT FOR APPROVAL" color="primary" onPress={() => {
-                        console.log('sizes',_sizes)
+                        //console.log('sizes',_sizes)
                         postRaffle()
-                        // navigation.navigate('Home')
+                        navigation.navigate('Home')
                     }} />
                 </View>
 
