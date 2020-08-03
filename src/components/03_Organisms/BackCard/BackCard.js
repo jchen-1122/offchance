@@ -9,11 +9,12 @@ function BackCard(props){
 
     const [show, setShow] = useState(false)
 
+    var user = props.user
     setTimeout(function() { setShow(true) }, props.time);
 
-
+    var userpic = { uri: user.profilePicture }
     let cardsrc = null
-    switch (props.color) {
+    switch (user["prize"]) {
         case 0:
             cardsrc = { uri: 'https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/backcard-gold.png' }
             break;
@@ -26,14 +27,18 @@ function BackCard(props){
     }
 
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => {
+            props.setoverlay(true)
+            props.setSelected(user)
+            props.setPrize(user["prize"])
+        }}>
             <ImageBackground 
               style={ styles.imgBackground }
               source={cardsrc}>
                 {show && <View style={styles.circle_outline} >
                     <Image
                         style={styles.circle_pic}
-                        source={{ uri: 'https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/oc-logo.png' }}
+                        source={userpic}
                     />
                 </View>}
             </ImageBackground>
