@@ -35,7 +35,8 @@ export default function RaffleResult({ navigation, route }) {
 
     let confetti_colors = [["black", "#ECB661"], [colors.silver1, colors.silver2], [colors.bronze1, colors.bronze2], [colors.blue]]
     
-    const [localTime, localSetTime] = useState(20)
+    const [localTime, localSetTime] = useState(10)
+    const [winnerTime, setWinnerTime] = useState(10000)
 
     React.useEffect(() => {
         let interval = null
@@ -48,6 +49,18 @@ export default function RaffleResult({ navigation, route }) {
             clearInterval(interval)
         }
     }, [localTime])
+
+    React.useEffect(() => {
+        let interval = null
+        if (winnerTime > 0) {
+            interval = setInterval(() => {
+                setWinnerTime(winnerTime => winnerTime - 1)
+            }, 1000)
+        }
+        return () => {
+            clearInterval(interval)
+        }
+    }, [winnerTime])
 
     React.useEffect(() => {
         async function getRaffle(id) {
@@ -97,7 +110,7 @@ export default function RaffleResult({ navigation, route }) {
     React.useEffect(() => {
         let CardArray = []
         let count = 0
-        winners.forEach(element => {
+        winners.forEach((element, index) => {
             {/* JOSHUA START */}
             // set current logged in user winner card
             if (element._id === user._id) {
@@ -122,8 +135,8 @@ export default function RaffleResult({ navigation, route }) {
                         gradient = [colors.blue, colors.blue]
                         break;
                 }
-                CardArray.push(
-                    <BackCard color={element["prize"]} time={count * 1000 + 20000}/>
+                CardArray.push( 
+                    <BackCard user={element} time={count * 1000 + 10000} setoverlay={setoverlay} setSelected={setSelected} setPrize={setPrize}/>
                     /*<LinearGradient start={[0, 0]} end={[1, 0]} colors={gradient} style={{ margin: Dimensions.get('window').width * 0.005 }}>
                         <TouchableOpacity style={[styles.card]}
                             onPress={() => {
@@ -145,6 +158,7 @@ export default function RaffleResult({ navigation, route }) {
             }
         });
         setDisplay(CardArray)
+        setWinnerTime(winners.length + 12)
     }, [winners])
 
     return (
@@ -165,7 +179,7 @@ export default function RaffleResult({ navigation, route }) {
                     </Overlay>
                     {/* JOSHUA START */}
                     {/* individual card if logged in user is a winner */}
-                    {(winnerOverlay) ? <Overlay isVisible={winnerOverlay} onBackdropPress={() => setwinnerOverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
+                    {(winnerOverlay && winnerTime === 0) ? <Overlay isVisible={winnerOverlay} onBackdropPress={() => setwinnerOverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
                         <WinnerCard prize={winnerPrize} winner={user} raffle={raffle} host={host} navigation={navigation} />
                         <ConfettiCannon
                             count={100}
