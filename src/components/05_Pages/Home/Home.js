@@ -10,6 +10,7 @@ import ToggleTypeMenu from '../../03_Organisms/ToggleTypeMenu/ToggleTypeMenu'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
 import GlobalState from '../../globalState';
 import {user_logged_in} from '../../../functions/user_functions';
+import {top5_global} from '../../../functions/explore_functions';
 
 import {get_user} from '../../fake_users/stub-users';
 function Home({navigation}) {
@@ -53,6 +54,7 @@ function Home({navigation}) {
 
       }, [viewType])
 
+      top5_global()
     // if is a host
     let hostRaffle;
     if (user_logged_in(user) && user.isHost){

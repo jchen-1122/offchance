@@ -1,3 +1,5 @@
+const ip = require('../components/IP_ADDRESS.json')
+
 // gets array of user raffle objects, returns array of top 5 donors (user objects)
 export function top5_raffle(users){
     const ip = require('../components/IP_ADDRESS.json')
@@ -27,11 +29,24 @@ export function top5_raffle(users){
     }
 }
 
-// export function is_expired(unix_timestamp){
-//     let expired = false
-//     var date = (new Date(unix_timestamp * 1000)).getTime(); // convert to date in ms
-//     if (Date.now() > date){
-//         expired = true
-//     }
-//     return expired
-// }
+// GLOBAL TOP 5 DONORS =================================================================================================================
+
+// check if a raffle is starting this week 
+function isRecentRaffle(raffle) {
+    var thisWeek = moment(raffle.lastDonatedTo * 1000).isSame(new Date(), 'week');
+    var upcoming = moment(raffle.lastDonatedTo * 1000).isAfter(new Date()) // make sure it hasn't already happened
+    return thisWeek && upcoming
+}
+
+// get all the raffles happening this week
+async function getRecentRaffles() {
+    let response = await fetch('http://' + ip.ipAddress + '/raffle/all')
+    response = await response.json()
+    response = response.filter((raffle) => { return isRecentRaffle(raffle) }) // filter recent ones
+    return response
+}
+
+export async function top5_global(users) {
+    let recentRaffles = await getRecentRaffles() // all raffles this week
+    console.log(recentRaffles.length)
+}
