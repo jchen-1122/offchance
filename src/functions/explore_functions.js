@@ -33,9 +33,9 @@ export function top5_raffle(users) {
 
 // GLOBAL TOP 5 DONORS =================================================================================================================
 
-// check if a raffle is starting this week 
-function isRecentRaffle(raffle) {
-    var thisWeek = moment(raffle.lastDonatedTo * 1000).isSame(new Date(), 'week');
+// check if a date is this week
+function isThisWeek(time) {
+    var thisWeek = moment(time * 1000).isSame(new Date(), 'week');
     // var upcoming = moment(raffle.lastDonatedTo * 1000).isAfter(new Date()) // make sure it hasn't already happened
     // return thisWeek && upcoming
     return thisWeek
@@ -45,7 +45,7 @@ function isRecentRaffle(raffle) {
 async function getRecentRaffles() {
     let response = await fetch('http://' + ip.ipAddress + '/raffle/all')
     response = await response.json()
-    response = response.filter((raffle) => { return isRecentRaffle(raffle) }) // filter recent ones
+    response = response.filter((raffle) => { return isThisWeek(raffle.lastDonatedTo) }) // filter recent ones
     return response
 }
 
@@ -67,28 +67,33 @@ async function getDonorObjs(top5_IDs) {
         body: data
     })
     let res = await donorRes.json()
+    console.log(res)
     return res
 }
 
 // returns top 5 donors (user objects) this week
-export async function top5_global(users) {
+export async function top5_global() {
     let recentRaffles = await getRecentRaffles() // all raffles this week
     let userAmtMap = new Map() // maps id of user -> amt donated for that week
 
     // cycle through each raffle
     for (var raffle of recentRaffles) {
         var enteredUsers = raffle.users.children
-
+        console.log(isThisWeek(raffle.lastDonatedTo))
         // cycle through each entered user in raffle
         for (var user of enteredUsers) {
-            // if user is not in the mapping yet
-            if (!userAmtMap.has(user.userID)) {
-                userAmtMap.set(user.userID, user.amountDonated) // map user id -> amount donated for that raffle
-            }
-            // if user is already in mapping (have already donated to another raffle)
-            else {
-                let tempAmt = userAmtMap.get(user.userID)
-                userAmtMap.set(user.userID, tempAmt + user.amountDonated) // update total amount they've donated
+            // if the user donated this week
+            if (isThisWeek(user.timeDonated)) {
+
+                // if user is not in the mapping yet
+                if (!userAmtMap.has(user.userID)) {
+                    userAmtMap.set(user.userID, user.amountDonated) // map user id -> amount donated for that raffle
+                }
+                // if user is already in mapping (have already donated to another raffle)
+                else {
+                    let tempAmt = userAmtMap.get(user.userID)
+                    userAmtMap.set(user.userID, tempAmt + user.amountDonated) // update total amount they've donated
+                }
             }
         }
     }
