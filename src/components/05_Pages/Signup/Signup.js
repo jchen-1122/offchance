@@ -8,6 +8,7 @@ import Dropdown from '../../01_Atoms/DropDown/DropDown';
 import { colors, fonts, utilities, dimensions } from '../../../settings/all_settings';
 import validator from 'validator';
 import * as Google from 'expo-google-app-auth';
+import * as Facebook from 'expo-facebook';
 
 
 export default function Signup({ navigation }) {
@@ -168,7 +169,38 @@ export default function Signup({ navigation }) {
           <BlockButton
             color="facebook"
             title="Facebook"
-            style={{margin: 0, marginRight: 7.5}}/>
+            style={{margin: 0, marginRight: 7.5}}
+            onPress={async () => {
+              try {
+                await Facebook.initializeAsync(2031545587174254);
+                const {
+                  type,
+                  token,
+                  expires,
+                  permissions,
+                  declinedPermissions,
+                } = await Facebook.logInWithReadPermissionsAsync({
+                  
+                });
+                if (type === 'success') {
+                  // Get the user's name using Facebook's Graph API
+                  const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,email,name,picture.type(large)`);
+                  const result = await response.json()
+                  setOauth(true)
+                  setName(result.name)
+                  setEmail(result.email)
+                  setProPic(result.picture.data.url)
+                  setPassword(result.id)
+                  setConfirm(result.id)
+                } else {
+                  // type === 'cancel'
+                  alert("authentication error")
+                }
+              } catch ({ message }) {
+                alert(`Facebook Login Error: ${message}`);
+              }
+            }}
+            />
         <BlockButton
             color="google"
             title="Google"
@@ -186,7 +218,6 @@ export default function Signup({ navigation }) {
                     setName(result.user.name)
                     setEmail(result.user.email)
                     setProPic(result.user.photoUrl)
-                    setPassword(result.user.id)
                     setPassword(result.user.id)
                     setConfirm(result.user.id)
                   } else {

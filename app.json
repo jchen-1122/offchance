@@ -17,9 +17,11 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "offchance"
+      "supportsTablet": true
     },
+    "facebookScheme": "fb644043759802145",
+    "facebookAppId": 644043759802145,
+    "facebookDisplayName": "offchance",
     "web": {
       "favicon": "./assets/favicon.png"
     }

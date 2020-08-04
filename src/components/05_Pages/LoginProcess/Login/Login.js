@@ -12,6 +12,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import validator from 'validator'
 import GlobalState from '../../../globalState'
 import * as Google from 'expo-google-app-auth';
+import * as Facebook from 'expo-facebook';
 
 export default function Login({ navigation, route }) {
   const {user, setUser} = useContext(GlobalState)
@@ -77,7 +78,35 @@ export default function Login({ navigation, route }) {
         <BlockButton
             color="facebook"
             title="Facebook"
-            style={{margin: 0, marginRight: 7.5}}/>
+            style={{margin: 0, marginRight: 7.5}}
+            onPress={async () => {
+              try {
+                await Facebook.initializeAsync(2031545587174254);
+                const {
+                  type,
+                  token,
+                  expires,
+                  permissions,
+                  declinedPermissions,
+                } = await Facebook.logInWithReadPermissionsAsync({
+                  
+                });
+                if (type === 'success') {
+                  // Get the user's name using Facebook's Graph API
+                  const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,email,name,picture.type(large)`);
+                  const result = await response.json()
+                  console.log(result)
+                  setEmail(result.email)
+                  setPassword(result.id)
+                } else {
+                  // type === 'cancel'
+                  alert("authentication error")
+                }
+              } catch ({ message }) {
+                alert(`Facebook Login Error: ${message}`);
+              }
+            }}
+            />
         <BlockButton
             color="google"
             title="Google"
