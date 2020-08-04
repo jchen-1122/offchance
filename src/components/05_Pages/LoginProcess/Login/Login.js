@@ -1,5 +1,6 @@
 import React, {useState, useContext} from 'react';
 import {  View, Text, Linking, Dimensions, AsyncStorage } from 'react-native';
+import * as Facebook from 'expo-facebook';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../../../01_Atoms/Divider/Divider.js';
 import InputField from '../../../02_Molecules/InputField/InputField.js';
@@ -54,6 +55,64 @@ export default function Login({ navigation, route }) {
 
   }
 
+  const AWS = require('aws-sdk');
+
+  AWS.config = new AWS.Config({
+      accessKeyId: 'dont wanna push these stuff to github',
+      secretAccessKey: 'cencored',
+      endpoint: 's3.us-east.cloud-object-storage.appdomain.cloud',
+      region: 'us-east-standard'
+  });
+
+  const cosClient = new AWS.S3();
+
+  const logIn = async () => {
+
+// This is the code to connect to ibm cloud
+
+    /*return cosClient.listObjects(
+      {Bucket: 'oc-mobile-images'},
+    ).promise()
+    .then((data) => {
+        if (data != null && data.Contents != null) {
+            for (var i = 0; i < data.Contents.length; i++) {
+                var itemKey = data.Contents[i].Key;
+                var itemSize = data.Contents[i].Size;
+                console.log(`Item: ${itemKey} (${itemSize} bytes).`)
+            }
+        }    
+    })
+    .catch((e) => {
+        console.error(`ERROR: ${e.code} - ${e.message}\n`);
+    });*/
+
+    try {
+      await Facebook.initializeAsync(2031545587174254);
+      const {
+        type,
+        token,
+        expires,
+        permissions,
+        declinedPermissions,
+      } = await Facebook.logInWithReadPermissionsAsync({
+        permissions: ['public_profile','email'],
+      });
+      if (type === 'success') {
+        // Get the user's name using Facebook's Graph API
+        const response = await fetch(`https://graph.facebook.com/me?access_token=${token}`);
+        const result = await response.json()
+        console.log(permissions)
+        console.log(declinedPermissions)
+        console.log(result)
+        alert("logged in as " + result.name)
+      } else {
+        // type === 'cancel'
+      }
+    } catch ({ message }) {
+      alert(`Facebook Login Error: ${message}`);
+    }
+  }
+
   // makes a json object with all the input fields
   const makeJSON = () => {
     let data = {
@@ -76,6 +135,9 @@ export default function Login({ navigation, route }) {
         <BlockButton
             color="facebook"
             title="Facebook"
+            onPress={async () => {
+              logIn()
+            }}
             style={{margin: 0, marginRight: 7.5}}/>
         <BlockButton
             color="google"
