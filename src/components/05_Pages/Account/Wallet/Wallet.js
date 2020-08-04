@@ -71,11 +71,11 @@ export default function Wallet({navigation}) {
             </View>
 
             {/* Content */}
-            <View style={{marginTop: 80}}>
+            <View style={{marginTop: height * 0.05}}>
                 <Text style={styles.content}>Chances can be earned by sharing and inviting friends, playing games and reloading your wallet by donating!</Text>
             </View>
 
-            <View style={[styles.button, {marginTop: 80}]}>
+            <View style={[styles.button, {marginTop: height * 0.05}]}>
                 <BlockButton
                     title="ADD CHANCES"
                     color="secondary"
@@ -98,7 +98,7 @@ export default function Wallet({navigation}) {
             type='payment'
             sheet={paymentController}
             trigger={paymentTrigger}
-            height={700}
+            height={height * 0.8}
             content={['Wallet Balance', 'Reload Source', 'Reload Amount']}/>
 
 

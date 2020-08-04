@@ -27,6 +27,12 @@ function UsernameDisplay(props){
             usernameStyle = styles.username_small;
             containerStyle = styles.container_hostedBy;
             break;
+        case 'search':
+            profilePicStyle = styles.profilePic_search;
+            usernameStyle = fonts.p;
+            displayText = displayText;
+            containerStyle = styles.container_hostedBy;
+            break;
     }
 
     return (
