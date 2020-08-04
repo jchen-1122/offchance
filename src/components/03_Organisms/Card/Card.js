@@ -88,7 +88,7 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
                 <View>
                     {expired ?
                         <View>
-                            <Text style={[styles.startData_grey, fonts.p]}>DRAWING STARTED</Text>
+                            <Text style={[styles.startData_grey, fonts.p]}>DRAWING COMPLETED</Text>
                             <Countdown unix_timestamp={date} />
                         </View> :
                         <View>
@@ -107,7 +107,7 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
                     {(viewType==0)?<CardBanner title='ENTER TO BUY' color='darkGreen' icon='usd'/>:null}
                     <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid}/>
                 </View>);
-            startData = (<View><Text style={[styles.startData_grey, fonts.p]}>{expired ? 'DRAWING STARTED' : 'DRAWING STARTS'}</Text><Countdown unix_timestamp={date} /></View>);
+            startData = (<View><Text style={[styles.startData_grey, fonts.p]}>{expired ? 'DRAWING COMPLETED' : 'DRAWING STARTS'}</Text><Countdown unix_timestamp={date} /></View>);
             break;
         // for upcoming 4 raffles
         case 'upcoming':

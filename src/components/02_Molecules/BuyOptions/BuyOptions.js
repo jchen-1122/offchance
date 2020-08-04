@@ -9,7 +9,7 @@ export default function BuyOptions(props) {
                 return (
                     <BlockButton
                         title={"$" + element + ' for ' + props.options[element].chances + " chances"}
-                        color="primary"
+                        color={element == 10 ? "primary" : "secondary"}
                         bannerTitle={element == 10 ? 'BEST DEAL' : null}/>
                 )
             })
