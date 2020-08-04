@@ -59,7 +59,6 @@ function Home({navigation}) {
 
       }, [viewType])
 
-    console.log(top5donors)
     // if is a host
     let hostRaffle;
     if (user_logged_in(user) && user.isHost){

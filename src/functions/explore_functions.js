@@ -66,8 +66,7 @@ async function getDonorObjs(top5_IDs) {
         },
         body: data
     })
-    let res = await donorRes.json()
-    console.log(res)
+    let res = await donorRes.json() // doesn't actually sort the top 5 >:c
     return res
 }
 
