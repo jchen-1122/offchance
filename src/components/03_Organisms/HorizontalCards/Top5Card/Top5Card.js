@@ -116,7 +116,7 @@ function Top5Card(props) {
                 <Image style={styles.image} source={{ uri: user.profilePicture }} />
                 <Text style={[fonts.h3, styles.name]}>@{user.username}</Text>
             </TouchableOpacity>
-            {currUser.following.includes(user._id)  ? 
+            {!Object.keys(currUser).includes('following') ? null : currUser.following.includes(user._id)  ? 
                 <BlockButton color="tertiary" size="small" title='FOLLOWING'
                 onPress={async () => {
                     if (enabled) {
