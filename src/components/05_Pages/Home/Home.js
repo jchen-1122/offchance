@@ -80,7 +80,7 @@ function Home({navigation}) {
                     </View>
                     <HorizontalScroll title="Top 5 Donors" >
                     {top5donors.map((donor, index) =>
-                        <Top5Card data={donor} navigation={navigation}/>
+                        <Top5Card data={donor} navigation={navigation} currUser={user} setUser={setUser}/>
                     )}
                       
                     </HorizontalScroll>
