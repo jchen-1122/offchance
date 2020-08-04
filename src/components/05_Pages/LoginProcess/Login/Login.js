@@ -58,8 +58,8 @@ export default function Login({ navigation, route }) {
   const AWS = require('aws-sdk');
 
   AWS.config = new AWS.Config({
-      accessKeyId: 'dont wanna push these stuff to github',
-      secretAccessKey: 'cencored',
+      accessKeyId: 'da62c56fb48940a7aada0c86062cf9a6',
+      secretAccessKey: '34b18fbbeb724fe1e06a8e0d0210cd65f7f690db566eb1d6',
       endpoint: 's3.us-east.cloud-object-storage.appdomain.cloud',
       region: 'us-east-standard'
   });
@@ -67,10 +67,15 @@ export default function Login({ navigation, route }) {
   const cosClient = new AWS.S3();
 
   const logIn = async () => {
+    /*var config = {
+        endpoint: 's3.us-east.cloud-object-storage.appdomain.cloud',
+        apiKeyId: 'rxdAivtC9jqXmqEPgYWsCYgq3l33AYRrS49qhyFpiab7',
+        accessKeyId: 'da62c56fb48940a7aada0c86062cf9a6',
+        secretAccessKey: '34b18fbbeb724fe1e06a8e0d0210cd65f7f690db566eb1d6',
+        serviceInstanceId: 'crn:v1:bluemix:public:cloud-object-storage:global:a/ae9cc34bfa8043b0bf6ecd16583c8c5a:fffd9c25-4061-49e1-a321-e1fa4469e5f4::',
+    };*/
 
-// This is the code to connect to ibm cloud
-
-    /*return cosClient.listObjects(
+    return cosClient.listObjects(
       {Bucket: 'oc-mobile-images'},
     ).promise()
     .then((data) => {
@@ -84,9 +89,9 @@ export default function Login({ navigation, route }) {
     })
     .catch((e) => {
         console.error(`ERROR: ${e.code} - ${e.message}\n`);
-    });*/
+    });
 
-    try {
+    /*try {
       await Facebook.initializeAsync(2031545587174254);
       const {
         type,
@@ -110,7 +115,7 @@ export default function Login({ navigation, route }) {
       }
     } catch ({ message }) {
       alert(`Facebook Login Error: ${message}`);
-    }
+    }*/
   }
 
   // makes a json object with all the input fields
