@@ -81,7 +81,7 @@ function FlatCard ({ navigation, data, viewType, inLikesPage }) {
                 <View>
                     {expired ?
                         <View>
-                            <Text style={[styles.startData_grey, fonts.p]}>DRAWING STARTED</Text>
+                            <Text style={[styles.startData_grey, fonts.p]}>DRAWING COMPLETED</Text>
                             <Countdown unix_timestamp={date} />
                         </View> :
                         <View>
