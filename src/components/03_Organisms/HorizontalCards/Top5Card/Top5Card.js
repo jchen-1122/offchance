@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Text, Image, View, TouchableOpacity } from 'react-native';
 import styles from './Top5Card.styling';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
-import { fonts } from '../../../../settings/all_settings'
+import { utilities, fonts } from '../../../../settings/all_settings'
 import { set } from 'react-native-reanimated';
 
 // for small, unclickable cards like in Latest Winners
@@ -111,7 +111,7 @@ function Top5Card(props) {
     }
     
     return (
-        <View style={styles.Top5Card}>
+        <View style={utilities.exploreCard}>
             <TouchableOpacity style={styles.touchable} onPress={() => props.navigation.navigate('OtherUser',{user: user})}>
                 <Image style={styles.image} source={{ uri: user.profilePicture }} />
                 <Text style={[fonts.h3, styles.name]}>@{user.username}</Text>

@@ -10,14 +10,17 @@ import ToggleTypeMenu from '../../03_Organisms/ToggleTypeMenu/ToggleTypeMenu'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
 import GlobalState from '../../globalState';
 import {user_logged_in} from '../../../functions/user_functions';
-import {top5_global} from '../../../functions/explore_functions';
+import {top5_global, getLatestRaffles, getLatestWinners} from '../../../functions/explore_functions';
 import HorizontalScroll from '../../04_Templates/HorizontalScroll/HorizontalScroll';
 import Top5Card from '../../03_Organisms/HorizontalCards/Top5Card/Top5Card';
+import LatestWinnerCard from '../../03_Organisms/HorizontalCards/LatestWinnerCard/LatestWinnerCard';
 
 import {get_user} from '../../fake_users/stub-users';
 function Home({navigation}) {
     const data = require('../../IP_ADDRESS.json');
     const [top5donors, setTop5Donors] = useState([])
+    const [latestWinners, setLatestWinners] = useState([])
+    const [latestRaffles, setLatestRaffles] = useState([])
     const {user, setUser} = useContext(GlobalState)
     const [raffles, setRaffles] = useState([])
 
@@ -30,6 +33,8 @@ function Home({navigation}) {
         
         async function getRaffle() {
           setTop5Donors(await top5_global())
+          setLatestWinners(await getLatestWinners())
+          setLatestRaffles(await getLatestRaffles())
           let response = await fetch('http://'+data.ipAddress+'/raffle/all')
           response = await response.json()
           // filter raffles based on what type they want to see (donate, buy, all)
@@ -59,6 +64,7 @@ function Home({navigation}) {
 
       }, [viewType])
 
+      console.log(latestRaffles)
     // if is a host
     let hostRaffle;
     if (user_logged_in(user) && user.isHost){
@@ -78,12 +84,18 @@ function Home({navigation}) {
                     <View style={{width: Dimensions.get('window').width * 0.85, alignItems: 'flex-end', marginTop: '5%'}}>
                         <ToggleType viewType={viewType} toggleMenuOpen={toggleMenuOpen} setToggleMenuOpen={setToggleMenuOpen}/>
                     </View>
+
                     <HorizontalScroll title="Top 5 Donors" >
                     {top5donors.map((donor, index) =>
                         <Top5Card data={donor} navigation={navigation} currUser={user} setUser={setUser}/>
                     )}
-                      
                     </HorizontalScroll>
+                    <HorizontalScroll title="Latest Winners">
+                    {latestWinners.map((winner, index) =>
+                        <LatestWinnerCard raffle={latestRaffles[index]} winner={winner} navigation={navigation}/>
+                    )}
+                    </HorizontalScroll>
+
                     {raffles.map((raffle, index) =>
                         <Card
                             data={raffle}

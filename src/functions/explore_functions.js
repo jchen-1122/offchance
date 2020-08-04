@@ -1,6 +1,8 @@
 var moment = require('moment');
 const ip = require('../components/IP_ADDRESS.json')
 
+// RAFFLE TOP 5 DONORS =================================================================================================================
+
 // gets array of user raffle objects, returns array of top 5 donors (user objects)
 export function top5_raffle(users) {
     const ip = require('../components/IP_ADDRESS.json')
@@ -66,7 +68,8 @@ async function getDonorObjs(top5_IDs) {
         },
         body: data
     })
-    let res = await donorRes.json() // top 5 sorting is lost
+    let res = await donorRes.json()
+    res = sortUsers(top5_IDs, res)
     return res
 }
 
@@ -106,4 +109,68 @@ export async function top5_global() {
 
     // return array of 5 user objs
     return getDonorObjs(top5_IDs)
+}
+
+// LATEST WINNERS =================================================================================================================
+
+// returns most recent 4 drawings
+export async function getLatestRaffles() {
+    var now_unix = new Date().getTime() / 1000 // now in unix time stamp
+    let response = await fetch('http://' + ip.ipAddress + '/raffle/query?dir=desc')
+    response = await response.json()
+    response = response.filter((raffle) => { return raffle.startTime < now_unix }) // filter recent ones
+    response = response.sort((a, b) => (a.startTime < b.startTime) ? 1 : -1) // sort by start time (recent first)
+    response = response.slice(0, 4) // get most recent 4 drawings
+    return response
+}
+
+// returns array of 4 latest winner user objects
+async function getWinnerObjs(latestWinnersIDs) {
+    // JSON-ify the id array
+    let data = {
+        ids: latestWinnersIDs
+    }
+    data = JSON.stringify(data)
+    console.log(latestWinnersIDs)
+    // make API call with multiple IDs
+    const winnerRes = await fetch('http://' + ip.ipAddress + '/user/ids/', {
+        method: "PATCH",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: data
+    })
+    let res = await winnerRes.json() // top 5 sorting is lost
+    console.log(res.length)
+    res = sortUsers(latestWinnersIDs, res)
+    return res
+}
+
+export async function getLatestWinners() {
+    var latestRaffles = await getLatestRaffles()
+    var latestWinnersIDs = []
+    for (var raffle of latestRaffles) {
+        var winners = raffle.winners.children
+        for (var winner of winners) {
+            if (winner.reward == 0) {
+                latestWinnersIDs.push(winner.userID)
+            }
+        }
+    }
+    var latestWinners = await getWinnerObjs(latestWinnersIDs)
+    return latestWinners
+}
+
+// get multiple users doesn't return the users in the same order as the input so you have to re-sort
+function sortUsers(ids, users){
+    var sorted = []
+    for (var id of ids){
+        for (var user of users){
+            if (user._id == id){
+                sorted.push(user)
+            }
+        }
+    }
+    return sorted
 }
