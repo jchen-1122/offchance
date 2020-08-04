@@ -333,7 +333,7 @@ export default function Raffle({ navigation, route }) {
                 <Text style={[fonts.h1, { marginLeft: '8%', marginBottom: 0 }]}>{name}</Text>
 
                 <View style={styles.content}>
-                    {(!location && location != null) ? <Text style={[fonts.bold, fonts.error]}>THIS RAFFLE IS OUT OF YOUR LOCATION</Text> : null}
+                    {(!location && location != null && !expired) ? <Text style={[fonts.bold, fonts.error]}>THIS RAFFLE IS OUT OF YOUR LOCATION</Text> : null}
                     <View style={{ marginVertical: 15 }}>
                         {(expired) ? <Text style={[fonts.bold, fonts.error]}>THIS DRAWING HAS EXPIRED</Text> : <Text style={[fonts.italic]}>Drawing Starts:</Text>}
                         {(expired) ? null : <CountDown unix_timestamp={route.params.startTime}/>}

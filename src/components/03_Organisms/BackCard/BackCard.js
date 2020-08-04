@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Text, Image, View, TouchableOpacity, ImageBackground } from 'react-native';
 import styles from './BackCard.styling';
 import {fonts, utilities} from '../../../settings/all_settings'

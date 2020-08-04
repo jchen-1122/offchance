@@ -18,7 +18,11 @@ export default function RaffleResult({ navigation, route }) {
     const [overlay, setoverlay] = useState(false)
     {/* JOSHUA START */}
     const [winnerOverlay, setwinnerOverlay] = useState(false)
+    const [grandOverlay, setgrandOverlay] = useState(true)
     const [winnerPrize, setwinnerPrize] = useState(null)
+    const [grandPrize, setgrandPrize] = useState(null)
+    const [grandWinner, setgrandWinner] = useState(null)
+    const [feedId, setFeedId] = useState(0)
     {/* JOSHUA END */}
     const [prize, setPrize] = useState(null)
     const [enteredUsers, setEnteredUsers] = useState([])
@@ -28,6 +32,7 @@ export default function RaffleResult({ navigation, route }) {
     const [host, setHost] = useState({})
     const [currWinner, setCurrWinner] = useState({})
     const [display, setDisplay] = useState([])
+    const [feed, setFeed] = useState('')
     const ip = require('../../../IP_ADDRESS.json');
     const { user, setUser } = useContext(GlobalState)
     // test user and raffle for Chelly's card
@@ -53,6 +58,12 @@ export default function RaffleResult({ navigation, route }) {
     React.useEffect(() => {
         let interval = null
         if (winnerTime > 0) {
+            if (winnerTime < 18) {
+                if (feedId < winners.length) {
+                    setFeed(winners[feedId].username + ' won ' + winners[feedId].prize)
+                    setFeedId(feedId + 1)
+                }
+            }
             interval = setInterval(() => {
                 setWinnerTime(winnerTime => winnerTime - 1)
             }, 1000)
@@ -123,6 +134,8 @@ export default function RaffleResult({ navigation, route }) {
                 count++
                 switch (element["prize"]) {
                     case 0:
+                        setgrandPrize(element.prize)
+                        setgrandWinner(element)
                         gradient = colors.goldGradientBg
                         break;
                     case 1:
@@ -136,7 +149,7 @@ export default function RaffleResult({ navigation, route }) {
                         break;
                 }
                 CardArray.push( 
-                    <BackCard user={element} time={count * 1000 + 10000} setoverlay={setoverlay} setSelected={setSelected} setPrize={setPrize}/>
+                    <BackCard user={element} time={count * 1000 + 10000} setoverlay={setoverlay} setSelected={setSelected} setPrize={setPrize} setFeed={setFeed}/>
                     /*<LinearGradient start={[0, 0]} end={[1, 0]} colors={gradient} style={{ margin: Dimensions.get('window').width * 0.005 }}>
                         <TouchableOpacity style={[styles.card]}
                             onPress={() => {
@@ -158,12 +171,13 @@ export default function RaffleResult({ navigation, route }) {
             }
         });
         setDisplay(CardArray)
-        setWinnerTime(winners.length + 12)
+        setWinnerTime(winners.length + 18)
     }, [winners])
 
     return (
         <View>
             <ScrollView>
+                <Text>{feed}</Text>
                 <View style={styles.container}>
                     {display}
                     <Overlay isVisible={localTime > 0} overlayStyle={{ width: 434, height: 740, backgroundColor: 'transparent' }}>
@@ -179,8 +193,26 @@ export default function RaffleResult({ navigation, route }) {
                     </Overlay>
                     {/* JOSHUA START */}
                     {/* individual card if logged in user is a winner */}
-                    {(winnerOverlay && winnerTime === 0) ? <Overlay isVisible={winnerOverlay} onBackdropPress={() => setwinnerOverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
-                        <WinnerCard prize={winnerPrize} winner={user} raffle={raffle} host={host} navigation={navigation} />
+                    {/* keep it here in case david changes his mind lmao */}
+                    {/* {(winnerTime <= 5 && winnerTime >= 1) ? <Overlay isVisible={grandOverlay} onBackdropPress={() => {
+                        setgrandOverlay(false)
+                        setWinnerTime(0)
+                        setwinnerOverlay(true)
+                    }} 
+                        overlayStyle={{ backgroundColor: 'transparent' }}>
+                        <WinnerCard prize={grandPrize} winner={grandWinner} raffle={raffle} host={host} navigation={navigation} currUser={user}/>
+                        <ConfettiCannon
+                            count={100}
+                            origin={{ x: Dimensions.get('window').width * 0.5, y: Dimensions.get('window').height}}
+                            autoStart={true}
+                            fadeOut={true}
+                            // fallSpeed={2500}
+                            explosionSpeed={25}
+                            colors={confetti_colors[prize]}
+                        />
+                    </Overlay> : null} */}
+                    {(winnerOverlay && winnerTime <= 5) ? <Overlay isVisible={winnerOverlay} onBackdropPress={() => setwinnerOverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
+                        <WinnerCard prize={winnerPrize} winner={user} raffle={raffle} host={host} navigation={navigation} currUser={user} />
                         <ConfettiCannon
                             count={100}
                             origin={{ x: Dimensions.get('window').width * 0.5, y: Dimensions.get('window').height}}
@@ -193,7 +225,7 @@ export default function RaffleResult({ navigation, route }) {
                     </Overlay> : null}
                     {/* JOSHUA END */}
                     <Overlay isVisible={overlay} onBackdropPress={() => setoverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
-                        <WinnerCard prize={prize} winner={selected} raffle={raffle} host={host} navigation={navigation} />
+                        <WinnerCard prize={prize} winner={selected} raffle={raffle} host={host} navigation={navigation} currUser={user} />
                         <ConfettiCannon
                             count={100}
                             origin={{ x: Dimensions.get('window').width * 0.5, y: Dimensions.get('window').height}}
