@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native'
-import {dimensions} from '../../../../settings/all_settings';
+import {colors, dimensions} from '../../../../settings/all_settings';
 
 const styles = StyleSheet.create({
    content: {
@@ -44,6 +44,12 @@ const styles = StyleSheet.create({
       height: 20, 
       borderRadius: 20 / 2,
       marginRight: 5
+  },
+  highlightBackground: {
+    backgroundColor: colors.lightGreen, 
+    marginBottom: '5%',
+    marginHorizontal: '-10%', 
+    paddingHorizontal:'10%' 
   }
 
 })
