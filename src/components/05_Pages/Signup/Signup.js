@@ -31,6 +31,7 @@ export default function Signup({ navigation }) {
 
   const checkValid = async () => {
     let errors = []
+    let rUser = null
     const email = await fetch('http://' + data.ipAddress + '/user/query?query=email&val=' + _email, {
       method: "GET",
       headers: {
@@ -64,6 +65,23 @@ export default function Signup({ navigation }) {
     if (phonejson.length !== 0) {
       errors.push(<Text style={fonts.error}>Phone number already registered.</Text>)
     }
+
+    if (_ref.length !== 0) {
+      const refcode = await fetch('http://' + data.ipAddress + '/user/query?query=referralCode&val=' + _ref.toUpperCase(), {
+        method: "GET",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+      const refjson = await refcode.json()
+      if (refjson.length === 0) {
+        errors.push(<Text style={fonts.error}>Referral code does not exist</Text>)
+      } else {
+        // pass the referral giver to the next page
+        rUser = refjson[0]._id
+      }
+    }
     setErrors(errors)
     if (errors.length > 0) return true
     return false
@@ -92,6 +110,8 @@ export default function Signup({ navigation }) {
   const [_city, setCity] = useState(null)
   const [_oauth, setOauth] = useState(false)
   const [_proPic, setProPic] = useState(null)
+  const [_ref, setRef] = useState('')
+  const [_refUser, setRefUser] = useState('')
 
   // validates email input
   const isValidEmail = () => {
@@ -108,8 +128,13 @@ export default function Signup({ navigation }) {
     return us_states.includes(_us_state)
   }
 
+  // validates referral code
+  const isValidRef = async () => {
+    return false;
+  }
+
   // check for any errors in input, returns array of errors
-  const generateErrors = () => {
+  const generateErrors = async () => {
     let errors = []
     // if passwords don't match
     if (_password != _confirm) {
@@ -152,6 +177,25 @@ export default function Signup({ navigation }) {
     }
     return JSON.stringify(data)
   };
+
+  const getRefUser = async () => {
+    if (_ref.length !== 0) {
+      const refcode = await fetch('http://' + data.ipAddress + '/user/query?query=referralCode&val=' + _ref.toUpperCase(), {
+        method: "GET",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+      const refjson = await refcode.json()
+      if (refjson.length === 0) {
+        return 'L'
+      } else {
+        // pass the referral giver to the next page
+        return refjson[0]._id
+      }
+    }
+  }
 
   // ============================================================================================
   return (
@@ -289,6 +333,12 @@ export default function Signup({ navigation }) {
           required
           password /></View>}
 
+        <InputField
+          label="Referral Code"
+          value={_ref}
+          onChangeText={(text) => { setRef(text) }}/>
+          
+
         <View style={{ width: '90%' }}>
           <CheckBox
             selected={state.businessAccount}
@@ -327,14 +377,16 @@ export default function Signup({ navigation }) {
           onPress={async () => {
             //console.log(_city)
             //console.log(jsonData[_us_state])
-            let isError = generateErrors()
+            let isError = await generateErrors()
             setState({ businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true })
             if (!isError) {
               let postErrors = await checkValid()
               if (!postErrors) {
                 sendsms()
                 const data = makeJSON()
-                navigation.navigate('PhoneVerify', { signup: data, mailing: state.futureDrawings, phone: _phoneNumber, email: _email })
+                const rUser = await getRefUser()
+                console.log(rUser)
+                navigation.navigate('PhoneVerify', { signup: data, mailing: state.futureDrawings, phone: _phoneNumber, email: _email, refUser: rUser })
               }
               /*const userObj = await postUser()
               if (userObj.keyValue == null) {

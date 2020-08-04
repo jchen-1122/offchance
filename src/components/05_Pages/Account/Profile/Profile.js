@@ -28,7 +28,7 @@ function Profile({ navigation }) {
 
     const [info, setInfo] = useState(true)
     const [viewing, setViewing] = useState((user != null) ? user.viewing : false)
-    let name, username, profilePic, email, followers, following, enteredRaffles, address, sizeType, shoeSize, shirtSize
+    let name, username, profilePic, email, followers, following, enteredRaffles, address, sizeType, shoeSize, shirtSize, referralCode
     useEffect(() => {
         name = 'JohnDoe'
     })
@@ -48,6 +48,7 @@ function Profile({ navigation }) {
         sizeType = user.sizeType
         shoeSize = user.shoeSize
         shirtSize = user.shirtSize
+        referralCode = Object.keys(user).includes('referralCode') ? user.referralCode : ''
     }
     return (
         <View style={utilities.container}>
@@ -97,6 +98,9 @@ function Profile({ navigation }) {
                             </View>
                             <Text style={styles.descriptor}>Payment Information</Text>
                             <Text style={styles.description}>**** **** **** 1234</Text>
+
+                            <Text style={styles.descriptor}>Referral Code</Text>
+                            <Text style={styles.description}>{referralCode}</Text>
 
                             {/* <View style={{flexDirection: 'row'}}>
                         <View style={styles.payment}>

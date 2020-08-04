@@ -4,6 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { fonts, utilities, dimensions } from '../../../settings/all_settings';
 import InputField from '../../02_Molecules/InputField/InputField';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
+import { ImageZoomProps } from 'react-native-image-pan-zoom';
 
 export default function PhoneVerify({ navigation, route }) {
     const data = require('../../IP_ADDRESS.json');
@@ -31,6 +32,36 @@ export default function PhoneVerify({ navigation, route }) {
         })
         const json = await response.json()
         //console.log(json)
+        // add referral code
+        if (route.params.refUser === undefined) {
+          return json
+        } else {
+          // add 5 to signing up user
+          console.log('http://' + data.ipAddress + '/user/edit/' + json._id)
+          const first = await fetch('http://' + data.ipAddress + '/user/edit/' + json._id, {
+          method: "PATCH",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({"walletChances": 5})
+          })
+          
+
+          // get refUser
+          const second = await fetch('http://' + data.ipAddress + '/user/id/' + route.params.refUser)
+          const secondJson = await second.json()
+          let prevWalletChances = secondJson.walletChances
+
+          const third = await fetch('http://' + data.ipAddress + '/user/edit/' + route.params.refUser, {
+          method: "PATCH",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({"walletChances": 5 + prevWalletChances})
+          })
+        }
         return json
     }
 
@@ -114,6 +145,7 @@ export default function PhoneVerify({ navigation, route }) {
                             }
                             navigation.navigate('Login', { signedUp: true })
                         } else {
+                            // this is unnecessary
                             let errors = []
                             let errMsg = ""
                             if (userObj.keyValue.username) {
