@@ -16,7 +16,6 @@ function RaffleCard(props) {
             setHost(response)
         }
         if (raffle) {
-            console.log('here')
             getHost()
         }
     }, [raffle])
@@ -27,7 +26,7 @@ function RaffleCard(props) {
             <TouchableOpacity onPress={() => {props.navigation.navigate('Raffle',raffle)}}>
                 <View style={styles.RaffleCard}>
                     <Image style={styles.RaffleCard__image} source={{ uri: raffle.images[0] }} />
-                    <Text style={[fonts.h3, { textAlign: 'center' }]}>{raffle.name}</Text>
+                    <Text style={[fonts.h3, { textAlign: 'center', height: '20%' }]}>{raffle.name}</Text>
                 </View>
             </TouchableOpacity>
         )

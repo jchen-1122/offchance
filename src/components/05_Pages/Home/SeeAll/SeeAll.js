@@ -10,7 +10,7 @@ import ToggleTypeMenu from '../../../03_Organisms/ToggleTypeMenu/ToggleTypeMenu'
 
 function SeeAll({ navigation, route }) {
     var raffles = route.params.raffles
-    var toggle = route.params.title == 'Trending'
+    var toggle = route.params.title == 'Trending' || route.params.title == 'Coming Soon'
 
     const { user, setUser } = useContext(GlobalState)
     const [viewType, setViewType] = useState(0)

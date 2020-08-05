@@ -29,10 +29,7 @@ function Home({ navigation }) {
   const [raffles, setRaffles] = useState([])
   const [donateRaffles, setDonateRaffles] = useState([])
   const [buyRaffles, setBuyRaffles] = useState([])
-
-  // for toggling types of cards (0=all, 1=donate, 2=buy)
-  const [viewType, setViewType] = useState(0)
-  const [toggleMenuOpen, setToggleMenuOpen] = useState(false)
+  const [upcomingRaffles, setUpcomingRaffles] = useState([])
 
   // get all raffles and maybe filter them by type
   React.useEffect(() => {
@@ -40,13 +37,11 @@ function Home({ navigation }) {
       setTop5Donors(await top5_global())
       setLatestWinners(await getLatestWinners())
       setLatestRaffles(await getLatestRaffles())
-      let response = await fetch('http://' + data.ipAddress + '/raffle/all')
+      let response = await fetch('http://' + data.ipAddress + '/raffle/query?query=archived&val=false')
       response = await response.json()
       setDonateRaffles(response.filter((raffle) => { return raffle.type == 1 }))
       setBuyRaffles(response.filter((raffle) => { return raffle.type == 2 }))
-      // filter raffles based on what type they want to see (donate, buy, all)
-      response = (viewType == 1) ? response.filter((raffle) => { return raffle.type == 1 }) : response
-      response = (viewType == 2) ? response.filter((raffle) => { return raffle.type == 2 }) : response
+      setUpcomingRaffles(response.filter((raffle) => { return raffle.live == false }))
       setRaffles(response)
     }
     getRaffle()
@@ -69,9 +64,8 @@ function Home({ navigation }) {
     );
     return () => backHandler.remove();
 
-  }, [viewType])
+  }, [])
 
-  console.log(latestRaffles)
   // if is a host
   let hostRaffle;
   if (user_logged_in(user) && user.isHost) {
@@ -120,8 +114,8 @@ function Home({ navigation }) {
           </HorizontalScroll>
 
           <View style={{ marginTop: '-10%' }}>
-            <HorizontalScroll title="Coming Soon" theme="light" seeAllRaffles={buyRaffles} navigation={navigation}>
-              {buyRaffles.map((raffle, index) =>
+            <HorizontalScroll title="Coming Soon" theme="light" seeAllRaffles={upcomingRaffles} navigation={navigation} toggle={true}>
+              {upcomingRaffles.map((raffle, index) =>
                 <RaffleCard raffle={raffle} navigation={navigation} />
               )}
             </HorizontalScroll>

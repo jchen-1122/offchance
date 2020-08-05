@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
         height: cardSize,
         width: cardSize,
         alignItems: 'center',
-        padding: '1%',        
+        padding: '5%',        
         marginHorizontal: Dimensions.get('window').width * 0.005
     },
     RaffleCard__image: {

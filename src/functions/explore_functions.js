@@ -43,7 +43,7 @@ function isThisWeek(time) {
     return thisWeek
 }
 
-// get all the raffles happening this week
+// get all the raffles with donations this week
 async function getRecentRaffles() {
     let response = await fetch('http://' + ip.ipAddress + '/raffle/all')
     response = await response.json()

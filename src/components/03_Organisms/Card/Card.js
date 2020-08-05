@@ -75,7 +75,7 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage, b
         case 'default':
             like = (
                 <View style={styles.likeButton}>
-                    {(banner)?<CardBanner title='MANY CHANCES TO WIN' color='lightGreen'/>:null}
+                    {(banner)?<CardBanner title='DONATE TO WIN' color='lightGreen'/>:null}
                     <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid}/>
                 </View>);
             if (donationGoal) {
