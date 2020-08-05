@@ -34,6 +34,35 @@ const styles = StyleSheet.create({
     },
     label_active: {
         color: colors.highlightColor
+    },
+
+    optionsContainer: {
+        width: Dimensions.get('window').width,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    option: {
+        height: Dimensions.get('window').height * 0.2,
+        width: Dimensions.get('window').width * 0.75,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        backgroundColor: 'white',
+        marginVertical: '2%',
+        shadowColor: "#000",
+shadowOffset: {
+	width: 0,
+	height: 2,
+},
+shadowOpacity: 0.23,
+shadowRadius: 2.62,
+
+elevation: 4,
+    },
+    option__image: {
+        height: '90%',
+        width: '50%',
+        resizeMode: 'contain'
     }
 
 })

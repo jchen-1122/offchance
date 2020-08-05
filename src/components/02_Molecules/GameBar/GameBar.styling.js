@@ -3,8 +3,7 @@ import {dimensions} from '../../../settings/all_settings.js';
 
 const styles = StyleSheet.create({
     text: {
-        fontWeight: '700', 
-        fontSize: 50, 
+        fontSize: 30, 
         textAlign: 'center'
     },
     text_light: {

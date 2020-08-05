@@ -124,7 +124,6 @@ function Game(props) {
     return (
         <View style={utilities.container}>
             <View style={[utilities.container], {backgroundColor: 'black', height: '55%'}}>
-                <GameBar color={'white'} currRound={props.round + localRounds} tokensLeft={props.tokens + localTokens} wins={props.wins + localWins} numRounds={10}></GameBar>
                 <Text style={messageStyles}>{message}</Text>
                 <View style={{flex: 0, alignItems: 'center'}}>
                     {compChoiceImg}
@@ -161,6 +160,7 @@ function Game(props) {
                             }
                         }} />
                 </View>
+                <GameBar color={'white'} currRound={props.round + localRounds} tokensLeft={props.tokens + localTokens} wins={props.wins + localWins} numRounds={10}></GameBar>
             </View>
         </View>
     )
