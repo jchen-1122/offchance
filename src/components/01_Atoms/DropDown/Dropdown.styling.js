@@ -20,15 +20,15 @@ const styles = StyleSheet.create({
         borderColor: 'pink',
         width: '100%'
     },
-    // DropDown__picker_small: {
-    //     width: 75,
-    // },
-    // DropDown__picker_large: {
-    //     width: 300
-    // },
-    // DropDown__picker_xlarge: {
-    //     width: 340
-    // },
+    DropDown__picker_small: {
+        width: 75,
+    },
+    DropDown__picker_large: {
+        width: 300
+    },
+    DropDown__picker_xlarge: {
+        width: 340
+    },
 
     // for Android
     Picker: {

@@ -8,10 +8,9 @@ import { styles } from './Search.styling'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
 import Card from '../../03_Organisms/Card/Card';
 import FlatCard from '../../03_Organisms/FlatCard/FlatCard';
-import ListView from '../../04_Templates/ListView/ListView';
 import UsernameDisplay from '../../01_Atoms/UsernameDisplay/UsernameDisplay';
 import GlobalState from '../../globalState';
-import {user_logged_in} from '../../../functions/user_functions'
+// import {user_logged_in} from '../../../functions/user_functions';
 
 import emails from './emails'
 
@@ -30,34 +29,10 @@ function Search({navigation}) {
     const [viewType, setViewType ] = useState(0)
     const [toggleMenuOpen, setToggleMenuOpen] = useState(false)
 
-    // sort entered users so the people you're following show up at the front
-    const sortUsers = (rua) => {
-        if (!user_logged_in(user)) {
-            return rua
-        }
-        var entered = []
-        for (let i = 0; i < rua.length; i++) {
-            let enteredUser = rua[i]
-            // not showing yourself in the search
-            if (enteredUser.username === user.username) {
-              continue;
-            }
-            // if you're following them, add to the top
-            if (user.following.includes(enteredUser.userID)) {
-                entered.unshift(enteredUser)
-            }
-            // if you're not following them, push to back
-            else {
-                entered.push(enteredUser)
-            }
-        }
-        return entered
-    }
-
     // Get all raffles & users from db
     React.useEffect(() => {
         async function getRaffle() {
-          let response = await fetch('http://'+data.ipAddress+'/raffle/all')
+          let response = await fetch('http://'+data.ipAddress+':3000/raffle/all')
           response = await response.json()
           // filter raffles based on what type they want to see (donate, buy, all)
           response = (viewType == 1) ? response.filter((raffle)=>{return raffle.type==1}) : response
@@ -67,7 +42,7 @@ function Search({navigation}) {
         getRaffle()
 
         async function getUser() {
-          let response = await fetch('http://' + data.ipAddress + '/user/query');
+          let response = await fetch('http://' + data.ipAddress + ':3000/user/query');
           response = await response.json()
           setUsers(response);
         }
@@ -98,7 +73,7 @@ function Search({navigation}) {
 
     // ---------------------------------  Search pool and results  --------------------------------------
     const [searchTerm, setSearchTerm] = useState('');
-    const USER_KEYS_TO_FILTERS = ['username', ]; // user filters
+    const USER_KEYS_TO_FILTERS = ['username', 'name', 'email', 'phoneNumber']; // user filters
     const filteredUsers = users.filter(createFilter(searchTerm, USER_KEYS_TO_FILTERS));
     const RAFFLE_KEYS_TO_FILTERS = ['name', 'description']; // user filters
     const filteredRaffles = raffles.filter(createFilter(searchTerm, RAFFLE_KEYS_TO_FILTERS));
@@ -153,8 +128,19 @@ function Search({navigation}) {
             {/* TODO: for raffle, bigger avatar, adjust margin, add like button; for users, add follow button */}
             {displayUser ?
               <ScrollView>
-                <ListView users={sortUsers(filteredUsers)} navigation={navigation} currUser={user} setUser={setUser}/>
-
+                {filteredUsers.map(map_user => {
+                  {/* What&How you want results to display */}
+                  return (
+                    <TouchableOpacity
+                        onPress={() => {
+                            navigation.navigate('OtherUser', {user: map_user})}}>
+                        { map_user._id == user._id ?
+                          <UsernameDisplay username={map_user.username + ' (self)'} profPic={{uri: map_user.profilePicture}} size="large"/>
+                                    :
+                          <UsernameDisplay username={map_user.username} profPic={{uri: map_user.profilePicture}} size="large"/> }
+                    </TouchableOpacity>
+                    )
+                })}
               </ScrollView>
                     :
 

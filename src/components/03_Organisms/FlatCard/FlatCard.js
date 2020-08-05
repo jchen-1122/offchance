@@ -19,9 +19,11 @@ function FlatCard ({ navigation, data, viewType, inLikesPage }) {
     const ip = require('../../IP_ADDRESS.json');
     const [host, setHost] = useState(null)
 
+    const { width, height } = Dimensions.get('window');
+
     React.useEffect(() => {
         async function getHost() {
-            let response = await fetch('http://' + ip.ipAddress + '/user/id/' + data.hostedBy)
+            let response = await fetch('http://' + ip.ipAddress + ':3000/user/id/' + data.hostedBy)
             response = await response.json()
             setHost(response)
         }
@@ -30,7 +32,7 @@ function FlatCard ({ navigation, data, viewType, inLikesPage }) {
     }, [])
 
     // width for card content
-    let contentWidth = Dimensions.get('window').width * 0.65;
+    let contentWidth = Dimensions.get('window').width * 0.5;
 
     // maps numerical types to actual types of cards
     let typeMap = new Map()
@@ -71,7 +73,7 @@ function FlatCard ({ navigation, data, viewType, inLikesPage }) {
     // Modified so that host is fetched from database. Data provides host id.
     let username;
     if (host) {
-        username = <UsernameDisplay username={host.username} profPic={{ uri: host.profilePicture }} size='hostedBy' />
+        username = <UsernameDisplay username={host.username} profPic={{ uri: host.profilePicture }} size='search' />
     }
 
     switch (type) {
@@ -81,12 +83,12 @@ function FlatCard ({ navigation, data, viewType, inLikesPage }) {
                 <View>
                     {expired ?
                         <View>
-                            <Text style={[styles.startData_grey, fonts.p]}>DRAWING STARTED</Text>
-                            <Countdown unix_timestamp={date} />
+                            <Text style={styles.startData_grey}>DRAWING STARTED</Text>
+                            <Countdown unix_timestamp={date} type='search'/>
                         </View> :
                         <View>
-                            <Text style={[styles.startData_grey, fonts.p]}>DRAWING STARTS</Text>
-                            <Countdown unix_timestamp={date} />
+                            <Text style={styles.startData_grey}>DRAWING STARTS</Text>
+                            <Countdown unix_timestamp={date} type='search'/>
                         </View>
                     }
                 </View>
@@ -95,30 +97,35 @@ function FlatCard ({ navigation, data, viewType, inLikesPage }) {
         }
 
     return (
-      <TouchableOpacity
-        style={{borderWidth: 5,  }}
-        onPress={() => navigation.navigate('Raffle', data)}>
-          <View style={{flexDirection:'row', }}>
-              <View style={styles.FlatCard}>
-                  <Image style={styles.FlatCard__image} source={{ uri: imageURI }} onPress={() => {
-                  }} />
 
-                  <View style={{ flex: 1, width: contentWidth,  }}>
-                      <Text style={[fonts.h1, { textAlign: 'center' }]}>{title}</Text>
-                      <TouchableOpacity
-                          style={{marginTop: 20, }}
-                          onPress={() => {
-                              navigation.navigate('OtherUser', { user: host })
-                          }}>
-                          {username}
-                      </TouchableOpacity>
+          <TouchableOpacity
+            style={{borderWidth: 2, width: contentWidth, borderColor: 'rgba(0, 0, 0, 0.05)'}}
+            onPress={() => navigation.navigate('Raffle', data)}>
+
+
+                  <View style={styles.FlatCard}>
+                      <Image style={styles.FlatCard__image} source={{ uri: imageURI }} onPress={() => {
+                      }} />
+
+                      <View style={{ width: contentWidth, alignItems: 'center' }}>
+                          <Text style={[fonts.h1, {marginLeft:10, marginRight:10, textAlign: 'center', fontSize: height * 0.018,}]}>{title}</Text>
+                          <TouchableOpacity
+                              style={{marginTop: height * 0.01, }}
+                              onPress={() => {
+                                  navigation.navigate('OtherUser', { user: host })
+                              }}>
+                              {username}
+                          </TouchableOpacity>
+                      </View>
+
+                      <View style={{ marginLeft: width * 0.08 }}>
+                        {startData}
+                      </View>
                   </View>
 
-                  {startData}
 
-              </View>
-          </View>
-      </TouchableOpacity>
+          </TouchableOpacity>
+
     )
 }
 
