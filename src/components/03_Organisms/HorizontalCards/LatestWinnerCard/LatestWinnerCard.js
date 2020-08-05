@@ -3,12 +3,26 @@ import { Text, Image, View, TouchableOpacity } from 'react-native';
 import styles from './LatestWinnerCard.styling';
 import { utilities, fonts } from '../../../../settings/all_settings'
 import UsernameDisplay from '../../../01_Atoms/UsernameDisplay/UsernameDisplay'
-// for small, unclickable cards like in Latest Winners
+
+// for small, clickable cards like in Latest Winners
 function LatestWinnerCard(props) {
-    const data = require('../../../IP_ADDRESS.json')
+    const ip = require('../../../IP_ADDRESS.json')
 
     var winner = props.winner
     var raffle = props.raffle
+    const [host, setHost] = useState(null)
+    
+    useEffect(() => {
+        async function getHost() {
+            let response = await fetch('http://' + ip.ipAddress + '/user/id/' + props.raffle.hostedBy)
+            response = await response.json()
+            setHost(response)
+        }
+        if (raffle) {
+            console.log('here')
+            getHost()
+        }
+    }, [raffle])
 
     if (raffle){
         raffle['host'] = host
@@ -21,6 +35,7 @@ function LatestWinnerCard(props) {
                     <Image style={styles.raffleImage} source={{ uri: raffle.images[0] }} />
                     <Text style={[styles.raffleName]}>{raffle.name}</Text>
                 </TouchableOpacity>
+                
                 <TouchableOpacity onPress={() => {
                     props.navigation.navigate('OtherUser', { user: winner })
                 }}>

@@ -3,8 +3,6 @@ const monthNames = ["January", "February", "March", "April", "May", "June", "Jul
 export function unix_to_date(unix_timestamp) {
 
     var date = new Date(unix_timestamp * 1000); // convert to date object
-    var ampm = (date.getHours() >= 12) ? "PM" : "AM"; // am or pm
-    var hour = date.getHours() > 12 ? date.getHours() - 12 : date.getHours() // hour in AM or PM instead of military
     var diff = date.getTime() - Date.now() // calc time until date
     var str;
 
