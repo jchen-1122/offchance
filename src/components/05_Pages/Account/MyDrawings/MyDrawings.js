@@ -59,14 +59,18 @@ export default function Wallet({navigation}) {
     {/* UNCOMMENT THE LINE IN RETURN WHEN SOLVED */}
     
     const _uploadImage = async () => {
-        console.log(image)
-        const base64 = await FileSystem.readAsStringAsync(image);
-        console.log('hi')
-        const fileContent = decode(base64);
+        //console.log(image)
+        //const base64 = await FileSystem.readAsStringAsync(image);
+        //console.log('hi')
+        //const fileContent = decode(base64);
+        let fileString = await FileSystem.readAsStringAsync(image, { encoding: FileSystem.EncodingTypes.Base64});
+        let base64String = 'data:image/jpg;base64' + fileString;
+        console.log(base64String)
         return cosClient.putObject({
             Bucket: 'oc-mobile-images', 
-            Key: 'testupload.png', 
-            Body: fileContent
+            Key: 'testupload.jpg', 
+            Body: image,
+            type: 'image/jpg'
         }).promise()
         .then(() => {
             console.log(`Item: testupload created!`);
@@ -80,7 +84,7 @@ export default function Wallet({navigation}) {
         <View style={utilities.container}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Button title="Pick an image from camera roll" onPress={async () => {_pickImage()}} />
-                {/*image && <Button title="Upload image to IBM Cloud" onPress={async () => {_uploadImage()}} /> */}
+                {image && <Button title="Upload image to IBM Cloud" onPress={async () => {_uploadImage()}} /> }
                 {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
             </View>
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>
