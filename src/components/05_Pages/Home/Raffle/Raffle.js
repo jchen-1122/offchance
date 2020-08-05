@@ -23,8 +23,9 @@ export default function Raffle({ navigation, route }) {
     // get host of raffle from db
     const [top5, setTop5] = useState([])
     const [enabled, setEnabled] = useState(true)
+    // winner needs to be in the database when the results are calculated
+    const [winner, setWinner] = useState(Object.keys(route.params).includes('winner') ? route.params.winner : route.params['host'])
     const ip = require('../../../IP_ADDRESS.json');
-
     React.useEffect(() => {
         async function getCurrentRaffle() {
             route.params = await getRaffle(route.params._id)
@@ -32,7 +33,7 @@ export default function Raffle({ navigation, route }) {
             route.params['top5'] = route.params.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,5)
         }
         getCurrentRaffle()
-    })
+    }, [])
 
     React.useEffect(() => {
         async function getTop5(ids) {
@@ -330,7 +331,7 @@ export default function Raffle({ navigation, route }) {
                         {typeof user._id === 'undefined' ? null : user.following.includes(route.params.host._id)  ? 
                             <BlockButton color="secondary" size="small" title='FOLLOWING'
                             onPress={async () => {
-                                if (enabled && route.params.host.profilePicture != null) {
+                                if (enabled) {
                                     setEnabled(false)
                                     const userObj = await removeFollower(route.params.host)
                                     setUser(userObj)
@@ -340,7 +341,7 @@ export default function Raffle({ navigation, route }) {
                             /> :
                             <BlockButton color="primary" size="small" title='FOLLOW'
                             onPress={async () => {
-                                if (enabled && route.params.host.profilePicture != null) {
+                                if (enabled) {
                                     setEnabled(false)
                                     const userObj = await addFollower(route.params.host)
                                     setUser(userObj)
@@ -356,23 +357,31 @@ export default function Raffle({ navigation, route }) {
                         <View style={[styles.highlightBackground, {paddingVertical: '3%', paddingRight: '5%'}]}>
                             <Text style={fonts.italic}>Won by:</Text>
                             <View style={styles.hostedby}>
-                            <TouchableOpacity onPress={() => navigation.navigate('OtherUser',{user: route.params.host})}>
+                            <TouchableOpacity onPress={() => navigation.navigate('OtherUser',{user: winner})}>
                                 <View style={styles.hostedby__profile}>
-                                <Image source={{ uri: route.params.host.profilePicture }} style={styles.hostedby__image}></Image>
-                                <Text style={fonts.link}>{'@' + route.params.host.username}</Text>
+                                <Image source={{ uri: winner.profilePicture }} style={styles.hostedby__image}></Image>
+                                <Text style={fonts.link}>{'@' + winner.username}</Text>
                                 </View>
                             </TouchableOpacity>
-                            {typeof user._id === 'undefined' ? null : user.following.includes(route.params.host._id)  ? 
+                            {typeof user._id === 'undefined' ? null : user.following.includes(winner._id)  ? 
                                 <BlockButton color="secondary" size="small" title='FOLLOWING'
                                 onPress={async () => {
-                                    const userObj = await removeFollower(route.params.host)
-                                    setUser(userObj)
+                                    if (enabled) {
+                                        setEnabled(false)
+                                        const userObj = await removeFollower(winner)
+                                        setUser(userObj)
+                                        setEnabled(true)
+                                    }
                                 }}
                                 /> :
                                 <BlockButton color="primary" size="small" title='FOLLOW'
                                 onPress={async () => {
-                                    const userObj = await addFollower(route.params.host)
-                                    setUser(userObj)
+                                    if (enabled) {
+                                        setEnabled(false)
+                                        const userObj = await addFollower(winner)
+                                        setUser(userObj)
+                                        setEnabled(true)
+                                    }
                                 }}
                                 />}
                             </View>

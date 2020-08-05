@@ -64,7 +64,7 @@ function Home({navigation}) {
 
       }, [viewType])
 
-      console.log(latestRaffles)
+    console.log(latestRaffles)
     // if is a host
     let hostRaffle;
     if (user_logged_in(user) && user.isHost){
