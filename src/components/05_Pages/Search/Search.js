@@ -116,6 +116,7 @@ function Search({navigation}) {
 
     // ------------------------------------------------------------------------------------
 
+    {/* TODO: Add a like button at the top right corner on raffle */}
     return (
         <View style={styles.container}>
 

@@ -39,7 +39,7 @@ const Countdown = ({ unix_timestamp, type }) => {
     switch (type){
       case 'search':
         style.push(styles.search);
-
+        break;
     }
 
     return (
