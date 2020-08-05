@@ -13,7 +13,7 @@ import { colors, fonts, utilities, dimensions } from '../../../settings/all_sett
 import { in_a_day, is_expired } from '../../../functions/convert_dates';
 import { top5_raffle } from '../../../functions/explore_functions';
 
-function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage }) {
+function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage, banner }) {
     const ip = require('../../IP_ADDRESS.json');
     const [host, setHost] = useState(null)
     const currUser = currUserG
@@ -75,7 +75,7 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
         case 'default':
             like = (
                 <View style={styles.likeButton}>
-                    {(viewType==0)?<CardBanner title='MANY CHANCES TO WIN' color='lightGreen'/>:null}
+                    {(banner)?<CardBanner title='MANY CHANCES TO WIN' color='lightGreen'/>:null}
                     <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid}/>
                 </View>);
             if (donationGoal) {
@@ -104,7 +104,7 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
         case 'buy':
             like = (
                 <View style={styles.likeButton}>
-                    {(viewType==0)?<CardBanner title='ENTER TO BUY' color='darkGreen' icon='usd'/>:null}
+                    {(banner)?<CardBanner title='ENTER TO BUY' color='darkGreen' icon='usd'/>:null}
                     <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid}/>
                 </View>);
             startData = (<View><Text style={[styles.startData_grey, fonts.p]}>{expired ? 'DRAWING COMPLETED' : 'DRAWING STARTS'}</Text><Countdown unix_timestamp={date} /></View>);

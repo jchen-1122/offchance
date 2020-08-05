@@ -10,7 +10,6 @@ function LatestWinnerCard(props) {
     var winner = props.winner
     var raffle = props.raffle
     if (raffle){
-        raffle['host'] = winner
 
         return (
             <View style={utilities.exploreCard}>
