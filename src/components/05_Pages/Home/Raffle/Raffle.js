@@ -309,7 +309,7 @@ export default function Raffle({ navigation, route }) {
     return (
         <View style={[utilities.container, { backgroundColor: 'white' }]}>
             <ScrollView contentContainerStyle={utilities.scrollview}>
-                {images.length > 1 ? <ImageCarousel images={images}></ImageCarousel> : <Image source={images[0]} style={{ width: 400, height: 300, resizeMode: 'center' }}></Image>}
+                {images.length > 1 ? <ImageCarousel images={images}></ImageCarousel> : <Image source={images[0]} style={styles.Raffle__image}></Image>}
 
                 {/* raffle title */}
                 <Text style={[fonts.h1, { marginLeft: '8%', marginBottom: 0 }]}>{name}</Text>
@@ -409,25 +409,27 @@ export default function Raffle({ navigation, route }) {
                             {/* !!!!!!!!!!!!! TODO: conditionally show progress bar !!!!!!!!!!!!!!*/}
                             <ProgressBar progress={230 / 500} color={colors.primaryColor} raised={230} goal={500} width={315} />
 
-                            {}
-                            <View style={styles.pickSizeSlide}>
-                                <Text>PICK YOUR SIZE</Text>
-                                <SizeCarousel sizes={sizeTypes} type='single' />
-                                <SizeCarousel sizes={sizes} type='single' />
-                            </View>
+                            {raffle.sizes.length > 0 ?
+                                <View style={styles.pickSizeSlide}>
+                                    <Text>PICK YOUR SIZE</Text>
+                                    <SizeCarousel sizes={sizeTypes} type='single' />
+                                    <SizeCarousel sizes={sizes} type='single' />
+                                </View> : null
+                            }
+
 
                             <BuyOptions bonusAmount={10} bonusChances={40} bonusLimit={10} options={options} />
                             <Text style={{ marginRight: -10 }}>*We we will never show donation amounts for any user</Text>
                         </View>
                     }
                     {raffle.live ?
-                                        <View style={[styles.highlightBackground, { marginTop: '5%' }]}>
-                                        <Text style={[fonts.p, { marginTop: 20, textAlign: 'justify' }]}>Off Chance is a for-good company that hosts drawings for incredible products to raise money for charities and important causes that affect us all. All net proceeds (after hosting and platform fees) for this drawing will benefit the partners below:</Text>
-                                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, marginBottom: 20 }}>
-                                            <Image source={donors[0]} />
-                                            <Image source={donors[1]} />
-                                        </View>
-                                    </View> : null
+                        <View style={[styles.highlightBackground, { marginTop: '5%' }]}>
+                            <Text style={[fonts.p, { marginTop: 20, textAlign: 'justify' }]}>Off Chance is a for-good company that hosts drawings for incredible products to raise money for charities and important causes that affect us all. All net proceeds (after hosting and platform fees) for this drawing will benefit the partners below:</Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, marginBottom: 20 }}>
+                                <Image source={donors[0]} />
+                                <Image source={donors[1]} />
+                            </View>
+                        </View> : null
                     }
 
                     <Text style={[fonts.p, { textAlign: 'justify' }]}>*All prizes are guaranteed to be 100% authentic and deadstock. You will be notified via email once donation goal is met and drawing starts.</Text>

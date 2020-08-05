@@ -42,7 +42,6 @@ export default function ({ navigation }) {
             body: makeJSON()
         })
         const json = await response.json()
-        console.log(json)
         return json
     }
 
@@ -146,7 +145,6 @@ export default function ({ navigation }) {
                             onPress={async () => {
                                 if (!generateErrors()) {
                                     const userObj = await editUser()
-                                    console.log(userObj)
                                     setUser(userObj)
                                     if (userObj.keyValue == null) {
                                         navigation.navigate('Profile')

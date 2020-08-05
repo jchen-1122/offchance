@@ -19,7 +19,6 @@ function LatestWinnerCard(props) {
             setHost(response)
         }
         if (raffle) {
-            console.log('here')
             getHost()
         }
     }, [raffle])

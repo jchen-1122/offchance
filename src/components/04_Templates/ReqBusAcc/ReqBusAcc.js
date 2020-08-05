@@ -26,7 +26,6 @@ export default function ReqBusAcc({ navigation, route, hostItem, setHostItem, ho
             body: makeJSON()
         })
         const json = await response.json()
-        console.log(json)
         return json
     }
 
@@ -45,19 +44,15 @@ export default function ReqBusAcc({ navigation, route, hostItem, setHostItem, ho
         let errors = []
 
         if (!_hostItem) {
-            console.log('oh')
             errors.push(<Text style={fonts.error}>Please enter in an item.</Text>)
         }
         if (!_hostCharity) {
             errors.push(<Text style={fonts.error}>Please enter in at least one charity.</Text>)
         }
-        console.log('oh')
         setErrors(errors)
         if (errors.length > 0) {
-            console.log('true')
             return true
         } else {
-            console.log('false')
             return false
         }
     }
