@@ -13,3 +13,4 @@ Each component has its own folder, with the actual structure in ComponentName.js
 * Did you change IP_ADDRESS.json?
 * Did you copy package.json from Github?
 * Did you run `expo upgrade`?
+* Did you use Stripe???
