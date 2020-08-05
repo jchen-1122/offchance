@@ -28,6 +28,13 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         marginRight: 5
     },
+    profilePic_search: {
+        height: 35,
+        width: 35,
+        borderRadius: normalSize,
+        margin: 5,
+    },
+
     username_large: {
         fontSize: 18
     },

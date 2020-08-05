@@ -53,15 +53,24 @@ function Profile({ navigation }) {
     return (
         <View style={utilities.container}>
             <ScrollView>
-                <Image source={{ uri: profilePic }} style={styles.profilePic}></Image>
+                <View style={{flexDirection: 'row', justifyContent:'center', alignItems: 'flex-end',}}>
+                    <View style={{zIndex:-1}}>
+                        {/* Profile pic*/}
+                        <Image source={{uri:profilePic}} style={styles.profilePic}></Image>
+                    </View>
+                    <View style={{zIndex:1}}>
+                        {/* Green Checkmark*/}
+                        {user.isHost ? <Icon name={'check-circle'}
+                              type='octicons'
+                              color={colors.primaryColor}
+                              backgroundColor='transparent'
+                              style={{marginLeft:-10, zIndex: 1, }}/> : null}
+                    </View>
+                </View>
+
                 <Text style={styles.header_name}>{name}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
                     <Text style={styles.header_username}>@{username}</Text>
-                    {user.isHost ? <Icon name={'check-circle'}
-                        type='octicons'
-                        color={colors.primaryColor}
-                        backgroundColor='transparent'
-                        style={{ marginTop: '19%', marginLeft: '3%' }} /> : null}
                 </View>
 
                 <StatsBar currUser={user} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>
