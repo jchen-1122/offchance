@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, Image, View, TouchableOpacity } from 'react-native';
 import styles from './LatestWinnerCard.styling';
 import { utilities, fonts } from '../../../../settings/all_settings'
@@ -9,8 +9,10 @@ function LatestWinnerCard(props) {
 
     var winner = props.winner
     var raffle = props.raffle
-    if (raffle){
 
+    if (raffle){
+        raffle['host'] = host
+        raffle['winner'] = winner
         return (
             <View style={utilities.exploreCard}>
                 <TouchableOpacity style={styles.touchable} onPress={() => {
