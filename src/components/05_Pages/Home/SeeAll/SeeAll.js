@@ -11,10 +11,11 @@ import ToggleTypeMenu from '../../../03_Organisms/ToggleTypeMenu/ToggleTypeMenu'
 function SeeAll({ navigation, route }) {
     var raffles = route.params.raffles
     var toggle = route.params.title == 'Trending'
-    console.log(toggle)
+
     const { user, setUser } = useContext(GlobalState)
     const [viewType, setViewType] = useState(0)
     const [toggleMenuOpen, setToggleMenuOpen] = useState(false)
+    
     return (
         <View style={utilities.container}>
             <ScrollView contentContainerStyle={utilities.scrollview}>
@@ -25,7 +26,6 @@ function SeeAll({ navigation, route }) {
                         </View> :
                         null
                     }
-
                     {raffles.map((raffle, index) =>
                         <Card
                             data={raffle}

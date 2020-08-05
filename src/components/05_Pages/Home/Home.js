@@ -16,7 +16,6 @@ import Top5Card from '../../03_Organisms/HorizontalCards/Top5Card/Top5Card';
 import LatestWinnerCard from '../../03_Organisms/HorizontalCards/LatestWinnerCard/LatestWinnerCard';
 import RaffleCard from '../../03_Organisms/HorizontalCards/RaffleCard/RaffleCard';
 
-import { get_user } from '../../fake_users/stub-users';
 function Home({ navigation }) {
   const data = require('../../IP_ADDRESS.json');
   const { user, setUser } = useContext(GlobalState)

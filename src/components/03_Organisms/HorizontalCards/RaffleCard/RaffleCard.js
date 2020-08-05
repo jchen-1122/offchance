@@ -7,14 +7,17 @@ import { utilities, fonts } from '../../../../settings/all_settings'
 function RaffleCard(props) {
     var raffle = props.raffle
 
-    return (
-        <TouchableOpacity onPress={() => {props.navigation.navigate('Raffle',raffle)}}>
-            <View style={styles.RaffleCard}>
-                <Image style={styles.RaffleCard__image} source={{ uri: raffle.images[0] }} />
-                <Text style={[fonts.h3, { textAlign: 'center' }]}>{raffle.name}</Text>
-            </View>
-        </TouchableOpacity>
-    )
+    if (raffle){
+        return (
+            <TouchableOpacity onPress={() => {props.navigation.navigate('Raffle',raffle)}}>
+                <View style={styles.RaffleCard}>
+                    <Image style={styles.RaffleCard__image} source={{ uri: raffle.images[0] }} />
+                    <Text style={[fonts.h3, { textAlign: 'center' }]}>{raffle.name}</Text>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+    return null
 }
 
 export default RaffleCard;
