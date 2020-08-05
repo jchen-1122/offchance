@@ -7,6 +7,9 @@ import CheckBox from '../../02_Molecules/Checkbox/Checkbox';
 import Dropdown from '../../01_Atoms/DropDown/DropDown';
 import { colors, fonts, utilities, dimensions } from '../../../settings/all_settings';
 import validator from 'validator';
+import * as Google from 'expo-google-app-auth';
+import * as Facebook from 'expo-facebook';
+
 
 export default function Signup({ navigation }) {
   const data = require('../../IP_ADDRESS.json');
@@ -15,20 +18,75 @@ export default function Signup({ navigation }) {
   var us_states = []
   for (var i in jsonData) us_states.push(i)
 
-  // posts user to database
-  const postUser = async () => {
-    const response = await fetch('http://' + data.ipAddress + ':3000/user/signup/', {
+  const sendsms = async () => {
+    const response = await fetch('http://'+data.ipAddress+'/user/sendphone',{
       method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      },
+      },  
       body: makeJSON()
     })
-    const json = await response.json()
-    console.log(json)
-    return json
   }
+
+  const checkValid = async () => {
+    let errors = []
+    let rUser = null
+    const email = await fetch('http://' + data.ipAddress + '/user/query?query=email&val=' + _email, {
+      method: "GET",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    const emailjson = await email.json()
+    if (emailjson.length !== 0) {
+      errors.push(<Text style={fonts.error}>Email is taken. Please try again.</Text>)
+    }
+    const usr = await fetch('http://' + data.ipAddress + '/user/query?query=username&val=' + _username, {
+      method: "GET",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    const usrjson = await usr.json()
+    if (usrjson.length !== 0) {
+      errors.push(<Text style={fonts.error}>Username is taken. Please try again.</Text>)
+    }
+    const phone = await fetch('http://' + data.ipAddress + '/user/query?query=phoneNumber&val=' + _phoneNumber, {
+      method: "GET",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
+    })
+    const phonejson = await phone.json()
+    if (phonejson.length !== 0) {
+      errors.push(<Text style={fonts.error}>Phone number already registered.</Text>)
+    }
+
+    if (_ref.length !== 0) {
+      const refcode = await fetch('http://' + data.ipAddress + '/user/query?query=referralCode&val=' + _ref.toUpperCase(), {
+        method: "GET",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+      const refjson = await refcode.json()
+      if (refjson.length === 0) {
+        errors.push(<Text style={fonts.error}>Referral code does not exist</Text>)
+      } else {
+        // pass the referral giver to the next page
+        rUser = refjson[0]._id
+      }
+    }
+    setErrors(errors)
+    if (errors.length > 0) return true
+    return false
+  }
+
 
   const [state, setState] = useState({
     businessAccount: false,
@@ -39,6 +97,7 @@ export default function Signup({ navigation }) {
   })
   const [_errors, setErrors] = useState([])
   const [_confirm, setConfirm] = useState(null)
+  const [active, setActive] = useState(null)
 
   // states for each input value
   const [_name, setName] = useState(null)
@@ -49,6 +108,10 @@ export default function Signup({ navigation }) {
   const [_password, setPassword] = useState(null)
   const [_us_state, set_us_state] = useState(null)
   const [_city, setCity] = useState(null)
+  const [_oauth, setOauth] = useState(false)
+  const [_proPic, setProPic] = useState(null)
+  const [_ref, setRef] = useState('')
+  const [_refUser, setRefUser] = useState('')
 
   // validates email input
   const isValidEmail = () => {
@@ -65,8 +128,13 @@ export default function Signup({ navigation }) {
     return us_states.includes(_us_state)
   }
 
+  // validates referral code
+  const isValidRef = async () => {
+    return false;
+  }
+
   // check for any errors in input, returns array of errors
-  const generateErrors = () => {
+  const generateErrors = async () => {
     let errors = []
     // if passwords don't match
     if (_password != _confirm) {
@@ -85,7 +153,7 @@ export default function Signup({ navigation }) {
       errors.push(<Text style={fonts.error}>Must agree to terms of services</Text>)
     }
     // must be a valid US state
-    if (!isValidState()){
+    if (!isValidState()) {
       errors.push(<Text style={fonts.error}>Must be a valid US state (abbreviation)</Text>)
     }
     setErrors(errors)
@@ -104,10 +172,30 @@ export default function Signup({ navigation }) {
       city: _city,
       state: jsonData[_us_state],
       password: _password,
-      isHost: state.businessAccount
+      isHost: state.businessAccount,
+      profilePicture: (_proPic != null) ? _proPic : 'https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/default-avatar.png'
     }
     return JSON.stringify(data)
   };
+
+  const getRefUser = async () => {
+    if (_ref.length !== 0) {
+      const refcode = await fetch('http://' + data.ipAddress + '/user/query?query=referralCode&val=' + _ref.toUpperCase(), {
+        method: "GET",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
+      const refjson = await refcode.json()
+      if (refjson.length === 0) {
+        return 'L'
+      } else {
+        // pass the referral giver to the next page
+        return refjson[0]._id
+      }
+    }
+  }
 
   // ============================================================================================
   return (
@@ -118,21 +206,75 @@ export default function Signup({ navigation }) {
 
       <View style={{justifyContent: "flex-end", flex: 1}}>
 
-    <ScrollView>
+    <ScrollView
+      showsVerticalScrollIndicator={false}>
       <View style={[utilities.flexCenter, { marginTop: '5%', marginBottom: 25 }]}>
-        <View style={{flexDirection: 'row', justifyContent: 'center'}}>
-        <BlockButton
+        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+          <BlockButton
             color="facebook"
             title="Facebook"
-            style={{margin: 0, marginRight: 7.5}}/>
+            style={{margin: 0, marginRight: 7.5}}
+            onPress={async () => {
+              try {
+                await Facebook.initializeAsync(2031545587174254);
+                const {
+                  type,
+                  token,
+                  expires,
+                  permissions,
+                  declinedPermissions,
+                } = await Facebook.logInWithReadPermissionsAsync({
+                  
+                });
+                if (type === 'success') {
+                  // Get the user's name using Facebook's Graph API
+                  const response = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,email,name,picture.type(large)`);
+                  const result = await response.json()
+                  setOauth(true)
+                  setName(result.name)
+                  setEmail(result.email)
+                  setProPic(result.picture.data.url)
+                  setPassword(result.id)
+                  setConfirm(result.id)
+                } else {
+                  // type === 'cancel'
+                  alert("authentication error")
+                }
+              } catch ({ message }) {
+                alert(`Facebook Login Error: ${message}`);
+              }
+            }}
+            />
         <BlockButton
             color="google"
             title="Google"
-            style={{margin: 0, marginLeft: 7.5}}/>
+            style={{ margin: 0, marginLeft: 7.5 }} 
+            onPress={async () => {
+                try {
+                  const result = await Google.logInAsync({
+                    androidClientId: '566995907890-o1h8kjbnrkc62k0ft6f1a7pgjvmcq282.apps.googleusercontent.com',
+                    iosClientId: '566995907890-nu7o5miq123rdqgks1v7bv2fph8ef94g.apps.googleusercontent.com',
+                    scopes: ['profile', 'email'],
+                  });
+              
+                  if (result.type === 'success') {
+                    setOauth(true)
+                    setName(result.user.name)
+                    setEmail(result.user.email)
+                    setProPic(result.user.photoUrl)
+                    setPassword(result.user.id)
+                    setConfirm(result.user.id)
+                  } else {
+                    return { cancelled: true };
+                  }
+                } catch (e) {
+                  return { error: true };
+                }
+            }}/>
         </View>
 
-        <View style={{marginVertical: '2.5%', alignItems: 'center'}}>
-        <Divider />
+        <View style={{ marginVertical: '2.5%', alignItems: 'center' }}>
+          <Divider />
         </View>
 
         <InputField
@@ -160,6 +302,7 @@ export default function Signup({ navigation }) {
           value={_email} onChangeText={(text) => { setEmail(text) }} required />
         <InputField
           label="Instagram Handle"
+          style={{ width: '82%' }}
           value={_instaHandle} onChangeText={(text) => { setInstaHandle(text) }}
           tooltip={true}
           tooltipContent="We use this to to give you bonus chances when you share with friends" />
@@ -170,18 +313,14 @@ export default function Signup({ navigation }) {
             style={{ width: '65%' }}
             label="City"
             value={_city} onChangeText={(text) => { setCity(text) }} />
-          <InputField
-            autoCapitalize="characters"
-            style={{width: '25%'}}
-            label="State (abbr)"
-            value={_us_state} onChangeText={(text) => { set_us_state(text) }} />
-
-          {/* <View style={{ marginTop: 34, zIndex: 10 }}>
-            <Dropdown options={us_states} size="small" set_us_state={set_us_state}/>
-          </View> */}
+          <Dropdown 
+          options={us_states} 
+          size="small" 
+          placeholder="State"
+          setValue={set_us_state}/>
         </View>
-
-        <InputField
+        
+        {(_oauth) ? null : <View><InputField
           label="Password"
           value={_password}
           onChangeText={(text) => { setPassword(text) }}
@@ -192,22 +331,28 @@ export default function Signup({ navigation }) {
           value={_confirm}
           onChangeText={(text) => { setConfirm(text) }}
           required
-          password />
+          password /></View>}
 
-        <View style={{ width: '90%'}}>
+        <InputField
+          label="Referral Code"
+          value={_ref}
+          onChangeText={(text) => { setRef(text) }}/>
+          
+
+        <View style={{ width: '90%' }}>
           <CheckBox
             selected={state.businessAccount}
             onPress={() => setState({ businessAccount: !state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement })}
             text='Request to host your own drawings'
           />
         </View>
-          {state.businessAccount ? (
-            <View style={[utilities.flexCenter, { width: '100%' }]}>
-              <InputField label="Describe the item you would like to use in a drawing" required />
-              <InputField label="Please provide the charity/foundation name(s) you are raising donations for" required />
-              <InputField label="Please provide any additional details below (business website, social media links)" />
-            </View>) : null}
-            <View style={{ width: '90%' }}>
+        {state.businessAccount ? (
+          <View style={[utilities.flexCenter, { width: '100%' }]}>
+            <InputField label="Describe the item you would like to use in a drawing" textArea required />
+            <InputField label="Please provide the charity/foundation name(s) you are raising donations for" textArea required />
+            <InputField label="Please provide any additional details below (business website, social media links)" textArea />
+          </View>) : null}
+        <View style={{ width: '90%' }}>
           <CheckBox
             selected={state.futureDrawings}
             onPress={() => setState({ businessAccount: state.businessAccount, futureDrawings: !state.futureDrawings, agreement: state.agreement })}
@@ -218,26 +363,37 @@ export default function Signup({ navigation }) {
             onPress={() => setState({ businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: !state.agreement })}
             text='I agree with terms of service'
           />
-          </View>
+        </View>
 
 
         {/* if some input field is invalid, a red error message will pop up */}
-        <View style={{width: '90%', marginTop: 5, marginBottom: 5}}>
-        {_errors}
+        <View style={{ width: '90%', marginTop: 5, marginBottom: 5 }}>
+          {_errors}
         </View>
 
         <BlockButton
           title="SIGN UP FOR 5 FREE CHANCES"
           color="secondary"
           onPress={async () => {
-            console.log(_city)
-            console.log(jsonData[_us_state])
-            let isError = generateErrors()
+            //console.log(_city)
+            //console.log(jsonData[_us_state])
+            let isError = await generateErrors()
             setState({ businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true })
             if (!isError) {
-              const userObj = await postUser()
+              let postErrors = await checkValid()
+              if (!postErrors) {
+                sendsms()
+                const data = makeJSON()
+                const rUser = await getRefUser()
+                console.log(rUser)
+                navigation.navigate('PhoneVerify', { signup: data, mailing: state.futureDrawings, phone: _phoneNumber, email: _email, refUser: rUser })
+              }
+              /*const userObj = await postUser()
               if (userObj.keyValue == null) {
                 console.log("signed up")
+                if (state.futureDrawings) {
+                  mailingList()
+                }
                 navigation.navigate('Login', { signedUp: true })
               } else {
                 let errors = []
@@ -251,7 +407,7 @@ export default function Signup({ navigation }) {
                 }
                 errors.push(<Text style={fonts.error}>{errMsg}</Text>)
                 setErrors(errors)
-              }
+              }*/
             }
           }} />
         {state.signedUp && _errors.length == 0 ? <Text>Signing Up...</Text> : null}

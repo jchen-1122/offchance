@@ -24,7 +24,7 @@ function Home({navigation}) {
     // get all raffles and maybe filter them by type
     React.useEffect(() => {
         async function getRaffle() {
-          let response = await fetch('http://'+data.ipAddress+':3000/raffle/all')
+          let response = await fetch('http://'+data.ipAddress+'/raffle/all')
           response = await response.json()
           // filter raffles based on what type they want to see (donate, buy, all)
           response = (viewType == 1) ? response.filter((raffle)=>{return raffle.type==1}) : response
@@ -57,9 +57,9 @@ function Home({navigation}) {
     let hostRaffle;
     if (user_logged_in(user) && user.isHost){
       hostRaffle = (
-        <View style={{backgroundColor: 'white', width: '100%', paddingHorizontal: '5%', paddingBottom: '5%'}}>
+        <View style={{backgroundColor: 'white', width: '100%', padding: '5%'}}>
         <Text style={fonts.h1}>Host Your Own Raffles to Raise Money For Your Cause.</Text>
-        <BlockButton color="primary" title="NEW RAFFLE" size="short" onPress={()=>navigation.navigate('AskRaffleType')}/>
+        <BlockButton color="primary" title="NEW RAFFLE" size="short" onPress={()=>navigation.navigate('AskRaffleType')} style={{marginLeft: 0}}/>
       </View>
       )
     }

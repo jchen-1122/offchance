@@ -17,7 +17,7 @@ export default function Signup({ navigation }) {
 
   // posts user to database
   const postUser = async () => {
-    const response = await fetch('http://' + data.ipAddress + ':3000/user/signup/', {
+    const response = await fetch('http://' + data.ipAddress + '/user/signup/', {
       method: "POST",
       headers: {
         'Accept': 'application/json',

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar} from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Welcome from './components/05_Pages/Welcome/Welcome'
 import Login from './components/05_Pages/LoginProcess/Login/Login'
 import Signup from './components/05_Pages/Signup/Signup'
+import PhoneVerify from './components/05_Pages/Signup/PhoneVerify'
 import EnterEmail from './components/05_Pages/LoginProcess/EnterEmail/EnterEmail';
 import EnterCode from './components/04_Templates/EnterCode/EnterCode';
 import ChangePassword from './components/05_Pages/LoginProcess/ChangePassword/ChangePassword';
@@ -24,6 +25,7 @@ import YourFeed from './components/05_Pages/Home/YourFeed/YourFeed';
 import Explore from './components/05_Pages/Home/Explore/Explore';
 import OtherUser from './components/05_Pages/OtherUser/OtherUser'
 import GameController from './components/GameController';
+import LoadingScreen from './components/05_Pages/Home/Raffle/LoadingScreen/LoadingScreen'
 import RaffleResult from './components/05_Pages/Home/RaffleResult/RaffleResult'
 import EnteredUsers from './components/05_Pages/Home/EnteredUsers/EnteredUsers';
 import { Button, Text } from 'react-native'
@@ -43,17 +45,17 @@ import NotLogin from './components/05_Pages/Account/NotLogin/NotLogin';
 // Host pages import
 import AskRaffleType from './components/05_Pages/Host/AskRaffleType/AskRaffleType';
 import NewRaffle from './components/05_Pages/Host/NewRaffle/NewRaffle';
-
+import io from 'socket.io-client'
 
 const Stack = createStackNavigator();
 console.disableYellowBox = true;
 
 function App() {
   const [user, setUser] = useState({})
-  
-
+  const ip = require('./components/IP_ADDRESS.json')
+  const [socket, setSocket] = useState(io('http://'+ip.ipAddress+''))
   return (
-    <GlobalState.Provider value={{ user, setUser }}>
+    <GlobalState.Provider value={{ user, setUser, socket }}>
       <NavigationContainer>
         <StatusBar backgroundColor="white" barStyle="light-content"/>
         <Stack.Navigator initialRouteName="Welcome"
@@ -65,6 +67,7 @@ function App() {
           }}>
           <Stack.Screen name=" " component={Welcome} options={{ headerShown: false }} />
           <Stack.Screen name="Signup" component={Signup} options={{ title: 'Sign Up' }} />
+          <Stack.Screen name="PhoneVerify" component={PhoneVerify} options={{ title: 'Verify Account' }} />
           <Stack.Screen name="Login" component={Login} options={{ title: 'Log In' }} />
           <Stack.Screen name="EnterEmail" component={EnterEmail} options={{ title: 'Forgot Password' }}/>
           <Stack.Screen name="EnterCode" component={EnterCode} options={{ title: 'Forgot Password' }}/>
@@ -93,6 +96,7 @@ function App() {
           <Stack.Screen name="Top5List" component={Top5List} />
           <Stack.Screen name="OtherUser" component={OtherUser} options={({ route }) => ({ title: route.params.user.name })} />
           <Stack.Screen name="GameController" component={GameController} options={{ title: '' }}/>
+          <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
           <Stack.Screen name="RaffleResult" component={RaffleResult} />
           <Stack.Screen name="EnteredUsers" component={EnteredUsers} options={{ title: 'Entered' }}/>
           <Stack.Screen name="AskRaffleType" component={AskRaffleType} options={{ title: 'New Raffle' }}/>

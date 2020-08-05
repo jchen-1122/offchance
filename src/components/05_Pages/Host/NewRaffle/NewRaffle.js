@@ -8,12 +8,20 @@ import validator from 'validator'
 import GlobalState from '../../../globalState';
 import BottomNav from '../../../02_Molecules/BottomNav/BottomNav';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import Dropdown from '../../../01_Atoms/DropDown/DropDown';
+import SizeCarousel from '../../../01_Atoms/SizeCarousel/SizeCarousel';
 import { RadioButton } from 'react-native-paper';
 import { format_date } from '../../../../functions/convert_dates';
 import { styles } from './NewRaffle.styling';
 import { colors } from '../../../../settings/all_settings'
 
 export default function NewRaffle({ navigation, route }) {
+    var shirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
+    var shoeSizes = [];
+    for (var i = 4; i <= 14; i += 0.5) {
+        shoeSizes.push(i.toString())
+    }
+
     // states for each input value
     const [_name, setName] = useState(null)
     const [_price, setPrice] = useState(null)
@@ -24,6 +32,8 @@ export default function NewRaffle({ navigation, route }) {
     const [_sizeTypes, setSizeTypes] = useState(['One Size'])
     const [_sizes, setSizes] = useState(['One Size'])
     const [_productType, setProductType] = useState('sneaker')
+    const [_drawingDuration, setDrawingDuration] = useState(null)
+    const [_drawingRadius, setDrawingRadius] = useState(null)
 
     // stuff for date picker (start time)
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -40,12 +50,12 @@ export default function NewRaffle({ navigation, route }) {
 
     const productTypes = ['sneaker', 'streetwear', 'collectibles', 'art']
     const { user, setUser } = useContext(GlobalState)
-    console.log(typeof user._id)
+    //console.log(typeof user._id)
 
     // METHOD FOR POSTING RAFFLE
     const data = require('../../../IP_ADDRESS.json');
     const postRaffle = async () => {
-        const response = await fetch('http://' + data.ipAddress + ':3000/raffle/new', {
+        const response = await fetch('http://' + data.ipAddress + '/raffle/new', {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -54,7 +64,7 @@ export default function NewRaffle({ navigation, route }) {
             body: makeJSON()
         })
         const json = await response.json()
-        console.log(json)
+        //console.log(json)
         return json
     }
 
@@ -92,15 +102,17 @@ export default function NewRaffle({ navigation, route }) {
             name: _name,
             productPrice: _price,
             description: _description,
-            startTime: _startTime.getTime() / 1000, // convert to unix timestamp
+            //startTime: _startTime.getTime() / 1000, // convert to unix timestamp
             donationGoal: _goal,
             charities: (_charities.length > 0) ? _charities.split(',').map(item => item.trim()) : null,
             productType: _productType,
+            drawingDuration: _drawingDuration,
+            radius: _drawingRadius === 'None' ? -1 : _drawingRadius,
             // CHANGE LATER
             sizeTypes: _sizeTypes,
             sizes: _sizes
         }
-        console.log(JSON.stringify(data))
+        //console.log(JSON.stringify(data))
         return JSON.stringify(data)
     };
 
@@ -116,18 +128,13 @@ export default function NewRaffle({ navigation, route }) {
                         required />
                     {(route.params.type == 2) ?
                         <InputField
-                            label="Product Purchase Cost"
+                            label="Prize 
+                            Value"
                             keyboardType="phone-pad"
                             value={_price}
                             onChangeText={(text) => { setPrice(text) }}
                             required /> : null
                     }
-                    <InputField
-                        label="Description"
-                        value={_description}
-                        onChangeText={(text) => { setDescription(text) }}
-                        required
-                        textArea />
                     {(route.params.type == 1) ?
                         <InputField
                             label="Donation Goal ($)"
@@ -136,8 +143,39 @@ export default function NewRaffle({ navigation, route }) {
                             onChangeText={(text) => { setGoal(text) }}
                             required /> : null
                     }
+                    {(route.params.type == 1) ?
+                        <InputField
+                            label="Charity names (sep. by commas)"
+                            autoCapitalize="words"
+                            value={_charities}
+                            onChangeText={(text) => { setCharities(text) }}
+                            required /> : null
+                    }
+                    <InputField
+                        label="Description"
+                        value={_description}
+                        onChangeText={(text) => { setDescription(text) }}
+                        required
+                        textArea />
 
-                    <View style={{ width: '100%', marginLeft: '10%', marginVertical: 15 }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 2 }}>
+                        <Text style={styles.InputField__label}>Drawing Duration (Days) <Text style={{ color: 'red' }}>*</Text></Text>
+                        <Dropdown options={[1, 3, 5, 7, 14, 21, 30]} placeholder="Days" setValue={setDrawingDuration} />
+                    </View>
+
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 1 }}>
+                        <Text style={styles.InputField__label}>Drawing Radius (mi) <Text style={{ color: 'red' }}>*</Text></Text>
+                        <Dropdown options={['None', 50, 100, 200, 1000]} placeholder="Miles" setValue={setDrawingRadius} />
+                    </View>
+
+                    {_productType == 'sneaker' ?
+                        <View style={{ height: 75, marginLeft: '5%'}}>
+                            <Text style={[styles.InputField__label]}>Sneaker Sizes <Text style={{ color: 'red' }}>*</Text></Text>
+                            <SizeCarousel sizes={shoeSizes} type='multiple' default={1} setSize={setSizes} />
+                        </View>
+                        : null}
+                    {/* WE NEED THIS FOR ADMIN */}
+                    {/* <View style={{ width: '100%', marginLeft: '10%', marginVertical: 15 }}>
                         <Text style={styles.InputField__label}>Drawing Time<Text style={{ color: 'red' }}>*</Text></Text>
                         <BlockButton color="secondary" size="short" title={_startTime == null ? "Pick A Start Date" : format_date(_startTime)} onPress={showDatePicker} />
                     </View>
@@ -147,16 +185,8 @@ export default function NewRaffle({ navigation, route }) {
                         headerTextIOS="Pick a start date"
                         onConfirm={handleConfirm}
                         onCancel={hideDatePicker}
-                    />
+                    /> */}
 
-                    {(route.params.type == 1) ?
-                        <InputField
-                            label="Charity names (sep. by commas)"
-                            autoCapitalize="words"
-                            value={_charities}
-                            onChangeText={(text) => { setCharities(text) }}
-                            required /> : null
-                    }
 
                     {/* TYPE OF PRODUCT */}
                     <View style={{ width: '100%', marginLeft: '10%', marginVertical: 15 }}>
@@ -186,7 +216,10 @@ export default function NewRaffle({ navigation, route }) {
                                 onChangeText={(text) => { setProductType(text) }} /> : null}
                     </View>
 
+                    
+
                     <BlockButton title="SUBMIT FOR APPROVAL" color="primary" onPress={() => {
+                        //console.log('sizes',_sizes)
                         postRaffle()
                         navigation.navigate('Home')
                     }} />

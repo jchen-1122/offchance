@@ -81,7 +81,7 @@ export default function EnterEmail({ navigation }) {
   const ipaddr = require('../../../IP_ADDRESS.json');
 
   const emailcode = async () => {
-    const response = await fetch('http://'+ipaddr.ipAddress+':3000/user/sendcode',{
+    const response = await fetch('http://'+ipaddr.ipAddress+'/user/sendcode',{
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -95,7 +95,7 @@ export default function EnterEmail({ navigation }) {
   }
 
   const verification = async () => {
-    const response = await fetch('http://'+ipaddr.ipAddress+':3000/user/verifycode',{
+    const response = await fetch('http://'+ipaddr.ipAddress+'/user/verifycode',{
       method: "POST",
       headers: {
         'Accept': 'application/json',

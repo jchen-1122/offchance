@@ -21,7 +21,7 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
 
     React.useEffect(() => {
         async function getHost() {
-            let response = await fetch('http://' + ip.ipAddress + ':3000/user/id/' + data.hostedBy)
+            let response = await fetch('http://' + ip.ipAddress + '/user/id/' + data.hostedBy)
             response = await response.json()
             setHost(response)
         }
@@ -58,6 +58,7 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
         enteredUsers = data.users.children
         data['host'] = host
         data['top5'] = data.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,5)
+        data['winners'] = data.winners
         raffleid = data._id
     }
 
@@ -65,7 +66,7 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
     let startData = null;
     let like = null;
     let pgBar = null;
-    let button = <BlockButton title='Enter Drawing' color="primary" onPress={() => navigation.navigate('Raffle', data)} />;
+    let button = <BlockButton title='Enter Drawing' color="secondary" onPress={() => navigation.navigate('Raffle', data)} />;
     let friendsEntered = <EnteredUsersDisplay enteredUsers={enteredUsers} navigation={navigation} />
 
     // CHECK WHAT TYPE OF CARD--------------------------------------------------------------
@@ -110,6 +111,7 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
             break;
         // for upcoming 4 raffles
         case 'upcoming':
+            console.log('here')
             like = <View style={styles.upcoming_placeholder} />
             friendsEntered = null;
             button = <TouchableOpacity style={styles.upcoming_notifyMe} onPress={() => navigation.navigate('Raffle')}><Text>NOTIFY ME</Text></TouchableOpacity>;

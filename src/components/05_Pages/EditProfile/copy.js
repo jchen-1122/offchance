@@ -27,7 +27,7 @@ export default function({navigation}) {
     const data = require('../../IP_ADDRESS.json');
 
     const editUser = async () => {
-        const response = await fetch('http://'+data.ipAddress+':3000/user/edit/'+user._id,{
+        const response = await fetch('http://'+data.ipAddress+'/user/edit/'+user._id,{
           method: "PATCH",
           headers: {
             'Accept': 'application/json',
@@ -242,7 +242,7 @@ export default function({navigation}) {
     const data = require('../../IP_ADDRESS.json');
 
     const editUser = async () => {
-        const response = await fetch('http://'+data.ipAddress+':3000/user/edit/'+user._id,{
+        const response = await fetch('http://'+data.ipAddress+'/user/edit/'+user._id,{
           method: "PATCH",
           headers: {
             'Accept': 'application/json',

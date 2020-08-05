@@ -21,9 +21,9 @@ function BottomNav(props) {
               {(props.active === 'Home') ? <Icon name='home' type='material-community' color='white' /> : <Icon name='home-outline' type='material-community' color='grey' />}
               <Text style={[styles.textFont, (props.active === 'Home') ? {color:'white'} : null]}>Home</Text>
             </Button>
-            <Button onPress={() => {(props.active === 'Social') ? props.navigation.navigate('Social') : props.navigation.reset({index: 0, routes: [{ name: 'Social' }]})}}>
-              {(props.active === 'Social') ? <Icon name='chat' type='material-community' color='white' /> : <Icon name='chat-outline' type='material-community' color='grey' />}
-              <Text style={[styles.textFont, (props.active === 'Social') ? {color:'white'} : null]}>Social</Text>
+            <Button onPress={() => {(props.active === 'MyDrawings') ? props.navigation.navigate('MyDrawings') : props.navigation.reset({index: 0, routes: [{ name: 'MyDrawings' }]})}}>
+              {(props.active === 'MyDrawings') ? <Icon name='chat' type='material-community' color='white' /> : <Icon name='chat-outline' type='material-community' color='grey' />}
+              <Text style={[styles.textFont, (props.active === 'MyDrawings') ? {color:'white'} : null]}>Social</Text>
             </Button>
             <Button onPress={() => {(props.active === 'Search') ? props.navigation.navigate('Search') : props.navigation.reset({index: 0, routes: [{ name: 'Search' }]})}}>
               {(props.active === 'Search') ? <Icon name='magnify' type='material-community' color='white' /> : <Icon name='magnify' type='material-community' color='grey' />}
