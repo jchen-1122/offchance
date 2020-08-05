@@ -17,13 +17,18 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "host.exp.exponent"
     },
     "facebookScheme": "fb644043759802145",
     "facebookAppId": 644043759802145,
     "facebookDisplayName": "offchance",
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "android": {
+      "package": "host.exp.exponent"
+    },
+    "entryPoint": "node_modules/expo/AppEntry.js"
   }
 }

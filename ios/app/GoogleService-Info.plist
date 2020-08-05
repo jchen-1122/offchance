@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>566995907890-hc0nqfhpbhgunpn2c05gg2kq0s817g21.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.566995907890-hc0nqfhpbhgunpn2c05gg2kq0s817g21</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>566995907890-o1h8kjbnrkc62k0ft6f1a7pgjvmcq282.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD1USgwisU3lHfxXK3tCAR8qBNeBx4UIpI</string>
+	<key>GCM_SENDER_ID</key>
+	<string>566995907890</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>offchance</string>
+	<key>PROJECT_ID</key>
+	<string>offchance</string>
+	<key>STORAGE_BUCKET</key>
+	<string>offchance.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:566995907890:ios:ed942eb08a437957fad32b</string>
+	<key>DATABASE_URL</key>
+	<string>https://offchance.firebaseio.com</string>
+</dict>
+</plist>
