@@ -39,7 +39,6 @@ function SlidingSheet(props) {
             friction: 8,
             useNativeDriver: true
         }).start();
-
     };
 
     if (props.sheet) {

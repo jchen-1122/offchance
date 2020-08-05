@@ -10,6 +10,7 @@ import EnterEmail from './components/05_Pages/LoginProcess/EnterEmail/EnterEmail
 import EnterCode from './components/04_Templates/EnterCode/EnterCode';
 import ChangePassword from './components/05_Pages/LoginProcess/ChangePassword/ChangePassword';
 import Home from './components/05_Pages/Home/Home'
+import SeeAll from './components/05_Pages/Home/SeeAll/SeeAll';
 import Raffle from './components/05_Pages/Home/Raffle/Raffle'
 import PlayGame from './components/05_Pages/Home/PlayGame/PlayGame'
 import Game from './components/05_Pages/Home/Game/Game'
@@ -24,6 +25,7 @@ import Top5List from './components/02_Molecules/Top5List/Top5List'
 import YourFeed from './components/05_Pages/Home/YourFeed/YourFeed';
 import Explore from './components/05_Pages/Home/Explore/Explore';
 import OtherUser from './components/05_Pages/OtherUser/OtherUser'
+
 import GameController from './components/GameController';
 import LoadingScreen from './components/05_Pages/Home/Raffle/LoadingScreen/LoadingScreen'
 import RaffleResult from './components/05_Pages/Home/RaffleResult/RaffleResult'
@@ -38,7 +40,7 @@ import Profile from './components/05_Pages/Account/Profile/Profile';
 import Wallet from './components/05_Pages/Account/Wallet/Wallet';
 import HowItWorks from './components/05_Pages/Account/HowItWorks/HowItWorks';
 import FAQ from './components/05_Pages/Account/FAQ/FAQ';
-import ReqBesAcct from './components/05_Pages/Account/ReqBesAcct/ReqBesAcct';
+import ReqBusAcc from './components/04_Templates/ReqBusAcc/ReqBusAcc';
 import MyDrawings from './components/05_Pages/Account/MyDrawings/MyDrawings';
 import NotLogin from './components/05_Pages/Account/NotLogin/NotLogin';
 
@@ -73,6 +75,7 @@ function App() {
           <Stack.Screen name="EnterCode" component={EnterCode} options={{ title: 'Forgot Password' }}/>
           <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ title: 'New Password' }}/>
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+          <Stack.Screen name="SeeAll" component={SeeAll} options={({ route }) => ({ title: route.params.title })}/>
           <Stack.Screen name="YourFeed" component={YourFeed} options={{ headerShown: false }} />
           {/* <Stack.Screen name="Explore" component={Explore} /> */}
           <Stack.Screen name="Raffle" component={Raffle} options={({ route }) => ({ title: route.params.name })}/>
@@ -87,7 +90,6 @@ function App() {
           <Stack.Screen name="Wallet" component={Wallet} />
           <Stack.Screen name="HowItWorks" component={HowItWorks} options={{ title: 'How It Works' }}/>
           <Stack.Screen name="FAQ" component={FAQ} />
-          <Stack.Screen name="ReqBesAcct" component={ReqBesAcct} options={{ title: 'Request' }}/>
           <Stack.Screen name="MyDrawings" component={MyDrawings} options={{ title: 'My Drawings' }}/>
           <Stack.Screen name="NotLogin" component={NotLogin} options={{ title: '' }}/>
           <Stack.Screen name="EditProfile" component={EditProfile} options={{title: 'Edit Profile'}}/>
@@ -101,6 +103,8 @@ function App() {
           <Stack.Screen name="EnteredUsers" component={EnteredUsers} options={{ title: 'Entered' }}/>
           <Stack.Screen name="AskRaffleType" component={AskRaffleType} options={{ title: 'New Raffle' }}/>
           <Stack.Screen name="NewRaffle" component={NewRaffle} options={{ title: 'Submit Raffle' }}/>
+          <Stack.Screen name="ReqBusAcc" component={ReqBusAcc} options={{ title: 'Submit Raffle' }}/>
+
         </Stack.Navigator>
       </NavigationContainer>
     </GlobalState.Provider>

@@ -122,8 +122,9 @@ export default function PhoneVerify({ navigation, route }) {
     return (
         <ScrollView contentContainerStyle={utilities.scrollview}>
         <View style={utilities.flexCenter}>
-            <Text style={styles.header}>Enter the verification code that was sent to your phone</Text>
-            <InputField label="Verification Code" onChangeText={(text) => {
+            <Text style={[styles.header,{width: '90%'}]}>Enter the verification code that was sent to your phone</Text>
+            <InputField           textContentType="numeric"
+label="Verification Code" onChangeText={(text) => {
                 setCode(text)}}/>
             <View style={{width: '90%', marginTop: 5, marginBottom: 5}}>
                 {_errors}

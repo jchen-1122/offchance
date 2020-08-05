@@ -38,7 +38,7 @@ function UsernameDisplay(props){
     return (
         <View style={containerStyle}>
             <Image style={profilePicStyle} source={props.profPic} />
-            <Text style={usernameStyle}>{displayText}</Text>
+            <Text style={[usernameStyle, {color: props.color}]}>{displayText}</Text>
         </View>
 
     )

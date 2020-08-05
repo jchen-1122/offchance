@@ -13,7 +13,7 @@ import { colors, fonts, utilities, dimensions } from '../../../settings/all_sett
 import { in_a_day, is_expired } from '../../../functions/convert_dates';
 import { top5_raffle } from '../../../functions/explore_functions';
 
-function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage }) {
+function Card({ navigation, data, viewType, currUserG, setUserG, inLikesPage, banner }) {
     const ip = require('../../IP_ADDRESS.json');
     const [host, setHost] = useState(null)
     const currUser = currUserG
@@ -47,7 +47,7 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
     let enteredUsers;
     let raffleid;
     let today;
-    if (data){
+    if (data) {
         title = data.name
         imageURI = data.images[0]
         date = data.startTime
@@ -57,7 +57,7 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
         donationGoal = (data.donationGoal) ? data.donationGoal : null
         enteredUsers = data.users.children
         data['host'] = host
-        data['top5'] = data.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,5)
+        data['top5'] = data.users.children.sort((a, b) => b.amountDonated - a.amountDonated).slice(0, 5)
         data['winners'] = data.winners
         raffleid = data._id
     }
@@ -75,8 +75,8 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
         case 'default':
             like = (
                 <View style={styles.likeButton}>
-                    {(viewType==0)?<CardBanner title='MANY CHANCES TO WIN' color='lightGreen'/>:null}
-                    <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid}/>
+                    {(banner) ? <CardBanner title='DONATE TO WIN' color='lightGreen' /> : null}
+                    <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid} />
                 </View>);
             if (donationGoal) {
                 pgBar =
@@ -88,13 +88,13 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
                 <View>
                     {expired ?
                         <View>
-                            <Text style={[styles.startData_grey, fonts.p]}>DRAWING STARTED</Text>
+                            <Text style={[styles.startData_grey, fonts.p]}>DRAWING COMPLETED</Text>
                             <Countdown unix_timestamp={date} />
                         </View> :
                         <View>
                             <Text style={[styles.startData_grey, fonts.p]}>DRAWING STARTS</Text>
                             <Countdown unix_timestamp={date} />
-                            <Text style={[styles.grey_text,fonts.p]}>OR WHEN DONATION GOAL IS MET</Text>
+                            <Text style={[styles.grey_text, fonts.p]}>OR WHEN DONATION GOAL IS MET</Text>
                         </View>
                     }
                 </View>
@@ -104,19 +104,18 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
         case 'buy':
             like = (
                 <View style={styles.likeButton}>
-                    {(viewType==0)?<CardBanner title='ENTER TO BUY' color='darkGreen' icon='usd'/>:null}
-                    <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid}/>
+                    {(banner) ? <CardBanner title='ENTER TO BUY' color='darkGreen' icon='usd' /> : null}
+                    <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid} />
                 </View>);
-            startData = (<View><Text style={[styles.startData_grey, fonts.p]}>{expired ? 'DRAWING STARTED' : 'DRAWING STARTS'}</Text><Countdown unix_timestamp={date} /></View>);
+            startData = (<View><Text style={[styles.startData_grey, fonts.p]}>{expired ? 'DRAWING COMPLETED' : 'DRAWING STARTS'}</Text><Countdown unix_timestamp={date} /></View>);
             break;
         // for upcoming 4 raffles
-        case 'upcoming':
-            console.log('here')
-            like = <View style={styles.upcoming_placeholder} />
-            friendsEntered = null;
-            button = <TouchableOpacity style={styles.upcoming_notifyMe} onPress={() => navigation.navigate('Raffle')}><Text>NOTIFY ME</Text></TouchableOpacity>;
-            startData = <View><Text style={[styles.startData_grey, fonts.p]} >DRAWING STARTS</Text><Countdown unix_timestamp={date} /></View>;
-            break;
+        // case 'upcoming':
+        //     like = <View style={styles.upcoming_placeholder} />
+        //     friendsEntered = null;
+        //     button = <TouchableOpacity style={styles.upcoming_notifyMe} onPress={() => navigation.navigate('Raffle')}><Text>NOTIFY ME</Text></TouchableOpacity>;
+        //     startData = <View><Text style={[styles.startData_grey, fonts.p]} >DRAWING STARTS</Text><Countdown unix_timestamp={date} /></View>;
+        //     break;
         // for simplified cards in your feed
         case 'notification':
             return (
@@ -144,10 +143,12 @@ function Card ({ navigation, data, viewType, currUserG, setUserG, inLikesPage })
         <View style={[styles.card]}>
             {like}
             <View style={styles.itemDesc}>
-                <Image style={styles.image} source={{ uri: imageURI }} onPress={() => {
-                }} />
+
                 <View style={{ flex: 1, width: contentWidth }}>
-                    <Text style={[fonts.h1, { textAlign: 'center' }]}>{title}</Text>
+                    <TouchableOpacity style={{alignItems: 'center', width: '100%', marginBottom: '3%'}} onPress={() => navigation.navigate('Raffle', data)}>
+                        <Image style={styles.image} source={{ uri: imageURI }}/>
+                        <Text style={[fonts.h1, { textAlign: 'center' }]}>{title}</Text>
+                    </TouchableOpacity>
                     <TouchableOpacity
                         onPress={() => {
                             navigation.navigate('OtherUser', { user: host })

@@ -14,7 +14,6 @@ import Construction from '../../../04_Templates/Construction/Construction'
 
 function Profile({ navigation }) {
     const { user, setUser } = useContext(GlobalState)
-    console.log(user)
     // add edit button in topbar
     React.useLayoutEffect(() => {
         navigation.setOptions({

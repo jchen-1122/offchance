@@ -40,7 +40,7 @@ export default function Account({navigation}) {
               <NavButton title="Wallet" icon="cash" onPress={() => navigation.navigate('Wallet')}/>
               <NavButton title="How It Works" icon="help-box" onPress={() => navigation.navigate('HowItWorks', {fromLogin: false})}/>
               <NavButton title="FAQ" icon="frequently-asked-questions"onPress={() => navigation.navigate('FAQ')}/>
-              {user.isHost ? null : <NavButton title="Request Business Account" icon="briefcase" onPress={() => navigation.navigate('ReqBesAcct')}/>}
+              {user.isHost ? null : <NavButton title="Request Business Account" icon="briefcase" onPress={() => navigation.navigate('ReqBusAcc',{page: true})}/>}
               {user.isHost ? <NavButton title="My Drawings" icon = "ticket-outline" onPress={() => navigation.navigate('MyDrawings')}/>:null}
               <NavButton title="Log Out" icon="logout-variant" onPress={() => toggleSheet()}/>
 

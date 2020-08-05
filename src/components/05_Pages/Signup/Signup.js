@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, Linking, ScrollView, KeyboardAvoidingView, } from 'react-native';
+import ReqBusAcc from '../../04_Templates/ReqBusAcc/ReqBusAcc';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../../01_Atoms/Divider/Divider.js';
 import InputField from '../../02_Molecules/InputField/InputField.js';
@@ -13,8 +14,9 @@ import * as Facebook from 'expo-facebook';
 
 export default function Signup({ navigation }) {
   const data = require('../../IP_ADDRESS.json');
-  const jsonData = require('../../../functions/us_states.json')
 
+  // array of states in the us
+  const jsonData = require('../../../functions/us_states.json')
   var us_states = []
   for (var i in jsonData) us_states.push(i)
 
@@ -112,6 +114,9 @@ export default function Signup({ navigation }) {
   const [_proPic, setProPic] = useState(null)
   const [_ref, setRef] = useState('')
   const [_refUser, setRefUser] = useState('')
+  const [_host_item, setHostItem] = useState(null)
+  const [_host_charity, setHostCharity] = useState(null)
+  const [_host_details, setHostDetails] = useState(null)
 
   // validates email input
   const isValidEmail = () => {
@@ -152,10 +157,6 @@ export default function Signup({ navigation }) {
     if (!state.agreement) {
       errors.push(<Text style={fonts.error}>Must agree to terms of services</Text>)
     }
-    // must be a valid US state
-    if (!isValidState()) {
-      errors.push(<Text style={fonts.error}>Must be a valid US state (abbreviation)</Text>)
-    }
     setErrors(errors)
     if (errors.length > 0) return true
     return false
@@ -173,7 +174,10 @@ export default function Signup({ navigation }) {
       state: jsonData[_us_state],
       password: _password,
       isHost: state.businessAccount,
-      profilePicture: (_proPic != null) ? _proPic : 'https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/default-avatar.png'
+      profilePicture: (_proPic != null) ? _proPic : 'https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/default-avatar.png',
+      host_item: _host_item,
+      host_charity: _host_charity,
+      host_details: _host_details
     }
     return JSON.stringify(data)
   };
@@ -346,12 +350,13 @@ export default function Signup({ navigation }) {
             text='Request to host your own drawings'
           />
         </View>
+
         {state.businessAccount ? (
-          <View style={[utilities.flexCenter, { width: '100%' }]}>
-            <InputField label="Describe the item you would like to use in a drawing" textArea required />
-            <InputField label="Please provide the charity/foundation name(s) you are raising donations for" textArea required />
-            <InputField label="Please provide any additional details below (business website, social media links)" textArea />
-          </View>) : null}
+          <ReqBusAcc 
+          setHostItem={setHostItem} hostItem={_host_item}
+          setHostCharity={setHostCharity} hostCharity={_host_charity} 
+          setHostDetails={setHostDetails} hostDetails={_host_details}/>) : null}
+
         <View style={{ width: '90%' }}>
           <CheckBox
             selected={state.futureDrawings}
@@ -375,6 +380,9 @@ export default function Signup({ navigation }) {
           title="SIGN UP FOR 5 FREE CHANCES"
           color="secondary"
           onPress={async () => {
+            // console.log(_host_item)
+            // console.log(_host_charity)
+            // console.log(_host_details)
             //console.log(_city)
             //console.log(jsonData[_us_state])
             let isError = await generateErrors()
@@ -385,8 +393,11 @@ export default function Signup({ navigation }) {
                 sendsms()
                 const data = makeJSON()
                 const rUser = await getRefUser()
-                console.log(rUser)
-                navigation.navigate('PhoneVerify', { signup: data, mailing: state.futureDrawings, phone: _phoneNumber, email: _email, refUser: rUser })
+                console.log('DATA-------------')
+                console.log(data)
+                console.log('\nDATA.HOST_ITEM-------------')
+                console.log(JSON.parse(data).host_item)
+                navigation.navigate('PhoneVerify', { signup: data, mailing: state.futureDrawings, phone: _phoneNumber, email: _email })
               }
               /*const userObj = await postUser()
               if (userObj.keyValue == null) {

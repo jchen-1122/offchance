@@ -14,7 +14,6 @@ function FlatCard({ navigation, data, }){
         async function getHost() {
             let response = await fetch('http://' + ip.ipAddress + ':3000/user/id/' + data.hostedBy)
             response = await response.json()
-            console.log(response)
             setHost(response)
         }
         getHost()

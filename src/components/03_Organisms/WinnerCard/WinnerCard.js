@@ -9,7 +9,6 @@ import { useFonts } from 'expo-font';
 import * as Font from 'expo-font';
 
 export default function WinnerCard(props) {
-    console.log('winner', props.winner)
     let winner;
     if (props.winner){
         winner = props.winner
