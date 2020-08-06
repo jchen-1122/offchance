@@ -14,7 +14,6 @@ import Construction from '../../../04_Templates/Construction/Construction'
 
 function Profile({ navigation }) {
     const { user, setUser } = useContext(GlobalState)
-    console.log(user)
     // add edit button in topbar
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -31,6 +30,7 @@ function Profile({ navigation }) {
     let name, username, profilePic, email, followers, following, enteredRaffles, address, sizeType, shoeSize, shirtSize
     useEffect(() => {
         name = 'JohnDoe'
+        console.log(profilePic)
     })
     if (user == null) {
         name = 'John Doe'
@@ -49,6 +49,7 @@ function Profile({ navigation }) {
         shoeSize = user.shoeSize
         shirtSize = user.shirtSize
     }
+
     return (
         <View style={utilities.container}>
             <ScrollView>

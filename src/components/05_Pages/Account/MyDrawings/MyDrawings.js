@@ -8,7 +8,8 @@ import Construction from '../../../04_Templates/Construction/Construction'
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
-import * as FileSystem from 'expo-file-system';
+import AssetUtils from 'expo-asset-utils';
+import * as Abuffer from 'base64-arraybuffer';
 
 export default function Wallet({navigation}) {
 
@@ -59,18 +60,20 @@ export default function Wallet({navigation}) {
     {/* UNCOMMENT THE LINE IN RETURN WHEN SOLVED */}
     
     const _uploadImage = async () => {
-        //console.log(image)
-        //const base64 = await FileSystem.readAsStringAsync(image);
-        //console.log('hi')
-        //const fileContent = decode(base64);
-        let fileString = await FileSystem.readAsStringAsync(image, { encoding: FileSystem.EncodingTypes.Base64});
-        let base64String = 'data:image/jpg;base64' + fileString;
-        console.log(base64String)
+
+        const asset = await AssetUtils.base64forImageUriAsync(image);
+        const arrayBuffer = Abuffer.decode(asset.data);
+        let contentType = 'image/jpeg';
+        let name = Math.round((new Date()).getTime() / 1000) + '.jpeg';
+        console.log(name)
+        //console.log(asset)
+        //const { localUri, width, height } = asset;
+
         return cosClient.putObject({
             Bucket: 'oc-mobile-images', 
-            Key: 'testupload.jpg', 
-            Body: image,
-            type: 'image/jpg'
+            Key: name, 
+            Body: arrayBuffer,
+            ContentType: contentType
         }).promise()
         .then(() => {
             console.log(`Item: testupload created!`);
