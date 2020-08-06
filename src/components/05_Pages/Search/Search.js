@@ -8,15 +8,15 @@ import { styles } from './Search.styling'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
 import Card from '../../03_Organisms/Card/Card';
 import FlatCard from '../../03_Organisms/FlatCard/FlatCard';
+import ListView from '../../04_Templates/ListView/ListView';
 import UsernameDisplay from '../../01_Atoms/UsernameDisplay/UsernameDisplay';
 import GlobalState from '../../globalState';
-// import {user_logged_in} from '../../../functions/user_functions';
+import {user_logged_in} from '../../../functions/user_functions'
 
 import emails from './emails'
 
 function Search({navigation}) {
 
-    {/* TODO: Search for yourself */}
     const data = require('../../IP_ADDRESS.json');
     const {user, setUser} = useContext(GlobalState)
     const [raffles, setRaffles] = useState([]);
@@ -24,9 +24,35 @@ function Search({navigation}) {
     const [displayUser, setDisplayUser] = useState(false);
     const [buttonStyle, setButtonStyle] = useState(false);
 
+    const { width, height } = Dimensions.get('window');
+
     // for toggling types of cards (0=all, 1=donate, 2=buy)
     const [viewType, setViewType ] = useState(0)
     const [toggleMenuOpen, setToggleMenuOpen] = useState(false)
+
+    // sort entered users so the people you're following show up at the front
+    const sortUsers = (rua) => {
+        if (!user_logged_in(user)) {
+            return rua
+        }
+        var entered = []
+        for (let i = 0; i < rua.length; i++) {
+            let enteredUser = rua[i]
+            // not showing yourself in the search
+            if (enteredUser.username === user.username) {
+              continue;
+            }
+            // if you're following them, add to the top
+            if (user.following.includes(enteredUser.userID)) {
+                entered.unshift(enteredUser)
+            }
+            // if you're not following them, push to back
+            else {
+                entered.push(enteredUser)
+            }
+        }
+        return entered
+    }
 
     // Get all raffles & users from db
     React.useEffect(() => {
@@ -72,7 +98,7 @@ function Search({navigation}) {
 
     // ---------------------------------  Search pool and results  --------------------------------------
     const [searchTerm, setSearchTerm] = useState('');
-    const USER_KEYS_TO_FILTERS = ['username', 'name', 'email', 'phoneNumber']; // user filters
+    const USER_KEYS_TO_FILTERS = ['username', ]; // user filters
     const filteredUsers = users.filter(createFilter(searchTerm, USER_KEYS_TO_FILTERS));
     const RAFFLE_KEYS_TO_FILTERS = ['name', 'description']; // user filters
     const filteredRaffles = raffles.filter(createFilter(searchTerm, RAFFLE_KEYS_TO_FILTERS));
@@ -90,6 +116,7 @@ function Search({navigation}) {
 
     // ------------------------------------------------------------------------------------
 
+    {/* TODO: Add a like button at the top right corner on raffle */}
     return (
         <View style={styles.container}>
 
@@ -101,8 +128,8 @@ function Search({navigation}) {
               onChangeText={(term) => { setSearchTerm(term) }}
               value={searchTerm}
 
-              containerStyle={{backgroundColor: 'rgba(0, 0, 0, 0.05)', padding: 15, }}
-              inputContainerStyle={{borderRadius: 30, }}
+              containerStyle={{backgroundColor: 'rgba(0, 0, 0, 0.05)', padding: 12, }}
+              inputContainerStyle={{borderRadius: 15, height: height * 0.05, backgroundColor: 'white', }}
               cancelButtonProps={{color:'rgba(0, 0, 0, 0.5)', }}
             />
 
@@ -122,35 +149,31 @@ function Search({navigation}) {
               </View>
             </View>
 
-            <Text style={{fontSize: 18, padding: 17, fontWeight: '700'}}> { searchTerm === '' ? 'Recent' : 'Results' } </Text>
+            <Text style={{fontSize: 18, padding: height*0.02, marginTop: -10, fontWeight: '700'}}> { searchTerm === '' ? 'Recent' : 'Results' } </Text>
 
+            {/* TODO: for raffle, bigger avatar, adjust margin, add like button; for users, add follow button */}
             {displayUser ?
               <ScrollView>
-                {filteredUsers.map(map_user => {
-                  {/* What&How you want results to display */}
-                  return (
-                    <TouchableOpacity
-                        onPress={() => {
-                            navigation.navigate('OtherUser', {user: map_user})}}>
-                        { map_user._id == user._id ?
-                          <UsernameDisplay username={map_user.username + ' (self)'} profPic={{uri: map_user.profilePicture}} size="large"/>
-                                    :
-                          <UsernameDisplay username={map_user.username} profPic={{uri: map_user.profilePicture}} size="large"/> }
-                    </TouchableOpacity>
-                    )
-                })}
+                <ListView users={sortUsers(filteredUsers)} navigation={navigation} currUser={user} setUser={setUser}/>
+
               </ScrollView>
                     :
+
                   <ScrollView>
-                    {filteredRaffles.map((raffle, index) =>
 
-                        <FlatCard
-                            data={raffle}
-                            key={index}
-                            navigation={navigation}
-                        />
+                      {/* https://stackoverflow.com/questions/34689970/flex-react-native-how-to-have-content-break-to-next-line-with-flex-when-conte */}
+                      <View style={{flexDirection:'row', alignItems: 'flex-start', flexWrap: 'wrap'}}>
+                      {filteredRaffles.map((raffle, index) =>
 
-                    )}
+                          <FlatCard
+                              data={raffle}
+                              key={index}
+                              navigation={navigation}
+                          />
+
+                      )}
+
+                    </View>
                   </ScrollView> }
 
           <BottomNav navigation={navigation} active={'Search'}></BottomNav>

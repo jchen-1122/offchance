@@ -27,7 +27,7 @@ function Profile({ navigation }) {
 
     const [info, setInfo] = useState(true)
     const [viewing, setViewing] = useState((user != null) ? user.viewing : false)
-    let name, username, profilePic, email, followers, following, enteredRaffles, address, sizeType, shoeSize, shirtSize
+    let name, username, profilePic, email, followers, following, enteredRaffles, address, sizeType, shoeSize, shirtSize, referralCode
     useEffect(() => {
         name = 'JohnDoe'
     })
@@ -47,19 +47,29 @@ function Profile({ navigation }) {
         sizeType = user.sizeType
         shoeSize = user.shoeSize
         shirtSize = user.shirtSize
+        referralCode = Object.keys(user).includes('referralCode') ? user.referralCode : ''
     }
     return (
         <View style={utilities.container}>
             <ScrollView>
-                <Image source={{ uri: profilePic }} style={styles.profilePic}></Image>
+                <View style={{flexDirection: 'row', justifyContent:'center', alignItems: 'flex-end',}}>
+                    <View style={{zIndex:-1}}>
+                        {/* Profile pic*/}
+                        <Image source={{uri:profilePic}} style={styles.profilePic}></Image>
+                    </View>
+                    <View style={{zIndex:1}}>
+                        {/* Green Checkmark*/}
+                        {user.isHost ? <Icon name={'check-circle'}
+                              type='octicons'
+                              color={colors.primaryColor}
+                              backgroundColor='transparent'
+                              style={{marginLeft:-10, zIndex: 1, }}/> : null}
+                    </View>
+                </View>
+
                 <Text style={styles.header_name}>{name}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
                     <Text style={styles.header_username}>@{username}</Text>
-                    {user.isHost ? <Icon name={'check-circle'}
-                        type='octicons'
-                        color={colors.primaryColor}
-                        backgroundColor='transparent'
-                        style={{ marginTop: '19%', marginLeft: '3%' }} /> : null}
                 </View>
 
                 <StatsBar currUser={user} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>
@@ -96,6 +106,9 @@ function Profile({ navigation }) {
                             </View>
                             <Text style={styles.descriptor}>Payment Information</Text>
                             <Text style={styles.description}>**** **** **** 1234</Text>
+
+                            <Text style={styles.descriptor}>Referral Code</Text>
+                            <Text style={styles.description}>{referralCode}</Text>
 
                             {/* <View style={{flexDirection: 'row'}}>
                         <View style={styles.payment}>

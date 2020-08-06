@@ -25,6 +25,9 @@ function SlidingSheet(props) {
     let options1 = ['**** **** **** 1234', 'Google Pay', 'Apple Pay', 'Paypal', '+ Add Payment Method']
     let options2 = ['$5 = 10 chances', '$10 = 40 chances', '$20 = 50 chances', '$50 = 150 chances', '$100 = 400 chances']
 
+    let slidingStyle = [styles.subView];
+    slidingStyle.push({height: props.height});
+
     var toValue = 1000;
     const toggleSheet = () => {
 
@@ -39,11 +42,24 @@ function SlidingSheet(props) {
 
     };
 
-    if (props.sheet === 1) {
+    if (props.sheet) {
       toValue = 0;
       toggleSheet();
     } else {
       null;
+    }
+
+    // close this sliding sheet
+    const closeSlidingSheet = () => {
+        toValue = 1000;
+        toggleSheet();
+        props.trigger();
+    }
+
+    // summon payment page
+    const payMe = () => {
+      closeSlidingSheet();
+      props.paymentTrigger();
     }
 
 
@@ -52,14 +68,14 @@ function SlidingSheet(props) {
     return (
       <View style={styles.container}>
         <Animated.View
-            style={[styles.subView,
+            style={[slidingStyle,
             { transform: [{ translateY: bounceValue }] }]}>
 
             <View style={styles.container}>
                 <ScrollView style={styles.slidingSheet}>
                     {/* Title part with a close button */}
                     <View style={styles.slidingSheet__header}>
-                        <TouchableOpacity onPress={() => {toValue = 1000; toggleSheet()}}>
+                        <TouchableOpacity onPress={ () => closeSlidingSheet() }>
                             <Icon name='close' />
                         </TouchableOpacity>
                         <Text style={fonts.h1}>{props.title}</Text>
@@ -84,6 +100,7 @@ function SlidingSheet(props) {
                           size='large'
                           arrowSize={18}
                           isVisible={false}
+                          parentFunction={payMe}
                           />
                     </View>
 

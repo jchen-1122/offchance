@@ -10,18 +10,26 @@ import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import { get_user } from '../../../fake_users/stub-users';
 import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
 
+import stripe from 'tipsi-stripe';
+
 export default function Wallet({navigation}) {
+
+    // stripe.setOptions({
+    //   publishableKey:
+    //   'pk_test_51HAiC0KuIZolMmjKL45leDQ1jlXegnbGEJaPQsnR44zU7JOUhWxte3jwLrS9wvP6y10Vu6vRaxaDZsWU9RAH9pLl00bYR2xNVG',
+    // });
 
     const {user, setUser} = useContext(GlobalState)
     const [containerStyle, setContainerStyle] = useState(styles.container);
-    const [sheetController, setSheetController] = useState(0); // 0 - close, 1 - open. TODO: GLOBAL STATE
+    const [sheetController, setSheetController] = useState(false); // 0 - close, 1 - open. TODO: GLOBAL STATE
+    const [paymentController, setPaymentController] = useState(false);
 
     const { width, height } = Dimensions.get('window');
-    
-    const trigger = () => {
-        setSheetController(sheetController^1);
 
-        setContainerStyle( sheetController === 0 ?
+    const trigger = () => {
+        setSheetController(!sheetController);
+
+        setContainerStyle( !sheetController ?
           { // light on
           flex: 1,
           justifyContent: 'space-between',
@@ -33,6 +41,22 @@ export default function Wallet({navigation}) {
           });
 
         // console.log(sheetController); 101010
+      }
+
+    const paymentTrigger = () => {
+        setPaymentController(!paymentController);
+
+        setContainerStyle( !paymentController ?
+          { // light on
+          flex: 1,
+          justifyContent: 'space-between',
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+        } : { // light off
+          flex: 1,
+          justifyContent: 'space-between',
+          backgroundColor: "rgba(255, 255, 255, 0.1)",
+          });
+
       }
 
     return (
@@ -47,11 +71,11 @@ export default function Wallet({navigation}) {
             </View>
 
             {/* Content */}
-            <View>
+            <View style={{marginTop: height * 0.05}}>
                 <Text style={styles.content}>Chances can be earned by sharing and inviting friends, playing games and reloading your wallet by donating!</Text>
             </View>
 
-            <View style={styles.button}>
+            <View style={[styles.button, {marginTop: height * 0.05}]}>
                 <BlockButton
                     title="ADD CHANCES"
                     color="secondary"
@@ -62,7 +86,19 @@ export default function Wallet({navigation}) {
             {/* sliding sheet */}
             <SlidingSheet
             title='Add Chances'
+            type='default'
             sheet={sheetController}
+            trigger={trigger}
+            paymentTrigger={paymentTrigger}
+            height={480}
+            content={['Wallet Balance', 'Reload Source', 'Reload Amount']}/>
+
+            <SlidingSheet
+            title='Payment'
+            type='payment'
+            sheet={paymentController}
+            trigger={paymentTrigger}
+            height={height * 0.8}
             content={['Wallet Balance', 'Reload Source', 'Reload Amount']}/>
 
 

@@ -13,6 +13,7 @@ const styles = StyleSheet.create({
     switch: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
+
     },
 
     childView_1: {
