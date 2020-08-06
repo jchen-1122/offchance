@@ -397,15 +397,14 @@ export default function Raffle({ navigation, route }) {
                     <Text style={fonts.italic}>Valued At</Text  >
                     <Text style={{ marginBottom: 15 }}>$200</Text>
 
-                    {/* !!!!!!!!!!!!! TODO: top 5 donors !!!!!!!!!!!!!!*/}
-                    <TouchableOpacity onPress={() => {
-                        navigation.navigate("Top5List", { users: top5 })
-                    }}>
-                        <Top5Donors users={top5} />
-                    </TouchableOpacity>
 
                     {(expired || !raffle.live) ? null :
                         <View>
+                            <TouchableOpacity onPress={() => {
+                                navigation.navigate("Top5List", { users: top5 })
+                            }}>
+                                <Top5Donors users={top5} />
+                            </TouchableOpacity>
                             {/* !!!!!!!!!!!!! TODO: conditionally show progress bar !!!!!!!!!!!!!!*/}
                             <ProgressBar progress={230 / 500} color={colors.primaryColor} raised={230} goal={500} width={315} />
 

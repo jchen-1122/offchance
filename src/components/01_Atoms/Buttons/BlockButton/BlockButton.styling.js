@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
         color: 'white'
     },
     google_icon:{
-        color: colors.primaryColor
+        color: 'black'
     },
 
     iconBg:{

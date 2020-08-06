@@ -233,7 +233,7 @@ export default function Signup({ navigation }) {
           <CheckBox
             selected={state.businessAccount}
             onPress={() => setState({ businessAccount: !state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement })}
-            text='Request to host your own drawings'
+            text='Request a verified business account to host your own drawings'
           />
         </View>
 
