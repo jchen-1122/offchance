@@ -11,6 +11,7 @@ const styles = StyleSheet.create({
 
   search: {
     fontSize: width * 0.028,
+    fontWeight: 'normal'
   },
 
 })

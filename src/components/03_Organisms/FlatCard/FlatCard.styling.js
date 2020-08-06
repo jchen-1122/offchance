@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
 
     FlatCard: {
         // width: width * 0.3,
-        height: height * 0.3,
+        height: height * 0.29,
         backgroundColor: 'white',
         flex: 1,
         // alignItems: 'center',
