@@ -29,8 +29,8 @@ function UsernameDisplay(props){
             break;
         case 'search':
             profilePicStyle = styles.profilePic_search;
-            usernameStyle = fonts.p;
-            displayText = displayText;
+            usernameStyle = styles.username_search;
+            displayText = 'Hosted by ' +displayText;
             containerStyle = styles.container_hostedBy;
             break;
     }
