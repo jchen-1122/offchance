@@ -2755,7 +2755,7 @@ expo-error-recovery@~1.2.1:
   dependencies:
     fbjs "1.0.0"
 
-expo-facebook@^8.2.1:
+expo-facebook@~8.2.1:
   version "8.2.1"
   resolved "https://registry.yarnpkg.com/expo-facebook/-/expo-facebook-8.2.1.tgz#3932ba061567e9ac2d897848f121275bd44a34fb"
   integrity sha512-lCCRmhoI9gLfF5v/leSZiVjQxEb0O9/Wf9viHdOfFZFYufPspVqTjDhCpIXMdpQX0dLhWdRRV1dkKOwE8g+kIg==
@@ -3368,10 +3368,10 @@ has@^1.0.3:
   dependencies:
     function-bind "^1.1.1"
 
-hermes-engine@0.0.0:
-  version "0.0.0"
-  resolved "https://registry.yarnpkg.com/hermes-engine/-/hermes-engine-0.0.0.tgz#6a65954646b5e32c87aa998dee16152c0c904cd6"
-  integrity sha512-q5DP4aUe6LnfMaLsxFP1cCY5qA0Ca5Qm2JQ/OgKi3sTfPpXth79AQ7vViXh/RRML53EpokDewMLJmI31RioBAA==
+hermes-engine@~0.4.0:
+  version "0.4.3"
+  resolved "https://registry.yarnpkg.com/hermes-engine/-/hermes-engine-0.4.3.tgz#1754932f989daddd149172600f01e69cb8f27298"
+  integrity sha512-qkk85ezG+w70C3tQ4iDs22B8talvByGeJQ1VIb2KG5+rMZWVizRq6r+NYptOC/HWAFxkdYb6F3OPca7RxvjYew==
 
 hoist-non-react-statics@^1.0.5:
   version "1.2.0"
@@ -3887,6 +3887,11 @@ jsbn@~0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/jsbn/-/jsbn-0.1.1.tgz#a5e654c2e5a2deb5f201d96cefbca80c0ef2f513"
   integrity sha1-peZUwuWi3rXyAdls77yoDA7y9RM=
+
+jsc-android@^245459.0.0:
+  version "245459.0.0"
+  resolved "https://registry.yarnpkg.com/jsc-android/-/jsc-android-245459.0.0.tgz#e584258dd0b04c9159a27fb104cd5d491fd202c9"
+  integrity sha512-wkjURqwaB1daNkDi2OYYbsLnIdC/lUM2nPXQKRs5pqEU9chDg435bjvo+LSaHotDENygHQDHe+ntUkkw2gwMtg==
 
 jsesc@^2.5.1:
   version "2.5.2"
@@ -5357,7 +5362,7 @@ react-native-status-bar-height@^2.5.0:
   resolved "https://registry.yarnpkg.com/react-native-status-bar-height/-/react-native-status-bar-height-2.5.0.tgz#bc0fb85230603850aab9667ee8111a62954de90c"
   integrity sha512-sYBCPYA/NapBSHkdm/IVL4ID3LLlIuLqINi2FBDyMkc2BU9pfSGOtkz9yfxoK39mYJuTrlTOQ7mManARUsYDSA==
 
-react-native-unimodules@^0.10.1:
+react-native-unimodules@~0.10.1:
   version "0.10.1"
   resolved "https://registry.yarnpkg.com/react-native-unimodules/-/react-native-unimodules-0.10.1.tgz#05a5ef248e88589528e7ef925137a345dde96ca4"
   integrity sha512-U/GexLJWwDOXhsvSSz197gPVRoNVK4tY1cjvZC+748Q4mvc9v4ztB7niKaoaEbNdTjB/pE2NYlZW4013d1wQNw==
@@ -5421,9 +5426,10 @@ react-native-zoom-view@^1.0.2:
   resolved "https://registry.yarnpkg.com/react-native-zoom-view/-/react-native-zoom-view-1.0.2.tgz#7d795fc63739218eb5f86cc7c4e5784dbab306de"
   integrity sha512-SRRYKailzRqBsQcw+w5CzjlUxEqmmQDEKWP5lyR3fyR/yWB4ycM9q7PFrbl156xx5ltLlntobOFzrJjjcSgP6A==
 
-"react-native@https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz":
+react-native@0.62.2:
   version "0.62.2"
-  resolved "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz#7f1e02c79dbbfa4f9fa37946046952763e9a9888"
+  resolved "https://registry.yarnpkg.com/react-native/-/react-native-0.62.2.tgz#d831e11a3178705449142df19a70ac2ca16bad10"
+  integrity sha512-gADZZ3jcm2WFTjh8CCBCbl5wRSbdxqZGd+8UpNwLQFgrkp/uHorwAhLNqcd4+fHmADgPBltNL0uR1Vhv47zcOw==
   dependencies:
     "@babel/runtime" "^7.0.0"
     "@react-native-community/cli" "^4.5.1"
@@ -5439,8 +5445,9 @@ react-native-zoom-view@^1.0.2:
     event-target-shim "^5.0.1"
     fbjs "^1.0.0"
     fbjs-scripts "^1.1.0"
-    hermes-engine "0.0.0"
+    hermes-engine "~0.4.0"
     invariant "^2.2.4"
+    jsc-android "^245459.0.0"
     metro-babel-register "0.58.0"
     metro-react-native-babel-transformer "0.58.0"
     metro-source-map "0.58.0"
