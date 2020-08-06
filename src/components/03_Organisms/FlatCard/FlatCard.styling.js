@@ -10,11 +10,11 @@ const styles = StyleSheet.create({
 
     FlatCard: {
         // width: width * 0.3,
-        height: height * 0.35,
+        height: height * 0.32,
         backgroundColor: 'white',
-        flex: 1,
-        // alignItems: 'center',
-        justifyContent: 'flex-start',
+        // flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
         // margin: spacing,
         borderRadius: borderRadius,
 
@@ -30,10 +30,12 @@ const styles = StyleSheet.create({
     },
 
     FlatCard__image: {
-        height: height * 0.15,
-        width: width * 0.45,
+        height: height * 0.17,
+        width: width * 0.4,
         margin: spacing,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
+        marginTop: -height * 0.03,
+
     },
 
     FlatCard__title: {
@@ -51,6 +53,20 @@ const styles = StyleSheet.create({
     },
     freeDraw_date: {
         fontWeight: 'bold'
+    },
+
+    likeButton: {
+        // height: Dimensions.get('window').height * 0.1,
+        // width: Dimensions.get('window').width * 0.5,
+        flexDirection:'row',
+        justifyContent: 'flex-end',
+        paddingVertical: '3%',
+        paddingRight: '3%'
+        // marginBottom: 5
+        // marginBottom: -height * 0.02,
+        // zIndex: 1000,
+        // backgroundColor: 'transparent'
+        
     },
 })
 

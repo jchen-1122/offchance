@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row', 
         position: "absolute", 
         marginTop: Dimensions.get('screen').height * 0.3, 
-        marginLeft: Dimensions.get('screen').width * 0.035
+        marginLeft: Dimensions.get('screen').width * 0.034
     },
     hide: {
         fontSize: 14, 

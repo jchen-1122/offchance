@@ -15,9 +15,11 @@ import { colors, fonts, utilities, dimensions } from '../../../settings/all_sett
 import { in_a_day, is_expired } from '../../../functions/convert_dates';
 import { top5_raffle } from '../../../functions/explore_functions';
 
-function FlatCard({ navigation, data, viewType, inLikesPage }) {
+function FlatCard ({ navigation, data, viewType, currUserG, setUserG, inLikesPage }) {
     const ip = require('../../IP_ADDRESS.json');
     const [host, setHost] = useState(null)
+    const currUser = currUserG
+    const setUser = setUserG
 
     const { width, height } = Dimensions.get('window');
 
@@ -97,9 +99,30 @@ function FlatCard({ navigation, data, viewType, inLikesPage }) {
     }
 
     return (
+        <View             style={{ borderWidth: 2, width: contentWidth, borderColor: 'rgba(0, 0, 0, 0.05)' }}
+        >
 
+            {/* <TouchableOpacity
+                onPress={() => navigation.navigate('Raffle', data)}>
+
+                    <View style={styles.FlatCard}>
+                        <Image style={styles.FlatCard__image} source={{ uri: imageURI }} onPress={() => {
+                        }} />
+
+                        <View style={{ width: contentWidth, alignItems: 'center' }}>
+                            <Text style={[fonts.h1, {marginLeft:10, marginRight:10, textAlign: 'center', fontSize: height * 0.018,}]}>{title}</Text>
+                            <TouchableOpacity
+                                style={{marginTop: height * 0.01, }}
+                                onPress={() => {
+                                    navigation.navigate('OtherUser', { user: host })
+                                }}>
+                                {username}
+                            </TouchableOpacity>
+                        </View> */}
+            <View style={styles.likeButton}>
+                <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid} style={{margin: 0}}/>
+            </View>
         <TouchableOpacity
-            style={{ borderWidth: 2, width: contentWidth, borderColor: 'rgba(0, 0, 0, 0.05)' }}
             onPress={() => navigation.navigate('Raffle', data)}>
 
 
@@ -127,6 +150,7 @@ function FlatCard({ navigation, data, viewType, inLikesPage }) {
 
         </TouchableOpacity>
 
+      </View>                         
     )
 }
 

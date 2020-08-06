@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, Linking, ScrollView, KeyboardAvoidingView, } from 'react-native';
+import { View, Text, Linking, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback,} from 'react-native';
 import ReqBusAcc from '../../04_Templates/ReqBusAcc/ReqBusAcc';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../../01_Atoms/Divider/Divider.js';
@@ -14,6 +14,7 @@ import * as Facebook from 'expo-facebook';
 
 export default function Signup({ navigation }) {
   const data = require('../../IP_ADDRESS.json');
+  const [height, setHeight] = useState(0);
 
   // array of states in the us
   const jsonData = require('../../../functions/us_states.json')
@@ -204,11 +205,9 @@ export default function Signup({ navigation }) {
   // ============================================================================================
   return (
     <KeyboardAvoidingView
-      behavior={"padding"}
-      keyboardVerticalOffset={100}
-      style={{ flex: 1, }}>
-
-      <View style={{justifyContent: "flex-end", flex: 1}}>
+      behavior={"position"}
+      keyboardVerticalOffset={-55}
+      >
 
     <ScrollView
       showsVerticalScrollIndicator={false}>
@@ -280,13 +279,14 @@ export default function Signup({ navigation }) {
         <View style={{ marginVertical: '2.5%', alignItems: 'center' }}>
           <Divider />
         </View>
-
+        
         <InputField
           label="Full Name"
           autoCapitalize="words"
           value={_name}
           onChangeText={(text) => { setName(text) }}
           required />
+          
         <InputField
           label="Username"
           value={_username}
@@ -425,8 +425,6 @@ export default function Signup({ navigation }) {
       </View>
     </ScrollView>
 
-    <View style={{ flex : 1 }} />
-  </View>
   </KeyboardAvoidingView>
   );
 }

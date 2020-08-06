@@ -169,6 +169,8 @@ function Search({navigation}) {
                               data={raffle}
                               key={index}
                               navigation={navigation}
+                              currUserG={user}
+                              setUserG={setUser}
                           />
 
                       )}
