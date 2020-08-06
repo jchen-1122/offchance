@@ -15,7 +15,7 @@ import { colors, fonts, utilities, dimensions } from '../../../settings/all_sett
 import { in_a_day, is_expired } from '../../../functions/convert_dates';
 import { top5_raffle } from '../../../functions/explore_functions';
 
-function FlatCard ({ navigation, data, viewType, inLikesPage }) {
+function FlatCard({ navigation, data, viewType, inLikesPage }) {
     const ip = require('../../IP_ADDRESS.json');
     const [host, setHost] = useState(null)
 
@@ -49,7 +49,7 @@ function FlatCard ({ navigation, data, viewType, inLikesPage }) {
     let enteredUsers;
     let raffleid;
     let today;
-    if (data){
+    if (data) {
         title = data.name
         imageURI = data.images[0]
         date = data.startTime
@@ -59,7 +59,7 @@ function FlatCard ({ navigation, data, viewType, inLikesPage }) {
         donationGoal = (data.donationGoal) ? data.donationGoal : null
         enteredUsers = data.users.children
         data['host'] = host
-        data['top5'] = data.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,5)
+        data['top5'] = data.users.children.sort((a, b) => b.amountDonated - a.amountDonated).slice(0, 5)
         raffleid = data._id
     }
 
@@ -84,48 +84,48 @@ function FlatCard ({ navigation, data, viewType, inLikesPage }) {
                     {expired ?
                         <View>
                             <Text style={styles.startData_grey}>DRAWING STARTED</Text>
-                            <Countdown unix_timestamp={date} type='search'/>
+                            <Countdown unix_timestamp={date} type='search' />
                         </View> :
                         <View>
                             <Text style={styles.startData_grey}>DRAWING STARTS</Text>
-                            <Countdown unix_timestamp={date} type='search'/>
+                            <Countdown unix_timestamp={date} type='search' />
                         </View>
                     }
                 </View>
             );
             break;
-        }
+    }
 
     return (
 
-          <TouchableOpacity
-            style={{borderWidth: 2, width: contentWidth, borderColor: 'rgba(0, 0, 0, 0.05)'}}
+        <TouchableOpacity
+            style={{ borderWidth: 2, width: contentWidth, borderColor: 'rgba(0, 0, 0, 0.05)' }}
             onPress={() => navigation.navigate('Raffle', data)}>
 
 
-                  <View style={styles.FlatCard}>
-                      <Image style={styles.FlatCard__image} source={{ uri: imageURI }} onPress={() => {
-                      }} />
+            <View style={styles.FlatCard}>
+                <Image style={styles.FlatCard__image} source={{ uri: imageURI }} onPress={() => {
+                }} />
 
-                      <View style={{ width: '100%', paddingHorizontal: '7%',}}>
-                          <Text style={[fonts.h1, {fontSize: height * 0.018, paddingHorizontal: '4%'}]}>{title}</Text>
-                          <TouchableOpacity
-                          style={{marginVertical: '2%'}}
-                              onPress={() => {
-                                  navigation.navigate('OtherUser', { user: host })
-                              }}>
-                              {username}
-                          </TouchableOpacity>
-                          <View style={{paddingHorizontal: '4%'}}>
-                          {startData}
-                          </View>
-                          
-                      </View>
+                <View style={{ width: '100%', paddingHorizontal: '7%', }}>
+                    <Text style={[fonts.h1, { fontSize: height * 0.018, paddingHorizontal: '4%' }]}>{title}</Text>
+                    <TouchableOpacity
+                        style={{ marginVertical: '2%' }}
+                        onPress={() => {
+                            navigation.navigate('OtherUser', { user: host })
+                        }}>
+                        {username}
+                    </TouchableOpacity>
+                    <View style={{ paddingHorizontal: '4%' }}>
+                        {startData}
+                    </View>
 
-                  </View>
+                </View>
+
+            </View>
 
 
-          </TouchableOpacity>
+        </TouchableOpacity>
 
     )
 }
