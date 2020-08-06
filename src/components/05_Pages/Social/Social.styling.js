@@ -18,8 +18,8 @@ const styles = StyleSheet.create({
         fontWeight: '600'
     },
     abs: {
-        position: 'absolute', 
-        marginTop: Dimensions.get('screen').height * 0.5
+        // position: 'absolute', 
+        // marginTop: Dimensions.get('screen').height * 0.5
     },
     scroll: {
         flexDirection: 'column-reverse', 

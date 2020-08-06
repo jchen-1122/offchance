@@ -1,5 +1,7 @@
 import React, { useState, useRef, useContext } from 'react';
-import { ScrollView, View, Text, Image, Dimensions, TouchableOpacity, KeyboardAvoidingView, } from 'react-native';
+import { ScrollView, View, Text, TextInput, Dimensions, TouchableOpacity, KeyboardAvoidingView, } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 import { Overlay } from 'react-native-elements';
 import styles from './RaffleResult.styling';
 import { colors } from '../../../../settings/all_settings';
@@ -175,7 +177,11 @@ export default function RaffleResult({ navigation, route }) {
     }, [winners])
 
     return (
-    
+        <KeyboardAwareScrollView
+        resetScrollToCoords={{ x: 0, y: 0 }}
+        contentContainerStyle={{flex: 1, alignItems: 'space-between'}}
+        scrollEnabled={false}
+      >
         <View>
             <ScrollView>
                 <Text>{feed}</Text>
@@ -189,10 +195,7 @@ export default function RaffleResult({ navigation, route }) {
                                 {(localTime > 10) ? <Text style={{fontSize: 14, fontWeight: '300', color: 'white'}}>determining winners...</Text> : 
                                     <Text style={{fontSize: 14, fontWeight: '300', color: 'white'}}>populating cards...</Text>}
                             </View>
-                            
-                                    <Social currUser={user}></Social>
-                                
-                            
+                            <Social currUser={user}/>
                         </View>
                     </Overlay>
                     {/* JOSHUA START */}
@@ -242,9 +245,12 @@ export default function RaffleResult({ navigation, route }) {
                     </Overlay>
 
                 </View>
+                
+
             </ScrollView>
             {(localTime <= 0) ? <Social currUser={user}></Social> : null}
         </View>
+        </KeyboardAwareScrollView>
 
     )
 }
