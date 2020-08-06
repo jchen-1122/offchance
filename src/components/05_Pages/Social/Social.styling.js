@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     },
     viewInput: {
         flexDirection: 'row', 
-        position: "absolute", 
+        position: "relative", 
         marginTop: Dimensions.get('screen').height * 0.3, 
         marginLeft: Dimensions.get('screen').width * 0.034
     },

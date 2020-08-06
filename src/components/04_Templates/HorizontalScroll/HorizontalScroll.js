@@ -9,7 +9,7 @@ export default function HorizontalScroll(props) {
     return (
         <View style={(props.theme == "dark") ? styles.HorizontalScroll_dark : styles.HorizontalScroll_light}>
             <View style={styles.titleHeader}>
-                <Text style={[fonts.h1, (props.theme == "dark") ? styles.title_dark : styles.title_light]}>{props.title}</Text>
+                <Text style={[fonts.h1, styles.title, (props.theme == "dark") ? styles.title_dark : styles.title_light]}>{props.title}</Text>
                 {props.seeAllRaffles ?
                     <TouchableOpacity
                         style={{ marginBottom: '30%' }}

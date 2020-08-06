@@ -15,7 +15,7 @@ import { colors, fonts, utilities, dimensions } from '../../../settings/all_sett
 import { in_a_day, is_expired } from '../../../functions/convert_dates';
 import { top5_raffle } from '../../../functions/explore_functions';
 
-function FlatCard ({ navigation, data, viewType, currUserG, setUserG, inLikesPage }) {
+function FlatCard({ navigation, data, viewType, currUserG, setUserG, inLikesPage }) {
     const ip = require('../../IP_ADDRESS.json');
     const [host, setHost] = useState(null)
     const currUser = currUserG
@@ -99,7 +99,7 @@ function FlatCard ({ navigation, data, viewType, currUserG, setUserG, inLikesPag
     }
 
     return (
-        <View             style={{ borderWidth: 2, width: contentWidth, borderColor: 'rgba(0, 0, 0, 0.05)' }}
+        <View style={{ borderWidth: 2, width: contentWidth, borderColor: 'rgba(0, 0, 0, 0.05)' }}
         >
 
             {/* <TouchableOpacity
@@ -120,37 +120,37 @@ function FlatCard ({ navigation, data, viewType, currUserG, setUserG, inLikesPag
                             </TouchableOpacity>
                         </View> */}
             <View style={styles.likeButton}>
-                <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid} style={{margin: 0}}/>
+                <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid} style={{ margin: 0 }} />
             </View>
-        <TouchableOpacity
-            onPress={() => navigation.navigate('Raffle', data)}>
+            <TouchableOpacity
+                onPress={() => navigation.navigate('Raffle', data)}>
 
 
-            <View style={styles.FlatCard}>
-                <Image style={styles.FlatCard__image} source={{ uri: imageURI }} onPress={() => {
-                }} />
+                <View style={styles.FlatCard}>
+                    <Image style={styles.FlatCard__image} source={{ uri: imageURI }} onPress={() => {
+                    }} />
 
-                <View style={{ width: '100%', paddingHorizontal: '7%', }}>
-                    <Text style={[fonts.h1, { fontSize: height * 0.018, paddingHorizontal: '4%' }]}>{title}</Text>
-                    <TouchableOpacity
-                        style={{ marginVertical: '2%' }}
-                        onPress={() => {
-                            navigation.navigate('OtherUser', { user: host })
-                        }}>
-                        {username}
-                    </TouchableOpacity>
-                    <View style={{ paddingHorizontal: '4%' }}>
-                        {startData}
+                    <View style={{ width: '100%', paddingHorizontal: '7%', }}>
+                        <Text style={[fonts.h1, { fontSize: height * 0.018, paddingHorizontal: '4%' }]}>{title}</Text>
+                        <TouchableOpacity
+                            style={{ marginVertical: '2%' }}
+                            onPress={() => {
+                                navigation.navigate('OtherUser', { user: host })
+                            }}>
+                            {username}
+                        </TouchableOpacity>
+                        <View style={{ paddingHorizontal: '4%' }}>
+                            {startData}
+                        </View>
+
                     </View>
 
                 </View>
 
-            </View>
 
+            </TouchableOpacity>
 
-        </TouchableOpacity>
-
-      </View>                         
+        </View>
     )
 }
 

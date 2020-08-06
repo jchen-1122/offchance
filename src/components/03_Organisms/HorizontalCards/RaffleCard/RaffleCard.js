@@ -26,7 +26,7 @@ function RaffleCard(props) {
             <TouchableOpacity onPress={() => {props.navigation.navigate('Raffle',raffle)}}>
                 <View style={styles.RaffleCard}>
                     <Image style={styles.RaffleCard__image} source={{ uri: raffle.images[0] }} />
-                    <Text style={[fonts.h3, { textAlign: 'center', height: '20%' }]}>{raffle.name}</Text>
+                    <Text style={[fonts.h3, styles.RaffleCard__title]}>{raffle.name}</Text>
                 </View>
             </TouchableOpacity>
         )

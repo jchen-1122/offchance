@@ -13,13 +13,17 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         padding: '5%'
     },
+
+    // different style titles for the horizontal card
+    title: {
+        marginBottom: '5%',
+        fontWeight: 'normal',
+    },
     title_dark: {
         color: 'white',
-        marginBottom: '5%'
     },
     title_light: {
         color: 'black',
-        marginBottom: '5%'
     },
 
     titleHeader: {

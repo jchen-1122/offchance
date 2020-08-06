@@ -87,6 +87,8 @@ export default class Social extends Component {
         }
       </View>
 
+      <View><Text> abc </Text></View>
+
       </View>
     ); 
   }

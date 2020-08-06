@@ -33,10 +33,10 @@ export default function Raffle({ navigation, route }) {
         async function getCurrentRaffle() {
             route.params = await getRaffle(route.params._id)
             route.params['host'] = await getUser(route.params.hostedBy)
-            route.params['top5'] = route.params.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,5)
+            route.params['top5'] = route.params.users.children.sort((a, b) => b.amountDonated - a.amountDonated).slice(0, 5)
             let coordsUser = await getCoords(user.shippingAddress)
             let coordsHost = await getCoords(route.params['host'].shippingAddress)
-            
+
             let longUser = coordsUser.features[0].geometry.coordinates[0]
             let latUser = coordsUser.features[0].geometry.coordinates[1]
 
@@ -44,7 +44,7 @@ export default function Raffle({ navigation, route }) {
             let latHost = coordsHost.features[0].geometry.coordinates[1]
 
             if (Object.keys(route.params).includes("radius")) {
-                setLocation(geolib.isPointWithinRadius({latitude: latHost, longitude: longHost}, {latitude: latUser, longitude: longUser}, route.params.radius * 0.621371 * 1000))
+                setLocation(geolib.isPointWithinRadius({ latitude: latHost, longitude: longHost }, { latitude: latUser, longitude: longUser }, route.params.radius * 0.621371 * 1000))
             }
         }
         getCurrentRaffle()
@@ -443,13 +443,17 @@ export default function Raffle({ navigation, route }) {
                         </View>
                     }
                     {raffle.live ?
-                        <View style={[styles.highlightBackground, { marginTop: '5%' }]}>
-                            <Text style={[fonts.p, { marginTop: 20, textAlign: 'justify' }]}>Off Chance is a for-good company that hosts drawings for incredible products to raise money for charities and important causes that affect us all. All net proceeds (after hosting and platform fees) for this drawing will benefit the partners below:</Text>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, marginBottom: 20 }}>
-                                <Image source={donors[0]} />
-                                <Image source={donors[1]} />
-                            </View>
-                        </View> : null
+                    <View>
+
+                        <View style={[styles.highlightBackground, { paddingVertical: '5%', marginVertical: '5%' }]}>
+                            <Text style={[fonts.p, { textAlign: 'justify' }]}>Off Chance is a for-good company that hosts drawings for incredible products to raise money for charities and important causes that affect us all. All net proceeds (after hosting and platform fees) for this drawing will benefit the partners below:</Text>
+
+                        </View>
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: '5%'}}>
+                            <Image source={donors[0]} />
+                            <Image source={donors[1]} />
+                        </View>
+                        </View>: null
                     }
 
                     <Text style={[fonts.p, { textAlign: 'justify' }]}>*All prizes are guaranteed to be 100% authentic and deadstock. You will be notified via email once donation goal is met and drawing starts.</Text>
@@ -469,7 +473,7 @@ export default function Raffle({ navigation, route }) {
                             navigation.navigate('RaffleResult', { raffle: raffle })
                         }}
                         disabled={expired} />
-                    
+
                     {/* <BlockButton
                         title="ENTER DRAWING"
                         color="highlight"

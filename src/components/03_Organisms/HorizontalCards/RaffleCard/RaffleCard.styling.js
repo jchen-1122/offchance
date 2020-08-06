@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native'
 
 
 var cardSize = Dimensions.get('window').width * 0.6
-var imageSize = '75%'
+var imageSize = Dimensions.get('window').width * 0.4
 
 const styles = StyleSheet.create({
     RaffleCard: {
@@ -17,6 +17,9 @@ const styles = StyleSheet.create({
         height: imageSize,
         width: imageSize,
         resizeMode: 'contain'
+    },
+    RaffleCard__title: {
+        height: Dimensions.get('window').width * 0.15
     }
 
 })
