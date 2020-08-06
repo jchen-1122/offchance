@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { View, ScrollView, Text, Image, Button, Dimensions} from 'react-native'
+import { View, ScrollView, Text, Image, Button, Dimensions } from 'react-native'
 import { Icon } from 'react-native-elements';
 import { colors, fonts, utilities } from '../../../../settings/all_settings';
 import InfoFeed from '../../../02_Molecules/InfoFeed/InfoFeed'
@@ -11,6 +11,7 @@ import Nswitch from '../../../../../assets/images/switch.jpeg'
 import { styles } from './Profile.styling'
 import GlobalState from '../../../globalState';
 import Construction from '../../../04_Templates/Construction/Construction'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 function Profile({ navigation }) {
     const { user, setUser } = useContext(GlobalState)
@@ -21,6 +22,16 @@ function Profile({ navigation }) {
                 <Button onPress={() => {
                     navigation.navigate("EditProfile", user)
                 }} title="Edit" />
+            ),
+            headerLeft: () => (
+                <TouchableOpacity style={{paddingLeft: 10}}onPress={() => {
+                    navigation.navigate("Account", user)
+                }}>
+                    <Icon name='menu'
+                        type='material-community'
+                        color='white'
+                        backgroundColor='transparent' />
+                </TouchableOpacity>
             ),
         });
     }, [navigation]);
@@ -52,18 +63,18 @@ function Profile({ navigation }) {
     return (
         <View style={utilities.container}>
             <ScrollView>
-                <View style={{flexDirection: 'row', justifyContent:'center', alignItems: 'flex-end',}}>
-                    <View style={{zIndex:-1}}>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-end', }}>
+                    <View style={{ zIndex: -1 }}>
                         {/* Profile pic*/}
-                        <Image source={{uri:profilePic}} style={styles.profilePic}></Image>
+                        <Image source={{ uri: profilePic }} style={styles.profilePic}></Image>
                     </View>
-                    <View style={{zIndex:1}}>
+                    <View style={{ zIndex: 1 }}>
                         {/* Green Checkmark*/}
                         {user.isHost ? <Icon name={'check-circle'}
-                              type='octicons'
-                              color={colors.primaryColor}
-                              backgroundColor='transparent'
-                              style={{marginLeft:-10, zIndex: 1, }}/> : null}
+                            type='octicons'
+                            color={colors.primaryColor}
+                            backgroundColor='transparent'
+                            style={{ marginLeft: -10, zIndex: 1, }} /> : null}
                     </View>
                 </View>
 
@@ -78,7 +89,7 @@ function Profile({ navigation }) {
                     <InfoFeed info={info} setInfo={setInfo}></InfoFeed>
                 </View>
 
-                {(info) ? <View style={{ alignItems: 'flex-start', marginLeft: Dimensions.get('window').width*0.08 }}>
+                {(info) ? <View style={{ alignItems: 'flex-start', marginLeft: Dimensions.get('window').width * 0.08 }}>
                     <Text style={styles.descriptor}>Name</Text>
                     <Text style={styles.description}>{name}</Text>
 
@@ -90,7 +101,7 @@ function Profile({ navigation }) {
                             <Text style={styles.descriptor}>Shipping Address</Text>
                             <Text style={styles.description}>{address}</Text>
 
-                            <View style={{ flexDirection: 'row', width: Dimensions.get('window').width*0.83, justifyContent: 'space-between' }}>
+                            <View style={{ flexDirection: 'row', width: Dimensions.get('window').width * 0.83, justifyContent: 'space-between' }}>
                                 <View>
                                     <Text style={styles.descriptor}>Size Type</Text>
                                     <Text style={styles.description}>{(sizeType) ? sizeType.charAt(0).toUpperCase() + sizeType.slice(1) : ''}</Text>

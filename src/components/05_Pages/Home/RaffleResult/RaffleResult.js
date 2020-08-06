@@ -231,12 +231,12 @@ export default function RaffleResult({ navigation, route }) {
                     <Overlay isVisible={overlay} onBackdropPress={() => setoverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
                         <WinnerCard prize={prize} winner={selected} raffle={raffle} host={host} navigation={navigation} currUser={user} />
                         <ConfettiCannon
-                            count={100}
-                            origin={{ x: Dimensions.get('window').width * 0.5, y: Dimensions.get('window').height}}
+                            count={200}
+                            origin={{x: -10, y: 0}}
                             autoStart={true}
                             fadeOut={true}
-                            // fallSpeed={2500}
-                            explosionSpeed={25}
+                            fallSpeed={2500}
+                            explosionSpeed={15}
                             colors={confetti_colors[prize]}
                         />
                     </Overlay>

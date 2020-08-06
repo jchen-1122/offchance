@@ -33,7 +33,7 @@ function BottomNav(props) {
             {(props.active === 'Likes') ? <Icon name='heart' type='material-community' color='white' /> : <Icon name='heart-outline' type='material-community' color='grey' />}
             <Text style={[styles.textFont, (props.active === 'Likes') ? {color:'white'} : null]}>Likes</Text>
             </Button>
-            <Button onPress={() => (user_logged_in(user)) ? props.navigation.navigate('Account') : props.navigation.navigate('NotLogin')}>
+            <Button onPress={() => (user_logged_in(user)) ? props.navigation.navigate('Profile') : props.navigation.navigate('NotLogin')}>
             {(props.active === 'Account') ? <Icon name='account' type='material-community' color='white' /> : <Icon name='account-outline' type='material-community' color='grey' />}
               <Text style={[styles.textFont, (props.active === 'Account') ? {color:'white'} : null]}>Account</Text>
             </Button>
