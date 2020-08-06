@@ -40,7 +40,6 @@ function PlayGame(props) {
 
     return (
         <View style={[utilities.container, { paddingBottom: 15 }]}>
-            <Text style={[{ color: (localTime <= 3) ? 'red' : 'black' }, styles.timer]}>{localTime}s</Text>
             <View style={styles.optionsContainer}>
                 <UsernameDisplay username={user.username} profPic={{uri: user.profilePicture}}/>
                 <TouchableOpacity onPress={() => {
@@ -76,7 +75,7 @@ function PlayGame(props) {
                     </View>
                 </TouchableOpacity>
             </View>
-            <GameBar currRound={props.round} tokensLeft={props.tokens} wins={props.wins} numRounds={10}></GameBar>
+            <GameBar currRound={props.round} tokensLeft={props.tokens} wins={props.wins} numRounds={10} time={localTime} ></GameBar>
         </View>
     )
 }
