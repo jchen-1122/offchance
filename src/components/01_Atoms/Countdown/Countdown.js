@@ -7,6 +7,12 @@ const Countdown = ({ unix_timestamp, type }) => {
     const monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
     const style = [styles.primary];
 
+    switch (type){
+      case 'search':
+        style.push(styles.search);
+        break;
+    }
+
     // convert to date object
     var date = new Date(unix_timestamp * 1000);
 
@@ -15,7 +21,7 @@ const Countdown = ({ unix_timestamp, type }) => {
 
     // if it's more than 24 hours from now
     if (diff > (24*3.6*Math.pow(10,6))) {
-      return <Text style={{fontWeight: 'bold'}}>{format_date(date)}</Text>
+      return <Text style={style}>{format_date(date)}</Text>
     }
     const [timeLeft, setTimeLeft] = useState(diff);
     //console.log(unix_timestamp)
@@ -35,12 +41,6 @@ const Countdown = ({ unix_timestamp, type }) => {
       // add timeLeft as a dependency to re-rerun the effect
       // when we update it
     }, [timeLeft]);
-
-    switch (type){
-      case 'search':
-        style.push(styles.search);
-        break;
-    }
 
     return (
         (timeLeft <= 0) ? <Text style={style}>{format_date(date)}</Text> : <Text style={style}>{Math.floor((timeLeft / (1000 * 60 * 60)) % 24)}h {Math.floor((timeLeft / (1000 * 60)) % 60)}m {Math.floor((timeLeft / 1000) % 60)}s</Text>

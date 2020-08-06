@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext } from 'react';
-import { ScrollView, View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { ScrollView, View, Text, Image, Dimensions, TouchableOpacity, KeyboardAvoidingView, } from 'react-native';
 import { Overlay } from 'react-native-elements';
 import styles from './RaffleResult.styling';
 import { colors } from '../../../../settings/all_settings';
@@ -40,7 +40,7 @@ export default function RaffleResult({ navigation, route }) {
 
     let confetti_colors = [["black", "#ECB661"], [colors.silver1, colors.silver2], [colors.bronze1, colors.bronze2], [colors.blue]]
     
-    const [localTime, localSetTime] = useState(20)
+    const [localTime, localSetTime] = useState(0)
     const [winnerTime, setWinnerTime] = useState(10000)
 
     React.useEffect(() => {
@@ -175,6 +175,7 @@ export default function RaffleResult({ navigation, route }) {
     }, [winners])
 
     return (
+    
         <View>
             <ScrollView>
                 <Text>{feed}</Text>
@@ -188,7 +189,10 @@ export default function RaffleResult({ navigation, route }) {
                                 {(localTime > 10) ? <Text style={{fontSize: 14, fontWeight: '300', color: 'white'}}>determining winners...</Text> : 
                                     <Text style={{fontSize: 14, fontWeight: '300', color: 'white'}}>populating cards...</Text>}
                             </View>
-                            <Social currUser={user}></Social>
+                            
+                                    <Social currUser={user}></Social>
+                                
+                            
                         </View>
                     </Overlay>
                     {/* JOSHUA START */}
@@ -241,5 +245,6 @@ export default function RaffleResult({ navigation, route }) {
             </ScrollView>
             {(localTime <= 0) ? <Social currUser={user}></Social> : null}
         </View>
+
     )
 }

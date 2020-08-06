@@ -33,7 +33,9 @@ const styles = StyleSheet.create({
         height: height * 0.11,
         width: width * 0.45,
         margin: spacing,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
+        marginTop: -height * 0.03,
+
     },
 
     FlatCard__title: {
@@ -51,6 +53,15 @@ const styles = StyleSheet.create({
     },
     freeDraw_date: {
         fontWeight: 'bold'
+    },
+
+    likeButton: {
+        width: Dimensions.get('window').width * 0.5,
+        flexDirection:'row',
+        justifyContent: 'flex-end',
+        marginBottom: -height * 0.02,
+        zIndex: 1000,
+        
     },
 })
 
