@@ -18,14 +18,14 @@ import ConfettiCannon from 'react-native-confetti-cannon';
 export default function RaffleResult({ navigation, route }) {
     const [selected, setSelected] = useState(0)
     const [overlay, setoverlay] = useState(false)
-    {/* JOSHUA START */}
+    {/* JOSHUA START */ }
     const [winnerOverlay, setwinnerOverlay] = useState(false)
     const [grandOverlay, setgrandOverlay] = useState(true)
     const [winnerPrize, setwinnerPrize] = useState(null)
     const [grandPrize, setgrandPrize] = useState(null)
     const [grandWinner, setgrandWinner] = useState(null)
     const [feedId, setFeedId] = useState(0)
-    {/* JOSHUA END */}
+    {/* JOSHUA END */ }
     const [prize, setPrize] = useState(null)
     const [enteredUsers, setEnteredUsers] = useState([])
     const [winners, setWinners] = useState([])
@@ -41,7 +41,7 @@ export default function RaffleResult({ navigation, route }) {
     //let dummy_user = get_user("Chelly")
 
     let confetti_colors = [["black", "#ECB661"], [colors.silver1, colors.silver2], [colors.bronze1, colors.bronze2], [colors.blue]]
-    
+
     const [localTime, localSetTime] = useState(0)
     const [winnerTime, setWinnerTime] = useState(10000)
 
@@ -124,13 +124,13 @@ export default function RaffleResult({ navigation, route }) {
         let CardArray = []
         let count = 0
         winners.forEach((element, index) => {
-            {/* JOSHUA START */}
+            {/* JOSHUA START */ }
             // set current logged in user winner card
             if (element._id === user._id) {
                 setwinnerOverlay(true)
                 setwinnerPrize(element.prize)
             }
-            {/* JOSHUA END */}
+            {/* JOSHUA END */ }
             if (element.hasOwnProperty("prize")) {
                 var gradient;
                 count++
@@ -150,8 +150,8 @@ export default function RaffleResult({ navigation, route }) {
                         gradient = [colors.blue, colors.blue]
                         break;
                 }
-                CardArray.push( 
-                    <BackCard user={element} time={count * 1000 + 10000} setoverlay={setoverlay} setSelected={setSelected} setPrize={setPrize} setFeed={setFeed}/>
+                CardArray.push(
+                    <BackCard user={element} time={count * 1000 + 10000} setoverlay={setoverlay} setSelected={setSelected} setPrize={setPrize} setFeed={setFeed} />
                     /*<LinearGradient start={[0, 0]} end={[1, 0]} colors={gradient} style={{ margin: Dimensions.get('window').width * 0.005 }}>
                         <TouchableOpacity style={[styles.card]}
                             onPress={() => {
@@ -178,24 +178,23 @@ export default function RaffleResult({ navigation, route }) {
 
     return (
         <KeyboardAwareScrollView
-        resetScrollToCoords={{ x: 0, y: 0 }}
-        contentContainerStyle={{flex: 1, alignItems: 'space-between'}}
-        scrollEnabled={false}
-      >
-        <View>
+            resetScrollToCoords={{ x: 0, y: 0 }}
+            scrollEnabled={false}
+            contentContainerStyle={{ height: Dimensions.get('window').height, justifyContent: 'space-between'}}
+        >
             <ScrollView>
                 <Text>{feed}</Text>
-                <View style={styles.container}>
+                <View style={[styles.container]}>
                     {display}
                     <Overlay isVisible={localTime > 0} overlayStyle={{ width: 434, height: 740, backgroundColor: 'transparent' }}>
                         <View>
-                            <View style={{alignItems: 'center', marginTop:200}}>
-                                <Text style={{fontSize: 30, fontWeight: '900', marginBottom: 20, color: 'white'}}>DRAWING IS STARTING IN</Text>
-                                <Text style={{fontSize: 20, fontWeight: '900', color: 'white', marginBottom: 30}}>{localTime} seconds</Text>
-                                {(localTime > 10) ? <Text style={{fontSize: 14, fontWeight: '300', color: 'white'}}>determining winners...</Text> : 
-                                    <Text style={{fontSize: 14, fontWeight: '300', color: 'white'}}>populating cards...</Text>}
+                            <View style={{ alignItems: 'center', marginTop: 200 }}>
+                                <Text style={{ fontSize: 30, fontWeight: '900', marginBottom: 20, color: 'white' }}>DRAWING IS STARTING IN</Text>
+                                <Text style={{ fontSize: 20, fontWeight: '900', color: 'white', marginBottom: 30 }}>{localTime} seconds</Text>
+                                {(localTime > 10) ? <Text style={{ fontSize: 14, fontWeight: '300', color: 'white' }}>determining winners...</Text> :
+                                    <Text style={{ fontSize: 14, fontWeight: '300', color: 'white' }}>populating cards...</Text>}
                             </View>
-                            <Social currUser={user}/>
+                            <Social currUser={user} />
                         </View>
                     </Overlay>
                     {/* JOSHUA START */}
@@ -222,7 +221,7 @@ export default function RaffleResult({ navigation, route }) {
                         <WinnerCard prize={winnerPrize} winner={user} raffle={raffle} host={host} navigation={navigation} currUser={user} />
                         <ConfettiCannon
                             count={100}
-                            origin={{ x: Dimensions.get('window').width * 0.5, y: Dimensions.get('window').height}}
+                            origin={{ x: Dimensions.get('window').width * 0.5, y: Dimensions.get('window').height }}
                             autoStart={true}
                             fadeOut={true}
                             // fallSpeed={2500}
@@ -235,7 +234,7 @@ export default function RaffleResult({ navigation, route }) {
                         <WinnerCard prize={prize} winner={selected} raffle={raffle} host={host} navigation={navigation} currUser={user} />
                         <ConfettiCannon
                             count={200}
-                            origin={{x: -10, y: 0}}
+                            origin={{ x: -10, y: 0 }}
                             autoStart={true}
                             fadeOut={true}
                             fallSpeed={2500}
@@ -243,13 +242,13 @@ export default function RaffleResult({ navigation, route }) {
                             colors={confetti_colors[prize]}
                         />
                     </Overlay>
-
                 </View>
-                
 
             </ScrollView>
+            <View style={{marginBottom: '25%'}}>
             {(localTime <= 0) ? <Social currUser={user}></Social> : null}
-        </View>
+            </View>
+            
         </KeyboardAwareScrollView>
 
     )

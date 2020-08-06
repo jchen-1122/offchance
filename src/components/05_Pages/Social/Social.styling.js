@@ -17,22 +17,35 @@ const styles = StyleSheet.create({
         color: 'black',
         fontWeight: '600'
     },
-    abs: {
-        // position: 'absolute', 
-        // marginTop: Dimensions.get('screen').height * 0.5
+    chatMessage: {
+        flexDirection: 'row', 
+        marginBottom: Dimensions.get('screen').height * 0.02, 
+        backgroundColor: 'rgba(255,250,250,0.7)', 
+        borderRadius: 11, 
+        padding: '2%', 
+        paddingBottom: '1%', 
+        maxWidth: Dimensions.get('screen').width * 0.82,
     },
+
     scroll: {
         flexDirection: 'column-reverse', 
         marginLeft: Dimensions.get('screen').width * 0.035, 
-        maxHeight: Dimensions.get('screen').height * 0.25
+        height: Dimensions.get('screen').height * 0.25,
     },
-    viewInput: {
+
+    chatInput: {
         flexDirection: 'row', 
         position: "relative", 
-        marginTop: Dimensions.get('screen').height * 0.3, 
-        marginLeft: Dimensions.get('screen').width * 0.034
+        marginLeft: Dimensions.get('screen').width * 0.034,
     },
-    hide: {
+    chatInput__Box: {
+        height: 40, 
+        width: Dimensions.get('screen').width*0.8, 
+        backgroundColor: 'white', 
+        borderRadius: 11, 
+        paddingLeft: Dimensions.get('screen').width * 0.02,
+    },
+    chatInput__hide: {
         fontSize: 14, 
         color: 'black', 
         fontWeight: '800', 
