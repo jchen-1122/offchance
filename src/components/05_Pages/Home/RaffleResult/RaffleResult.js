@@ -4,7 +4,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 import { Overlay } from 'react-native-elements';
 import styles from './RaffleResult.styling';
-import { colors } from '../../../../settings/all_settings';
+import { fonts, colors, utilities } from '../../../../settings/all_settings';
 import TextLink from '../../../01_Atoms/Buttons/TextLinks/TextLinks';
 import WinnerCard from '../../../03_Organisms/WinnerCard/WinnerCard';
 import BackCard from '../../../03_Organisms/BackCard/BackCard';
@@ -42,7 +42,7 @@ export default function RaffleResult({ navigation, route }) {
 
     let confetti_colors = [["black", "#ECB661"], [colors.silver1, colors.silver2], [colors.bronze1, colors.bronze2], [colors.blue]]
 
-    const [localTime, localSetTime] = useState(0)
+    const [localTime, localSetTime] = useState(90)
     const [winnerTime, setWinnerTime] = useState(10000)
 
     React.useEffect(() => {
@@ -180,22 +180,29 @@ export default function RaffleResult({ navigation, route }) {
         <KeyboardAwareScrollView
             resetScrollToCoords={{ x: 0, y: 0 }}
             scrollEnabled={false}
-            contentContainerStyle={{ height: Dimensions.get('window').height, justifyContent: 'space-between'}}
+            contentContainerStyle={{ height: Dimensions.get('window').height, justifyContent: 'space-between' }}
         >
             <ScrollView>
                 <Text>{feed}</Text>
                 <View style={[styles.container]}>
                     {display}
-                    <Overlay isVisible={localTime > 0} overlayStyle={{ width: 434, height: 740, backgroundColor: 'transparent' }}>
-                        <View>
-                            <View style={{ alignItems: 'center', marginTop: 200 }}>
-                                <Text style={{ fontSize: 30, fontWeight: '900', marginBottom: 20, color: 'white' }}>DRAWING IS STARTING IN</Text>
-                                <Text style={{ fontSize: 20, fontWeight: '900', color: 'white', marginBottom: 30 }}>{localTime} seconds</Text>
-                                {(localTime > 10) ? <Text style={{ fontSize: 14, fontWeight: '300', color: 'white' }}>determining winners...</Text> :
-                                    <Text style={{ fontSize: 14, fontWeight: '300', color: 'white' }}>populating cards...</Text>}
+                    <Overlay isVisible={localTime > 0} overlayStyle={styles.timerOverlay}>
+                        <KeyboardAwareScrollView
+                            resetScrollToCoords={{ x: 0, y: 0 }}
+                            scrollEnabled={false}
+                            contentContainerStyle={{ height: Dimensions.get('window').height, width: Dimensions.get('window').width, marginLeft: '-3%'}}
+                        >
+                            <View style={[utilities.flexCenter]}>
+                                <Text style={[fonts.h1, { color: 'white' }]}>DRAWING IS STARTING IN</Text>
+                                <Text style={styles.timerOverlay__timer}>{localTime} seconds</Text>
+                                <Text style={[fonts.h2, { color: 'white' }]}>
+                                    {(localTime > 10) ? 'Determining Winners...' : 'Populating Cards...'}
+                                </Text>
                             </View>
-                            <Social currUser={user} />
-                        </View>
+                            <View style={{ height: Dimensions.get('window').height*0.35 }}>
+                                <Social currUser={user} />
+                            </View>
+                        </KeyboardAwareScrollView>
                     </Overlay>
                     {/* JOSHUA START */}
                     {/* individual card if logged in user is a winner */}
@@ -245,10 +252,10 @@ export default function RaffleResult({ navigation, route }) {
                 </View>
 
             </ScrollView>
-            <View style={{marginBottom: '25%'}}>
-            {(localTime <= 0) ? <Social currUser={user}></Social> : null}
+            <View style={{ marginBottom: '25%' }}>
+                {(localTime <= 0) ? <Social currUser={user}></Social> : null}
             </View>
-            
+
         </KeyboardAwareScrollView>
 
     )

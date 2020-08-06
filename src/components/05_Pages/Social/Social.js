@@ -62,6 +62,7 @@ export default class Social extends Component {
       >
         <ScrollView
           directionalLockEnabled={false}
+          scrollEnabled
           contentContainerStyle={styles.scroll}>
           {this.state.chatOn ? chatMessages : null}
         </ScrollView>
