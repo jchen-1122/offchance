@@ -34,6 +34,7 @@ export default function NewRaffle({ navigation, route }) {
     const [_productType, setProductType] = useState('sneaker')
     const [_drawingDuration, setDrawingDuration] = useState(null)
     const [_drawingRadius, setDrawingRadius] = useState(null)
+    const [_address, setAddress] = useState(null)
 
     // stuff for date picker (start time)
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -107,7 +108,8 @@ export default function NewRaffle({ navigation, route }) {
             charities: (_charities.length > 0) ? _charities.split(',').map(item => item.trim()) : null,
             productType: _productType,
             drawingDuration: _drawingDuration,
-            radius: _drawingRadius === 'None' ? -1 : _drawingRadius,
+            radius: _drawingRadius === 'None' ? 25000 : _drawingRadius,
+            address: _address,
             // CHANGE LATER
             sizeTypes: _sizeTypes,
             sizes: _sizes
@@ -162,10 +164,15 @@ export default function NewRaffle({ navigation, route }) {
                         <Text style={styles.InputField__label}>Drawing Duration (Days) <Text style={{ color: 'red' }}>*</Text></Text>
                         <Dropdown options={[1, 3, 5, 7, 14, 21, 30]} placeholder="Days" setValue={setDrawingDuration} />
                     </View>
-
+                    <InputField
+                        label="Address"
+                        autoCapitalize="words"
+                        value={_address}
+                        onChangeText={(text) => { setAddress(text) }}
+                        required />
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 1 }}>
                         <Text style={styles.InputField__label}>Drawing Radius (mi) <Text style={{ color: 'red' }}>*</Text></Text>
-                        <Dropdown options={['None', 50, 100, 200, 1000]} placeholder="Miles" setValue={setDrawingRadius} />
+                        <Dropdown options={['None', 1, 5, 10, 20, 50, 100, 200, 1000]} placeholder="Miles" setValue={setDrawingRadius} />
                     </View>
 
                     {_productType == 'sneaker' ?
