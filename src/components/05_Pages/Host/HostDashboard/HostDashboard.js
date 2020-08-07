@@ -10,24 +10,28 @@ import { styles } from './HostDashboard.styling'
 export default function HostDashboard({ navigation }) {
     const { user, setUser } = useContext(GlobalState)
     const [raffles, setRaffles] = useState([])
+    const [totalRaised, setTotalRaised] = useState(0)
     var ip = require('../../../IP_ADDRESS.json')
 
     useEffect(() => {
-        async function getRaffles(){
+        async function getRaffles() {
             var hostedRaffles = []
-            if (user.isHost){
-                if (user.rafflesPosted.length > 0){
-                    for (var raffleID of user.rafflesPosted){
+            var total = 0
+            if (user.isHost) {
+                if (user.rafflesPosted.length > 0) {
+                    for (var raffleID of user.rafflesPosted) {
                         let response = await fetch('http://' + ip.ipAddress + '/raffle/id/' + raffleID)
                         response = await response.json()
                         hostedRaffles.push(response)
+                        total += (response.amountRaised || 0)
                     }
                 }
             }
+            setTotalRaised(total)
             setRaffles(hostedRaffles)
         }
         getRaffles()
-      }, []);
+    }, []);
 
     console.log(raffles)
     if (!user.isHost) {
@@ -52,7 +56,7 @@ export default function HostDashboard({ navigation }) {
 
                 <View style={styles.stats}>
                     <View style={styles.statsItem}>
-                        <Text style={styles.statsItem__value}>$3000</Text>
+                        <Text style={styles.statsItem__value}>${totalRaised}</Text>
                         <Text style={styles.statsItem__label}>TOTAL RAISED</Text>
                     </View>
                     <View style={styles.statsItem}>
@@ -66,8 +70,8 @@ export default function HostDashboard({ navigation }) {
                 </View>
 
                 <View>
-                    <Text style={[fonts.h1, {marginTop: '5%', marginLeft: '2%'}]}>Your Drawings</Text>
-                {raffles.map((raffle, index) =>
+                    <Text style={[fonts.h1, { marginTop: '5%', marginLeft: '2%' }]}>Your Drawings</Text>
+                    {raffles.map((raffle, index) =>
                         <HostCard
                             data={raffle}
                         />
