@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, Linking, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback,} from 'react-native';
-import ReqBusAcc from '../../04_Templates/ReqBusAcc/ReqBusAcc';
+// import ReqBusAcc from '../../04_Templates/ReqBusAcc/ReqBusAcc';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../../01_Atoms/Divider/Divider.js';
 import InputField from '../../02_Molecules/InputField/InputField.js';
@@ -343,19 +343,19 @@ export default function Signup({ navigation }) {
           onChangeText={(text) => { setRef(text) }}/>
           
 
-        <View style={{ width: '90%' }}>
+        {/* <View style={{ width: '90%' }}>
           <CheckBox
             selected={state.businessAccount}
             onPress={() => setState({ businessAccount: !state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement })}
             text='Request a verified business account to host your own drawings'
           />
-        </View>
-
+        </View> */}
+{/* 
         {state.businessAccount ? (
           <ReqBusAcc 
           setHostItem={setHostItem} hostItem={_host_item}
           setHostCharity={setHostCharity} hostCharity={_host_charity} 
-          setHostDetails={setHostDetails} hostDetails={_host_details}/>) : null}
+          setHostDetails={setHostDetails} hostDetails={_host_details}/>) : null} */}
 
         <View style={{ width: '90%' }}>
           <CheckBox
