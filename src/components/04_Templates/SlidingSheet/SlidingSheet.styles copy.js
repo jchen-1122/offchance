@@ -49,6 +49,17 @@ const styles = StyleSheet.create({
       marginBottom: '15%',
 
     },
+
+    // Sliding Sheet Style
+    subView: {
+       position: 'absolute',
+       bottom: '-100%',
+       left: 0,
+       right: 0,
+       backgroundColor: "#FFFFFF",
+       height: Dimensions.get('window').height,
+       borderRadius: 20,
+   },
 })
 
 export default styles;

@@ -10,6 +10,7 @@ import EnterEmail from './components/05_Pages/LoginProcess/EnterEmail/EnterEmail
 import EnterCode from './components/04_Templates/EnterCode/EnterCode';
 import ChangePassword from './components/05_Pages/LoginProcess/ChangePassword/ChangePassword';
 import Home from './components/05_Pages/Home/Home'
+import SeeAll from './components/05_Pages/Home/SeeAll/SeeAll';
 import Raffle from './components/05_Pages/Home/Raffle/Raffle'
 import PlayGame from './components/05_Pages/Home/PlayGame/PlayGame'
 import Game from './components/05_Pages/Home/Game/Game'
@@ -26,6 +27,7 @@ import Explore from './components/05_Pages/Home/Explore/Explore';
 import OtherUser from './components/05_Pages/OtherUser/OtherUser'
 
 import GameController from './components/GameController';
+import LoadingScreen from './components/05_Pages/Home/Raffle/LoadingScreen/LoadingScreen'
 import RaffleResult from './components/05_Pages/Home/RaffleResult/RaffleResult'
 import EnteredUsers from './components/05_Pages/Home/EnteredUsers/EnteredUsers';
 import { Button, Text } from 'react-native'
@@ -43,10 +45,11 @@ import MyDrawings from './components/05_Pages/Account/MyDrawings/MyDrawings';
 import NotLogin from './components/05_Pages/Account/NotLogin/NotLogin';
 
 // Host pages import
+import HostDashboard from './components/05_Pages/Host/HostDashboard/HostDashboard';
 import AskRaffleType from './components/05_Pages/Host/AskRaffleType/AskRaffleType';
 import NewRaffle from './components/05_Pages/Host/NewRaffle/NewRaffle';
-import io from 'socket.io-client'
 
+import io from 'socket.io-client'
 const Stack = createStackNavigator();
 console.disableYellowBox = true;
 
@@ -73,6 +76,7 @@ function App() {
           <Stack.Screen name="EnterCode" component={EnterCode} options={{ title: 'Forgot Password' }}/>
           <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ title: 'New Password' }}/>
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+          <Stack.Screen name="SeeAll" component={SeeAll} options={({ route }) => ({ title: route.params.title })}/>
           <Stack.Screen name="YourFeed" component={YourFeed} options={{ headerShown: false }} />
           {/* <Stack.Screen name="Explore" component={Explore} /> */}
           <Stack.Screen name="Raffle" component={Raffle} options={({ route }) => ({ title: route.params.name })}/>
@@ -95,11 +99,14 @@ function App() {
           <Stack.Screen name="Top5List" component={Top5List} />
           <Stack.Screen name="OtherUser" component={OtherUser} options={({ route }) => ({ title: route.params.user.name })} />
           <Stack.Screen name="GameController" component={GameController} options={{ title: '' }}/>
+          <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
           <Stack.Screen name="RaffleResult" component={RaffleResult} />
           <Stack.Screen name="EnteredUsers" component={EnteredUsers} options={{ title: 'Entered' }}/>
           <Stack.Screen name="AskRaffleType" component={AskRaffleType} options={{ title: 'New Raffle' }}/>
           <Stack.Screen name="NewRaffle" component={NewRaffle} options={{ title: 'Submit Raffle' }}/>
-          <Stack.Screen name="ReqBusAcc" component={ReqBusAcc} options={{ title: 'Submit Raffle' }}/>
+          <Stack.Screen name="ReqBusAcc" component={ReqBusAcc} options={{ title: 'Get Verified' }}/>
+          <Stack.Screen name="HostDashboard" component={HostDashboard} options={{ title: 'Your Drawings' }}/>
+
 
         </Stack.Navigator>
       </NavigationContainer>

@@ -14,7 +14,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     height: 100,
   },
-
+  Raffle__image: {
+    height: Dimensions.get('window').height*0.3,
+    width: Dimensions.get('window').width,
+    resizeMode: 'contain',
+    marginBottom: '5%'
+  },
   pickSize: {
     flex: 0, 
     flexDirection:'row', 

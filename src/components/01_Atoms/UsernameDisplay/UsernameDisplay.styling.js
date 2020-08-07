@@ -4,6 +4,7 @@ import {fonts} from "../../../settings/all_settings.js";
 let smallSize = 20;
 let normalSize = 40;
 let largeSize = 60;
+let searchSize = Dimensions.get('window').height * 0.025;
 
 const styles = StyleSheet.create({
     profilePic: {
@@ -28,11 +29,21 @@ const styles = StyleSheet.create({
         marginBottom: 5,
         marginRight: 5
     },
+    profilePic_search: {
+        height: searchSize,
+        width: searchSize,
+        borderRadius: searchSize,
+        margin: 5,
+    },
+
     username_large: {
         fontSize: 18
     },
     username_small: {
         fontSize: 11.5
+    },
+    username_search: {
+        fontSize: 10
     },
 
     container: {

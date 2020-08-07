@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { View, ScrollView, Text, Image, Button, Dimensions} from 'react-native'
+import { View, ScrollView, Text, Image, Button, Dimensions } from 'react-native'
 import { Icon } from 'react-native-elements';
 import { colors, fonts, utilities } from '../../../../settings/all_settings';
 import InfoFeed from '../../../02_Molecules/InfoFeed/InfoFeed'
@@ -11,10 +11,10 @@ import Nswitch from '../../../../../assets/images/switch.jpeg'
 import { styles } from './Profile.styling'
 import GlobalState from '../../../globalState';
 import Construction from '../../../04_Templates/Construction/Construction'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 function Profile({ navigation }) {
     const { user, setUser } = useContext(GlobalState)
-    console.log(user)
     // add edit button in topbar
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -23,12 +23,22 @@ function Profile({ navigation }) {
                     navigation.navigate("EditProfile", user)
                 }} title="Edit" />
             ),
+            headerLeft: () => (
+                <TouchableOpacity style={{paddingLeft: 10}}onPress={() => {
+                    navigation.navigate("Account", user)
+                }}>
+                    <Icon name='menu'
+                        type='material-community'
+                        color='white'
+                        backgroundColor='transparent' />
+                </TouchableOpacity>
+            ),
         });
     }, [navigation]);
 
     const [info, setInfo] = useState(true)
     const [viewing, setViewing] = useState((user != null) ? user.viewing : false)
-    let name, username, profilePic, email, followers, following, enteredRaffles, address, sizeType, shoeSize, shirtSize
+    let name, username, profilePic, email, followers, following, enteredRaffles, address, sizeType, shoeSize, shirtSize, referralCode
     useEffect(() => {
         name = 'JohnDoe'
     })
@@ -48,19 +58,32 @@ function Profile({ navigation }) {
         sizeType = user.sizeType
         shoeSize = user.shoeSize
         shirtSize = user.shirtSize
+        referralCode = Object.keys(user).includes('referralCode') ? user.referralCode : ''
     }
     return (
         <View style={utilities.container}>
             <ScrollView>
-                <Image source={{ uri: profilePic }} style={styles.profilePic}></Image>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-end', zIndex: 1 }}>
+                    <View style={{ zIndex: -1, backgroundColor: 'transparent' }}>
+                        {/* Profile pic*/}
+                        <Image source={{ uri: profilePic }} style={[styles.profilePic]}></Image>
+                    </View>
+                    {/* <View style={{ zIndex: 1 }}> */}
+                        {/* Green Checkmark*/}
+                        {user.isHost ? 
+                        <View style={{zIndex: 50, position: 'absolute', right: Dimensions.get('window').width*0.35}}>
+                        <Icon name={'check-circle'}
+                            type='octicons'
+                            color={colors.primaryColor}
+                            backgroundColor='white'
+                            style={{borderRadius: 50}} /> 
+                            </View>: null}
+                    {/* </View> */}
+                </View>
+
                 <Text style={styles.header_name}>{name}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
                     <Text style={styles.header_username}>@{username}</Text>
-                    {user.isHost ? <Icon name={'check-circle'}
-                        type='octicons'
-                        color={colors.primaryColor}
-                        backgroundColor='transparent'
-                        style={{ marginTop: '19%', marginLeft: '3%' }} /> : null}
                 </View>
 
                 <StatsBar currUser={user} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>
@@ -69,7 +92,7 @@ function Profile({ navigation }) {
                     <InfoFeed info={info} setInfo={setInfo}></InfoFeed>
                 </View>
 
-                {(info) ? <View style={{ alignItems: 'flex-start', marginLeft: Dimensions.get('window').width*0.08 }}>
+                {(info) ? <View style={{ alignItems: 'flex-start', marginLeft: Dimensions.get('window').width * 0.08 }}>
                     <Text style={styles.descriptor}>Name</Text>
                     <Text style={styles.description}>{name}</Text>
 
@@ -81,7 +104,7 @@ function Profile({ navigation }) {
                             <Text style={styles.descriptor}>Shipping Address</Text>
                             <Text style={styles.description}>{address}</Text>
 
-                            <View style={{ flexDirection: 'row', width: Dimensions.get('window').width*0.83, justifyContent: 'space-between' }}>
+                            <View style={{ flexDirection: 'row', width: Dimensions.get('window').width * 0.83, justifyContent: 'space-between' }}>
                                 <View>
                                     <Text style={styles.descriptor}>Size Type</Text>
                                     <Text style={styles.description}>{(sizeType) ? sizeType.charAt(0).toUpperCase() + sizeType.slice(1) : ''}</Text>
@@ -97,6 +120,9 @@ function Profile({ navigation }) {
                             </View>
                             <Text style={styles.descriptor}>Payment Information</Text>
                             <Text style={styles.description}>**** **** **** 1234</Text>
+
+                            <Text style={styles.descriptor}>Referral Code</Text>
+                            <Text style={styles.description}>{referralCode}</Text>
 
                             {/* <View style={{flexDirection: 'row'}}>
                         <View style={styles.payment}>
