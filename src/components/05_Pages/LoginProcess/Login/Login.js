@@ -78,10 +78,6 @@ export default function Login({ navigation, route }) {
           <BlockButton
             color="facebook"
             title="Facebook"
-            style={{ margin: 0, marginRight: 7.5 }} />
-          <BlockButton
-            color="google"
-            title="Google"
             style={{margin: 0, marginRight: 7.5}}
             onPress={async () => {
               try {

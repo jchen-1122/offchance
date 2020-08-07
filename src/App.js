@@ -45,10 +45,11 @@ import MyDrawings from './components/05_Pages/Account/MyDrawings/MyDrawings';
 import NotLogin from './components/05_Pages/Account/NotLogin/NotLogin';
 
 // Host pages import
+import HostDashboard from './components/05_Pages/Host/HostDashboard/HostDashboard';
 import AskRaffleType from './components/05_Pages/Host/AskRaffleType/AskRaffleType';
 import NewRaffle from './components/05_Pages/Host/NewRaffle/NewRaffle';
-import io from 'socket.io-client'
 
+import io from 'socket.io-client'
 const Stack = createStackNavigator();
 console.disableYellowBox = true;
 
@@ -103,7 +104,9 @@ function App() {
           <Stack.Screen name="EnteredUsers" component={EnteredUsers} options={{ title: 'Entered' }}/>
           <Stack.Screen name="AskRaffleType" component={AskRaffleType} options={{ title: 'New Raffle' }}/>
           <Stack.Screen name="NewRaffle" component={NewRaffle} options={{ title: 'Submit Raffle' }}/>
-          <Stack.Screen name="ReqBusAcc" component={ReqBusAcc} options={{ title: 'Submit Raffle' }}/>
+          <Stack.Screen name="ReqBusAcc" component={ReqBusAcc} options={{ title: 'Get Verified' }}/>
+          <Stack.Screen name="HostDashboard" component={HostDashboard} options={{ title: 'Your Drawings' }}/>
+
 
         </Stack.Navigator>
       </NavigationContainer>
