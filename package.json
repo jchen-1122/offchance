@@ -31,7 +31,6 @@
     "react-facebook-login": "^4.1.1",
     "react-geocode": "^0.2.1",
     "react-native": "0.62.2",
-    "react-native-autofocus": "0.0.7",
     "react-native-confetti-cannon": "^1.5.1",
     "react-native-date-picker": "^3.0.2",
     "react-native-datepicker": "^1.7.2",

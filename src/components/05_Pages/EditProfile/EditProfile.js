@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react'
+import React, {useState, useContext, useRef} from 'react'
 import {ScrollView, View, Text, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard} from 'react-native'
 import { Icon } from 'react-native-elements';
 import InputField from '../../02_Molecules/InputField/InputField'
@@ -10,6 +10,7 @@ import validator from 'validator'
 import { colors, fonts, utilities, dimensions } from '../../../settings/all_settings';
 import GlobalState from '../../globalState'
 import { styles } from './EditProfile.styling'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default function ({ navigation }) {
     var shirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
@@ -27,6 +28,11 @@ export default function ({ navigation }) {
     const [_shirtSize, setShirtSize] = useState(user.shirtSize != null ? user.shirtSize : "")
     const [_sizeType, setSizeType] = useState(user.sizeType != null ? user.sizeType : "")
     const [_errors, setErrors] = useState([])
+
+      // for going to the next text input
+  const usernameRef = useRef()
+  const emailRef = useRef()
+  const addressRef = useRef()
 
     const [modifyMode, setModifyMode] = useState(false)
 
@@ -81,6 +87,9 @@ export default function ({ navigation }) {
 
     return (
         <ScrollView>
+                  <KeyboardAwareScrollView
+        style={{ backgroundColor: 'transparent' }}
+        resetScrollToCoords={{ x: 0, y: 0 }}>
             <View style={{ zIndex: 5 }}>
                 <Image source={{ uri: user.profilePicture }} style={styles.profilePic}></Image>
                 <View style={styles.inputs}>
@@ -88,25 +97,33 @@ export default function ({ navigation }) {
                         label="Name"
                         autoCapitalize="words"
                         value={_name}
+                        onSubmitEditing={() => usernameRef.current.focus()}
                         onChangeText={(text) => { setName(text) }} />
 
                     <InputField
                         label="Username"
                         autoCapitalize="words"
                         value={_username}
-                        onChangeText={(text) => { setUsername(text) }} />
+                        onChangeText={(text) => { setUsername(text) }} 
+                        onSubmitEditing={() => emailRef.current.focus()}
+                        ref={usernameRef}/>
 
                     <InputField
                         label="Email"
                         autoCapitalize="words"
                         value={_email}
-                        onChangeText={(text) => { setEmail(text) }} />
+                        onChangeText={(text) => { setEmail(text) }} 
+                        onSubmitEditing={() => addressRef.current.focus()}
+                        ref={emailRef}/>
 
                     <InputField
                         label="Shipping Address"
                         autoCapitalize="words"
                         value={_address}
-                        onChangeText={(text) => { setAddress(text) }} />
+                        onChangeText={(text) => { setAddress(text) }} 
+                        onSubmitEditing={() => Keyboard.dismiss()}
+                        returnKeyType='done'
+                        ref={addressRef}/>
 
                     <View style={{ marginVertical: '5%' }}>
                         <Text style={styles.label}>Size Type</Text>
@@ -164,6 +181,7 @@ export default function ({ navigation }) {
                     </View>
                 </View>
             </View>
+            </KeyboardAwareScrollView>
         </ScrollView>
     )
 }
