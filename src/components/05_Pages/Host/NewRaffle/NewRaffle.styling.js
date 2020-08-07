@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
     
     InputField__label: {
         fontSize: 16,
-        marginBottom: 5,
         fontWeight: '500', 
     },
 
@@ -16,7 +15,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     radioButtonLabel: {
-        fontSize: 16
+        fontSize: 16,
     }
 
 })

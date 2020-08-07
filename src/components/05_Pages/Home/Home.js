@@ -66,22 +66,11 @@ function Home({ navigation }) {
 
   }, [])
 
-  // if is a host
-  let hostRaffle;
-  if (user_logged_in(user) && user.isHost) {
-    hostRaffle = (
-      <View style={{ backgroundColor: 'white', width: '100%', padding: '5%' }}>
-        <Text style={fonts.h1}>Host Your Own Raffles to Raise Money For Your Cause.</Text>
-        <BlockButton color="primary" title="NEW RAFFLE" size="short" onPress={() => navigation.navigate('AskRaffleType')} style={{ marginLeft: 0 }} />
-      </View>
-    )
-  }
   return (
     <View style={utilities.container}>
       <ScrollView contentContainerStyle={utilities.scrollview}>
         <TopNav navigation={navigation} active='Home' />
         <View style={utilities.flexCenter}>
-          {hostRaffle}
 
           <HorizontalScroll title="Trending" theme="light" seeAllRaffles={raffles} navigation={navigation} toggle={true}>
             {raffles.map((raffle, index) =>
