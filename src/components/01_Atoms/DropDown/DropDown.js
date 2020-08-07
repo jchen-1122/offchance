@@ -15,18 +15,18 @@ function DropDown(props) {
     }
 
     // for different sizes
-    // let containerStyles = [styles.DropDown__picker]
-    // switch (props.size) {
-    //     case 'small':
-    //         containerStyles.push(styles.DropDown__picker_small);
-    //         break;
-    //     case 'large':
-    //         containerStyles.push(styles.DropDown__picker_large);
-    //         break;
-    //     case 'xlarge':
-    //         containerStyles.push(styles.DropDown__picker_xlarge);
-    //         break;
-    // }
+    let containerStyles = [styles.DropDown__picker]
+    switch (props.size) {
+        case 'small':
+            containerStyles.push(styles.DropDown__picker_small);
+            break;
+        case 'large':
+            containerStyles.push(styles.DropDown__picker_large);
+            break;
+        case 'xlarge':
+            containerStyles.push(styles.DropDown__picker_xlarge);
+            break;
+    }
 
     if (Platform.OS === 'ios') {
         return (
@@ -40,12 +40,14 @@ function DropDown(props) {
                     placeholder={props.placeholder}
                     placeholderStyle={{color: '#888888'}}
                     style={styles.DropDown__box}
-                    containerStyle={styles.DropDown__picker}
+                    containerStyle={containerStyles}
                     zIndex={props.zIndex}
                     itemStyle={{
                         justifyContent: 'flex-start',
                     }}
-                    onChangeItem={item => { setSelectedValue(item.value); if (props.setValue) { props.setValue(item.value) } }}
+                    onChangeItem={item => { setSelectedValue(item.value); 
+                                            if (props.setValue) { props.setValue(item.value) } 
+                                            (item.value === '+ Add Payment Method') ? (setSelectedValue((props.options[0]).toString()), props.parentFunction()) : null }}
                 />
             </View>
         )

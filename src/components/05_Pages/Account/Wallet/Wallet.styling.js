@@ -37,6 +37,8 @@ const styles = StyleSheet.create({
      fontWeight: "600",
      // fontFamily: '', {/* TODO: messina sans is not in react native font family */}
      marginLeft: '10%',
+     marginTop:'1%',
+     
    },
 
    // content
@@ -56,16 +58,6 @@ const styles = StyleSheet.create({
 
    },
 
-   // Sliding Sheet Style
-   subView: {
-      position: 'absolute',
-      bottom: '-7%',
-      left: 0,
-      right: 0,
-      backgroundColor: "#FFFFFF",
-      height: 600,
-      borderRadius: 20,
-  },
 
 })
 

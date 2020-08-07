@@ -1,0 +1,6 @@
+module Pods_offchancebabre {
+  umbrella header "Pods-offchancebabre-umbrella.h"
+
+  export *
+  module * { export * }
+}

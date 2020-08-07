@@ -85,7 +85,7 @@ function BlockButton(props) {
     return (
         <TouchableOpacity style={[buttonStyle, props.style]} onPress={props.onPress} disabled={props.disabled}>
             {icon}
-            <Text style={[styles.BlockButton__title, buttonTitleStyle]}>{props.title}</Text>
+            <Text style={[styles.BlockButton__title, buttonTitleStyle, props.title == "FOLLOWING" ? {fontSize: 11} : null]}>{props.title}</Text>
             {banner}
         </TouchableOpacity>
     )
