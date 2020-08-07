@@ -275,7 +275,6 @@ export default function Raffle({ navigation, route }) {
     // get fields of raffle from db
     let name;
     let description;
-    let date;
     let expired;
     let images_strs; // string rep of images for carousel
     let sizes;
@@ -283,7 +282,6 @@ export default function Raffle({ navigation, route }) {
     if (raffle != null) {
         name = raffle.name
         description = raffle.description
-        date = unix_to_date(raffle.startTime)
         expired = is_expired(raffle.startTime)
         images_strs = raffle.images
         sizes = raffle.sizes

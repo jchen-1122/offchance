@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, Text, Button, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, Alert } from 'react-native';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import InputField from '../../../02_Molecules/InputField/InputField';
 import { fonts, utilities } from '../../../../settings/all_settings';
@@ -237,9 +237,16 @@ export default function NewRaffle({ navigation, route }) {
                             <BlockButton color="secondary" title="CHOOSE" size="small" />
                         </View>
                         <BlockButton title="SUBMIT FOR APPROVAL" color="primary" onPress={() => {
-                            //console.log('sizes',_sizes)
                             postRaffle()
-                            navigation.navigate('Home')
+                            Alert.alert(
+                                "Success!",
+                                "Your drawing has been submitted for approval. You will get notified if it gets approved.",
+                                [
+                                  { text: "OK", onPress: () => console.log("OK Pressed") }
+                                ],
+                                { cancelable: false }
+                              );
+                            navigation.navigate('HostDashboard')
                         }} />
                     </View>
                 </KeyboardAwareScrollView>
