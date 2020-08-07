@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { View, Text, Linking, ScrollView, KeyboardAvoidingView, TouchableWithoutFeedback, } from 'react-native';
+import { View, Text, Button, ScrollView, Keyboard, } from 'react-native';
 // import ReqBusAcc from '../../04_Templates/ReqBusAcc/ReqBusAcc';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../../01_Atoms/Divider/Divider.js';
@@ -275,6 +275,8 @@ export default function Signup({ navigation }) {
           <View style={{ marginVertical: '2.5%', alignItems: 'center' }}>
             <Divider />
           </View>
+
+
           <InputField
             label="Full Name"
             autoCapitalize="words"
@@ -282,13 +284,7 @@ export default function Signup({ navigation }) {
             onChangeText={(text) => { setName(text) }}
             onSubmitEditing={() => usernameRef.current.focus()}
             required />
-  {/* const  = useRef()
-  const  = useRef()
-  const instaRef = useRef()
-  const cityRef = useRef()
-  const passwordRef = useRef()
-  const confirmPasswordRef = useRef()
-  const referralRef = useRef() */}
+
           <InputField
             label="Username"
             value={_username}
@@ -296,24 +292,34 @@ export default function Signup({ navigation }) {
             onSubmitEditing={() => phoneNumberRef.current.focus()}
             ref={usernameRef}
             required />
+
           <InputField
             label="Phone Number"
             textContentType="telephoneNumber"
             keyboardType="phone-pad"
             value={_phoneNumber}
+            returnKeyType='done'
             onChangeText={(text) => { setPhoneNumber(text) }}
             onSubmitEditing={() => emailRef.current.focus()}
             ref={phoneNumberRef}
             required />
+
           <InputField
             label="Email"
             textContentType="emailAddress"
             keyboardType="email-address"
-            value={_email} onChangeText={(text) => { setEmail(text) }} required />
+            value={_email}
+            onChangeText={(text) => { setEmail(text) }}
+            onSubmitEditing={() => instaRef.current.focus()}
+            ref={emailRef}
+            required />
           <InputField
             label="Instagram Handle"
             style={{ width: '82%' }}
-            value={_instaHandle} onChangeText={(text) => { setInstaHandle(text) }}
+            value={_instaHandle} 
+            onChangeText={(text) => { setInstaHandle(text) }}
+            onSubmitEditing={() => cityRef.current.focus()}
+            ref={instaRef}
             tooltip={true}
             tooltipContent="We use this to to give you bonus chances when you share with friends" />
 
@@ -322,7 +328,10 @@ export default function Signup({ navigation }) {
               autoCapitalize="words"
               style={{ width: '65%' }}
               label="City"
-              value={_city} onChangeText={(text) => { setCity(text) }} />
+              value={_city} 
+              onChangeText={(text) => { setCity(text) }}
+              onSubmitEditing={() => passwordRef.current.focus()}
+              ref={cityRef}/>
             <Dropdown
               options={us_states}
               placeholder="State"
@@ -333,33 +342,26 @@ export default function Signup({ navigation }) {
             label="Password"
             value={_password}
             onChangeText={(text) => { setPassword(text) }}
+            onSubmitEditing={() => confirmPasswordRef.current.focus()}
+            ref={passwordRef}
             required
             password />
             <InputField
               label="Confirm Password"
               value={_confirm}
               onChangeText={(text) => { setConfirm(text) }}
+              onSubmitEditing={() => referralRef.current.focus()}
+              ref={confirmPasswordRef}
               required
               password /></View>}
 
           <InputField
             label="Referral Code"
             value={_ref}
-            onChangeText={(text) => { setRef(text) }} />
-
-          {/* <View style={{ width: '90%' }}>
-          <CheckBox
-            selected={state.businessAccount}
-            onPress={() => setState({ businessAccount: !state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement })}
-            text='Request a verified business account to host your own drawings'
-          />
-        </View> */}
-          {/* 
-        {state.businessAccount ? (
-          <ReqBusAcc 
-          setHostItem={setHostItem} hostItem={_host_item}
-          setHostCharity={setHostCharity} hostCharity={_host_charity} 
-          setHostDetails={setHostDetails} hostDetails={_host_details}/>) : null} */}
+            ref={referralRef}
+            returnKeyType='done'
+            onChangeText={(text) => { setRef(text) }} 
+            onSubmitEditing={() => Keyboard.dismiss()}/>
 
           <View style={{ width: '90%' }}>
             <CheckBox

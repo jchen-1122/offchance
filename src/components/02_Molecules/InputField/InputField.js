@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef } from 'react'
-import { TextInput, Text, View, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform, } from 'react-native';
+import { TextInput, Text, View, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, Platform} from 'react-native';
 import { styles } from "./InputField.styling";
 import { Icon, colors } from 'react-native-elements';
 import Tooltip from '../Tooltip/Tooltip';
@@ -19,12 +19,15 @@ function InputField(props, ref) {
 
     // if input is supposed to have an icon with a tooltip (i.e. insta handle)
     let icon = (props.tooltip) ? (<Tooltip label={<Icon name='info' />} content={props.tooltipContent} />) : null;
+
+    // for going to the next input
     const inputRef = useRef();
     useImperativeHandle(ref, () => ({
       focus: () => {
         inputRef.current.focus();
       }
     }));
+
     return (
         <View style={[styles.InputField, props.style]}>
             <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -35,7 +38,7 @@ function InputField(props, ref) {
                     placeholder={props.label + ((props.required) ? '*' : '')}
                     placeholderTextColor='#888888'
                     textContentType={props.textContentType}
-                    returnKeyType="next"
+                    returnKeyType={props.returnKeyType || "next"}
                     keyboardAppearance="dark"
                     autoCorrect={false}
                     autoCapitalize={props.autoCapitalize || "none"}
@@ -48,7 +51,11 @@ function InputField(props, ref) {
                     onChangeText={props.onChangeText}
                     onSubmitEditing={props.onSubmitEditing}
                     focus={props.focus}
-                    ref={inputRef}/>
+                    ref={inputRef}
+                    blurOnSubmit={false}
+                    inputAccessoryViewID={props.inputAccessoryViewID}
+                    />
+
                 {icon}
             </View>
         </View>
