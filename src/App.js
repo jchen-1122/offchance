@@ -40,7 +40,6 @@ import Profile from './components/05_Pages/Account/Profile/Profile';
 import Wallet from './components/05_Pages/Account/Wallet/Wallet';
 import HowItWorks from './components/05_Pages/Account/HowItWorks/HowItWorks';
 import FAQ from './components/05_Pages/Account/FAQ/FAQ';
-import ReqBusAcc from './components/04_Templates/ReqBusAcc/ReqBusAcc';
 import MyDrawings from './components/05_Pages/Account/MyDrawings/MyDrawings';
 import NotLogin from './components/05_Pages/Account/NotLogin/NotLogin';
 
@@ -48,6 +47,7 @@ import NotLogin from './components/05_Pages/Account/NotLogin/NotLogin';
 import HostDashboard from './components/05_Pages/Host/HostDashboard/HostDashboard';
 import AskRaffleType from './components/05_Pages/Host/AskRaffleType/AskRaffleType';
 import NewRaffle from './components/05_Pages/Host/NewRaffle/NewRaffle';
+import ReqBusAcc from './components/05_Pages/Host/ReqBusAcc/ReqBusAcc';
 
 import io from 'socket.io-client'
 const Stack = createStackNavigator();
