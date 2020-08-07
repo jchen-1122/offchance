@@ -3,6 +3,7 @@ import { View, ScrollView, Text, Image, TouchableOpacity } from 'react-native'
 import { utilities, fonts, colors } from '../../../settings/all_settings';
 import GlobalState from '../../globalState'
 import { styles } from './HostCard.styling'
+import { getTimer } from '../../../functions/convert_dates'
 
 export default function HostCard({ data }) {
 
@@ -14,7 +15,7 @@ export default function HostCard({ data }) {
                     <Text style={{ fontWeight: 'bold' }}>{data.name}</Text>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={styles.Info__label}>Time Left:</Text>
-                        <Text>5d 8h 30m</Text>
+    <Text>{getTimer(data.startTime, false)}</Text>
                     </View>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={styles.Info__label}>Amount Raised:</Text>

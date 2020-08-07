@@ -27,8 +27,9 @@ export default function NewRaffle({ navigation, route }) {
     // states for each input value
     const [_name, setName] = useState(null)
     const [_price, setPrice] = useState(null)
+    const [_value, setValue] = useState(null)
+    const [_numProducts, setNumProducts] = useState(null)
     const [_description, setDescription] = useState(null)
-    const [_startTime, setStartTime] = useState(null)
     const [_goal, setGoal] = useState(null)
     const [_charities, setCharities] = useState([])
     const [_sizeTypes, setSizeTypes] = useState(['One Size'])
@@ -103,18 +104,17 @@ export default function NewRaffle({ navigation, route }) {
             hostedBy: user._id,
             name: _name,
             productPrice: _price,
+            valuedAt: _value,
+            numProducts: _numProducts,
             description: _description,
-            //startTime: _startTime.getTime() / 1000, // convert to unix timestamp
             donationGoal: _goal,
             charities: (_charities.length > 0) ? _charities.split(',').map(item => item.trim()) : null,
             productType: _productType,
             drawingDuration: _drawingDuration,
             radius: _drawingRadius === 'None' ? -1 : _drawingRadius,
-            // CHANGE LATER
             sizeTypes: _sizeTypes,
             sizes: _sizes
         }
-        //console.log(JSON.stringify(data))
         return JSON.stringify(data)
     };
 
@@ -123,59 +123,73 @@ export default function NewRaffle({ navigation, route }) {
         <View style={utilities.container}>
 
             <ScrollView>
-            <KeyboardAwareScrollView
-        style={{ backgroundColor: 'transparent' }}
-        resetScrollToCoords={{ x: 0, y: 0 }}
-      >
-                <View style={[utilities.flexCenter, { marginBottom: 25 }]}>
-                    <InputField
-                        label="Name of Product"
-                        autoCapitalize="words"
-                        value={_name}
-                        onChangeText={(text) => { setName(text) }}
-                        required />
-                    <InputField
-                        label="Prize Value"
-                        keyboardType="phone-pad"
-                        value={_price}
-                        onChangeText={(text) => { setPrice(text) }}
-                        required />
-
-                    {(route.params.type == 1) ?
+                <KeyboardAwareScrollView
+                    style={{ backgroundColor: 'transparent' }}
+                    resetScrollToCoords={{ x: 0, y: 0 }}
+                >
+                    <View style={[utilities.flexCenter, { marginBottom: 25 }]}>
                         <InputField
-                            label="Donation Goal ($)"
-                            keyboardType="phone-pad"
-                            value={_goal}
-                            onChangeText={(text) => { setGoal(text) }}
-                            required /> : null
-                    }
-                    {(route.params.type == 1) ?
-                        <InputField
-                            label="Charity names (sep. by commas)"
+                            label="Name of Product"
                             autoCapitalize="words"
-                            value={_charities}
-                            onChangeText={(text) => { setCharities(text) }}
-                            required /> : null
-                    }
-                    <InputField
-                        label="Description"
-                        value={_description}
-                        onChangeText={(text) => { setDescription(text) }}
-                        required
-                        textArea />
+                            value={_name}
+                            onChangeText={(text) => { setName(text) }}
+                            required />
+                        {(route.params.type == 2) ?
+                            <InputField
+                                label="Buy It Now Price"
+                                keyboardType="number-pad"
+                                value={_price}
+                                onChangeText={(text) => { setPrice(text) }}
+                                required /> : <InputField
+                                label="Prize Value"
+                                keyboardType="number-pad"
+                                value={_value}
+                                onChangeText={(text) => { setValue(text) }}
+                                required />
+                        }
+                        {(route.params.type == 2) ?
+                            <InputField
+                                label="# of Products Available"
+                                keyboardType="number-pad"
+                                value={_numProducts}
+                                onChangeText={(text) => { setNumProducts(text) }}
+                                required /> : null}
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 2 }}>
-                        <Text style={styles.InputField__label}>Drawing Duration (Days) <Text style={{ color: 'red' }}>*</Text></Text>
-                        <Dropdown options={[1, 3, 5, 7, 14, 21, 30]} placeholder="Days" setValue={setDrawingDuration} />
-                    </View>
+                        {(route.params.type == 1) ?
+                            <InputField
+                                label="Donation Goal ($)"
+                                keyboardType="number-pad"
+                                value={_goal}
+                                onChangeText={(text) => { setGoal(text) }}
+                                required /> : null
+                        }
+                        {(route.params.type == 1) ?
+                            <InputField
+                                label="Charity Partners (sep. by commas)"
+                                autoCapitalize="words"
+                                value={_charities}
+                                onChangeText={(text) => { setCharities(text) }}
+                                required /> : null
+                        }
+                        <InputField
+                            label="Description"
+                            value={_description}
+                            onChangeText={(text) => { setDescription(text) }}
+                            required
+                            textArea />
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 1, marginVertical: '3%' }}>
-                        <Text style={styles.InputField__label}>Drawing Radius (mi) <Text style={{ color: 'red' }}>*</Text></Text>
-                        <Dropdown options={['None', 50, 100, 200, 1000]} placeholder="Miles" setValue={setDrawingRadius} />
-                    </View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 2 }}>
+                            <Text style={styles.InputField__label}>Drawing Duration (Days) <Text style={{ color: 'red' }}>*</Text></Text>
+                            <Dropdown options={[1, 3, 5, 7, 14, 21, 30]} placeholder="Days" setValue={setDrawingDuration} />
+                        </View>
 
-                    {/* WE NEED THIS FOR ADMIN */}
-                    {/* <View style={{ width: '100%', marginLeft: '10%', marginVertical: 15 }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 1, marginVertical: '3%' }}>
+                            <Text style={styles.InputField__label}>Drawing Radius (mi) <Text style={{ color: 'red' }}>*</Text></Text>
+                            <Dropdown options={['None', 50, 100, 200, 1000]} placeholder="Miles" setValue={setDrawingRadius} />
+                        </View>
+
+                        {/* WE NEED THIS FOR ADMIN */}
+                        {/* <View style={{ width: '100%', marginLeft: '10%', marginVertical: 15 }}>
                         <Text style={styles.InputField__label}>Drawing Time<Text style={{ color: 'red' }}>*</Text></Text>
                         <BlockButton color="secondary" size="short" title={_startTime == null ? "Pick A Start Date" : format_date(_startTime)} onPress={showDatePicker} />
                     </View>
@@ -187,47 +201,47 @@ export default function NewRaffle({ navigation, route }) {
                         onCancel={hideDatePicker}
                     /> */}
 
-                    <View style={{ width: '100%', marginLeft: '10%', marginVertical: 15 }}>
-                        <Text style={styles.InputField__label}>Type of Product<Text style={{ color: 'red' }}>*</Text></Text>
-                        {productTypes.map((type, index) =>
+                        <View style={{ width: '100%', marginLeft: '10%', marginVertical: 15 }}>
+                            <Text style={styles.InputField__label}>Type of Product<Text style={{ color: 'red' }}>*</Text></Text>
+                            {productTypes.map((type, index) =>
+                                <Checkbox
+                                    text={type.charAt(0).toUpperCase() + type.slice(1)}
+                                    selected={_productType === type}
+                                    onPress={() => setProductType(type)}
+                                />)}
                             <Checkbox
-                                text={type.charAt(0).toUpperCase() + type.slice(1)}
-                                selected={_productType === type}
-                                onPress={() => setProductType(type)}
-                            />)}
-                        <Checkbox
-                            text='Other'
-                            selected={!productTypes.includes(_productType)}
-                            onPress={() => setProductType('Other')} />
-                                                    {!productTypes.includes(_productType) ?
-                            <InputField
-                                autoCapitalize="words"
-                                value={_productType}
-                                onChangeText={(text) => { setProductType(text) }} /> : null}
-                    </View>
+                                text='Other'
+                                selected={!productTypes.includes(_productType)}
+                                onPress={() => setProductType('Other')} />
+                            {!productTypes.includes(_productType) ?
+                                <InputField
+                                    autoCapitalize="words"
+                                    value={_productType}
+                                    onChangeText={(text) => { setProductType(text) }} /> : null}
+                        </View>
 
-                    {_productType == 'sneaker' ?
-                        <View style={{ height: 75, marginLeft: '5%' }}>
-                            <Text style={[styles.InputField__label]}>Sneaker Sizes <Text style={{ color: 'red' }}>*</Text></Text>
-                            <SizeCarousel sizes={shoeSizes} type='multiple' default={1} setSize={setSizes} />
+                        {_productType == 'sneaker' ?
+                            <View style={{ height: 75, marginLeft: '5%' }}>
+                                <Text style={[styles.InputField__label]}>Available Sizes <Text style={{ color: 'red' }}>*</Text></Text>
+                                <SizeCarousel sizes={shoeSizes} type='multiple' default={1} setSize={setSizes} />
+                            </View>
+                            : null}
+                        {_productType == 'clothing' ?
+                            <View style={{ height: 75, marginLeft: '5%', width: '95%' }}>
+                                <Text style={[styles.InputField__label]}>Available Sizes <Text style={{ color: 'red' }}>*</Text></Text>
+                                <SizeCarousel sizes={shirtSizes} type='multiple' default={1} setSize={setSizes} />
+                            </View>
+                            : null}
+                        <View style={{ width: '95%', marginLeft: '5%', marginVertical: '5%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <Text style={[styles.InputField__label]}>Product Pictures <Text style={{ color: 'red' }}>*</Text></Text>
+                            <BlockButton color="secondary" title="CHOOSE" size="small" />
                         </View>
-                        : null}
-                    {_productType == 'clothing' ?
-                        <View style={{ height: 75, marginLeft: '5%', width: '95%' }}>
-                            <Text style={[styles.InputField__label]}>Sizes <Text style={{ color: 'red' }}>*</Text></Text>
-                            <SizeCarousel sizes={shirtSizes} type='multiple' default={1} setSize={setSizes} />
-                        </View>
-                        : null}
-                    <View style={{ width: '95%', marginLeft: '5%', marginVertical: '5%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Text style={[styles.InputField__label]}>Product Pictures <Text style={{ color: 'red' }}>*</Text></Text>
-                        <BlockButton color="secondary" title="CHOOSE" size="small" />
+                        <BlockButton title="SUBMIT FOR APPROVAL" color="primary" onPress={() => {
+                            //console.log('sizes',_sizes)
+                            postRaffle()
+                            navigation.navigate('Home')
+                        }} />
                     </View>
-                    <BlockButton title="SUBMIT FOR APPROVAL" color="primary" onPress={() => {
-                        //console.log('sizes',_sizes)
-                        postRaffle()
-                        navigation.navigate('Home')
-                    }} />
-                </View>
                 </KeyboardAwareScrollView>
             </ScrollView>
             <BottomNav navigation={navigation} active={'Home'} />

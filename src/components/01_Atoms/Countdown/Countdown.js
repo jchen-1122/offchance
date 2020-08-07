@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {  View, Text, StyleSheet } from 'react-native';
-import {format_date} from '../../../functions/convert_dates';
+import {format_date, in_a_day} from '../../../functions/convert_dates';
 import styles from './Countdown.styling'
 
 const Countdown = ({ unix_timestamp, type, propsStyle }) => {
@@ -19,7 +19,7 @@ const Countdown = ({ unix_timestamp, type, propsStyle }) => {
     var diff = date.getTime() - Date.now()
 
     // if it's more than 24 hours from now
-    if (diff > (24*3.6*Math.pow(10,6))) {
+    if (!in_a_day(unix_timestamp)) {
       return <Text style={style}>{format_date(date)}</Text>
     }
     const [timeLeft, setTimeLeft] = useState(diff);
