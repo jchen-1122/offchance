@@ -174,3 +174,16 @@ function sortUsers(ids, users){
     }
     return sorted
 }
+
+// TRENDING RAFFLES =================================================================================================================
+
+// sort by trending (based on entered users and likes)
+export function sortTrending(raffles){
+    for (var raffle of raffles){
+        var enteredUsers = raffle.users.children.length || 0
+        var likes = raffle.amountLiked || 0
+        raffle['score'] = 0.7*enteredUsers + 0.3*likes // weight more by enteredUsers than likes
+    }
+    var sorted = raffles.sort((a, b) => (a.score < b.score) ? 1 : -1)
+    return sorted
+}
