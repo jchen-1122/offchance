@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { View, Text, Linking, Dimensions, AsyncStorage } from 'react-native';
+import React, { useState, useContext, useRef } from 'react';
+import { View, Text, Linking, Dimensions, AsyncStorage, Keyboard } from 'react-native';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../../../01_Atoms/Divider/Divider.js';
 import InputField from '../../../02_Molecules/InputField/InputField.js';
@@ -35,6 +35,9 @@ export default function Login({ navigation, route }) {
   const [_email, setEmail] = useState(null)
   const [_password, setPassword] = useState(null)
   const [_errors, setErrors] = useState([])
+
+    // for going to the next text input
+    const passwordRef = useRef()
 
   // validates email input
   const isValidEmail = () => {
@@ -140,11 +143,17 @@ export default function Login({ navigation, route }) {
       value={_email}
       textContentType="emailAddress"
       keyboardType="email-address"
-      onChangeText={(text) => {setEmail(text)}}/>
+      onChangeText={(text) => {setEmail(text)}}
+      onSubmitEditing={() => passwordRef.current.focus()}
+      />
+
       <InputField label="Password" 
       value={_password}
       password 
-      onChangeText={(text) => {setPassword(text)}}/>
+      onChangeText={(text) => {setPassword(text)}}
+      onSubmitEditing={() => Keyboard.dismiss()}
+      returnKeyType='done'
+      ref={passwordRef}/>
       {/* DONE: Links to Forgot Password (no forgot password currently, button is not functional) */}
       {/* Added redirect to EnterEmail */}
       <View style={[utilities.flexEndX, {width: '80%'}]}>

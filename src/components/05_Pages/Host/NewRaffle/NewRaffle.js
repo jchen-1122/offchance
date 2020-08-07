@@ -1,5 +1,5 @@
-import React, { useState, useContext } from 'react';
-import { View, Text, Alert } from 'react-native';
+import React, { useState, useContext, useRef } from 'react';
+import { View, Text, Alert, Keyboard } from 'react-native';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import InputField from '../../../02_Molecules/InputField/InputField';
 import { fonts, utilities } from '../../../../settings/all_settings';
@@ -18,6 +18,7 @@ import { colors } from '../../../../settings/all_settings'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 export default function NewRaffle({ navigation, route }) {
+    var _type = route.params.type
     var shirtSizes = ['S', 'M', 'L', 'XL']
     var shoeSizes = [];
     for (var i = 4; i <= 14; i += 0.5) {
@@ -37,6 +38,14 @@ export default function NewRaffle({ navigation, route }) {
     const [_productType, setProductType] = useState('sneaker')
     const [_drawingDuration, setDrawingDuration] = useState(null)
     const [_drawingRadius, setDrawingRadius] = useState(null)
+
+    // for going to the next text input
+    const priceRef = useRef()
+    const valueRef = useRef()
+    const goalRef = useRef()
+    const charityRef = useRef()
+    const descriptionRef = useRef()
+    const numProductsRef = useRef()
 
     // stuff for date picker (start time)
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
@@ -100,7 +109,7 @@ export default function NewRaffle({ navigation, route }) {
     const makeJSON = () => {
         let data = {
             images: ["https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/oc-logo.png"], //hardcoded for demo
-            type: route.params.type,
+            type: _type,
             hostedBy: user._id,
             name: _name,
             productPrice: _price,
@@ -133,48 +142,67 @@ export default function NewRaffle({ navigation, route }) {
                             autoCapitalize="words"
                             value={_name}
                             onChangeText={(text) => { setName(text) }}
+                            onSubmitEditing={(_type == 1) ? () => valueRef.current.focus() : () => priceRef.current.focus()}
                             required />
-                        {(route.params.type == 2) ?
+                        {(_type == 2) ?
                             <InputField
                                 label="Buy It Now Price"
                                 keyboardType="number-pad"
                                 value={_price}
                                 onChangeText={(text) => { setPrice(text) }}
-                                required /> : <InputField
+                                returnKeyType='done'
+                                onSubmitEditing={() => numProductsRef.current.focus()}
+                                ref={priceRef}
+                                required /> : 
+                                <InputField
                                 label="Prize Value"
                                 keyboardType="number-pad"
                                 value={_value}
                                 onChangeText={(text) => { setValue(text) }}
+                                returnKeyType='done'
+                                onSubmitEditing={() => goalRef.current.focus()}
+                                ref={valueRef}
                                 required />
                         }
-                        {(route.params.type == 2) ?
+                        {(_type == 2) ?
                             <InputField
                                 label="# of Products Available"
                                 keyboardType="number-pad"
                                 value={_numProducts}
                                 onChangeText={(text) => { setNumProducts(text) }}
+                                returnKeyType='done'
+                                onSubmitEditing={() => descriptionRef.current.focus()}
+                                ref={numProductsRef}
                                 required /> : null}
 
-                        {(route.params.type == 1) ?
+                        {(_type == 1) ?
                             <InputField
                                 label="Donation Goal ($)"
                                 keyboardType="number-pad"
                                 value={_goal}
                                 onChangeText={(text) => { setGoal(text) }}
+                                returnKeyType='done'
+                                onSubmitEditing={() => charityRef.current.focus()}
+                                ref={goalRef}
                                 required /> : null
                         }
-                        {(route.params.type == 1) ?
+                        {(_type == 1) ?
                             <InputField
                                 label="Charity Partners (sep. by commas)"
                                 autoCapitalize="words"
                                 value={_charities}
                                 onChangeText={(text) => { setCharities(text) }}
+                                onSubmitEditing={() => descriptionRef.current.focus()}
+                                ref={charityRef}
                                 required /> : null
                         }
                         <InputField
                             label="Description"
                             value={_description}
                             onChangeText={(text) => { setDescription(text) }}
+                            ref={descriptionRef}
+                            returnKeyType='done'
+                            onSubmitEditing={() => Keyboard.dismiss()}
                             required
                             textArea />
 
@@ -217,7 +245,9 @@ export default function NewRaffle({ navigation, route }) {
                                 <InputField
                                     autoCapitalize="words"
                                     value={_productType}
-                                    onChangeText={(text) => { setProductType(text) }} /> : null}
+                                    onChangeText={(text) => { setProductType(text) }}
+                                    returnKeyType='done'
+                                    onSubmitEditing={() => Keyboard.dismiss()} /> : null}
                         </View>
 
                         {_productType == 'sneaker' ?
@@ -242,10 +272,10 @@ export default function NewRaffle({ navigation, route }) {
                                 "Success!",
                                 "Your drawing has been submitted for approval. You will get notified if it gets approved.",
                                 [
-                                  { text: "OK", onPress: () => console.log("OK Pressed") }
+                                    { text: "OK", onPress: () => console.log("OK Pressed") }
                                 ],
                                 { cancelable: false }
-                              );
+                            );
                             navigation.navigate('HostDashboard')
                         }} />
                     </View>
