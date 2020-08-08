@@ -1,4 +1,4 @@
-module FlipperKit {
+framework module FlipperKit {
   umbrella header "FlipperKit-umbrella.h"
 
   export *

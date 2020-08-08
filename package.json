@@ -1,11 +1,9 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "eject": "expo eject"
+    "start": "react-native start",
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "web": "expo start --web"
   },
   "dependencies": {
     "@react-native-community/datetimepicker": "2.4.0",
@@ -18,10 +16,13 @@
     "expo": "^38.0.0",
     "expo-facebook": "~8.2.1",
     "expo-google-app-auth": "^8.1.2",
+    "expo-splash-screen": "^0.3.1",
     "expo-status-bar": "^1.0.0",
+    "expo-updates": "~0.2.8",
     "faker": "^4.1.0",
     "geolib": "^3.3.1",
     "http": "0.0.1-security",
+    "n": "^1.0.0",
     "native-base": "^2.13.12",
     "node-geocoder": "^3.27.0",
     "octicons-react": "^1.0.6",
@@ -38,7 +39,6 @@
     "react-native-dropdown-picker": "^3.1.6",
     "react-native-elements": "^2.0.4",
     "react-native-expandable-card": "^1.0.3",
-    "react-native-fbsdk": "^2.0.0",
     "react-native-geolocation-service": "^5.0.0",
     "react-native-gesture-handler": "~1.6.0",
     "react-native-image-pan-zoom": "^2.1.12",
@@ -52,11 +52,12 @@
     "react-native-safe-area-context": "~3.0.7",
     "react-native-screens": "~2.9.0",
     "react-native-search-filter": "^0.1.5",
-    "react-native-sliding-up-down-panels": "^1.0.0",
     "react-native-snap-carousel": "^3.9.1",
+    "react-native-square-in-app-payments": "^1.4.0",
     "react-native-unimodules": "~0.10.1",
     "react-native-vector-icons": "^6.7.0",
     "react-native-web": "~0.11.7",
+    "react-native-webview": "9.4.0",
     "react-native-zoom-view": "^1.0.2",
     "request": "^2.88.2",
     "rn-sliding-up-panel": "^2.4.3",
@@ -67,12 +68,17 @@
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
-    "babel-preset-expo": "^8.2.3"
+    "babel-jest": "~25.2.6",
+    "babel-preset-expo": "^8.2.3",
+    "jest": "~25.2.6",
+    "react-test-renderer": "~16.11.0"
   },
   "private": true,
   "rnpm": {
     "assets": [
       "assets/fonts"
     ]
-  }
+  },
+  "name": "offchance",
+  "version": "1.0.0"
 }

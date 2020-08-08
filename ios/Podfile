@@ -1,4 +1,4 @@
-platform :ios, '10.0'
+platform :ios, '11.0'
 require_relative '../node_modules/react-native-unimodules/cocoapods.rb'
 require_relative '../node_modules/@react-native-community/cli-platform-ios/native_modules'
 
@@ -45,10 +45,15 @@ def flipper_post_install(installer)
   end
 end
 
-target 'offchancebabre' do
-  
+target 'app' do
+  pre_install do |installer|
+    Pod::Installer::Xcode::TargetValidator.send(:define_method, :verify_no_static_framework_transitive_dependencies) {}
+    end
+  use_frameworks! # enalbe use_frameworks!
 
-  # Pods for offchancebabre
+  # pod dependencies
+  pod 'RNSquareInAppPayments', :path => '../node_modules/react-native-square-in-app-payments'
+  # Pods for app
   pod 'FBLazyVector', :path => "../node_modules/react-native/Libraries/FBLazyVector"
   pod 'FBReactNativeSpec', :path => "../node_modules/react-native/Libraries/FBReactNativeSpec"
   pod 'RCTRequired', :path => "../node_modules/react-native/Libraries/RCTRequired"
