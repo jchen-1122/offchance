@@ -27,12 +27,18 @@ function UsernameDisplay(props){
             usernameStyle = styles.username_small;
             containerStyle = styles.container_hostedBy;
             break;
+        case 'search':
+            profilePicStyle = styles.profilePic_search;
+            usernameStyle = styles.username_search;
+            displayText = 'Hosted by ' +displayText;
+            containerStyle = styles.container_hostedBy;
+            break;
     }
 
     return (
         <View style={containerStyle}>
             <Image style={profilePicStyle} source={props.profPic} />
-            <Text style={usernameStyle}>{displayText}</Text>
+            <Text style={[usernameStyle, {color: props.color}]}>{displayText}</Text>
         </View>
 
     )

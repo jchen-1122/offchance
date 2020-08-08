@@ -16,23 +16,40 @@ import SizeCarousel from '../../../01_Atoms/SizeCarousel/SizeCarousel'
 import { unix_to_date, is_expired } from '../../../../functions/convert_dates';
 import { top5_raffle } from '../../../../functions/explore_functions';
 import GlobalState from '../../../globalState';
-import { set } from 'react-native-reanimated';
+import * as geolib from 'geolib';
 
 export default function Raffle({ navigation, route }) {
-    const {user, setUser} = useContext(GlobalState)
+    const { user, setUser } = useContext(GlobalState)
+    const mapAPI = 'pk.eyJ1IjoiamNoZW4xMTIyIiwiYSI6ImNrMjZ4dXM0cDF4cnozY21sYnBwYjdzaTAifQ.ItVivcBhnM1Lz9GP5B0PSQ'
+    var raffle = route.params
     // get host of raffle from db
     const [top5, setTop5] = useState([])
     const [enabled, setEnabled] = useState(true)
+    const [buyOption, setBuyOption] = useState(null)
+    // winner needs to be in the database when the results are calculated
+    const [location, setLocation] = useState(null)
+    const [winner, setWinner] = useState(Object.keys(raffle).includes('winner') ? raffle.winner : raffle['host'])
     const ip = require('../../../IP_ADDRESS.json');
-
     React.useEffect(() => {
         async function getCurrentRaffle() {
             route.params = await getRaffle(route.params._id)
             route.params['host'] = await getUser(route.params.hostedBy)
-            route.params['top5'] = route.params.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,5)
+            route.params['top5'] = route.params.users.children.sort((a, b) => b.amountDonated - a.amountDonated).slice(0, 5)
+            let coordsUser = await getCoords(user.shippingAddress)
+            let coordsHost = await getCoords(route.params['host'].shippingAddress)
+
+            let longUser = coordsUser.features[0].geometry.coordinates[0]
+            let latUser = coordsUser.features[0].geometry.coordinates[1]
+
+            let longHost = coordsHost.features[0].geometry.coordinates[0]
+            let latHost = coordsHost.features[0].geometry.coordinates[1]
+
+            if (Object.keys(route.params).includes("radius")) {
+                setLocation(geolib.isPointWithinRadius({ latitude: latHost, longitude: longHost }, { latitude: latUser, longitude: longUser }, route.params.radius * 0.621371 * 1000))
+            }
         }
         getCurrentRaffle()
-    })
+    }, [])
 
     React.useEffect(() => {
         async function getTop5(ids) {
@@ -44,24 +61,24 @@ export default function Raffle({ navigation, route }) {
             }
             setTop5(temp)
         }
-        getTop5(route.params.top5)
+        getTop5(raffle.top5)
     }, [])
 
     const getWinners = () => {
-        const enteredUsers = route.params.users.children
+        const enteredUsers = raffle.users.children
 
         const winners = []
-        
+
         // will change based on the number of rewards
         // rewards[0] = grand prize (1)
         // rewards[1] = 50 chances (2)
         // rewards[2] = 20 chanes (3)
         // rewards[3] = 10 chances (4)
-        let rewards = [1,2,3,4]
+        let rewards = [1, 2, 3, 4]
         let numRewards = 10
         let currPrize = 0
 
-        // const winners = route.params.raffle.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,numWinners)
+        // const winners = raffle.raffle.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,numWinners)
 
         // randomly and proportionally assign rewards to users
 
@@ -84,7 +101,7 @@ export default function Raffle({ navigation, route }) {
             for (var i = 0; i < enteredUsers.length; i++) {
                 if (ranges[enteredUsers[i].userID][0] <= rand && ranges[enteredUsers[i].userID][1] >= rand) {
                     winner = enteredUsers[i].userID
-                    winners.push({userID: enteredUsers[i].userID, reward: currPrize})
+                    winners.push({ userID: enteredUsers[i].userID, reward: currPrize })
                     break
                 }
             }
@@ -97,8 +114,8 @@ export default function Raffle({ navigation, route }) {
             }
 
             // 5. delete current winner from array
-            for(var i = enteredUsers.length - 1; i >= 0; i--) {
-                if(enteredUsers[i].userID === winner) {
+            for (var i = enteredUsers.length - 1; i >= 0; i--) {
+                if (enteredUsers[i].userID === winner) {
                     // console.log('deleted')
                     enteredUsers.splice(i, 1);
                     break
@@ -109,9 +126,9 @@ export default function Raffle({ navigation, route }) {
     }
 
     React.useEffect(() => {
-        async function loadWinners () {
-            // route.params.winners.children.length == 0
-            if (route.params.startTime - Math.floor(Date.now() / 1000) <= 600) {
+        async function loadWinners() {
+            // raffle.winners.children.length == 0
+            if (raffle.startTime - Math.floor(Date.now() / 1000) <= 600) {
                 const winners = getWinners()
                 await postWinners(winners)
             }
@@ -125,6 +142,12 @@ export default function Raffle({ navigation, route }) {
         return response
     }
 
+    async function getCoords(query) {
+        let response = await fetch('https://api.mapbox.com/geocoding/v5/mapbox.places/' + query + '.json?access_token=' + mapAPI)
+        response = await response.json()
+        return response
+    }
+
     async function getUser(id) {
         let response = await fetch('http://' + ip.ipAddress + '/user/id/' + id)
         response = await response.json()
@@ -132,13 +155,13 @@ export default function Raffle({ navigation, route }) {
     }
 
     async function postWinners(winners) {
-        let response = await fetch('http://' + ip.ipAddress + '/raffle/edit/' + route.params._id, {
+        let response = await fetch('http://' + ip.ipAddress + '/raffle/edit/' + raffle._id, {
             method: "PATCH",
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: makeJSON(winners)
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: makeJSON(winners)
         })
         const json = await response.json()
         return json
@@ -157,23 +180,23 @@ export default function Raffle({ navigation, route }) {
         if (user.following.includes(host._id)) {
             return
         }
-        const response = await fetch('http://'+ip.ipAddress+'/user/edit/'+user._id,{
-          method: "PATCH",
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },  
-          body: makeAddJSON(host)
+        const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + user._id, {
+            method: "PATCH",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: makeAddJSON(host)
         })
         const json = await response.json()
         // followed user "follower" count also increases
-        const response2 = await fetch('http://'+ip.ipAddress+'/user/edit/'+host._id,{
-          method: "PATCH",
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },  
-          body: makeAddJSON2(host)
+        const response2 = await fetch('http://' + ip.ipAddress + '/user/edit/' + host._id, {
+            method: "PATCH",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: makeAddJSON2(host)
         })
         return json
     }
@@ -182,23 +205,23 @@ export default function Raffle({ navigation, route }) {
         if (!user.following.includes(host._id)) {
             return
         }
-        const response = await fetch('http://'+ip.ipAddress+'/user/edit/'+user._id,{
-        method: "PATCH",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },  
-        body: makeDeleteJSON(host)
+        const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + user._id, {
+            method: "PATCH",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: makeDeleteJSON(host)
         })
         const json = await response.json()
         // followed user "follower" count also decreases
-        const response2 = await fetch('http://'+ip.ipAddress+'/user/edit/'+host._id,{
-        method: "PATCH",
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },  
-        body: makeDeleteJSON2(host)
+        const response2 = await fetch('http://' + ip.ipAddress + '/user/edit/' + host._id, {
+            method: "PATCH",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: makeDeleteJSON2(host)
         })
         return json
     }
@@ -226,8 +249,8 @@ export default function Raffle({ navigation, route }) {
 
     const makeDeleteJSON = (host) => {
         let prevFollowing = user.following
-        for(var i = prevFollowing.length - 1; i >= 0; i--) {
-            if(prevFollowing[i] === host._id) {
+        for (var i = prevFollowing.length - 1; i >= 0; i--) {
+            if (prevFollowing[i] === host._id) {
                 prevFollowing.splice(i, 1);
             }
         }
@@ -239,8 +262,8 @@ export default function Raffle({ navigation, route }) {
 
     const makeDeleteJSON2 = (host) => {
         let prevFollowing = host.followers
-        for(var i = prevFollowing.length - 1; i >= 0; i--) {
-            if(prevFollowing[i] === user._id) {
+        for (var i = prevFollowing.length - 1; i >= 0; i--) {
+            if (prevFollowing[i] === user._id) {
                 prevFollowing.splice(i, 1);
             }
         }
@@ -253,19 +276,17 @@ export default function Raffle({ navigation, route }) {
     // get fields of raffle from db
     let name;
     let description;
-    let date;
     let expired;
     let images_strs; // string rep of images for carousel
     let sizes;
     let sizeTypes;
-    if (route.params != null) {
-        name = route.params.name
-        description = route.params.description
-        date = unix_to_date(route.params.startTime)
-        expired = is_expired(route.params.startTime)
-        images_strs = route.params.images
-        sizes = route.params.sizes
-        sizeTypes = route.params.sizeTypes
+    if (raffle != null) {
+        name = raffle.name
+        description = raffle.description
+        expired = is_expired(raffle.startTime)
+        images_strs = raffle.images
+        sizes = raffle.sizes
+        sizeTypes = raffle.sizeTypes
     }
 
     let images = [];
@@ -296,85 +317,107 @@ export default function Raffle({ navigation, route }) {
         setSheetOpen(!sheetOpen);
     };
 
-    let options = {
-        5: { chances: 10 },
-        10: { chances: 40 },
-        20: { chances: 50 },
-        50: { chances: 150 },
-        100: { chances: 400 },
+    // determine chance options based on the raffle
+    let options = {}
+    if (raffle.type == 1) {
+        options = {
+            5: { chances: 10 },
+            10: { chances: 40 },
+            20: { chances: 50 },
+            50: { chances: 150 },
+            100: { chances: 400 },
+        }
+        // if the value/donation goal is > 500 add another option
+        if ((raffle.valuedAt && raffle.valuedAt >= 500) || (raffle.donationGoal && raffle.donationGoal >= 500)) {
+            options[250] = { chances: 1100 }
+        }
+    }
+    if (raffle.type == 2) {
+        options = {
+            2: { chances: 3 }
+        }
     }
 
     return (
         <View style={[utilities.container, { backgroundColor: 'white' }]}>
             <ScrollView contentContainerStyle={utilities.scrollview}>
-                {images.length > 1 ? <ImageCarousel images={images}></ImageCarousel> : <Image source={images[0]} style={{ width: 400, height: 300, resizeMode: 'center' }}></Image>}
+                {images.length > 1 ? <ImageCarousel images={images}></ImageCarousel> : <Image source={images[0]} style={styles.Raffle__image}></Image>}
 
                 {/* raffle title */}
                 <Text style={[fonts.h1, { marginLeft: '8%', marginBottom: 0 }]}>{name}</Text>
 
                 <View style={styles.content}>
+                    {(!location && location != null && !expired) ? <Text style={[fonts.bold, fonts.error]}>THIS RAFFLE IS OUT OF YOUR LOCATION</Text> : null}
                     <View style={{ marginVertical: 15 }}>
                         {(expired) ? <Text style={[fonts.bold, fonts.error]}>THIS DRAWING HAS EXPIRED</Text> : <Text style={[fonts.italic]}>Drawing Starts:</Text>}
-                        {(expired) ? null : <CountDown unix_timestamp={route.params.startTime}/>}
+                        {(expired) ? null : <CountDown unix_timestamp={raffle.startTime} />}
                     </View>
 
                     <View style={{ marginRight: '-5%', marginBottom: 15 }}>
                         <Text style={fonts.italic}>Hosted by:</Text>
                         <View style={styles.hostedby}>
-                        <TouchableOpacity onPress={() => navigation.navigate('OtherUser',{user: route.params.host})}>
-                            <View style={styles.hostedby__profile}>
-                            <Image source={{ uri: route.params.host.profilePicture }} style={styles.hostedby__image}></Image>
-                            <Text style={fonts.link}>{'@' + route.params.host.username}</Text>
-                            </View>
-                        </TouchableOpacity>
-                        {typeof user._id === 'undefined' ? null : user.following.includes(route.params.host._id)  ? 
-                            <BlockButton color="secondary" size="small" title='FOLLOWING'
-                            onPress={async () => {
-                                if (enabled && route.params.host.profilePicture != null) {
-                                    setEnabled(false)
-                                    const userObj = await removeFollower(route.params.host)
-                                    setUser(userObj)
-                                    setEnabled(true)
-                                }
-                            }}
-                            /> :
-                            <BlockButton color="primary" size="small" title='FOLLOW'
-                            onPress={async () => {
-                                if (enabled && route.params.host.profilePicture != null) {
-                                    setEnabled(false)
-                                    const userObj = await addFollower(route.params.host)
-                                    setUser(userObj)
-                                    setEnabled(true)
-                                }
-                            }}
-                            />}
+                            <TouchableOpacity onPress={() => navigation.navigate('OtherUser', { user: raffle.host })}>
+                                <View style={styles.hostedby__profile}>
+                                    <Image source={{ uri: raffle.host.profilePicture }} style={styles.hostedby__image}></Image>
+                                    <Text style={fonts.link}>{'@' + raffle.host.username}</Text>
+                                </View>
+                            </TouchableOpacity>
+                            {typeof user._id === 'undefined' ? null : user.following.includes(raffle.host._id) ?
+                                <BlockButton color="secondary" size="small" title='FOLLOWING'
+                                    onPress={async () => {
+                                        if (enabled) {
+                                            setEnabled(false)
+                                            const userObj = await removeFollower(raffle.host)
+                                            setUser(userObj)
+                                            setEnabled(true)
+                                        }
+                                    }}
+                                /> :
+                                <BlockButton color="primary" size="small" title='FOLLOW'
+                                    onPress={async () => {
+                                        if (enabled) {
+                                            setEnabled(false)
+                                            const userObj = await addFollower(raffle.host)
+                                            setUser(userObj)
+                                            setEnabled(true)
+                                        }
+                                    }}
+                                />}
                         </View>
                     </View>
                     {/* !!!!!!!!!!!!! TODO: connect to db and format !!!!!!!!!!!!!!*/}
                     {/* winner of raffle if expired */}
-                    {expired ?
-                        <View style={[styles.highlightBackground, {paddingVertical: '3%', paddingRight: '5%'}]}>
+                    {(expired) ?
+                        <View style={[styles.highlightBackground, { paddingVertical: '3%', paddingRight: '5%' }]}>
                             <Text style={fonts.italic}>Won by:</Text>
                             <View style={styles.hostedby}>
-                            <TouchableOpacity onPress={() => navigation.navigate('OtherUser',{user: route.params.host})}>
-                                <View style={styles.hostedby__profile}>
-                                <Image source={{ uri: route.params.host.profilePicture }} style={styles.hostedby__image}></Image>
-                                <Text style={fonts.link}>{'@' + route.params.host.username}</Text>
-                                </View>
-                            </TouchableOpacity>
-                            {typeof user._id === 'undefined' ? null : user.following.includes(route.params.host._id)  ? 
-                                <BlockButton color="secondary" size="small" title='FOLLOWING'
-                                onPress={async () => {
-                                    const userObj = await removeFollower(route.params.host)
-                                    setUser(userObj)
-                                }}
-                                /> :
-                                <BlockButton color="primary" size="small" title='FOLLOW'
-                                onPress={async () => {
-                                    const userObj = await addFollower(route.params.host)
-                                    setUser(userObj)
-                                }}
-                                />}
+                                <TouchableOpacity onPress={() => navigation.navigate('OtherUser', { user: winner })}>
+                                    <View style={styles.hostedby__profile}>
+                                        <Image source={{ uri: winner.profilePicture }} style={styles.hostedby__image}></Image>
+                                        <Text style={fonts.link}>{'@' + winner.username}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                {typeof user._id === 'undefined' ? null : user.following.includes(winner._id) ?
+                                    <BlockButton color="secondary" size="small" title='FOLLOWING'
+                                        onPress={async () => {
+                                            if (enabled) {
+                                                setEnabled(false)
+                                                const userObj = await removeFollower(winner)
+                                                setUser(userObj)
+                                                setEnabled(true)
+                                            }
+                                        }}
+                                    /> :
+                                    <BlockButton color="primary" size="small" title='FOLLOW'
+                                        onPress={async () => {
+                                            if (enabled) {
+                                                setEnabled(false)
+                                                const userObj = await addFollower(winner)
+                                                setUser(userObj)
+                                                setEnabled(true)
+                                            }
+                                        }}
+                                    />}
                             </View>
                         </View>
                         :
@@ -384,46 +427,50 @@ export default function Raffle({ navigation, route }) {
                     <Text style={fonts.italic}>Description</Text  >
                     <Text style={{ marginBottom: 15 }}>{description}</Text>
 
-                    <Text style={fonts.italic}>Valued At</Text  >
-                    <Text style={{ marginBottom: 15 }}>$200</Text>
-
-                    {/* !!!!!!!!!!!!! TODO: top 5 donors !!!!!!!!!!!!!!*/}
-                    <TouchableOpacity onPress={() => {
-                        navigation.navigate("Top5List", {users: top5})
-                    }}>
-                        <Top5Donors users={top5} />
-                    </TouchableOpacity>
-
-                    {(expired) ? null :
+                    {raffle.valuedAt ?
                         <View>
+                            <Text style={fonts.italic}>Valued At</Text  >
+                            <Text style={{ marginBottom: 15 }}>${raffle.valuedAt}</Text>
+                        </View>
+                        : null}
+
+                    {(expired || !raffle.live) ? null :
+                        <View>
+                            <TouchableOpacity onPress={() => {
+                                navigation.navigate("Top5List", { users: top5 })
+                            }}>
+                                <Top5Donors users={top5} />
+                            </TouchableOpacity>
                             {/* !!!!!!!!!!!!! TODO: conditionally show progress bar !!!!!!!!!!!!!!*/}
                             <ProgressBar progress={230 / 500} color={colors.primaryColor} raised={230} goal={500} width={315} />
 
-                            <View style={styles.pickSizeSlide}>
-                                <Text>PICK YOUR SIZE</Text>
-                                <SizeCarousel sizes={sizeTypes} type='single'></SizeCarousel>
-                                {/* <SizeCarousel sizes={sizes} type='multiple'></SizeCarousel> */}
-                                <SizeCarousel sizes={sizes} type='single'></SizeCarousel>
-                            </View> 
+                            {raffle.sizes.length > 0 ?
+                                <View style={styles.pickSizeSlide}>
+                                    <Text>PICK YOUR SIZE</Text>
+                                    <SizeCarousel sizes={sizeTypes} type='single' />
+                                    <SizeCarousel sizes={sizes} type='single' />
+                                </View> : null
+                            }
 
-                            {/* dropdown disabled for now */}
-                            {/* <View style={styles.pickSize}>
-                                <Text>PICK YOUR SIZE</Text>
-                                {(sizeTypes.length > 0) ? <DropDown options={sizeTypes} size='small' /> : null}
-                                <DropDown options={sizes} size='small' />
-                            </View> */}
 
-                            <BuyOptions bonusAmount={10} bonusChances={40} bonusLimit={10} options={options} />
+                            <BuyOptions options={options} buyOption={buyOption} setBuyOption={setBuyOption}/>
                             <Text style={{ marginRight: -10 }}>*We we will never show donation amounts for any user</Text>
                         </View>
                     }
-                    <View style={[styles.highlightBackground, {marginTop: '5%'}]}>
-                    <Text style={[fonts.p, { marginTop: 20, textAlign: 'justify' }]}>Off Chance is a for-good company that hosts drawings for incredible products to raise money for charities and important causes that affect us all. All net proceeds (after hosting and platform fees) for this drawing will benefit the partners below:</Text>
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 20, marginBottom: 20 }}>
-                        <Image source={donors[0]} />
-                        <Image source={donors[1]} />
-                    </View>
-                    </View>
+                    {raffle.live ?
+                        <View>
+
+                            <View style={[styles.highlightBackground, { paddingVertical: '5%', marginVertical: '5%' }]}>
+                                <Text style={[fonts.p, { textAlign: 'justify' }]}>Off Chance is a for-good company that hosts drawings for incredible products to raise money for charities and important causes that affect us all. All net proceeds (after hosting and platform fees) for this drawing will benefit the partners below:</Text>
+
+                            </View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: '5%' }}>
+                                <Image source={donors[0]} />
+                                <Image source={donors[1]} />
+                            </View>
+                        </View> : null
+                    }
+
                     <Text style={[fonts.p, { textAlign: 'justify' }]}>*All prizes are guaranteed to be 100% authentic and deadstock. You will be notified via email once donation goal is met and drawing starts.</Text>
                 </View>
 
@@ -437,15 +484,18 @@ export default function Raffle({ navigation, route }) {
                         title="LIVE DRAWING EXP"
                         color="primary"
                         onPress={() => {
-                            navigation.navigate('RaffleResult', {raffle: route.params})}}
+                            // navigation.navigate('RaffleResult', {raffle: route.params})
+                            navigation.navigate('RaffleResult', { raffle: raffle })
+                        }}
                         disabled={expired} />
+
                     {/* <BlockButton
                         title="ENTER DRAWING"
                         color="highlight"
                         onPress={() => toggleSheet()}
                         disabled={expired} /> */}
                 </View>
-
+                {/* disable enter drawing if a person is not within the radius (state: location) */}
                 {/* sliding sheet */}
                 {/* <Animated.View
                     style={[styles.subView,

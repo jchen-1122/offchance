@@ -1,4 +1,6 @@
 {
     "ipAddress" : "192.168.0.27:3000",
-    "sendGrid" : "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"
+    "sendGrid" : "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",
+    "IBMaccessKeyId": "da62c56fb48940a7aada0c86062cf9a6",
+    "IBMsecretAccessKey": "34b18fbbeb724fe1e06a8e0d0210cd65f7f690db566eb1d6"
 }
