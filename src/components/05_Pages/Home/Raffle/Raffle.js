@@ -25,6 +25,7 @@ export default function Raffle({ navigation, route }) {
     // get host of raffle from db
     const [top5, setTop5] = useState([])
     const [enabled, setEnabled] = useState(true)
+    const [buyOption, setBuyOption] = useState(null)
     // winner needs to be in the database when the results are calculated
     const [location, setLocation] = useState(null)
     const [winner, setWinner] = useState(Object.keys(raffle).includes('winner') ? raffle.winner : raffle['host'])
@@ -316,12 +317,25 @@ export default function Raffle({ navigation, route }) {
         setSheetOpen(!sheetOpen);
     };
 
-    let options = {
-        5: { chances: 10 },
-        10: { chances: 40 },
-        20: { chances: 50 },
-        50: { chances: 150 },
-        100: { chances: 400 },
+    // determine chance options based on the raffle
+    let options = {}
+    if (raffle.type == 1) {
+        options = {
+            5: { chances: 10 },
+            10: { chances: 40 },
+            20: { chances: 50 },
+            50: { chances: 150 },
+            100: { chances: 400 },
+        }
+        // if the value/donation goal is > 500 add another option
+        if ((raffle.valuedAt && raffle.valuedAt >= 500) || (raffle.donationGoal && raffle.donationGoal >= 500)) {
+            options[250] = { chances: 1100 }
+        }
+    }
+    if (raffle.type == 2) {
+        options = {
+            2: { chances: 3 }
+        }
     }
 
     return (
@@ -413,9 +427,12 @@ export default function Raffle({ navigation, route }) {
                     <Text style={fonts.italic}>Description</Text  >
                     <Text style={{ marginBottom: 15 }}>{description}</Text>
 
-                    <Text style={fonts.italic}>Valued At</Text  >
-                    <Text style={{ marginBottom: 15 }}>$200</Text>
-
+                    {raffle.valuedAt ?
+                        <View>
+                            <Text style={fonts.italic}>Valued At</Text  >
+                            <Text style={{ marginBottom: 15 }}>${raffle.valuedAt}</Text>
+                        </View>
+                        : null}
 
                     {(expired || !raffle.live) ? null :
                         <View>
@@ -436,22 +453,22 @@ export default function Raffle({ navigation, route }) {
                             }
 
 
-                            <BuyOptions bonusAmount={10} bonusChances={40} bonusLimit={10} options={options} />
+                            <BuyOptions options={options} buyOption={buyOption} setBuyOption={setBuyOption}/>
                             <Text style={{ marginRight: -10 }}>*We we will never show donation amounts for any user</Text>
                         </View>
                     }
                     {raffle.live ?
-                    <View>
+                        <View>
 
-                        <View style={[styles.highlightBackground, { paddingVertical: '5%', marginVertical: '5%' }]}>
-                            <Text style={[fonts.p, { textAlign: 'justify' }]}>Off Chance is a for-good company that hosts drawings for incredible products to raise money for charities and important causes that affect us all. All net proceeds (after hosting and platform fees) for this drawing will benefit the partners below:</Text>
+                            <View style={[styles.highlightBackground, { paddingVertical: '5%', marginVertical: '5%' }]}>
+                                <Text style={[fonts.p, { textAlign: 'justify' }]}>Off Chance is a for-good company that hosts drawings for incredible products to raise money for charities and important causes that affect us all. All net proceeds (after hosting and platform fees) for this drawing will benefit the partners below:</Text>
 
-                        </View>
-                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: '5%'}}>
-                            <Image source={donors[0]} />
-                            <Image source={donors[1]} />
-                        </View>
-                        </View>: null
+                            </View>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: '5%' }}>
+                                <Image source={donors[0]} />
+                                <Image source={donors[1]} />
+                            </View>
+                        </View> : null
                     }
 
                     <Text style={[fonts.p, { textAlign: 'justify' }]}>*All prizes are guaranteed to be 100% authentic and deadstock. You will be notified via email once donation goal is met and drawing starts.</Text>

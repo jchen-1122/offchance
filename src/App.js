@@ -15,23 +15,21 @@ import Raffle from './components/05_Pages/Home/Raffle/Raffle'
 import PlayGame from './components/05_Pages/Home/PlayGame/PlayGame'
 import Game from './components/05_Pages/Home/Game/Game'
 import Search from './components/05_Pages/Search/Search'
-import Likes from './components/05_Pages/Likes/Likes'
 import Social from './components/05_Pages/Social/Social'
 
-import EditProfile from './components/05_Pages/EditProfile/EditProfile'
+import EditProfile from './components/05_Pages/Account/EditProfile/EditProfile'
 import Following from './components/05_Pages/Following/Following'
 import Followers from './components/05_Pages/Followers/Followers'
 import Top5List from './components/02_Molecules/Top5List/Top5List'
 import YourFeed from './components/05_Pages/Home/YourFeed/YourFeed';
-import Explore from './components/05_Pages/Home/Explore/Explore';
+import Likes from './components/05_Pages/Account/Likes/Likes'
 import OtherUser from './components/05_Pages/OtherUser/OtherUser'
 
 import GameController from './components/GameController';
 import LoadingScreen from './components/05_Pages/Home/Raffle/LoadingScreen/LoadingScreen'
 import RaffleResult from './components/05_Pages/Home/RaffleResult/RaffleResult'
 import EnteredUsers from './components/05_Pages/Home/EnteredUsers/EnteredUsers';
-import { Button, Text } from 'react-native'
-import { startClock } from 'react-native-reanimated';
+
 import GlobalState from './components/globalState'
 
 // Account page import
@@ -84,7 +82,7 @@ function App() {
           <Stack.Screen name="Game" component={Game} />
           <Stack.Screen name="Search" component={Search} options={{ headerLeft: null }}/>
           <Stack.Screen name="Social" component={Social}  options={{ headerLeft: null }}/>
-          <Stack.Screen name="Likes" component={Likes}  options={{ headerLeft: null }}/>
+          <Stack.Screen name="Likes" component={Likes}/>
           <Stack.Screen name="Account" component={Account} options={{ headerLeft: null }}/>
           <Stack.Screen name="Profile" component={Profile} options={{
             title: user.name, }} />

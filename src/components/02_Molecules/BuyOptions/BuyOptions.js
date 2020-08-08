@@ -9,8 +9,10 @@ export default function BuyOptions(props) {
                 return (
                     <BlockButton
                         title={"$" + element + ' for ' + props.options[element].chances + " chances"}
-                        color={element == 10 ? "primary" : "secondary"}
-                        bannerTitle={element == 10 ? 'BEST DEAL' : null}/>
+                        color={element == 10 ? "light" : "secondary"}
+                        bannerTitle={element == 10 ? 'BEST DEAL' : null}
+                        onPress={() => props.setBuyOption(element)}
+                        selected={props.buyOption == element}/>
                 )
             })
             )}

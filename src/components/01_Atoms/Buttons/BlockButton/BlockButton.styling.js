@@ -35,10 +35,16 @@ const styles = StyleSheet.create({
         borderColor: colors.secondaryColor,
         borderWidth: 2
     },
+    BlockButton_secondarySelected:{
+        backgroundColor: colors.darkGreen
+    },
     BlockButton_tertiary:{
         backgroundColor: 'transparent',
         borderColor: 'white',
         borderWidth: 2
+    },
+    BlockButton_light:{
+        backgroundColor: colors.lightGreen,
     },
     BlockButton_facebook:{
         backgroundColor: colors.facebookBlue,
