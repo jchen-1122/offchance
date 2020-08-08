@@ -174,7 +174,7 @@ export default function Signup({ navigation }) {
       state: jsonData[_us_state],
       password: _password,
       isHost: state.businessAccount,
-      profilePicture: (_proPic != null) ? _proPic : 'https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/default-avatar.png',
+      profilePicture: (_proPic != null) ? _proPic : 'https://oc-profile-pictures.s3.us-east.cloud-object-storage.appdomain.cloud/default-avatar.png',
     }
     return JSON.stringify(data)
   };
