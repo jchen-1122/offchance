@@ -85,7 +85,7 @@ function LikeButton(props){
     }
     
     return (
-        <TouchableOpacity style={styles.LikeButton} 
+        <TouchableOpacity style={[styles.LikeButton, props.style]} 
         onPress={async () => {
             setColor(!color)
             if (!color) {

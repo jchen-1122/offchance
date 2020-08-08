@@ -9,7 +9,6 @@ import { useFonts } from 'expo-font';
 import * as Font from 'expo-font';
 
 export default function WinnerCard(props) {
-    console.log('winner', props.winner)
     let winner;
     if (props.winner){
         winner = props.winner
@@ -35,6 +34,11 @@ export default function WinnerCard(props) {
     let hostNameColor;
     let prizeTitleColor = 'black'
     let winnerLabelColor = colors.darkGreen
+    let name = '@' + winner.username.toUpperCase()
+    
+    if (props.currUser._id === winner._id) {
+        name = 'YOU'
+    }
     switch (colorMap[props.prize]) {
         case "gold":
             gradient = ['#444444', , 'black', '#444444']
@@ -108,7 +112,7 @@ export default function WinnerCard(props) {
                         <Image style={styles.winnerPic} source={{ uri: winner.profilePicture }} />
                         <View>
                             <Text style={[styles.winnerLabel, { color: winnerLabelColor, fontFamily: 'Josefin Sans' }]}>WINNER:</Text>
-                            <Text style={[styles.winnerName, { color: winnerLabelColor, fontFamily: 'Josefin Sans' }]}>@{winner.username.toUpperCase()}</Text>
+                            <Text style={[styles.winnerName, { color: winnerLabelColor, fontFamily: 'Josefin Sans' }]}>{name}</Text>
                         </View>
                     </View>
 
