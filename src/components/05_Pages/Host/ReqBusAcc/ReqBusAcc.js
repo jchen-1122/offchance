@@ -144,6 +144,7 @@ export default function ReqBusAcc({ navigation }) {
                                 style={{ width: '15%', marginRight: '5%' }}
                                 value={_hostMonth}
                                 keyboardType="numeric"
+                                returnKeyType='done'
                                 maxLength={2}
                                 onChangeText={(text) => { setHostMonth(text) }}
                                 onSubmitEditing={() => dayRef.current.focus()}
@@ -152,6 +153,7 @@ export default function ReqBusAcc({ navigation }) {
                                 style={{ width: '15%', marginRight: '5%' }}
                                 value={_hostDay}
                                 keyboardType="numeric"
+                                returnKeyType='done'
                                 maxLength={2}
                                 onChangeText={(text) => { setHostDay(text) }}
                                 onSubmitEditing={() => yearRef.current.focus()}
@@ -163,6 +165,7 @@ export default function ReqBusAcc({ navigation }) {
                                 maxLength={4}
                                 keyboardType="numeric"
                                 onChangeText={(text) => { setHostYear(text) }}
+                                onSubmitEditing={() => Keyboard.dismiss()}
                                 ref={yearRef}
                                 returnKeyType='done'
                                 label="YYYY" />
@@ -186,6 +189,14 @@ export default function ReqBusAcc({ navigation }) {
                             if (!generateErrors()) {
                                 const userObj = await editUser()
                                 setUser(userObj)
+                                Alert.alert(
+                                    "Success!",
+                                    "Your request has been submitted for approval. You will get notified if it gets approved.",
+                                    [
+                                        { text: "OK", onPress: () => console.log("OK Pressed") }
+                                    ],
+                                    { cancelable: false }
+                                );
                                 navigation.navigate('Account')
                             }
                         }}
