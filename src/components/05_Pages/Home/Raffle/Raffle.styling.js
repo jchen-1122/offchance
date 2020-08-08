@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native'
-import {dimensions} from '../../../../settings/all_settings';
+import {colors, dimensions} from '../../../../settings/all_settings';
 
 const styles = StyleSheet.create({
    content: {
@@ -14,7 +14,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     height: 100,
   },
-
+  Raffle__image: {
+    height: Dimensions.get('window').height*0.3,
+    width: Dimensions.get('window').width,
+    resizeMode: 'contain',
+    marginBottom: '5%'
+  },
   pickSize: {
     flex: 0, 
     flexDirection:'row', 
@@ -44,6 +49,12 @@ const styles = StyleSheet.create({
       height: 20, 
       borderRadius: 20 / 2,
       marginRight: 5
+  },
+  highlightBackground: {
+    backgroundColor: colors.lightGreen, 
+    marginBottom: '5%',
+    marginHorizontal: '-10%', 
+    paddingHorizontal:'10%' 
   }
 
 })

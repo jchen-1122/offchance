@@ -27,7 +27,7 @@ export default function HowItWorks({navigation, route}) {
                 <View style={{width: windowWidth, height:windowHeight, backgroundColor:"white"}}>
                     <View style={styles.content}>
                         <Text style={[fonts.h1, {marginTop: windowHeight * 0.07, textAlign: "center", fontSize: 23}]}>Welcome to Off Chance Mobile! How LIVE DRAWING Works:</Text>
-                        <Text style={[fonts.p, {marginTop: windowHeight * 0.15, textAlign: 'center', fontSize: 18}]}>1. Donate to receive chances for drawings and get an equal amount of Lives to play games and Win bonus chances. </Text>
+                        <Text style={[fonts.p, {marginTop: windowHeight * 0.15, textAlign: 'center', fontSize: 18}]}>1. Donate to receive chances for drawings and get an equal amount of Lives to play games. </Text>
                         <Image source={images[0]} style={{marginTop: windowHeight * 0.07, justifyContent: 'center', alignItems: 'center'}}></Image>
                     </View>
                 </View>
@@ -41,21 +41,21 @@ export default function HowItWorks({navigation, route}) {
 
                 <View style={{width: windowWidth, height:windowHeight, backgroundColor:"white"}}>
                     <View style={styles.content}>
-                        <Text style={[fonts.p, {marginTop: windowHeight * 0.15, textAlign: 'center', fontSize: 18}]}>3. At the end, the number of your wins correlates to a number of bonus chances you can use for the live drawing. </Text>
+                        <Text style={[fonts.p, {marginTop: windowHeight * 0.15, textAlign: 'center', fontSize: 18}]}>3. The more you win, the more Chances you’ll earn. </Text>
                         <Image source={images[2]} style={{marginTop: windowHeight * 0.2, justifyContent: 'center', alignItems: 'center',}}></Image>
                     </View>
                 </View>
 
                 <View style={{width: windowWidth, height:windowHeight, backgroundColor:"black"}}>
                     <View style={styles.content}>
-                        <Text style={[fonts.p, {marginTop: windowHeight * 0.13, textAlign: 'center', fontSize: 18, color: 'white'}]}>4. The more chances you buy, the more likely you’ll win - whether it be the grand prize or extra chances for another raffle of your choice. </Text>
+                        <Text style={[fonts.p, {marginTop: windowHeight * 0.13, textAlign: 'center', fontSize: 18, color: 'white'}]}>4. Watch and chat live with friends and participants to see who wins. </Text>
                         <Image source={images[3]} style={{marginTop: windowHeight * 0.1, justifyContent: 'center', alignItems: 'center'}}></Image>
                     </View>
                 </View>
 
                 <View style={{width: windowWidth, height:windowHeight, backgroundColor:"white"}}>
                     <View style={styles.content}>
-                        <Text style={[fonts.p, {marginTop: windowHeight * 0.13, textAlign: 'center', fontSize: 18}]}>5. The most important part is to HAVE FUN and GOOD LUCK! </Text>
+                        <Text style={[fonts.p, {marginTop: windowHeight * 0.13, textAlign: 'center', fontSize: 18}]}>5. Have fun and Good Luck! </Text>
                         <Image source={gif} style={styles.gifStyle, {marginTop: windowHeight * 0.13, justifyContent: 'center', alignItems: 'center', width: 350, height:300}}></Image>
                     </View>
                     {route.params.fromLogin ? <View style={{marginTop: '15%', alignItems:'center'}}>

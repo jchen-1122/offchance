@@ -53,11 +53,11 @@ const styles = StyleSheet.create({
     // Sliding Sheet Style
     subView: {
        position: 'absolute',
-       bottom: '-7%',
+       bottom: '-100%',
        left: 0,
        right: 0,
        backgroundColor: "#FFFFFF",
-       height: 600,
+       height: Dimensions.get('window').height,
        borderRadius: 20,
    },
 })

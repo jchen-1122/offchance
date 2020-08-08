@@ -9,7 +9,7 @@ function ProgressBar({progress, color, raised, goal, width}) {
             <Progress.Bar progress={progress} width={width} color={color} />
             <View style={styles.view}>
                 <Text style={styles.raised}>{'$' + raised}</Text>
-                <Text style={styles.goal}>{' raised of $' + goal + ' goal'}</Text>
+                <Text style={styles.goal}>{' raised'}</Text>
             </View>
         </View>
     )

@@ -15,9 +15,13 @@ import { colors, fonts, utilities, dimensions } from '../../../settings/all_sett
 import { in_a_day, is_expired } from '../../../functions/convert_dates';
 import { top5_raffle } from '../../../functions/explore_functions';
 
-function FlatCard ({ navigation, data, viewType, inLikesPage }) {
+function FlatCard({ navigation, data, viewType, currUserG, setUserG, inLikesPage }) {
     const ip = require('../../IP_ADDRESS.json');
     const [host, setHost] = useState(null)
+    const currUser = currUserG
+    const setUser = setUserG
+
+    const { width, height } = Dimensions.get('window');
 
     React.useEffect(() => {
         async function getHost() {
@@ -30,7 +34,7 @@ function FlatCard ({ navigation, data, viewType, inLikesPage }) {
     }, [])
 
     // width for card content
-    let contentWidth = Dimensions.get('window').width * 0.65;
+    let contentWidth = Dimensions.get('window').width * 0.5;
 
     // maps numerical types to actual types of cards
     let typeMap = new Map()
@@ -47,7 +51,7 @@ function FlatCard ({ navigation, data, viewType, inLikesPage }) {
     let enteredUsers;
     let raffleid;
     let today;
-    if (data){
+    if (data) {
         title = data.name
         imageURI = data.images[0]
         date = data.startTime
@@ -57,7 +61,7 @@ function FlatCard ({ navigation, data, viewType, inLikesPage }) {
         donationGoal = (data.donationGoal) ? data.donationGoal : null
         enteredUsers = data.users.children
         data['host'] = host
-        data['top5'] = data.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,5)
+        data['top5'] = data.users.children.sort((a, b) => b.amountDonated - a.amountDonated).slice(0, 5)
         raffleid = data._id
     }
 
@@ -71,7 +75,7 @@ function FlatCard ({ navigation, data, viewType, inLikesPage }) {
     // Modified so that host is fetched from database. Data provides host id.
     let username;
     if (host) {
-        username = <UsernameDisplay username={host.username} profPic={{ uri: host.profilePicture }} size='hostedBy' />
+        username = <UsernameDisplay username={host.username} profPic={{ uri: host.profilePicture }} size='search' />
     }
 
     switch (type) {
@@ -81,43 +85,72 @@ function FlatCard ({ navigation, data, viewType, inLikesPage }) {
                 <View>
                     {expired ?
                         <View>
-                            <Text style={[styles.startData_grey, fonts.p]}>DRAWING STARTED</Text>
-                            <Countdown unix_timestamp={date} />
+                            <Text style={styles.startData_grey}>DRAWING STARTED</Text>
+                            <Countdown unix_timestamp={date} type='search' />
                         </View> :
                         <View>
-                            <Text style={[styles.startData_grey, fonts.p]}>DRAWING STARTS</Text>
-                            <Countdown unix_timestamp={date} />
+                            <Text style={styles.startData_grey}>DRAWING STARTS</Text>
+                            <Countdown unix_timestamp={date} type='search' />
                         </View>
                     }
                 </View>
             );
             break;
-        }
+    }
 
     return (
-      <TouchableOpacity
-        onPress={() => navigation.navigate('Raffle', data)}>
-          <View style={{flexDirection:'row', }}>
-              <View style={styles.FlatCard}>
-                  <Image style={styles.FlatCard__image} source={{ uri: imageURI }} onPress={() => {
-                  }} />
+        <View style={{ borderWidth: 2, width: contentWidth, borderColor: 'rgba(0, 0, 0, 0.05)' }}
+        >
 
-                  <View style={{ flex: 1, width: contentWidth,  }}>
-                      <Text style={[fonts.h1, { textAlign: 'center' }]}>{title}</Text>
-                      <TouchableOpacity
-                          style={{marginTop: 20, }}
-                          onPress={() => {
-                              navigation.navigate('OtherUser', { user: host })
-                          }}>
-                          {username}
-                      </TouchableOpacity>
-                  </View>
+            {/* <TouchableOpacity
+                onPress={() => navigation.navigate('Raffle', data)}>
 
-                  {startData}
+                    <View style={styles.FlatCard}>
+                        <Image style={styles.FlatCard__image} source={{ uri: imageURI }} onPress={() => {
+                        }} />
 
-              </View>
-          </View>
-      </TouchableOpacity>
+                        <View style={{ width: contentWidth, alignItems: 'center' }}>
+                            <Text style={[fonts.h1, {marginLeft:10, marginRight:10, textAlign: 'center', fontSize: height * 0.018,}]}>{title}</Text>
+                            <TouchableOpacity
+                                style={{marginTop: height * 0.01, }}
+                                onPress={() => {
+                                    navigation.navigate('OtherUser', { user: host })
+                                }}>
+                                {username}
+                            </TouchableOpacity>
+                        </View> */}
+            <View style={styles.likeButton}>
+                <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid} style={{ margin: 0 }} />
+            </View>
+            <TouchableOpacity
+                onPress={() => navigation.navigate('Raffle', data)}>
+
+
+                <View style={styles.FlatCard}>
+                    <Image style={styles.FlatCard__image} source={{ uri: imageURI }} onPress={() => {
+                    }} />
+
+                    <View style={{ width: '100%', paddingHorizontal: '7%', }}>
+                        <Text style={[fonts.h1, { fontSize: height * 0.018, paddingHorizontal: '4%' }]}>{title}</Text>
+                        <TouchableOpacity
+                            style={{ marginVertical: '2%' }}
+                            onPress={() => {
+                                navigation.navigate('OtherUser', { user: host })
+                            }}>
+                            {username}
+                        </TouchableOpacity>
+                        <View style={{ paddingHorizontal: '4%' }}>
+                            {startData}
+                        </View>
+
+                    </View>
+
+                </View>
+
+
+            </TouchableOpacity>
+
+        </View>
     )
 }
 
