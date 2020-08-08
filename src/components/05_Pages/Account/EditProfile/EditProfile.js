@@ -155,7 +155,7 @@ export default function ({ navigation }) {
 
     // makes a json object with all the input fields
     const makeJSON = () => {
-        let data = {
+        let newdata = {
             name: _name,
             username: _username,
             email: _email,
@@ -165,7 +165,17 @@ export default function ({ navigation }) {
             sizeType: _sizeType,
             profilePicture: "https://oc-profile-pictures.s3.us-east.cloud-object-storage.appdomain.cloud/" + _imgname
         }
-        return JSON.stringify(data)
+        let data = {
+            name: _name,
+            username: _username,
+            email: _email,
+            shippingAddress: _address,
+            shoeSize: _shoeSize,
+            shirtSize: _shirtSize,
+            sizeType: _sizeType,
+        }
+        if (_newimg == null) return JSON.stringify(data)
+        return JSON.stringify(newdata)
     };
 
     return (

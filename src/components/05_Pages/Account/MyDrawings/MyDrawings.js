@@ -13,6 +13,12 @@ import * as Abuffer from 'base64-arraybuffer';
 
 export default function Wallet({navigation}) {
 
+
+
+{/* Matt used this page to test image upload feel free to delete everything*/}
+
+
+
     const [image, setImage] = useState(null)
     const AWS = require('aws-sdk');
 
