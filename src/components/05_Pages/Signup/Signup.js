@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react'
 import { View, Text, Button, ScrollView, Keyboard, } from 'react-native';
-// import ReqBusAcc from '../../04_Templates/ReqBusAcc/ReqBusAcc';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import Divider from '../../01_Atoms/Divider/Divider.js';
 import InputField from '../../02_Molecules/InputField/InputField.js';
@@ -175,7 +174,7 @@ export default function Signup({ navigation }) {
       state: jsonData[_us_state],
       password: _password,
       isHost: state.businessAccount,
-      profilePicture: (_proPic != null) ? _proPic : 'https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/default-avatar.png',
+      profilePicture: (_proPic != null) ? _proPic : 'https://oc-profile-pictures.s3.us-east.cloud-object-storage.appdomain.cloud/default-avatar.png',
     }
     return JSON.stringify(data)
   };

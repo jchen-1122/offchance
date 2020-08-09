@@ -1,12 +1,12 @@
 import React, {useState, useContext} from 'react'
 import {ScrollView, View, Text, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard} from 'react-native'
 import { Icon } from 'react-native-elements';
-import InputField from '../../02_Molecules/InputField/InputField'
-import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
-import Dropdown from '../../01_Atoms/DropDown/DropDown'
+import InputField from '../../../02_Molecules/InputField/InputField'
+import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
+import Dropdown from '../../../01_Atoms/DropDown/DropDown'
 import validator from 'validator'
-import {colors, fonts, utilities, dimensions} from '../../../settings/all_settings';
-import GlobalState from '../../globalState'
+import {colors, fonts, utilities, dimensions} from '../../../../settings/all_settings';
+import GlobalState from '../../../globalState'
 import {styles} from './EditProfile.styling'
 
 export default function({navigation}) {
@@ -24,7 +24,7 @@ export default function({navigation}) {
 
     const [modifyMode, setModifyMode] = useState(false)
 
-    const data = require('../../IP_ADDRESS.json');
+    const data = require('../../../IP_ADDRESS.json');
 
     const editUser = async () => {
         const response = await fetch('http://'+data.ipAddress+'/user/edit/'+user._id,{
@@ -216,12 +216,12 @@ export default function({navigation}) {
 import React, {useState, useContext} from 'react'
 import {ScrollView, View, Text, Image, KeyboardAvoidingView, } from 'react-native'
 import { Icon } from 'react-native-elements';
-import InputField from '../../02_Molecules/InputField/InputField'
-import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
-import Dropdown from '../../01_Atoms/DropDown/DropDown'
+import InputField from '../../../02_Molecules/InputField/InputField'
+import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
+import Dropdown from '../../../01_Atoms/DropDown/DropDown'
 import validator from 'validator'
-import {colors, fonts, utilities, dimensions} from '../../../settings/all_settings';
-import GlobalState from '../../globalState'
+import {colors, fonts, utilities, dimensions} from '../../../../settings/all_settings';
+import GlobalState from '../../../globalState'
 import {styles} from './EditProfile.styling'
 
 export default function({navigation}) {
@@ -239,7 +239,7 @@ export default function({navigation}) {
 
     const [modifyMode, setModifyMode] = useState(false)
 
-    const data = require('../../IP_ADDRESS.json');
+    const data = require('../../../IP_ADDRESS.json');
 
     const editUser = async () => {
         const response = await fetch('http://'+data.ipAddress+'/user/edit/'+user._id,{

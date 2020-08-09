@@ -41,6 +41,7 @@ function Profile({ navigation }) {
     let name, username, profilePic, email, followers, following, enteredRaffles, address, sizeType, shoeSize, shirtSize, referralCode
     useEffect(() => {
         name = 'JohnDoe'
+        console.log(profilePic)
     })
     if (user == null) {
         name = 'John Doe'
@@ -60,6 +61,7 @@ function Profile({ navigation }) {
         shirtSize = user.shirtSize
         referralCode = Object.keys(user).includes('referralCode') ? user.referralCode : ''
     }
+
     return (
         <View style={utilities.container}>
             <ScrollView>

@@ -10,7 +10,7 @@ import ToggleTypeMenu from '../../03_Organisms/ToggleTypeMenu/ToggleTypeMenu'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
 import GlobalState from '../../globalState';
 import { user_logged_in } from '../../../functions/user_functions';
-import { top5_global, getLatestRaffles, getLatestWinners } from '../../../functions/explore_functions';
+import { top5_global, getLatestRaffles, getLatestWinners, sortTrending } from '../../../functions/explore_functions';
 import HorizontalScroll from '../../04_Templates/HorizontalScroll/HorizontalScroll';
 import Top5Card from '../../03_Organisms/HorizontalCards/Top5Card/Top5Card';
 import LatestWinnerCard from '../../03_Organisms/HorizontalCards/LatestWinnerCard/LatestWinnerCard';
@@ -27,6 +27,7 @@ function Home({ navigation }) {
 
   // different sets of raffles
   const [raffles, setRaffles] = useState([])
+  const [trendingRaffles, setTrendingRaffles] = useState([])
   const [donateRaffles, setDonateRaffles] = useState([])
   const [buyRaffles, setBuyRaffles] = useState([])
   const [upcomingRaffles, setUpcomingRaffles] = useState([])
@@ -42,6 +43,7 @@ function Home({ navigation }) {
       setDonateRaffles(response.filter((raffle) => { return raffle.type == 1 }))
       setBuyRaffles(response.filter((raffle) => { return raffle.type == 2 }))
       setUpcomingRaffles(response.filter((raffle) => { return raffle.live == false }))
+      setTrendingRaffles(sortTrending(response))
       setRaffles(response)
     }
     getRaffle()
@@ -72,8 +74,8 @@ function Home({ navigation }) {
         <TopNav navigation={navigation} active='Home' />
         <View style={utilities.flexCenter}>
 
-          <HorizontalScroll title="Trending" theme="light" seeAllRaffles={raffles} navigation={navigation} toggle={true}>
-            {raffles.map((raffle, index) =>
+          <HorizontalScroll title="Trending" theme="light" seeAllRaffles={trendingRaffles} navigation={navigation} toggle={true}>
+            {trendingRaffles.map((raffle, index) =>
               <RaffleCard raffle={raffle} navigation={navigation} />
             )}
 
