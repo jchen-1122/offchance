@@ -10,14 +10,10 @@ import styles from './Wallet.styling';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import { get_user } from '../../../fake_users/stub-users';
 import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
+import Stripe from './Stripe'
 
 
 export default function Wallet({navigation}) {
-
-    // stripe.setOptions({
-    //   publishableKey:
-    //   'pk_test_51HAiC0KuIZolMmjKL45leDQ1jlXegnbGEJaPQsnR44zU7JOUhWxte3jwLrS9wvP6y10Vu6vRaxaDZsWU9RAH9pLl00bYR2xNVG',
-    // });
 
     const {user, setUser} = useContext(GlobalState)
     const [containerStyle, setContainerStyle] = useState(styles.container);
@@ -91,7 +87,8 @@ export default function Wallet({navigation}) {
             trigger={trigger}
             paymentTrigger={paymentTrigger}
             height={480}
-            content={['Wallet Balance', 'Reload Source', 'Reload Amount']}/>
+            content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
+            navigation={navigation}/>
 
             <SlidingSheet
             title='Payment'
@@ -99,7 +96,8 @@ export default function Wallet({navigation}) {
             sheet={paymentController}
             trigger={paymentTrigger}
             height={height * 0.8}
-            content={['Wallet Balance', 'Reload Source', 'Reload Amount']}/>
+            content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
+            navigation={navigation}/>
 
 
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>

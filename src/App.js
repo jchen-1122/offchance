@@ -36,6 +36,8 @@ import GlobalState from './components/globalState'
 import Account from './components/05_Pages/Account/Account';
 import Profile from './components/05_Pages/Account/Profile/Profile';
 import Wallet from './components/05_Pages/Account/Wallet/Wallet';
+import Stripe from './components/05_Pages/Account/Wallet/Stripe'
+import Success from './components/05_Pages/Account/Wallet/Success'
 import HowItWorks from './components/05_Pages/Account/HowItWorks/HowItWorks';
 import FAQ from './components/05_Pages/Account/FAQ/FAQ';
 import MyDrawings from './components/05_Pages/Account/MyDrawings/MyDrawings';
@@ -87,6 +89,8 @@ function App() {
           <Stack.Screen name="Profile" component={Profile} options={{
             title: user.name, }} />
           <Stack.Screen name="Wallet" component={Wallet} />
+          <Stack.Screen name="Stripe" component={Stripe} />
+          <Stack.Screen name="Success" component={Success} />
           <Stack.Screen name="HowItWorks" component={HowItWorks} options={{ title: 'How It Works' }}/>
           <Stack.Screen name="FAQ" component={FAQ} />
           <Stack.Screen name="MyDrawings" component={MyDrawings} options={{ title: 'My Drawings' }}/>
