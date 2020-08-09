@@ -36,8 +36,10 @@ export default function Raffle({ navigation, route }) {
             route.params['host'] = await getUser(route.params.hostedBy)
             route.params['top5'] = route.params.users.children.sort((a, b) => b.amountDonated - a.amountDonated).slice(0, 5)
             let coordsUser = await getCoords(user.shippingAddress)
-            let coordsHost = await getCoords(route.params['host'].shippingAddress)
-
+            // let coordsHost = await getCoords(route.params['host'].shippingAddress)
+            let coordsHost = Object.keys(route.params).includes("address") ? await getCoords(route.params.address) : coordsUser
+            console.log(coordsHost)
+            
             let longUser = coordsUser.features[0].geometry.coordinates[0]
             let latUser = coordsUser.features[0].geometry.coordinates[1]
 

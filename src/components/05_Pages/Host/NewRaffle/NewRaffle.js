@@ -38,6 +38,7 @@ export default function NewRaffle({ navigation, route }) {
     const [_productType, setProductType] = useState('sneaker')
     const [_drawingDuration, setDrawingDuration] = useState(null)
     const [_drawingRadius, setDrawingRadius] = useState(null)
+    const [_address, setAddress] = useState(null)
 
     // for going to the next text input
     const priceRef = useRef()
@@ -120,7 +121,9 @@ export default function NewRaffle({ navigation, route }) {
             charities: (_charities.length > 0) ? _charities.split(',').map(item => item.trim()) : null,
             productType: _productType,
             drawingDuration: _drawingDuration,
-            radius: _drawingRadius === 'None' ? -1 : _drawingRadius,
+            radius: _drawingRadius === 'None' ? 25000 : _drawingRadius,
+            address: _address,
+            // CHANGE LATER
             sizeTypes: _sizeTypes,
             sizes: _sizes
         }
