@@ -1,5 +1,8 @@
+
+import { WebView } from 'react-native-webview';
+//import { stripeCheckoutRedirectHTML } from './stripeCheckout';
 import React, {useState} from 'react'
-import { View, ScrollView, Text, Image, Button } from 'react-native'
+import { View, ScrollView, Text, Image, Button, Dimensions } from 'react-native'
 import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
 import {utilities, fonts, colors} from '../../../../settings/all_settings';
 import { set } from 'react-native-reanimated';
@@ -11,14 +14,12 @@ import * as Permissions from 'expo-permissions';
 import AssetUtils from 'expo-asset-utils';
 import * as Abuffer from 'base64-arraybuffer';
 
-export default function Wallet({navigation}) {
 
 
 
 {/* Matt used this page to test image upload feel free to delete everything*/}
 
-
-
+export default function MyDrawings({navigation}) {
     const [image, setImage] = useState(null)
     const AWS = require('aws-sdk');
 
@@ -100,4 +101,4 @@ export default function Wallet({navigation}) {
         </View>
     )
     
-}
+    }
