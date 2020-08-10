@@ -34,10 +34,14 @@ console.log(props.active)
             <Text style={[styles.textFont, (props.active === 'Search') ? { color: 'white' } : null]}>Search</Text>
           </Button>
 
-          <Button onPress={() => { (props.active === 'Host') ? props.navigation.navigate('HostDashboard') : props.navigation.reset({ index: 0, routes: [{ name: 'HostDashboard' }] }) }}>
+          { user_logged_in(user) ? <Button onPress={() => { (props.active === 'Host') ? props.navigation.navigate('HostDashboard') : props.navigation.reset({ index: 0, routes: [{ name: 'HostDashboard' }] }) }}>
             {(props.active === 'Host') ? <Icon name='checkbox-marked-circle' type='material-community' color='white' /> : <Icon name='checkbox-marked-circle-outline' type='material-community' color='grey' />}
             <Text style={[styles.textFont, (props.active === 'Host') ? { color: 'white' } : null]}>Host</Text>
-          </Button>
+          </Button> :
+          <Button onPress={() => { (props.active === 'Host') ? props.navigation.navigate('NotLogin') : props.navigation.reset({ index: 0, routes: [{ name: 'NotLogin' }] }) }}>
+            {(props.active === 'Host') ? <Icon name='checkbox-marked-circle' type='material-community' color='white' /> : <Icon name='checkbox-marked-circle-outline' type='material-community' color='grey' />}
+            <Text style={[styles.textFont, (props.active === 'Host') ? { color: 'white' } : null]}>Host</Text>
+          </Button> }
 
           <Button onPress={() => (user_logged_in(user)) ? props.navigation.navigate('Profile') : props.navigation.navigate('NotLogin')}>
             {(props.active === 'Account') ? <Icon name='account' type='material-community' color='white' /> : <Icon name='account-outline' type='material-community' color='grey' />}
