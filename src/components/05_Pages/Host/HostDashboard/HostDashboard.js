@@ -73,6 +73,8 @@ export default function HostDashboard({ navigation }) {
                     {raffles.map((raffle, index) =>
                         <HostCard
                             data={raffle}
+                            host={user}
+                            navigation={navigation}
                         />
                     )}
                 </View>
