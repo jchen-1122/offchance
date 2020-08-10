@@ -196,7 +196,7 @@ export default function RaffleResult({ navigation, route }) {
                                 <Text style={[fonts.h1, { color: 'white' }]}>DRAWING IS STARTING IN</Text>
                                 <Text style={styles.timerOverlay__timer}>{localTime} seconds</Text>
                                 <Text style={[fonts.h2, { color: 'white' }]}>
-                                    {(localTime > 10) ? 'Determining Winners...' : 'Populating Cards...'}
+                                    {(localTime > 10) ? 'Determining Winners...' : 'Populating Winners...'}
                                 </Text>
                             </View>
                             <View style={{ height: Dimensions.get('window').height*0.35 }}>

@@ -22,41 +22,6 @@ export default function ({ navigation }) {
         shoeSizes.push(i.toString())
     }
 
-    React.useLayoutEffect(() => {
-        navigation.setOptions({
-            headerLeft: () => (
-                <Button onPress={() => {
-                    navigation.navigate("Profile")
-                }} title="Cancel" />
-            ),
-            // headerRight: () => (
-            //     <Button 
-            //     onPress={async () => {
-
-            //         if (!generateErrors()) {
-            //             if (_newimg != null) await _uploadImage()
-            //             const userObj = await editUser()
-            //             if (userObj.keyValue == null) {
-            //                 _delImage(user.profilePicture)
-            //                 setUser(userObj)
-            //                 navigation.navigate('Profile')
-            //             } else {
-            //                 let errors = []
-            //                 let errMsg = ""
-            //                 if (userObj.keyValue.username) {
-            //                     errMsg = "Username is taken. Please try again."
-            //                 } else if (userObj.keyValue.email) {
-            //                     errMsg = "Email is taken."
-            //                 }
-            //                 errors.push(<Text style={fonts.error}>{errMsg}</Text>)
-            //                 setErrors(errors)
-            //             }
-            //         }
-            //     }}/>
-            // ),
-        });
-    }, [navigation]);
-
     const AWS = require('aws-sdk');
 
     const { user, setUser } = useContext(GlobalState)
@@ -214,6 +179,48 @@ export default function ({ navigation }) {
         return JSON.stringify(newdata)
     };
 
+    React.useLayoutEffect(() => {
+        console.log('here')
+        navigation.setOptions({
+            headerLeft: () => (
+                <Button onPress={() => {
+                    navigation.navigate("Profile")
+                }} title="Cancel" />
+            ),
+            headerRight: () => (
+                <Button title="Save"
+                onPress={async () => {
+                    if (!generateErrors()) {
+                        if (_newimg != null) await _uploadImage()
+                        const userObj = await editUser()
+                        if (userObj.keyValue == null) {
+                            _delImage(user.profilePicture)
+                            setUser(userObj)
+                            Alert.alert(
+                                "Success!",
+                                "Your profile has been saved",
+                                [
+                                  { text: "OK", onPress: () => console.log("OK Pressed") }
+                                ],
+                                { cancelable: false }
+                              );
+                            navigation.navigate('Profile')
+                        } else {
+                            let errors = []
+                            let errMsg = ""
+                            if (userObj.keyValue.username) {
+                                errMsg = "Username is taken. Please try again."
+                            } else if (userObj.keyValue.email) {
+                                errMsg = "Email is taken."
+                            }
+                            errors.push(<Text style={fonts.error}>{errMsg}</Text>)
+                            setErrors(errors)
+                        }
+                    }
+                }}/>
+            ),
+        });
+    }, [navigation,_name, _username,_email,_address, _shoeSize, _shirtSize,_sizeType]);
     return (
         <ScrollView>
             <KeyboardAwareScrollView
@@ -264,7 +271,7 @@ export default function ({ navigation }) {
                                 {['male', 'female', 'both'].map((type, index) =>
                                     <Checkbox
                                         selected={_sizeType == type}
-                                        onPress={() => setSizeType(type)}
+                                        onPress={() => {setSizeType(type)}}
                                         text={type.charAt(0).toUpperCase() + type.slice(1)}
                                     />
                                 )}
@@ -278,7 +285,7 @@ export default function ({ navigation }) {
                     </View>
                     {_errors}
 
-                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                    {/* <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                         <BlockButton
                             title="SAVE"
                             color="secondary"
@@ -312,7 +319,7 @@ export default function ({ navigation }) {
                                     }
                                 }
                             }}></BlockButton>
-                    </View>
+                    </View> */}
                 </View>
             </KeyboardAwareScrollView>
         </ScrollView>
