@@ -69,7 +69,7 @@ function SlidingSheet(props) {
 
 
     // console.log(props.sheet); 101010
-
+    // TODO: Add a dropdown/button for stripe and apple pay
     return (
       <View style={styles.container}>
         <Animated.View

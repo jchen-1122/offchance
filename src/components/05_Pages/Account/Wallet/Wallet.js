@@ -11,7 +11,7 @@ import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import { get_user } from '../../../fake_users/stub-users';
 import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
 import Stripe from './Stripe'
-
+import PaymentsStripe from 'expo-payments-stripe';
 
 export default function Wallet({navigation}) {
 
@@ -86,7 +86,7 @@ export default function Wallet({navigation}) {
             sheet={sheetController}
             trigger={trigger}
             paymentTrigger={paymentTrigger}
-            height={480}
+            height={height * 0.7}
             content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
             navigation={navigation}/>
 
