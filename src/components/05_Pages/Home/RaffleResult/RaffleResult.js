@@ -42,7 +42,7 @@ export default function RaffleResult({ navigation, route }) {
 
     let confetti_colors = [["black", "#ECB661"], [colors.silver1, colors.silver2], [colors.bronze1, colors.bronze2], [colors.blue]]
 
-    const [localTime, localSetTime] = useState(90)
+    const [localTime, localSetTime] = useState(10)
     const [winnerTime, setWinnerTime] = useState(10000)
 
     React.useEffect(() => {

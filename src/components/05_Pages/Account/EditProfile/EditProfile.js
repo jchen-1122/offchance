@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react'
-import { ScrollView, View, Text, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { ScrollView, View, Text, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native'
 import InputField from '../../../02_Molecules/InputField/InputField'
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import SizeCarousel from '../../../01_Atoms/SizeCarousel/SizeCarousel';
@@ -9,6 +9,11 @@ import { colors, fonts, utilities, dimensions } from '../../../../settings/all_s
 import GlobalState from '../../../globalState'
 import { styles } from './EditProfile.styling'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import * as ImagePicker from 'expo-image-picker';
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
+import AssetUtils from 'expo-asset-utils';
+import * as Abuffer from 'base64-arraybuffer';
 
 export default function ({ navigation }) {
     var shirtSizes = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
@@ -16,6 +21,8 @@ export default function ({ navigation }) {
     for (var i = 4; i <= 14; i += 0.5) {
         shoeSizes.push(i.toString())
     }
+
+    const AWS = require('aws-sdk');
 
     const { user, setUser } = useContext(GlobalState)
     const [_name, setName] = useState(user.name)
@@ -26,6 +33,8 @@ export default function ({ navigation }) {
     const [_shirtSize, setShirtSize] = useState(user.shirtSize != null ? user.shirtSize : "")
     const [_sizeType, setSizeType] = useState(user.sizeType != null ? user.sizeType : "")
     const [_errors, setErrors] = useState([])
+    const [_newimg, setNewimg] = useState(null)
+    const [_imgname, setImgname] = useState(user.profilePicture)
 
     // for going to the next text input
     const usernameRef = useRef()
@@ -35,6 +44,81 @@ export default function ({ navigation }) {
     const [modifyMode, setModifyMode] = useState(false)
 
     const data = require('../../../IP_ADDRESS.json');
+
+    async function getPermissionAsync() {
+        if (Constants.platform.ios) {
+          const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+          if (status !== 'granted') {
+            alert('Sorry, we need camera roll permissions to make this work!');
+          }
+        }
+      }
+
+    const _pickImage = async () => {
+        await getPermissionAsync()
+        try {
+          let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+          });
+          if (!result.cancelled) {
+            setNewimg(result.uri);
+            setImgname(_username + Math.round((new Date()).getTime() / 1000) + '.jpeg')
+          }
+    
+          //console.log(result);
+        } catch (E) {
+          console.log(E);
+        }
+      };
+
+    AWS.config = new AWS.Config({
+        accessKeyId: data.IBMaccessKeyId,
+        secretAccessKey: data.IBMsecretAccessKey,
+        endpoint: 's3.us-east.cloud-object-storage.appdomain.cloud',
+        region: 'us-east-standard'
+    });
+
+    const cosClient = new AWS.S3();
+
+    const _uploadImage = async () => {
+
+        const asset = await AssetUtils.base64forImageUriAsync(_newimg);
+        const arrayBuffer = Abuffer.decode(asset.data);
+        let contentType = 'image/jpeg';
+        //console.log(arrayBuffer)
+        //const { localUri, width, height } = asset;
+        return cosClient.putObject({
+            Bucket: 'oc-profile-pictures', 
+            Key: _imgname, 
+            Body: arrayBuffer,
+            ContentType: contentType
+        }).promise()
+        .then(() => {
+            console.log('Item: ' + _imgname + ' created!');
+        })
+        .catch((e) => {
+            console.error(`ERROR: ${e.code} - ${e.message}\n`);
+        })
+    };
+
+    const _delImage = (itemName) => {
+        //console.log(itemName.substring(itemName.lastIndexOf('/')))
+        if (itemName.includes('default-avatar')) {
+            console.log('====== CHECK IF THIS IS DEFAULT IMG ======')
+            console.log(itemName)
+            return
+        }
+        return cosClient.deleteObject({
+            Bucket: 'oc-profile-pictures',
+            Key: itemName.substring(itemName.lastIndexOf('/') + 1)
+        }).promise()
+        .catch((e) => {
+            console.error(`ERROR: ${e.code} - ${e.message}\n`);
+        });
+    };
 
     const editUser = async () => {
         const response = await fetch('http://' + data.ipAddress + '/user/edit/' + user._id, {
@@ -71,6 +155,16 @@ export default function ({ navigation }) {
 
     // makes a json object with all the input fields
     const makeJSON = () => {
+        let newdata = {
+            name: _name,
+            username: _username,
+            email: _email,
+            shippingAddress: _address,
+            shoeSize: _shoeSize,
+            shirtSize: _shirtSize,
+            sizeType: _sizeType,
+            profilePicture: "https://oc-profile-pictures.s3.us-east.cloud-object-storage.appdomain.cloud/" + _imgname
+        }
         let data = {
             name: _name,
             username: _username,
@@ -78,9 +172,10 @@ export default function ({ navigation }) {
             shippingAddress: _address,
             shoeSize: _shoeSize,
             shirtSize: _shirtSize,
-            sizeType: _sizeType
+            sizeType: _sizeType,
         }
-        return JSON.stringify(data)
+        if (_newimg == null) return JSON.stringify(data)
+        return JSON.stringify(newdata)
     };
 
     return (
@@ -89,7 +184,11 @@ export default function ({ navigation }) {
                 style={{ backgroundColor: 'transparent' }}
                 resetScrollToCoords={{ x: 0, y: 0 }}>
                 <View style={{ zIndex: 5 }}>
-                    <Image source={{ uri: user.profilePicture }} style={styles.profilePic}></Image>
+                    <TouchableOpacity onPress={() => {
+                        _pickImage()
+                    }}>
+                        <Image source={(_newimg == null) ? { uri: user.profilePicture } : { uri: _newimg }} style={styles.profilePic}></Image>
+                    </TouchableOpacity>
                     <View style={styles.inputs}>
                         <InputField
                             label="Name"
@@ -149,7 +248,7 @@ export default function ({ navigation }) {
                                 title="CANCEL"
                                 color="secondary"
                                 size="short"
-                                onPress={() => { navigation.navigate("Profile"); console.log(_shoeSize) }}></BlockButton>
+                                onPress={() => { navigation.navigate("Profile") }}></BlockButton>
                         </View>
 
                         <View >
@@ -159,9 +258,11 @@ export default function ({ navigation }) {
                                 size="short"
                                 onPress={async () => {
                                     if (!generateErrors()) {
+                                        if (_newimg != null) await _uploadImage()
                                         const userObj = await editUser()
-                                        setUser(userObj)
                                         if (userObj.keyValue == null) {
+                                            _delImage(user.profilePicture)
+                                            setUser(userObj)
                                             navigation.navigate('Profile')
                                         } else {
                                             let errors = []
