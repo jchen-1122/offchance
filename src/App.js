@@ -100,8 +100,8 @@ function App() {
           <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
           <Stack.Screen name="RaffleResult" component={RaffleResult} />
           <Stack.Screen name="EnteredUsers" component={EnteredUsers} options={{ title: 'Entered' }}/>
-          <Stack.Screen name="AskRaffleType" component={AskRaffleType} options={{ title: 'New Raffle' }}/>
-          <Stack.Screen name="NewRaffle" component={NewRaffle} options={{ title: 'Submit Raffle' }}/>
+          <Stack.Screen name="AskRaffleType" component={AskRaffleType} options={{ title: 'New Drawing' }}/>
+          <Stack.Screen name="NewRaffle" component={NewRaffle} options={{ title: 'Submit Drawing' }}/>
           <Stack.Screen name="ReqBusAcc" component={ReqBusAcc} options={{ title: 'Get Verified' }}/>
           <Stack.Screen name="HostDashboard" component={HostDashboard} options={{ title: 'Your Drawings' }}/>
 

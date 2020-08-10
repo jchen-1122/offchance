@@ -54,9 +54,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         width: '43%',
     },
-    BlockButton_logOut:{
-        backgroundColor: 'red'
-    },
 
     // different colors for button text 
     BlockButton__title: {
@@ -82,12 +79,6 @@ const styles = StyleSheet.create({
     BlockButton__title_transparent: {
         fontSize: 22,
         color: 'black',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-    },
-    BlockButton__title_logOut: {
-        fontSize: 18,
-        color: 'white',
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
     },

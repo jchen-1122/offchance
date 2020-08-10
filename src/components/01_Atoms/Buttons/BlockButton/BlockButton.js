@@ -50,10 +50,6 @@ function BlockButton(props) {
             buttonTitleStyle = [styles.BlockButton__title_google];
             icon = <SocialIcon type='google' raised={false} iconStyle={styles.google_icon} style={styles.iconBg} iconSize={30} />
             break;
-        case "logOut":
-            buttonStyle.push(styles.BlockButton_logOut);
-            buttonTitleStyle = [styles.BlockButton__title_logOut];
-            break;
     }
 
     // determing what size (large by default)

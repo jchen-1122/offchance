@@ -33,7 +33,6 @@ export default function HostDashboard({ navigation }) {
         getRaffles()
     }, []);
 
-    console.log(raffles)
     if (!user.isHost) {
         return (
             <View style={utilities.container}>
@@ -50,8 +49,8 @@ export default function HostDashboard({ navigation }) {
         <View style={utilities.container}>
             <ScrollView>
                 <View style={{ backgroundColor: 'white', width: '100%', padding: '5%' }}>
-                    <Text style={fonts.h1}>Host Your Own Raffles to Raise Money For Your Cause.</Text>
-                    <BlockButton color="primary" title="NEW RAFFLE" size="short" onPress={() => navigation.navigate('AskRaffleType')} style={{ marginLeft: 0 }} />
+                    <Text style={fonts.h1}>Host Your Own Drawings to Raise Money For Your Cause.</Text>
+                    <BlockButton color="primary" title="NEW DRAWING" size="short" onPress={() => navigation.navigate('AskRaffleType')} style={{ marginLeft: 0 }} />
                 </View>
 
                 <View style={styles.stats}>

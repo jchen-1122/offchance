@@ -12,13 +12,13 @@ const styles = StyleSheet.create({
         borderBottomColor: '#CCCCCC',
         borderBottomWidth: 1,
         borderRadius: 0,
-        color: '#888888'
+        color: '#888888',
     },
     DropDown__picker: {
         height: 40,
         zIndex: 1,
         borderColor: 'pink',
-        width: '100%'
+        width: '100%',
     },
     DropDown__picker_small: {
         width: 75,
