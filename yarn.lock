@@ -5764,6 +5764,11 @@ react-native-snap-carousel@^3.9.1:
     prop-types "^15.6.1"
     react-addons-shallow-compare "15.6.2"
 
+react-native-square-in-app-payments@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/react-native-square-in-app-payments/-/react-native-square-in-app-payments-1.4.0.tgz#ab6a54a370097458985994bbc67fc6da9611d91a"
+  integrity sha512-fxag8LYp7UHAI85Ba2YoMru0xbpemKSHuU1to+fRu5+ZCdT3SWhLPyVkQR/hyjJZm4T63V6SqbBFUYJCTnrCZA==
+
 react-native-status-bar-height@^2.5.0:
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/react-native-status-bar-height/-/react-native-status-bar-height-2.5.0.tgz#bc0fb85230603850aab9667ee8111a62954de90c"
