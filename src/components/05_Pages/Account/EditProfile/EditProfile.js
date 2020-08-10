@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react'
-import { ScrollView, View, Text, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native'
+import { ScrollView, View, Text, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Button, Alert } from 'react-native'
 import InputField from '../../../02_Molecules/InputField/InputField'
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import SizeCarousel from '../../../01_Atoms/SizeCarousel/SizeCarousel';
@@ -21,6 +21,41 @@ export default function ({ navigation }) {
     for (var i = 4; i <= 14; i += 0.5) {
         shoeSizes.push(i.toString())
     }
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => (
+                <Button onPress={() => {
+                    navigation.navigate("Profile")
+                }} title="Cancel" />
+            ),
+            // headerRight: () => (
+            //     <Button 
+            //     onPress={async () => {
+
+            //         if (!generateErrors()) {
+            //             if (_newimg != null) await _uploadImage()
+            //             const userObj = await editUser()
+            //             if (userObj.keyValue == null) {
+            //                 _delImage(user.profilePicture)
+            //                 setUser(userObj)
+            //                 navigation.navigate('Profile')
+            //             } else {
+            //                 let errors = []
+            //                 let errMsg = ""
+            //                 if (userObj.keyValue.username) {
+            //                     errMsg = "Username is taken. Please try again."
+            //                 } else if (userObj.keyValue.email) {
+            //                     errMsg = "Email is taken."
+            //                 }
+            //                 errors.push(<Text style={fonts.error}>{errMsg}</Text>)
+            //                 setErrors(errors)
+            //             }
+            //         }
+            //     }}/>
+            // ),
+        });
+    }, [navigation]);
 
     const AWS = require('aws-sdk');
 
@@ -47,32 +82,32 @@ export default function ({ navigation }) {
 
     async function getPermissionAsync() {
         if (Constants.platform.ios) {
-          const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-          if (status !== 'granted') {
-            alert('Sorry, we need camera roll permissions to make this work!');
-          }
+            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+            if (status !== 'granted') {
+                alert('Sorry, we need camera roll permissions to make this work!');
+            }
         }
-      }
+    }
 
     const _pickImage = async () => {
         await getPermissionAsync()
         try {
-          let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-          });
-          if (!result.cancelled) {
-            setNewimg(result.uri);
-            setImgname(_username + Math.round((new Date()).getTime() / 1000) + '.jpeg')
-          }
-    
-          //console.log(result);
+            let result = await ImagePicker.launchImageLibraryAsync({
+                mediaTypes: ImagePicker.MediaTypeOptions.All,
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 1,
+            });
+            if (!result.cancelled) {
+                setNewimg(result.uri);
+                setImgname(_username + Math.round((new Date()).getTime() / 1000) + '.jpeg')
+            }
+
+            //console.log(result);
         } catch (E) {
-          console.log(E);
+            console.log(E);
         }
-      };
+    };
 
     AWS.config = new AWS.Config({
         accessKeyId: data.IBMaccessKeyId,
@@ -91,17 +126,17 @@ export default function ({ navigation }) {
         //console.log(arrayBuffer)
         //const { localUri, width, height } = asset;
         return cosClient.putObject({
-            Bucket: 'oc-profile-pictures', 
-            Key: _imgname, 
+            Bucket: 'oc-profile-pictures',
+            Key: _imgname,
             Body: arrayBuffer,
             ContentType: contentType
         }).promise()
-        .then(() => {
-            console.log('Item: ' + _imgname + ' created!');
-        })
-        .catch((e) => {
-            console.error(`ERROR: ${e.code} - ${e.message}\n`);
-        })
+            .then(() => {
+                console.log('Item: ' + _imgname + ' created!');
+            })
+            .catch((e) => {
+                console.error(`ERROR: ${e.code} - ${e.message}\n`);
+            })
     };
 
     const _delImage = (itemName) => {
@@ -115,9 +150,9 @@ export default function ({ navigation }) {
             Bucket: 'oc-profile-pictures',
             Key: itemName.substring(itemName.lastIndexOf('/') + 1)
         }).promise()
-        .catch((e) => {
-            console.error(`ERROR: ${e.code} - ${e.message}\n`);
-        });
+            .catch((e) => {
+                console.error(`ERROR: ${e.code} - ${e.message}\n`);
+            });
     };
 
     const editUser = async () => {
@@ -174,6 +209,7 @@ export default function ({ navigation }) {
             shirtSize: _shirtSize,
             sizeType: _sizeType,
         }
+        console.log(JSON.stringify(newdata))
         if (_newimg == null) return JSON.stringify(data)
         return JSON.stringify(newdata)
     };
@@ -243,41 +279,39 @@ export default function ({ navigation }) {
                     {_errors}
 
                     <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                        <View >
-                            <BlockButton
-                                title="CANCEL"
-                                color="secondary"
-                                size="short"
-                                onPress={() => { navigation.navigate("Profile") }}></BlockButton>
-                        </View>
-
-                        <View >
-                            <BlockButton
-                                title="SAVE"
-                                color="secondary"
-                                size="short"
-                                onPress={async () => {
-                                    if (!generateErrors()) {
-                                        if (_newimg != null) await _uploadImage()
-                                        const userObj = await editUser()
-                                        if (userObj.keyValue == null) {
-                                            _delImage(user.profilePicture)
-                                            setUser(userObj)
-                                            navigation.navigate('Profile')
-                                        } else {
-                                            let errors = []
-                                            let errMsg = ""
-                                            if (userObj.keyValue.username) {
-                                                errMsg = "Username is taken. Please try again."
-                                            } else if (userObj.keyValue.email) {
-                                                errMsg = "Email is taken."
-                                            }
-                                            errors.push(<Text style={fonts.error}>{errMsg}</Text>)
-                                            setErrors(errors)
+                        <BlockButton
+                            title="SAVE"
+                            color="secondary"
+                            size="large"
+                            onPress={async () => {
+                                if (!generateErrors()) {
+                                    if (_newimg != null) await _uploadImage()
+                                    const userObj = await editUser()
+                                    if (userObj.keyValue == null) {
+                                        _delImage(user.profilePicture)
+                                        setUser(userObj)
+                                        Alert.alert(
+                                            "Success!",
+                                            "Your profile has been saved",
+                                            [
+                                              { text: "OK", onPress: () => console.log("OK Pressed") }
+                                            ],
+                                            { cancelable: false }
+                                          );
+                                        navigation.navigate('Profile')
+                                    } else {
+                                        let errors = []
+                                        let errMsg = ""
+                                        if (userObj.keyValue.username) {
+                                            errMsg = "Username is taken. Please try again."
+                                        } else if (userObj.keyValue.email) {
+                                            errMsg = "Email is taken."
                                         }
+                                        errors.push(<Text style={fonts.error}>{errMsg}</Text>)
+                                        setErrors(errors)
                                     }
-                                }}></BlockButton>
-                        </View>
+                                }
+                            }}></BlockButton>
                     </View>
                 </View>
             </KeyboardAwareScrollView>
