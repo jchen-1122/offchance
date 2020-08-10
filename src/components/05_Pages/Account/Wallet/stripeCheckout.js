@@ -5,11 +5,12 @@ export function stripeCheckoutRedirectHTML(name, amount) {
 
   // TODO: this should come from some service/state store
   const [sessionId, setSessionId] = useState(null)
+  const data = require('../../../IP_ADDRESS.json');
 
   // Called everytime the URL stats to load in the webview
   useEffect(() => {
     async function onLoadStart() {
-      let response = await fetch('http://192.168.0.27:3000/user/secret', {
+      let response = await fetch('http://' + data.ipAddress + '/user/secret', {
         method: "POST",
         headers: {
           'Accept': 'application/json',
