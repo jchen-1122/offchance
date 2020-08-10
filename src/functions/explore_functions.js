@@ -81,7 +81,6 @@ export async function top5_global() {
     // cycle through each raffle
     for (var raffle of recentRaffles) {
         var enteredUsers = raffle.users.children
-        console.log(isThisWeek(raffle.lastDonatedTo))
         // cycle through each entered user in raffle
         for (var user of enteredUsers) {
             // if the user donated this week
@@ -99,7 +98,6 @@ export async function top5_global() {
             }
         }
     }
-
     // sort by amount donated
     const userAmtMapSorted = new Map([...userAmtMap.entries()].sort((a, b) => b[1] - a[1]));
 
