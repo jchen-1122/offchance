@@ -39,7 +39,7 @@ export default function Raffle({ navigation, route }) {
             // let coordsHost = await getCoords(route.params['host'].shippingAddress)
             let coordsHost = Object.keys(route.params).includes("address") ? await getCoords(route.params.address) : coordsUser
             console.log(coordsHost)
-            
+
             let longUser = coordsUser.features[0].geometry.coordinates[0]
             let latUser = coordsUser.features[0].geometry.coordinates[1]
 
@@ -444,7 +444,7 @@ export default function Raffle({ navigation, route }) {
                                 <Top5Donors users={top5} />
                             </TouchableOpacity>
                             {/* !!!!!!!!!!!!! TODO: conditionally show progress bar !!!!!!!!!!!!!!*/}
-                            <ProgressBar progress={230 / 500} color={colors.primaryColor} raised={230} goal={500} width={315} />
+                            <ProgressBar progress={250 / 500} color={colors.primaryColor} raised={230} goal={500} width={315} />
 
                             {raffle.sizes.length > 0 ?
                                 <View style={styles.pickSizeSlide}>

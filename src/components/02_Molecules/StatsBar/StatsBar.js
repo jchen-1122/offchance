@@ -14,7 +14,7 @@ export default function(props) {
             res.push(response)
         }
         return res
-        
+
     }
 
     const handleFollowing = async () => {
@@ -26,6 +26,9 @@ export default function(props) {
         let followers = await getUsers(props.followers)
         props.navigation.navigate('Followers', {followers: followers, user: props.currUser})
     }
+
+    console.log('props: ', props)
+    console.log('props followers: ', props.followers)
 
     return (
     <View style={styles.StatsBar}>

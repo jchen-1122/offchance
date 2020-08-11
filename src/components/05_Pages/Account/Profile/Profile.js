@@ -72,13 +72,13 @@ function Profile({ navigation }) {
                     </View>
                     {/* <View style={{ zIndex: 1 }}> */}
                         {/* Green Checkmark*/}
-                        {user.isHost ? 
+                        {user.isHost ?
                         <View style={{zIndex: 50, position: 'absolute', right: Dimensions.get('window').width*0.35}}>
                         <Icon name={'check-circle'}
                             type='octicons'
                             color={colors.primaryColor}
                             backgroundColor='white'
-                            style={{borderRadius: 50}} /> 
+                            style={{borderRadius: 50}} />
                             </View>: null}
                     {/* </View> */}
                 </View>
@@ -88,7 +88,7 @@ function Profile({ navigation }) {
                     <Text style={styles.header_username}>@{username}</Text>
                 </View>
 
-                <StatsBar currUser={user} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>
+                <StatsBar currUser={user} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>   
 
                 <View style={styles.toggleBar}>
                     <InfoFeed info={info} setInfo={setInfo}></InfoFeed>
