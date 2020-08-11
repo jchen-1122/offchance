@@ -1,6 +1,7 @@
 import React, {useState} from 'react'
-import { View, Text, TouchableOpacity, TextInput, ScrollView, Picker, Animated, } from 'react-native'
-import { Icon } from 'react-native-elements';
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Picker, Animated, Alert } from 'react-native'
+import { Icon } from 'react-native-elements'
+import CheckBox from '../../02_Molecules/Checkbox/Checkbox'
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import { utilities, fonts } from '../../../settings/all_settings';
@@ -24,14 +25,16 @@ function SlidingSheet(props) {
     // const [sheetOpen, setSheetOpen] = useState(true); // isHidden
     const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet (1000 is at the bottom)
 
-    let options1 = ['**** **** **** 1234', 'Google Pay', 'Apple Pay', 'Paypal', '+ Add Payment Method']
+    let options1 = ['**** **** **** 1234', 'Paypal', '+ Add Credit Card']
     let options2 = ['$5 = 10 chances', '$10 = 40 chances', '$20 = 50 chances', '$50 = 150 chances', '$100 = 400 chances', '$250 = 1100 chances']
 
     let slidingStyle = [styles.subView];
     slidingStyle.push({height: props.height});
 
     const [stripe, setStripe] = useState(true)
-    const [_amount, setAmount] = useState(5)
+    const [_method, setMethod] = useState(null)
+    const [_amount, setAmount] = useState('$5 = 10 chances')
+    const [_save, setSave] = useState(false)
 
     var toValue = 1000;
     const toggleSheet = () => {
@@ -88,7 +91,7 @@ function SlidingSheet(props) {
                     </View>
 
                     {/* content part - with a text input */}
-                    <View style={styles.slidingSheet__content}>
+                    {/* <View style={styles.slidingSheet__content}>
                         <Text style={styles.slidingSheet__content_text}>{props.content[0]}</Text>
                         <TextInput
                           style={{ height: 40, lineHeight: 23, }}
@@ -96,6 +99,16 @@ function SlidingSheet(props) {
                           onChangeText={text => onChangeText(text)}
                           value={value}
                         />
+                    </View> */}
+                    <View style={[styles.slidingSheet__content, {zIndex: 2}]}>
+                        <Text style={styles.slidingSheet__content_text}>{props.content[1]}</Text>
+                        <DropDown
+                          options={options1}
+                          size='large'
+                          arrowSize={18}
+                          isVisible={false}
+                          setValue={setMethod}
+                          />
                     </View>
 
                     <View style={[styles.slidingSheet__content, {zIndex: 1}]}>
@@ -108,17 +121,14 @@ function SlidingSheet(props) {
                           setValue={setAmount}
                           />
                     </View>
-
-                    {/* <View style={[styles.slidingSheet__content, {zIndex: 1}]}>
-                        <Text style={styles.slidingSheet__content_text}>{props.content[1]}</Text>
-                        <DropDown
-                          options={options1}
-                          size='large'
-                          arrowSize={18}
-                          isVisible={false}
-                          parentFunction={payMe}
-                          />
-                    </View> */}
+                    
+                    <View style={[styles.slidingSheet__save]}>
+                    <CheckBox
+                      selected={_save}
+                      onPress={() => setSave(!_save)}
+                      text='Save my payment information'
+                    />
+                    </View>
 
                     <View style={styles.button}>
                         <BlockButton
@@ -129,7 +139,7 @@ function SlidingSheet(props) {
                             />
                     </View>
 
-                </ScrollView> : <Stripe navigation={props.navigation} amount={_amount}></Stripe>}
+                </ScrollView> : <Stripe navigation={props.navigation} method={_method} amount={_amount} save={_save}></Stripe>}
             </View>
 
         </Animated.View>
