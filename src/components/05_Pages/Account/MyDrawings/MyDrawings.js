@@ -1,7 +1,10 @@
+import { WebView } from 'react-native-webview';
+//import { stripeCheckoutRedirectHTML } from './stripeCheckout';
 import React, {useState} from 'react'
-import { View, ScrollView, Text, Image, Button } from 'react-native'
+import { View, ScrollView, Text, Image, Button, Dimensions, TouchableOpacity, } from 'react-native'
 import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
 import {utilities, fonts, colors} from '../../../../settings/all_settings';
+import styles from './MyDrawings.styling'
 import { set } from 'react-native-reanimated';
 import { get_user } from '../../../fake_users/stub-users';
 import Construction from '../../../04_Templates/Construction/Construction'
@@ -10,16 +13,13 @@ import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import AssetUtils from 'expo-asset-utils';
 import * as Abuffer from 'base64-arraybuffer';
-
-export default function Wallet({navigation}) {
-
-
+import * as Sharing from 'expo-sharing';
 
 {/* Matt used this page to test image upload feel free to delete everything*/}
 
-
-
+export default function MyDrawings({navigation}) {
     const [image, setImage] = useState(null)
+    let [selectedImage, setSelectedImage] = React.useState(null);
     const AWS = require('aws-sdk');
 
     React.useEffect(() => {
@@ -43,9 +43,10 @@ export default function Wallet({navigation}) {
             quality: 1,
           });
           if (!result.cancelled) {
+            console.log(result.uri)
             setImage(result.uri);
+            setSelectedImage({ localUri: result.uri });
           }
-    
           console.log(result);
         } catch (E) {
           console.log(E);
@@ -64,7 +65,7 @@ export default function Wallet({navigation}) {
     {/* DOES NOT WORK, NEED TO CONVERT IMAGE TO BASE64 AND UPLOAD. */}
     {/* OR WHATEVER BETTER METHOD IS FOUND. */}
     {/* UNCOMMENT THE LINE IN RETURN WHEN SOLVED */}
-    
+
     const _uploadImage = async () => {
 
         const asset = await AssetUtils.base64forImageUriAsync(image);
@@ -72,12 +73,10 @@ export default function Wallet({navigation}) {
         let contentType = 'image/jpeg';
         let name = Math.round((new Date()).getTime() / 1000) + '.jpeg';
         console.log(name)
-        //console.log(asset)
-        //const { localUri, width, height } = asset;
 
         return cosClient.putObject({
-            Bucket: 'oc-mobile-images', 
-            Key: name, 
+            Bucket: 'oc-mobile-images',
+            Key: name,
             Body: arrayBuffer,
             ContentType: contentType
         }).promise()
@@ -89,15 +88,26 @@ export default function Wallet({navigation}) {
         })
     };
 
+    let openShareDialogAsync = async () => {
+        if (!(await Sharing.isAvailableAsync())) {
+           alert(`Uh oh, sharing isn't available on your platform`);
+           return;
+        }
+        await Sharing.shareAsync(selectedImage.localUri);
+    };
+
     return (
         <View style={utilities.container}>
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Button title="Pick an image from camera roll" onPress={async () => {_pickImage()}} />
                 {image && <Button title="Upload image to IBM Cloud" onPress={async () => {_uploadImage()}} /> }
                 {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+                {image && <TouchableOpacity onPress={openShareDialogAsync} style={styles.button}>
+                              <Text style={styles.buttonText}>Share this photo</Text>
+                          </TouchableOpacity>}
             </View>
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>
         </View>
     )
-    
-}
+
+    }
