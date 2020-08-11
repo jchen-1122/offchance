@@ -1,7 +1,8 @@
+
 import { WebView } from 'react-native-webview';
 //import { stripeCheckoutRedirectHTML } from './stripeCheckout';
 import React, {useState} from 'react'
-import { View, ScrollView, Text, Image, Button, Dimensions, TouchableOpacity, } from 'react-native'
+import { View, ScrollView, Text, Image, Button, Dimensions } from 'react-native'
 import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
 import {utilities, fonts, colors} from '../../../../settings/all_settings';
 import styles from './MyDrawings.styling'
@@ -109,4 +110,5 @@ export default function MyDrawings({navigation}) {
         </View>
     )
 
+    
     }

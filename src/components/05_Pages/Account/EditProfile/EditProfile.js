@@ -122,6 +122,7 @@ export default function ({ navigation }) {
     };
 
     const editUser = async () => {
+        console.log('http://' + data.ipAddress + '/user/edit/' + user._id)
         const response = await fetch('http://' + data.ipAddress + '/user/edit/' + user._id, {
             method: "PATCH",
             headers: {
@@ -131,6 +132,7 @@ export default function ({ navigation }) {
             body: makeJSON()
         })
         const json = await response.json()
+
         return json
     }
 
@@ -177,6 +179,7 @@ export default function ({ navigation }) {
         }
         console.log(JSON.stringify(newdata))
         if (_newimg == null) return JSON.stringify(data)
+        console.log(JSON.stringify(newdata))
         return JSON.stringify(newdata)
     };
 
