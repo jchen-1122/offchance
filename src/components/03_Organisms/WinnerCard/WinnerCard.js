@@ -9,7 +9,7 @@ import { useFonts } from 'expo-font';
 import * as Font from 'expo-font';
 
 function WinnerCard(props, ref) {
-    
+
     let winner;
     if (props.winner) {
         winner = props.winner
@@ -49,13 +49,13 @@ function WinnerCard(props, ref) {
             prizeTitleColor = 'white'
             winnerLabelColor = colors.lightGreen
             break;
-            case "gold":
-                gradient = colors.goldGradientBg
-                borderGradient = colors.goldGradient
-                headerImage = "https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/winnercard-images/gold.png"
-                headerColor = "#44270A"
-                hostNameColor = colors.gold1
-                break;
+        case "gold":
+            gradient = colors.goldGradientBg
+            borderGradient = colors.goldGradient
+            headerImage = "https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/winnercard-images/gold.png"
+            headerColor = "#44270A"
+            hostNameColor = colors.gold1
+            break;
         case "silver":
             gradient = colors.silverGradientBg
             borderGradient = colors.silverGradient

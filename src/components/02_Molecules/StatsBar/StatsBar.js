@@ -3,6 +3,9 @@ import {View, Text, TouchableOpacity} from 'react-native'
 import {styles} from './StatsBar.styling'
 
 export default function(props) {
+    if (!props.followers){
+        return null
+    }
     const [following, setFollowing] = useState([])
 
     const getUsers = async (users) => {

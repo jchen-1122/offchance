@@ -23,6 +23,7 @@ export default function ({ navigation }) {
     }
 
     const AWS = require('aws-sdk');
+    const [buttonTitle, setButtonTitle] = useState('Save')
 
     const { user, setUser } = useContext(GlobalState)
     const [_name, setName] = useState(user.name)
@@ -188,9 +189,10 @@ export default function ({ navigation }) {
                 }} title="Cancel" />
             ),
             headerRight: () => (
-                <Button title="Save"
+                <Button title={buttonTitle}
                 onPress={async () => {
                     if (!generateErrors()) {
+                        setButtonTitle("Saving")
                         if (_newimg != null) await _uploadImage()
                         const userObj = await editUser()
                         if (userObj.keyValue == null) {
@@ -220,7 +222,7 @@ export default function ({ navigation }) {
                 }}/>
             ),
         });
-    }, [navigation,_name, _username,_email,_address, _shoeSize, _shirtSize,_sizeType, _imgname]);
+    }, [navigation,_name, _username,_email,_address, _shoeSize, _shirtSize,_sizeType, _imgname, buttonTitle]);
     return (
         <ScrollView>
             <KeyboardAwareScrollView
