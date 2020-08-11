@@ -3,14 +3,13 @@ import React , {useEffect, useState} from 'react'
 
 export function stripeCheckoutRedirectHTML(name, amount) {
 
-  // TODO: this should come from some service/state store
   const [sessionId, setSessionId] = useState(null)
   const data = require('../../../IP_ADDRESS.json');
 
-  // Called everytime the URL stats to load in the webview
+  // Called everytime the URL starts to load in the webview
   useEffect(() => {
     async function onLoadStart() {
-      let response = await fetch('http://' + data.ipAddress + '/user/secret', {
+      let response = await fetch('http://' + data.ipAddress + '/user/oneTimeNoSave', {
         method: "POST",
         headers: {
           'Accept': 'application/json',
@@ -19,12 +18,10 @@ export function stripeCheckoutRedirectHTML(name, amount) {
         body: JSON.stringify({name: name, amount: amount})
       })
       let json = await response.json()
-      console.log(json)
       setSessionId(json.session_id)
     }
     onLoadStart()
   }, [])
-
 
   return `
   <html>
@@ -43,4 +40,5 @@ export function stripeCheckoutRedirectHTML(name, amount) {
     </body>
   </html>
   `;
+
 }

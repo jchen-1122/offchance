@@ -4,6 +4,9 @@ import {styles} from './StatsBar.styling'
 import GlobalState from '../../globalState'
 
 export default function(props) {
+    if (props.followers === undefined) {
+        return null
+    }
     const [following, setFollowing] = useState([])
     const { user, setUser } = useContext(GlobalState)
 
