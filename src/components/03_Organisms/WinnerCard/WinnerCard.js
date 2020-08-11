@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from 'react';
+import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef } from 'react'
 import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { colors, utilities } from '../../../settings/all_settings';
 import { Overlay } from 'react-native-elements';
@@ -8,7 +8,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
 import * as Font from 'expo-font';
 
-function WinnerCard(props) {
+function WinnerCard(props, ref) {
+    
     let winner;
     if (props.winner) {
         winner = props.winner
@@ -78,6 +79,7 @@ function WinnerCard(props) {
             winnerLabelColor = colors.blue
             break;
     }
+
     return (
         <LinearGradient start={[0, 0]} end={[1, 0]}
             colors={borderGradient}>

@@ -14,6 +14,9 @@ import Social from '../../Social/Social'
 import GlobalState from '../../../globalState';
 import Card from '../../../03_Organisms/Card/Card';
 import ConfettiCannon from 'react-native-confetti-cannon';
+import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
+import ViewShot from "react-native-view-shot";
+
 
 export default function RaffleResult({ navigation, route }) {
     const [selected, setSelected] = useState(0)
@@ -41,6 +44,8 @@ export default function RaffleResult({ navigation, route }) {
     //let dummy_user = get_user("Chelly")
 
     let confetti_colors = [["black", "#ECB661"], [colors.silver1, colors.silver2], [colors.bronze1, colors.bronze2], [colors.blue]]
+
+    const WinnerCardRef = useRef();
 
     const [localTime, localSetTime] = useState(10)
     const [winnerTime, setWinnerTime] = useState(10000)
@@ -176,6 +181,7 @@ export default function RaffleResult({ navigation, route }) {
         setWinnerTime(winners.length + 18)
     }, [winners])
 
+    const viewShot = useRef()
     return (
         <KeyboardAwareScrollView
             resetScrollToCoords={{ x: 0, y: 0 }}
@@ -190,7 +196,7 @@ export default function RaffleResult({ navigation, route }) {
                         <KeyboardAwareScrollView
                             resetScrollToCoords={{ x: 0, y: 0 }}
                             scrollEnabled={false}
-                            contentContainerStyle={{ height: Dimensions.get('window').height, width: Dimensions.get('window').width, marginLeft: '-3%'}}
+                            contentContainerStyle={{ height: Dimensions.get('window').height, width: Dimensions.get('window').width, marginLeft: '-3%' }}
                         >
                             <View style={[utilities.flexCenter]}>
                                 <Text style={[fonts.h1, { color: 'white' }]}>DRAWING IS STARTING IN</Text>
@@ -199,7 +205,7 @@ export default function RaffleResult({ navigation, route }) {
                                     {(localTime > 10) ? 'Determining Winners...' : 'Populating Winners...'}
                                 </Text>
                             </View>
-                            <View style={{ height: Dimensions.get('window').height*0.35 }}>
+                            <View style={{ height: Dimensions.get('window').height * 0.35 }}>
                                 <Social currUser={user} />
                             </View>
                         </KeyboardAwareScrollView>
@@ -225,7 +231,13 @@ export default function RaffleResult({ navigation, route }) {
                         />
                     </Overlay> : null} */}
                     {(winnerOverlay && winnerTime <= 5) ? <Overlay isVisible={winnerOverlay} onBackdropPress={() => setwinnerOverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
-                        <WinnerCard prize={winnerPrize} winner={user} raffle={raffle} host={host} navigation={navigation} currUser={user} />
+                        <WinnerCard ref={WinnerCardRef} prize={winnerPrize} winner={user} raffle={raffle} host={host} navigation={navigation} currUser={user} />
+                        <ViewShot ref={viewShot} options={{ format: "jpg", quality: 0.9 }}>
+
+                            <BlockButton color="primary" title="share" onPress={(uri) => viewShot.current.capture().then(uri => {
+                                console.log("do something with ", uri);
+                            })} />
+                        </ViewShot>
                         <ConfettiCannon
                             count={100}
                             origin={{ x: Dimensions.get('window').width * 0.5, y: Dimensions.get('window').height }}
@@ -238,7 +250,12 @@ export default function RaffleResult({ navigation, route }) {
                     </Overlay> : null}
                     {/* JOSHUA END */}
                     <Overlay isVisible={overlay} onBackdropPress={() => setoverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
-                        <WinnerCard prize={prize} winner={selected} raffle={raffle} host={host} navigation={navigation} currUser={user} />
+                        <ViewShot ref={viewShot} options={{ format: "jpg", quality: 0.9 }}>
+                            <WinnerCard ref={WinnerCardRef} prize={prize} winner={selected} raffle={raffle} host={host} navigation={navigation} currUser={user} />
+                        </ViewShot>
+                        <BlockButton color="primary" title="share" onPress={(uri) => viewShot.current.capture().then(uri => {
+                            console.log("do something with ", uri);
+                        })} />
                         <ConfettiCannon
                             count={200}
                             origin={{ x: -10, y: 0 }}
