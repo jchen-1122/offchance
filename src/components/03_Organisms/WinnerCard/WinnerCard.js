@@ -25,7 +25,7 @@ function WinnerCard(props, ref) {
         return null;
     }
 
-    const colorMap = ["gold", "silver", "bronze", "blue"]
+    const colorMap = ["black", "gold", "silver", "blue"]
 
     // set styles based on the color of the card
     let gradient; // gradient for the background of the card

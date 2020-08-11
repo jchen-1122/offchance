@@ -46,7 +46,7 @@ export default function RaffleResult({ navigation, route }) {
     // test user and raffle for Chelly's card
     //let dummy_user = get_user("Chelly")
 
-    let confetti_colors = [["black", "#ECB661"], [colors.silver1, colors.silver2], [colors.bronze1, colors.bronze2], [colors.blue]]
+    let confetti_colors = [["black", "#ECB661"], [colors.gold1, colors.gold2], [colors.silver1, colors.silver2], [colors.blue]]
 
     const WinnerCardRef = useRef();
     const viewShot = useRef()
@@ -151,26 +151,15 @@ export default function RaffleResult({ navigation, route }) {
             }
             {/* JOSHUA END */ }
             if (element.hasOwnProperty("prize")) {
-                var gradient;
                 count++
-                switch (element["prize"]) {
-                    case 0:
-                        setgrandPrize(element.prize)
-                        setgrandWinner(element)
-                        gradient = colors.goldGradientBg
-                        break;
-                    case 1:
-                        gradient = colors.silverGradientBg
-                        break;
-                    case 2:
-                        gradient = colors.bronzeGradientBg
-                        break;
-                    default:
-                        gradient = [colors.blue, colors.blue]
-                        break;
+                if (element["prize"] == 0) {
+                    setgrandPrize(element.prize)
+                    setgrandWinner(element)
                 }
                 CardArray.push(
-                    <BackCard user={element} time={count * 1000 + 10000} setoverlay={setoverlay} setSelected={setSelected} setPrize={setPrize} setFeed={setFeed} />
+                    <View style={{marginHorizontal: '1%', marginVertical: '0.5%'}}>
+                        <BackCard user={element} time={count * 1000 + 10000} setoverlay={setoverlay} setSelected={setSelected} setPrize={setPrize} setFeed={setFeed} />
+                    </View>
                 )
             }
         });
@@ -180,32 +169,33 @@ export default function RaffleResult({ navigation, route }) {
 
     const [selectedImage, setSelectedImage] = useState(null);
 
+    // for sharing on social media
     let openShareDialogAsync = async (image) => {
         if (!(await Sharing.isAvailableAsync())) {
             alert(`Uh oh, sharing isn't available on your platform`);
             return;
         }
-        console.log(image)
         await Sharing.shareAsync(image);
     };
 
+    // doesnt work rn - save the WinnerCard as an image
     async function savePicture(tag) {
         if (Platform.OS === "android" && !(await hasAndroidPermission())) {
             return;
         }
-        console.log(tag)
         CameraRoll.save(tag);
     };
     return (
         <KeyboardAwareScrollView
             resetScrollToCoords={{ x: 0, y: 0 }}
             scrollEnabled={false}
-            contentContainerStyle={{ height: Dimensions.get('window').height, justifyContent: 'space-between' }}
-        >
+            contentContainerStyle={{ height: Dimensions.get('window').height, justifyContent: 'space-between' }}>
             <ScrollView>
-                <Text>{feed}</Text>
+                {/* <Text>{feed}</Text> */}
                 <View style={[styles.container]}>
-                    {display}
+                    <View style={styles.cardGrid}>
+                        {display}
+                    </View>
                     <Overlay isVisible={localTime > 0} overlayStyle={styles.timerOverlay}>
                         <KeyboardAwareScrollView
                             resetScrollToCoords={{ x: 0, y: 0 }}
@@ -224,34 +214,14 @@ export default function RaffleResult({ navigation, route }) {
                             </View>
                         </KeyboardAwareScrollView>
                     </Overlay>
-                    {/* JOSHUA START */}
-                    {/* individual card if logged in user is a winner */}
-                    {/* keep it here in case david changes his mind lmao */}
-                    {/* {(winnerTime <= 5 && winnerTime >= 1) ? <Overlay isVisible={grandOverlay} onBackdropPress={() => {
-                        setgrandOverlay(false)
-                        setWinnerTime(0)
-                        setwinnerOverlay(true)
-                    }} 
-                        overlayStyle={{ backgroundColor: 'transparent' }}>
-                        <WinnerCard prize={grandPrize} winner={grandWinner} raffle={raffle} host={host} navigation={navigation} currUser={user}/>
-                        <ConfettiCannon
-                            count={100}
-                            origin={{ x: Dimensions.get('window').width * 0.5, y: Dimensions.get('window').height}}
-                            autoStart={true}
-                            fadeOut={true}
-                            // fallSpeed={2500}
-                            explosionSpeed={25}
-                            colors={confetti_colors[prize]}
-                        />
-                    </Overlay> : null} */}
                     {(winnerOverlay && winnerTime <= 5) ? <Overlay isVisible={winnerOverlay} onBackdropPress={() => setwinnerOverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
                         <WinnerCard ref={WinnerCardRef} prize={winnerPrize} winner={user} raffle={raffle} host={host} navigation={navigation} currUser={user} />
                         <ViewShot ref={viewShot} options={{ format: "jpg", quality: 0.9 }}>
-                        <View style={{ width: Dimensions.get('window').width*0.8, alignItems: 'center'}}>
+                            <View style={{ width: Dimensions.get('window').width * 0.8, alignItems: 'center' }}>
 
-                            <BlockButton color="primary" title="SHARE" size="short" onPress={() => viewShot.current.capture().then(async (uri) => {
-                                openShareDialogAsync('file://' + uri)
-                            })} />
+                                <BlockButton color="primary" title="SHARE" size="short" onPress={() => viewShot.current.capture().then(async (uri) => {
+                                    openShareDialogAsync('file://' + uri)
+                                })} />
                             </View>
                         </ViewShot>
                         <ConfettiCannon
@@ -269,7 +239,7 @@ export default function RaffleResult({ navigation, route }) {
                         <ViewShot ref={viewShot} options={{ format: "jpg", quality: 0.9 }}>
                             <WinnerCard ref={WinnerCardRef} prize={prize} winner={selected} raffle={raffle} host={host} navigation={navigation} currUser={user} />
                         </ViewShot>
-                        <View style={{ width: Dimensions.get('window').width*0.8, alignItems: 'center'}}>
+                        <View style={{ width: Dimensions.get('window').width * 0.8, alignItems: 'center' }}>
                             <BlockButton color="primary" title="SHARE" size="short" onPress={() => viewShot.current.capture().then(async (uri) => {
                                 openShareDialogAsync('file://' + uri)
                             })} />

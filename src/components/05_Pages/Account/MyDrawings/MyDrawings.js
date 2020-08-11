@@ -43,7 +43,6 @@ export default function MyDrawings({navigation}) {
             quality: 1,
           });
           if (!result.cancelled) {
-            console.log(result.uri)
             setImage(result.uri);
             setSelectedImage({ localUri: result.uri });
           }
