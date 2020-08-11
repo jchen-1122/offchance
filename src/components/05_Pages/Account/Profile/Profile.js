@@ -88,7 +88,7 @@ function Profile({ navigation }) {
                     <Text style={styles.header_username}>@{username}</Text>
                 </View>
 
-                <StatsBar currUser={user} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>   
+                <StatsBar currUser={user} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>  
 
                 <View style={styles.toggleBar}>
                     <InfoFeed info={info} setInfo={setInfo}></InfoFeed>

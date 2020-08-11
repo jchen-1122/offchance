@@ -67,7 +67,7 @@ export default function ({ navigation }) {
             setNewimg(result.uri);
             setImgname(_username + Math.round((new Date()).getTime() / 1000) + '.jpeg')
           }
-    
+
           //console.log(result);
         } catch (E) {
           console.log(E);
@@ -91,8 +91,8 @@ export default function ({ navigation }) {
         //console.log(arrayBuffer)
         //const { localUri, width, height } = asset;
         return cosClient.putObject({
-            Bucket: 'oc-profile-pictures', 
-            Key: _imgname, 
+            Bucket: 'oc-profile-pictures',
+            Key: _imgname,
             Body: arrayBuffer,
             ContentType: contentType
         }).promise()
@@ -130,6 +130,7 @@ export default function ({ navigation }) {
             body: makeJSON()
         })
         const json = await response.json()
+        console.log('user key value: ', json.keyValue)
         return json
     }
 
@@ -262,6 +263,7 @@ export default function ({ navigation }) {
                                         const userObj = await editUser()
                                         if (userObj.keyValue == null) {
                                             _delImage(user.profilePicture)
+                                            {/*!!!*/}
                                             setUser(userObj)
                                             navigation.navigate('Profile')
                                         } else {
