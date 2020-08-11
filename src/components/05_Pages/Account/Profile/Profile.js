@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { View, ScrollView, Text, Image, Button, Dimensions, Share } from 'react-native'
+import { View, ScrollView, Text, Image, Button, Dimensions, Share, Clipboard, Alert } from 'react-native'
 import { Icon } from 'react-native-elements';
 import { colors, fonts, utilities } from '../../../../settings/all_settings';
 import InfoFeed from '../../../02_Molecules/InfoFeed/InfoFeed'
@@ -62,6 +62,20 @@ function Profile({ navigation }) {
         referralCode = Object.keys(user).includes('last4') ? user.username + user.last4 : ''
     }
 
+    // for copying referral code to clipboard
+    const copyToClipboard = () => {
+        Clipboard.setString(referralCode);
+        Alert.alert(
+            "Copied!",
+            "Your referral code has been copied to your clipboard",
+            [
+              { text: "OK", onPress: () => console.log("OK Pressed") }
+            ],
+            { cancelable: false }
+          );
+      }
+
+    // for sharing referral code
     const onShare = async () => {
         try {
             const result = await Share.share({
@@ -147,7 +161,7 @@ function Profile({ navigation }) {
                             <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
                                 <Text style={styles.description}>{referralCode}</Text>
                                 <View style={{ flexDirection: 'row', width: '25%', justifyContent: 'space-between' }}>
-                                    <TouchableOpacity >
+                                    <TouchableOpacity onPress={copyToClipboard}>
                                         <Icon name="clipboard" type="material-community" />
                                     </TouchableOpacity>
                                     <TouchableOpacity onPress={onShare} style={{ marginRight: '30%' }}>

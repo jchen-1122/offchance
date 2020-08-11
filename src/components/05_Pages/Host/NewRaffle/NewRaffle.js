@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react';
-import { View, Text, Alert, Keyboard } from 'react-native';
+import { View, Text, Alert, Keyboard, Button } from 'react-native';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import InputField from '../../../02_Molecules/InputField/InputField';
 import { fonts, utilities } from '../../../../settings/all_settings';
@@ -25,6 +25,7 @@ export default function NewRaffle({ navigation, route }) {
         shoeSizes.push(i.toString())
     }
 
+    const [buttonTitle, setButtonTitle] = useState('Submit')
     // states for each input value
     const [_name, setName] = useState(null)
     const [_price, setPrice] = useState(null)
@@ -129,7 +130,31 @@ export default function NewRaffle({ navigation, route }) {
         }
         return JSON.stringify(data)
     };
-
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => (
+                <Button onPress={() => {
+                    navigation.navigate("HostDashboard")
+                }} title="Cancel" />
+            ),
+            headerRight: () => (
+                <Button title={buttonTitle}
+                onPress={() => {
+                    setButtonTitle('Submitting')
+                    postRaffle()
+                    Alert.alert(
+                        "Success!",
+                        "Your drawing has been submitted for approval. You will get notified if it gets approved.",
+                        [
+                            { text: "OK", onPress: () => console.log("OK Pressed") }
+                        ],
+                        { cancelable: false }
+                    );
+                    navigation.navigate('HostDashboard')
+                }}/>
+            ),
+        });
+    }, [ _type,_name, _price, _value, _numProducts, _description,_goal,_charities,_productType,_drawingDuration,_drawingRadius, _address,_sizeTypes, _sizes, buttonTitle]);
     return (
 
         <View style={utilities.container}>
@@ -279,7 +304,7 @@ export default function NewRaffle({ navigation, route }) {
                             <Text style={[styles.InputField__label]}>Product Pictures*</Text>
                             <BlockButton color="secondary" title="CHOOSE" size="small" />
                         </View>
-                        <BlockButton title="SUBMIT FOR APPROVAL" color="primary" onPress={() => {
+                        {/* <BlockButton title="SUBMIT FOR APPROVAL" color="primary" onPress={() => {
                             postRaffle()
                             Alert.alert(
                                 "Success!",
@@ -290,7 +315,7 @@ export default function NewRaffle({ navigation, route }) {
                                 { cancelable: false }
                             );
                             navigation.navigate('HostDashboard')
-                        }} />
+                        }} /> */}
                     </View>
                 </KeyboardAwareScrollView>
             </ScrollView>
