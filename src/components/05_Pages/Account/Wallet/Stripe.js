@@ -60,12 +60,15 @@ const PurchaseProduct = (props) => {
         onError={() => props.navigation.navigate('Account')}
         onNavigationStateChange={async (e) => {
             if (e.title === 'blank') {
+              if (!loaded) {
                 let updatedUser = await loadChances()
                 setUser(updatedUser)
+                setLoaded(true)
                 props.navigation.reset({
                   index: 0,
                   routes: [{ name: 'Success' }]
                 })
+              }
             }
         }}
       /> : (props.method === '+ Add Credit Card' && props.save) ? <WebView
@@ -74,12 +77,15 @@ const PurchaseProduct = (props) => {
       onError={() => props.navigation.navigate('Account')}
       onNavigationStateChange={async (e) => {
           if (e.title === 'blank') {
+            if (!loaded) {
               let updatedUser = await loadChances()
               setUser(updatedUser)
+              setLoaded(true)
               props.navigation.reset({
                 index: 0,
                 routes: [{ name: 'Success' }]
               })
+            }
           }
       }}
     /> : 

@@ -8,6 +8,8 @@ import GlobalState from '../../../globalState'
 
 export default function Success({navigation}) {
     let {user, setUser} = useContext(GlobalState)
+    console.log(user)
+    console.log(setUser)
     const ip = require('../../../IP_ADDRESS.json')
     useEffect(() => {
         // save customer id into user object
@@ -22,7 +24,7 @@ export default function Success({navigation}) {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({customer: userResponse.paymentInfo})
+                    body: JSON.stringify({customer: userResponse.paymentInfo})  
                 })
                 last4CC = await last4CC.json()
                 let updatedUser = await fetch('http://' + ip.ipAddress + '/user/edit/' + user._id, {
@@ -33,7 +35,6 @@ export default function Success({navigation}) {
                     },
                     body: JSON.stringify({last4: last4CC})
                 })
-                setUser(updatedUser)
             }
         }
         updateCC()

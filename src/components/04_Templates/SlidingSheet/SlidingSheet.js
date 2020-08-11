@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { View, Text, TouchableOpacity, TextInput, ScrollView, Picker, Animated, Alert } from 'react-native'
 import { Icon } from 'react-native-elements'
 import CheckBox from '../../02_Molecules/Checkbox/Checkbox'
@@ -20,15 +20,30 @@ import { user_logged_in } from '../../../functions/user_functions';
 
 // Sliding Sheet update: Removed visible prop, since the sheet will be invisible after sliding off the screen.
 function SlidingSheet(props) {
+    const [last4, setlast4] = useState(null)
+    const data = require('../../IP_ADDRESS.json')
+    useEffect(() => {
+      async function getLast4() {
+        console.log('http://' + data.ipAddress + '/user/id/' + props.user._id)
+        let response = await fetch('http://' + data.ipAddress + '/user/id/' + props.user._id)
+        response = await response.json()
+        if (Object.keys('last4').includes('last4')) {
+          setlast4(response.last4)
+        }
+      }
+      getLast4()
+    }, [])
 
     const [value, onChangeText] = React.useState('');
     const [selectedValue, setSelectedValue] = useState("**** **** **** 1234");
     // const [sheetOpen, setSheetOpen] = useState(true); // isHidden
     const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet (1000 is at the bottom)
 
-    let options1 = ['Paypal', '+ Add Credit Card']
-    if (Object.keys(props.user).includes('last4')) {
-      options1.unshift('**** **** **** ' + props.user.last4)
+    let options1 = ['Paypal']
+    if (last4 !== null) {
+      options1.unshift('**** **** **** ' + last4)
+    } else {
+      options1.push('+ Add Credit Card')
     }
     let options2 = ['$5 = 10 chances', '$10 = 40 chances', '$20 = 50 chances', '$50 = 150 chances', '$100 = 400 chances', '$250 = 1100 chances']
 

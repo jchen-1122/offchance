@@ -121,6 +121,7 @@ export default function ({ navigation }) {
     };
 
     const editUser = async () => {
+        console.log('http://' + data.ipAddress + '/user/edit/' + user._id)
         const response = await fetch('http://' + data.ipAddress + '/user/edit/' + user._id, {
             method: "PATCH",
             headers: {
@@ -130,6 +131,7 @@ export default function ({ navigation }) {
             body: makeJSON()
         })
         const json = await response.json()
+
         return json
     }
 
@@ -175,6 +177,7 @@ export default function ({ navigation }) {
             sizeType: _sizeType,
         }
         if (_newimg == null) return JSON.stringify(data)
+        console.log(JSON.stringify(newdata))
         return JSON.stringify(newdata)
     };
 
@@ -260,8 +263,10 @@ export default function ({ navigation }) {
                                     if (!generateErrors()) {
                                         if (_newimg != null) await _uploadImage()
                                         const userObj = await editUser()
+                                        console.log(userObj)
                                         if (userObj.keyValue == null) {
                                             _delImage(user.profilePicture)
+                                            console.log('here')
                                             setUser(userObj)
                                             navigation.navigate('Profile')
                                         } else {
