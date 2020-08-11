@@ -1,5 +1,5 @@
 import React, { useState, useRef, useContext } from 'react';
-import { ScrollView, View, Text, TextInput, Dimensions, TouchableOpacity, KeyboardAvoidingView, } from 'react-native';
+import { ScrollView, View, Text, TextInput, Dimensions, TouchableOpacity, KeyboardAvoidingView, CameraRoll} from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 import { Overlay } from 'react-native-elements';
@@ -16,6 +16,7 @@ import Card from '../../../03_Organisms/Card/Card';
 import ConfettiCannon from 'react-native-confetti-cannon';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import ViewShot from "react-native-view-shot";
+// import CameraRoll from "@react-native-community/cameraroll";
 
 
 export default function RaffleResult({ navigation, route }) {
@@ -235,7 +236,7 @@ export default function RaffleResult({ navigation, route }) {
                         <ViewShot ref={viewShot} options={{ format: "jpg", quality: 0.9 }}>
 
                             <BlockButton color="primary" title="share" onPress={(uri) => viewShot.current.capture().then(uri => {
-                                console.log("do something with ", uri);
+                                console.log('uri', uri)
                             })} />
                         </ViewShot>
                         <ConfettiCannon
@@ -254,8 +255,8 @@ export default function RaffleResult({ navigation, route }) {
                             <WinnerCard ref={WinnerCardRef} prize={prize} winner={selected} raffle={raffle} host={host} navigation={navigation} currUser={user} />
                         </ViewShot>
                         <BlockButton color="primary" title="share" onPress={(uri) => viewShot.current.capture().then(uri => {
-                            console.log("do something with ", uri);
-                        })} />
+                                console.log('uri', uri)
+                            })} />
                         <ConfettiCannon
                             count={200}
                             origin={{ x: -10, y: 0 }}
