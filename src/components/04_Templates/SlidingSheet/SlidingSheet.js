@@ -27,7 +27,7 @@ function SlidingSheet(props) {
         console.log('http://' + data.ipAddress + '/user/id/' + props.user._id)
         let response = await fetch('http://' + data.ipAddress + '/user/id/' + props.user._id)
         response = await response.json()
-        if (Object.keys('last4').includes('last4')) {
+        if (Object.keys(response).includes('last4')) {
           setlast4(response.last4)
         }
       }
