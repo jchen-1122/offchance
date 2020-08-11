@@ -15,6 +15,7 @@ import styles from './SlidingSheet.styles';
 // import {option, select} from 'react-native-dropdown'
 import Stripe from '../../05_Pages/Account/Wallet/Stripe'
 import { setStatusBarTranslucent } from 'expo-status-bar';
+import { user_logged_in } from '../../../functions/user_functions';
 
 
 // Sliding Sheet update: Removed visible prop, since the sheet will be invisible after sliding off the screen.
@@ -25,7 +26,10 @@ function SlidingSheet(props) {
     // const [sheetOpen, setSheetOpen] = useState(true); // isHidden
     const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet (1000 is at the bottom)
 
-    let options1 = ['**** **** **** 1234', 'Paypal', '+ Add Credit Card']
+    let options1 = ['Paypal', '+ Add Credit Card']
+    if (Object.keys(props.user).includes('last4')) {
+      options1.unshift('**** **** **** ' + props.user.last4)
+    }
     let options2 = ['$5 = 10 chances', '$10 = 40 chances', '$20 = 50 chances', '$50 = 150 chances', '$100 = 400 chances', '$250 = 1100 chances']
 
     let slidingStyle = [styles.subView];

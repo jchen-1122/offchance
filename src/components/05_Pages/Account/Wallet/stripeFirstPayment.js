@@ -29,6 +29,7 @@ export function stripeFirstPayment(name, amount) {
                 },
                 body: JSON.stringify({paymentInfo: json.customer})
             })
+            // console.log(json.last4)
         }
         onLoadStart()
     }, [])

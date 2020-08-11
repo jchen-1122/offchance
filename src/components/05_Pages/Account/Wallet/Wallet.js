@@ -87,6 +87,7 @@ export default function Wallet({navigation}) {
             trigger={trigger}
             paymentTrigger={paymentTrigger}
             height={480}
+            user={user}
             content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
             navigation={navigation}/>
 
@@ -96,6 +97,7 @@ export default function Wallet({navigation}) {
             sheet={paymentController}
             trigger={paymentTrigger}
             height={height * 0.8}
+            user={user}
             content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
             navigation={navigation}/>
 
