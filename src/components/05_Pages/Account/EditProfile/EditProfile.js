@@ -220,7 +220,7 @@ export default function ({ navigation }) {
                 }}/>
             ),
         });
-    }, [navigation,_name, _username,_email,_address, _shoeSize, _shirtSize,_sizeType]);
+    }, [navigation,_name, _username,_email,_address, _shoeSize, _shirtSize,_sizeType, _imgname]);
     return (
         <ScrollView>
             <KeyboardAwareScrollView
