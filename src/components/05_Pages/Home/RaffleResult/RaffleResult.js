@@ -17,7 +17,7 @@ import ConfettiCannon from 'react-native-confetti-cannon';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import ViewShot from "react-native-view-shot";
 import * as Sharing from 'expo-sharing';
-import CameraRoll from "@react-native-community/cameraroll";
+// import CameraRoll from "@react-native-community/cameraroll";
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 
@@ -51,7 +51,7 @@ export default function RaffleResult({ navigation, route }) {
     const WinnerCardRef = useRef();
     const viewShot = useRef()
 
-    const [localTime, localSetTime] = useState(0)
+    const [localTime, localSetTime] = useState(10)
     const [winnerTime, setWinnerTime] = useState(10000)
 
     React.useEffect(() => {
@@ -179,12 +179,12 @@ export default function RaffleResult({ navigation, route }) {
     };
 
     // doesnt work rn - save the WinnerCard as an image
-    async function savePicture(tag) {
-        if (Platform.OS === "android" && !(await hasAndroidPermission())) {
-            return;
-        }
-        CameraRoll.save(tag);
-    };
+    // async function savePicture(tag) {
+    //     if (Platform.OS === "android" && !(await hasAndroidPermission())) {
+    //         return;
+    //     }
+    //     CameraRoll.save(tag);
+    // };
     return (
         <KeyboardAwareScrollView
             resetScrollToCoords={{ x: 0, y: 0 }}
