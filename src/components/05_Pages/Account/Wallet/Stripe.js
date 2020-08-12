@@ -10,8 +10,8 @@ import GlobalState from '../../../globalState'
 
 
 const PurchaseProduct = (props) => {
-  let {user, setUser} = useContext(GlobalState)
   const [loaded, setLoaded] = useState(false)
+  console.log(props.setUser)
   let chances = 10
   let amount = 5
   let options = ['$5 = 10 chances', '$10 = 40 chances', '$20 = 50 chances', '$50 = 150 chances', '$100 = 400 chances', '$250 = 1100 chances']
@@ -37,16 +37,14 @@ const PurchaseProduct = (props) => {
 
   async function loadChances() {
       let ip = require('../../../IP_ADDRESS.json')
-      const currUser = await fetch('http://' + ip.ipAddress + '/user/id/' + user._id)
-      const jsonUser = await currUser.json()
-      console.log(jsonUser.walletChances + chances)
-      const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + user._id, {
+      const finalChances = props.user.walletChances + chances
+      const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + props.user._id, {
             method: "PATCH",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({walletChances: jsonUser.walletChances + chances})
+            body: JSON.stringify({walletChances: finalChances})
         })
         const json = await response.json()
         return json
@@ -64,7 +62,7 @@ const PurchaseProduct = (props) => {
                 setLoaded(true)
                 if (props.wallet) {
                   let updatedUser = await loadChances()
-                  setUser(updatedUser)
+                  props.setUser(updatedUser)
                 }
                 props.navigation.reset({
                   index: 0,
@@ -83,7 +81,7 @@ const PurchaseProduct = (props) => {
               setLoaded(true)
               if (props.wallet) {
                 let updatedUser = await loadChances()
-                setUser(updatedUser)
+                props.setUser(updatedUser)
               }
               props.navigation.reset({
                 index: 0,
@@ -102,7 +100,7 @@ const PurchaseProduct = (props) => {
             setLoaded(true)
             if (props.wallet) {
               let updatedUser = await loadChances()
-              setUser(updatedUser)
+              props.setUser(updatedUser)
               props.navigation.reset({
                 index: 0,
                 routes: [{ name: 'Success' }]

@@ -32,10 +32,6 @@ export default function Raffle({ navigation, route }) {
     const [location, setLocation] = useState(null)
     const [winner, setWinner] = useState(Object.keys(raffle).includes('winner') ? raffle.winner : raffle['host'])
 
-    // entering states
-    const [_sizeType, setSizeType] = useState(null)
-    const [_size, setSize] = useState(null)
-
     // sliding sheet
     const [containerStyle, setContainerStyle] = useState(styles.container);
     const [sheetController, setSheetController] = useState(false); // 0 - close, 1 - open. TODO: GLOBAL STATE
@@ -316,6 +312,10 @@ export default function Raffle({ navigation, route }) {
         sizeTypes = raffle.sizeTypes
     }
 
+    // entering states
+    const [_sizeType, setSizeType] = useState((sizeTypes.length === 0) ? "" : null)
+    const [_size, setSize] = useState((sizes.length === 0) ? "" : null)
+    
     let images = [];
     for (let i in images_strs) {
         images.push({ uri: images_strs[i] })
@@ -496,7 +496,11 @@ export default function Raffle({ navigation, route }) {
                             navigation={navigation}
                             wallet={false}
                             amount={(buyOption) ? "$" + buyOption + " = " + options[buyOption].chances + " chances" : "$5 = 10 chances"}
+                            amountDollar={(buyOption) ? parseInt(buyOption) : 0}
                             chances={(buyOption) ? options[buyOption].chances : 0}
+                            sizeType={(_sizeType || _sizeType === "") ? _sizeType : "notselected"}
+                            size={(_size || _size === "") ? _size : "notselected"}
+                            raffleid={route.params._id}
                             />
 
 

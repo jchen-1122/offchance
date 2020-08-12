@@ -38,10 +38,10 @@ function SlidingSheet(props) {
       if (props.amount) {
         setAmount(props.amount)
       }
-    })
+    }, [props.amount])
 
-    async function subtractWallet() {
-      console.log('here')
+  async function subtractWallet() {
+      console.log('HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH')
       const response = await fetch('http://' + data.ipAddress + '/user/edit/' + props.user._id, {
             method: "PATCH",
             headers: {
@@ -54,6 +54,111 @@ function SlidingSheet(props) {
 
         return json
     }
+
+  // update user for entered users in the backend
+  async function enterUserinRaffle() {
+    // append to user schema
+    // if first entered raffle
+    let currEntered;
+    if (!Object.keys(props.user).includes('rafflesEntered') || props.user.rafflesEntered.children.length === 0) {
+      currEntered = {children: [makeEntetedRaffleSchemaJSON(0,0)]}
+    } else {
+      currEntered = props.user.rafflesEntered.children
+      let oldamount = 0;
+      let oldchances = 0;
+      for (var i = 0; i < currEntered.length; i++) {
+        if (currEntered[i].raffleID === props.raffleid && currEntered[i].sizeType === props.sizeType && currEntered[i].size === props.size) {
+          oldamount = currEntered[i].amountDonated
+          oldchances = currEntered[i].chances
+          currEntered.splice(i, 1)
+        }
+      }
+      currEntered.push(makeEntetedRaffleSchemaJSON(oldamount, oldchances))
+      currEntered = {children: currEntered}
+    }
+
+    let walletFinal = _walletBalance
+    if (_method === "Wallet Chances") {
+      walletFinal = _walletBalance - props.chances
+    }
+    let enteredRaffle = await fetch('http://' + data.ipAddress + '/user/edit/' + props.user._id, {
+      method: "PATCH",
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({rafflesEntered: currEntered, walletChances: walletFinal})
+    })
+    enteredRaffle = await enteredRaffle.json()
+    return enteredRaffle
+  }
+
+  const makeEntetedRaffleSchemaJSON = (oldamount, oldchances) => {
+    return {
+      raffleID: props.raffleid,
+      amountDonated: oldamount + props.amountDollar,
+      chances: oldchances + props.chances,
+      sizeType: props.sizeType,
+      size: props.size,
+      timeDonated: Math.floor(Date.now() / 1000)
+    }
+  }
+
+  // update users, amountRaised, lastDonatedTo in raffle schema (backend)
+  // how it works: https://www.youtube.com/watch?v=dQw4w9WgXcQ
+  async function updateRaffle() {
+
+    // get raffle object
+    let raffle = await fetch('http://' + data.ipAddress + '/raffle/id/' + props.raffleid)
+    raffle = await raffle.json()
+
+    // update users
+    let currEntered;
+    if (!Object.keys(raffle).includes('users') || raffle.users.children.length === 0) {
+      currEntered = {children: [makeRaffleJSON(0,0)]}
+    } else {
+      currEntered = raffle.users.children
+      let oldamount = 0;
+      let oldchances = 0;
+      for (var i = 0; i < currEntered.length; i++) {
+        if (currEntered[i].userID === props.user._id && currEntered[i].sizeType === props.sizeType && currEntered[i].size === props.size) {
+          oldamount = currEntered[i].amountDonated
+          oldchances = currEntered[i].chances
+          currEntered.splice(i, 1)
+        }
+      }
+      currEntered.push(makeRaffleJSON(oldamount, oldchances))
+      currEntered = {children: currEntered}
+    }
+    // update amountRaised
+    let amountRaised = raffle.amountRaised
+    amountRaised += props.amountDollar
+    console.log(amountRaised)
+
+    // update lastDonatedTo
+    let timeNow = Math.floor(Date.now() / 1000)
+
+    let updatedRaffle = await fetch('http://' + data.ipAddress + '/raffle/edit/' + props.raffleid, {
+      method: "PATCH",
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({users: currEntered, amountRaised: amountRaised, lastDonatedTo: timeNow})
+    })
+  }
+
+  const makeRaffleJSON = (oldamount, oldchances) => {
+    return {
+      userID: props.user._id,
+      amountDonated: oldamount + props.amountDollar,
+      chances: oldchances + props.chances,
+      sizeType: props.sizeType,
+      size: props.size,
+      timeDonated: Math.floor(Date.now() / 1000)
+    }
+  }
+
 
     const [value, onChangeText] = React.useState('');
     const [selectedValue, setSelectedValue] = useState("**** **** **** 1234");
@@ -140,7 +245,9 @@ function SlidingSheet(props) {
                         <View/>
                     </View>
                     <View style={styles.slidingSheet__save} >
-                      <Text></Text>
+                      <Text style={{color: 'red'}}>{(props.sizeType === "notselected") ? "*Please select a size type" : ""}</Text>
+                      <Text style={{color: 'red'}}>{(props.size === "notselected") ? "*Please select a size" : ""}</Text>
+                      <Text style={{color: 'red'}}>{(_method === "Wallet Chances" && props.user.walletChances - props.chances < 0) ? "*You do not have enough chances in your wallet" : ""}</Text>
                     </View>
 
                     {/* content part - with a text input */}
@@ -153,6 +260,7 @@ function SlidingSheet(props) {
                           value={value}
                         />
                     </View> */}
+
                     <View style={[styles.slidingSheet__content, {zIndex: 2}]}>
                         <Text style={styles.slidingSheet__content_text}>{props.content[1]}</Text>
                         <DropDown
@@ -202,34 +310,38 @@ function SlidingSheet(props) {
                               if (_buttonText === "CONFIRM PAYMENT" && _method !== null) {
                                 setButtonText("ADD CHANCES")
                               } else if (_buttonText !== "CONFIRM PAYMENT" && _method !== null) {
-                                setStripe(false)
                                 setButtonText("CONFIRM PAYMENT")
+                                setStripe(false)
                               }}}
                             /> :
+                            // for drawings
                             <BlockButton
                             title={_buttonText}
                             color="primary"
                             onPress={async () => {
-                              if (_buttonText === "CONFIRM PAYMENT" && _method !== null) {
-                                setButtonText("ENTER DRAWING")
+                              if (_buttonText === "CONFIRM PAYMENT" && _method !== null && props.sizeType !== "notselected" && props.size !== "notselected") {
+                                if (_method === "Wallet Chances" && props.user.walletChances - props.chances < 0) {
+                                  setButtonText("CONFIRM PAYMENT")
+                                } else {
+                                  setButtonText("ENTER DRAWING")
+                                }
                               } else if (_buttonText !== "CONFIRM PAYMENT" && _method !== null) {
-                                console.log(_method)
-                                if (_method === "Wallet Chances") {
-                                  // subtract from wallet
-                                  let updatedUser = await subtractWallet()
+                                  let updatedUser = await enterUserinRaffle()
                                   props.setUser(updatedUser)
+                                  await updateRaffle()
+                                if (_method === "Wallet Chances") {
                                   setButtonText("CONFIRM PAYMENT")
                                   props.navigation.navigate("Success", {fromRaffle: props.chances})
                                 } else {
-                                  setStripe(false)
                                   setButtonText("CONFIRM PAYMENT")
+                                  setStripe(false)
                                 }
                               }}}
                             />
                       }
                     </View>
 
-                </ScrollView> : <Stripe navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet}></Stripe>}
+                </ScrollView> : <Stripe user={props.user} setUser={props.setUser} navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet}></Stripe>}
             </View>
 
         </Animated.View>
