@@ -266,11 +266,6 @@ export default function ({ navigation }) {
                                         console.log(userObj)
                                         if (userObj.keyValue == null) {
                                             _delImage(user.profilePicture)
-<<<<<<< HEAD
-                                            {/*!!!*/}
-=======
-                                            console.log('here')
->>>>>>> origin/money
                                             setUser(userObj)
                                             navigation.navigate('Profile')
                                         } else {

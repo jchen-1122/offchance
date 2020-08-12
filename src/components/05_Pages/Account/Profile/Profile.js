@@ -41,7 +41,7 @@ function Profile({ navigation }) {
     let name, username, profilePic, email, followers, following, enteredRaffles, address, sizeType, shoeSize, shirtSize, referralCode
     useEffect(() => {
         name = 'JohnDoe'
-        console.log(profilePic)
+        // console.log(profilePic)
     })
     if (user == null) {
         name = 'John Doe'
@@ -88,7 +88,7 @@ function Profile({ navigation }) {
                     <Text style={styles.header_username}>@{username}</Text>
                 </View>
 
-                <StatsBar currUser={user} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>  
+                <StatsBar currUser={user} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>
 
                 <View style={styles.toggleBar}>
                     <InfoFeed info={info} setInfo={setInfo}></InfoFeed>
