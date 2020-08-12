@@ -63,11 +63,17 @@ const PurchaseProduct = (props) => {
                 if (props.wallet) {
                   let updatedUser = await loadChances()
                   props.setUser(updatedUser)
+                  props.navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Success' }]
+                  })
+                } else {
+                  props.navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Success', params: {fromRaffle: chances} }],
+    
+                  })
                 }
-                props.navigation.reset({
-                  index: 0,
-                  routes: [{ name: 'Success' }]
-                })
               }
             }
         }}
@@ -82,11 +88,17 @@ const PurchaseProduct = (props) => {
               if (props.wallet) {
                 let updatedUser = await loadChances()
                 props.setUser(updatedUser)
+                props.navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'Success' }]
+                })
+              } else {
+                props.navigation.reset({
+                  index: 0,
+                  routes: [{ name: 'Success', params: {fromRaffle: chances} }],
+  
+                })
               }
-              props.navigation.reset({
-                index: 0,
-                routes: [{ name: 'Success' }]
-              })
             }
           }
       }}

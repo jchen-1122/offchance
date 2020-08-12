@@ -235,7 +235,7 @@ function SlidingSheet(props) {
             { transform: [{ translateY: bounceValue }] }]}>
 
             <View style={styles.container}>
-                {stripe ? <ScrollView style={styles.slidingSheet}>
+                {stripe ? <ScrollView style={styles.slidingSheet} showsVerticalScrollIndicator={false}>
                     {/* Title part with a close button */}
                     <View style={styles.slidingSheet__header}>
                         <TouchableOpacity onPress={ () => closeSlidingSheet() }>
