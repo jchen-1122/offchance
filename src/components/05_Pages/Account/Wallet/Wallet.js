@@ -85,13 +85,14 @@ export default function Wallet({navigation}) {
             type='default'
             sheet={sheetController}
             trigger={trigger}
-            paymentTrigger={paymentTrigger}
-            height={480}
+            height={height * 0.7}
             user={user}
+            setUser={setUser}
             content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
-            navigation={navigation}/>
+            navigation={navigation}
+            wallet={true}/>
 
-            <SlidingSheet
+            {/* <SlidingSheet
             title='Payment'
             type='payment'
             sheet={paymentController}
@@ -99,7 +100,7 @@ export default function Wallet({navigation}) {
             height={height * 0.8}
             user={user}
             content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
-            navigation={navigation}/>
+            navigation={navigation}/> */}
 
 
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>

@@ -54,7 +54,7 @@ function Profile({ navigation }) {
         email = user.email
         followers = user.followers
         following = user.following
-        enteredRaffles = user.enteredRaffles
+        enteredRaffles = user.rafflesEntered.children
         address = user.shippingAddress
         sizeType = user.sizeType
         shoeSize = user.shoeSize
