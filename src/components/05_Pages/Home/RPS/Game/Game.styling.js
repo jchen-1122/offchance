@@ -1,5 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
-import {colors} from '../../../../settings/all_settings';
+import {colors} from '../../../../../settings/all_settings';
 
 const styles = StyleSheet.create({
     choice: {
@@ -14,9 +14,6 @@ const styles = StyleSheet.create({
         width: '50%',
         height: '75%', 
         resizeMode: 'contain', 
-        // marginTop: 40, 
-        // marginLeft: 120, 
-        // marginBottom: 40
     },
     label: {
         fontSize: 18,
@@ -48,10 +45,9 @@ const styles = StyleSheet.create({
         right: Dimensions.get('window').width * 0.13
     },
     GameBar__stat: {
+        width: '22%',
         flexDirection: 'column',
-        justifyContent: 'flex-start', 
-        padding: 15,
-        paddingHorizontal: '10%'
+        paddingVertical: 15,
     },
 
 })

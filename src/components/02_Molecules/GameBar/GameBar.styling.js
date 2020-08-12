@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     GameBar: {
-        flex: 0,
         flexDirection: 'row',
         justifyContent: 'space-around'
     },
@@ -23,9 +22,10 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start', 
         padding: 15,
     },
-
-    nextButton: {
-        marginTop: '8%'
+    GameBar__stat_short: {
+        width: '27%',
+        flexDirection: 'column',
+        paddingVertical: 15
     }
 })
 

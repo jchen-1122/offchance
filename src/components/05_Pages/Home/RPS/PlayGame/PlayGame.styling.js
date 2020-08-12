@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native';
-import { colors } from '../../../../settings/all_settings';
+import { colors } from '../../../../../settings/all_settings';
 
 const styles = StyleSheet.create({
     timer: {

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { View, Text, Image, TouchableOpacity } from 'react-native'
-import { colors, fonts, utilities } from '../../../../settings/all_settings';
-import GameBar from '../../../02_Molecules/GameBar/GameBar'
-import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
+import { colors, fonts, utilities } from '../../../../../settings/all_settings';
+import GameBar from '../../../../02_Molecules/GameBar/GameBar'
+import BlockButton from '../../../../01_Atoms/Buttons/BlockButton/BlockButton'
 import { styles } from './Game.styling'
-import UsernameDisplay from '../../../01_Atoms/UsernameDisplay/UsernameDisplay';
-import GlobalState from '../../../globalState'
+import UsernameDisplay from '../../../../01_Atoms/UsernameDisplay/UsernameDisplay';
+import GlobalState from '../../../../globalState'
 import { Icon } from 'react-native-elements';
 
 function Game(props) {
@@ -126,6 +126,28 @@ function Game(props) {
         localRounds += 1
     }
 
+    // takes you to next round of the game
+    const nextRound = () => {
+        if ((props.round === 10 || props.chances === 1) && winner !== 'tie') {
+            props.setPage('EndGame')
+        } else {
+            props.setPage('PlayGame')
+        }
+        props.setRound(props.round + localRounds)
+        props.setWins(props.wins + localWins)
+        props.setTokens(props.tokens + localTokens)
+        props.setOpacity([1, 1, 1])
+        props.setChoice("Pick Rock Paper or Scissors")
+        props.setTime(10)
+        // exit condition for game
+        let bonusChances = Math.floor(props.wins / 2)
+        if (bonusChances >= 2 * props.initialTokens || (props.tokens === 1) && winner !== 'tie') {
+            props.setPage('EndGame')
+        } else {
+            props.setPage('PlayGame')
+        }
+    }
+
     return (
         <View style={[utilities.container, { paddingTop: 15 }]}>
             <View style={{ flex: 0, alignItems: 'center', justifyContent: 'space-between', height: '85%' }}>
@@ -136,35 +158,19 @@ function Game(props) {
                 <Text style={fonts.h3}>VS</Text>
                 {compChoiceImg}
                 <Text style={fonts.h2}>Challenger</Text>
-                <UsernameDisplay size="game" username={user.username} profPic={{ uri: user.profilePicture }} />
+                <UsernameDisplay size="game" username={props.opponent.username} profPic={{ uri: props.opponent.profilePicture }} />
             </View>
 
             <View style={{ alignItems: 'center', flexDirection: 'row' }}>
-                <GameBar color={'white'} currRound={props.round + localRounds} tokensLeft={props.tokens + localTokens} wins={props.wins + localWins} numRounds={10}></GameBar>
-                <TouchableOpacity style={styles.GameBar__stat} onPress={() => {
-                console.log('oh')
-                        if ((props.round === 10 || props.chances === 1) && winner !== 'tie') {
-                            props.setPage('EndGame')
-                        } else {
-                            props.setPage('PlayGame')
-                        }
-                        props.setRound(props.round + localRounds)
-                        props.setWins(props.wins + localWins)
-                        props.setTokens(props.tokens + localTokens)
-                        props.setOpacity([1, 1, 1])
-                        props.setChoice("Pick Rock Paper or Scissors")
-                        props.setTime(10)
-                        // exit condition for game
-                        let bonusChances = Math.floor(props.wins / 2)
-                        if (bonusChances >= 2 * props.initialTokens || (props.tokens === 1) && winner !== 'tie') {
-                            props.setPage('EndGame')
-                        } else {
-                            props.setPage('PlayGame')
-                        }
-                    }}>
-                <Icon name="arrow-right" type="material-community" />
-                <Text style={[styles.text_light]}>NEXT ROUND</Text>
-            </TouchableOpacity>
+                <GameBar n={2} color={'white'} currRound={props.round + localRounds} tokensLeft={props.tokens + localTokens} wins={props.wins + localWins} numRounds={10}></GameBar>
+                <TouchableOpacity style={styles.GameBar__stat} onPress={() => nextRound()}>
+                    <Icon name="arrow-right" type="material-community" size={35} />
+                    <Text style={[styles.text_light]}>NEXT ROUND</Text>
+                </TouchableOpacity>
+                <TouchableOpacity style={styles.GameBar__stat} onPress={() => props.setPage('EndGame')}>
+                    <Icon name="exit-to-app" type="material-community" size={35}/>
+                    <Text style={[styles.text_light]}>EXIT GAME</Text>
+                </TouchableOpacity>
             </View>
         </View>
     )

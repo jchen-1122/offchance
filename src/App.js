@@ -12,8 +12,8 @@ import ChangePassword from './components/05_Pages/LoginProcess/ChangePassword/Ch
 import Home from './components/05_Pages/Home/Home'
 import SeeAll from './components/05_Pages/Home/SeeAll/SeeAll';
 import Raffle from './components/05_Pages/Home/Raffle/Raffle'
-import PlayGame from './components/05_Pages/Home/PlayGame/PlayGame'
-import Game from './components/05_Pages/Home/Game/Game'
+import PlayGame from './components/05_Pages/Home/RPS/PlayGame/PlayGame'
+import Game from './components/05_Pages/Home/RPS/Game/Game'
 import Search from './components/05_Pages/Search/Search'
 import Social from './components/05_Pages/Social/Social'
 
@@ -25,7 +25,7 @@ import YourFeed from './components/05_Pages/Home/YourFeed/YourFeed';
 import Likes from './components/05_Pages/Account/Likes/Likes'
 import OtherUser from './components/05_Pages/OtherUser/OtherUser'
 
-import GameController from './components/GameController';
+import GameController from './components/05_Pages/Home/RPS/GameController';
 import LoadingScreen from './components/05_Pages/Home/Raffle/LoadingScreen/LoadingScreen'
 import RaffleResult from './components/05_Pages/Home/RaffleResult/RaffleResult'
 import EnteredUsers from './components/05_Pages/Home/EnteredUsers/EnteredUsers';
