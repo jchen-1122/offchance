@@ -32,6 +32,7 @@ function DropDown(props) {
         return (
             <View style={styles.DropDown}>
                 <DropDownPicker
+                    defaultValue={'Pick'}
                     items={options}
                     multiple={false}
                     min={0}

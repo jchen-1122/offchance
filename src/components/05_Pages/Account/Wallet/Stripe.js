@@ -61,9 +61,11 @@ const PurchaseProduct = (props) => {
         onNavigationStateChange={async (e) => {
             if (e.title === 'blank') {
               if (!loaded) {
-                let updatedUser = await loadChances()
-                setUser(updatedUser)
                 setLoaded(true)
+                if (props.wallet) {
+                  let updatedUser = await loadChances()
+                  setUser(updatedUser)
+                }
                 props.navigation.reset({
                   index: 0,
                   routes: [{ name: 'Success' }]
@@ -78,9 +80,11 @@ const PurchaseProduct = (props) => {
       onNavigationStateChange={async (e) => {
           if (e.title === 'blank') {
             if (!loaded) {
-              let updatedUser = await loadChances()
-              setUser(updatedUser)
               setLoaded(true)
+              if (props.wallet) {
+                let updatedUser = await loadChances()
+                setUser(updatedUser)
+              }
               props.navigation.reset({
                 index: 0,
                 routes: [{ name: 'Success' }]
@@ -95,13 +99,21 @@ const PurchaseProduct = (props) => {
       onError={() => props.navigation.navigate('Account')}
       onNavigationStateChange={async (e) => {
           if (!loaded) {
-            let updatedUser = await loadChances()
-            setUser(updatedUser)
             setLoaded(true)
-            props.navigation.reset({
-              index: 0,
-              routes: [{ name: 'Success' }]
-            })
+            if (props.wallet) {
+              let updatedUser = await loadChances()
+              setUser(updatedUser)
+              props.navigation.reset({
+                index: 0,
+                routes: [{ name: 'Success' }]
+              })
+            } else {
+              props.navigation.reset({
+                index: 0,
+                routes: [{ name: 'Success', params: {fromRaffle: chances} }],
+
+              })
+            }
           }
       }}
     />}

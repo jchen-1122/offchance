@@ -2,6 +2,12 @@ import { StyleSheet, Dimensions } from 'react-native'
 import {colors, dimensions} from '../../../../settings/all_settings';
 
 const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      justifyContent: 'space-between',
+      backgroundColor: "rgba(255, 255, 255, 0.1)",
+
+    },
    content: {
        paddingLeft: '8%',
        paddingRight: '8%',
