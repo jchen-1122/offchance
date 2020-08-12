@@ -1,22 +1,24 @@
 import React from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import styles from './GameBar.styling';
+import { Icon } from 'react-native-elements'
 
-function GameBar({tokensLeft, wins, color}) {
+function GameBar({ tokensLeft, wins, time }) {
     return (
         <View style={styles.GameBar}>
             <View style={styles.GameBar__stat}>
-                <Text style={[styles.text,{color: color}]}>{tokensLeft}</Text>
-                <Text style={[styles.text_light,{color: color}]}>TOKENS LEFT</Text>
+                <Text style={[styles.text]}>{tokensLeft}</Text>
+                <Text style={[styles.text_light]}>LIVES LEFT</Text>
             </View>
             <View style={styles.GameBar__stat}>
-                <Text style={[styles.text,{color: color}]}>{wins}</Text>
-                <Text style={[styles.text_light,{color: color}]}>WINS</Text>
+                <Text style={[styles.text]}>{wins}</Text>
+                <Text style={[styles.text_light]}>WINS</Text>
             </View>
+            {time ? 
             <View style={styles.GameBar__stat}>
-                <Text style={[styles.text,{color: color}]}>{Math.floor(wins/2)} </Text>
-                <Text style={[styles.text_light,{color: color}]}>BONUS CHANCES</Text>
-            </View>
+                    <Text style={[styles.text]}>{time} </Text>
+                    <Text style={[styles.text_light]}>SECS LEFT</Text>
+            </View> : null}
         </View>
     )
 }

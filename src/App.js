@@ -80,8 +80,8 @@ function App() {
           <Stack.Screen name="YourFeed" component={YourFeed} options={{ headerShown: false }} />
           {/* <Stack.Screen name="Explore" component={Explore} /> */}
           <Stack.Screen name="Raffle" component={Raffle} options={({ route }) => ({ title: route.params.name })}/>
-          <Stack.Screen name="PlayGame" component={PlayGame} />
-          <Stack.Screen name="Game" component={Game} />
+          <Stack.Screen name="PlayGame" component={PlayGame} options={{ headerShown: false }}/>
+          <Stack.Screen name="Game" component={Game} options={{ headerShown: false }}/>
           <Stack.Screen name="Search" component={Search} options={{ headerLeft: null }}/>
           <Stack.Screen name="Social" component={Social}  options={{ headerLeft: null }}/>
           <Stack.Screen name="Likes" component={Likes}/>
@@ -100,7 +100,7 @@ function App() {
           <Stack.Screen name="Followers" component={Followers} />
           <Stack.Screen name="Top5List" component={Top5List} />
           <Stack.Screen name="OtherUser" component={OtherUser} options={({ route }) => ({ title: route.params.user.name })} />
-          <Stack.Screen name="GameController" component={GameController} options={{ title: '' }}/>
+          <Stack.Screen name="GameController" component={GameController} options={{ headerShown: false }}/>
           <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
           <Stack.Screen name="RaffleResult" component={RaffleResult} />
           <Stack.Screen name="EnteredUsers" component={EnteredUsers} options={{ title: 'Entered' }}/>
