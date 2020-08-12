@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
         borderRadius: borderRadius,
         flex: 0,
         margin: 15,
-        paddingBottom: 15
+        paddingBottom: 15,
     },
     likeButton: {
         width: Dimensions.get('window').width * 0.8,
@@ -69,8 +69,10 @@ const styles = StyleSheet.create({
     },
     notif_pic: {
         width: Dimensions.get('window').width * 0.7,
-        height: Dimensions.get('window').width * 0.7,
+        height: Dimensions.get('window').height * 0.25,
         marginLeft: Dimensions.get('window').width * 0.05,
+        resizeMode: 'contain',
+        marginVertical: '2%'
     },
     friends: {
         width: Dimensions.get('window').width * 0.6,

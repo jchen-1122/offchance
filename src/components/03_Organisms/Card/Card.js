@@ -12,8 +12,9 @@ import EnteredUsersDisplay from '../../01_Atoms/EnteredUsersDisplay/EnteredUsers
 import { colors, fonts, utilities, dimensions } from '../../../settings/all_settings';
 import { in_a_day, is_expired } from '../../../functions/convert_dates';
 import { top5_raffle } from '../../../functions/explore_functions';
+import { time_from_now } from '../../../functions/convert_dates';
 
-function Card({ navigation, data, viewType, currUserG, setUserG, inLikesPage, banner }) {
+function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, banner }) {
     const ip = require('../../IP_ADDRESS.json');
     const [host, setHost] = useState(null)
     const currUser = currUserG
@@ -27,7 +28,7 @@ function Card({ navigation, data, viewType, currUserG, setUserG, inLikesPage, ba
         }
         getHost()
 
-    }, [])
+    }, [host])
 
     // width for card content
     let contentWidth = Dimensions.get('window').width * 0.65;
@@ -53,7 +54,7 @@ function Card({ navigation, data, viewType, currUserG, setUserG, inLikesPage, ba
         date = data.startTime
         expired = is_expired(data.startTime)
         today = in_a_day(data.startTime)
-        type = typeMap.get(data.type)
+        type = cardType || typeMap.get(data.type)
         donationGoal = (data.donationGoal) ? data.donationGoal : null
         enteredUsers = data.users.children
         data['host'] = host
@@ -117,18 +118,23 @@ function Card({ navigation, data, viewType, currUserG, setUserG, inLikesPage, ba
         //     startData = <View><Text style={[styles.startData_grey, fonts.p]} >DRAWING STARTS</Text><Countdown unix_timestamp={date} /></View>;
         //     break;
         // for simplified cards in your feed
-        case 'notification':
+        case 'feed':
             return (
-                <ScrollView style={[styles.card]}>
+                <View style={{maxHeight: Dimensions.get('window').height*0.5}}>
+                <ScrollView style={[styles.card, { paddingTop: '5%'}]}>
                     <View style={styles.notif}>
-                        <Image style={styles.notif_host} source={host.pic} />
+                        {
+                            (host) ? <Image style={styles.notif_host} source={{ uri: host.profilePicture }} />
+                                : null}
                         <View>
-                            <Text>@{host.name} {title}</Text>
-                            <Text style={styles.notif_grey}>{date}</Text>
+                            {(host) ? <Text>@{host.username} posted a drawing for {title}</Text>
+                                : null}
+                            <Text style={styles.notif_grey}>{time_from_now(date, true)}</Text>
                         </View>
                     </View>
-                    <Image style={styles.notif_pic} source={imageURI} />
+                    <Image style={styles.notif_pic} source={{ uri: imageURI }} />
                 </ScrollView>
+                </View>
             )
     }
 
@@ -145,8 +151,8 @@ function Card({ navigation, data, viewType, currUserG, setUserG, inLikesPage, ba
             <View style={styles.itemDesc}>
 
                 <View style={{ flex: 1, width: contentWidth }}>
-                    <TouchableOpacity style={{alignItems: 'center', width: '100%', marginBottom: '3%'}} onPress={() => navigation.navigate('Raffle', data)}>
-                        <Image style={styles.image} source={{ uri: imageURI }}/>
+                    <TouchableOpacity style={{ alignItems: 'center', width: '100%', marginBottom: '3%' }} onPress={() => navigation.navigate('Raffle', data)}>
+                        <Image style={styles.image} source={{ uri: imageURI }} />
                         <Text style={[fonts.h1, { textAlign: 'center' }]}>{title}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity

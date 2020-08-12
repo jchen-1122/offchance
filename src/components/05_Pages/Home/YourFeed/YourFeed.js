@@ -1,37 +1,69 @@
-import React from 'react'
-import { View, Text, ScrollView } from 'react-native'
+import React, { useState, useContext } from 'react'
+import { View, Text, ScrollView, BackHandler } from 'react-native'
 import { utilities } from '../../../../settings/all_settings';
 import TopNav from '../../../02_Molecules/TopNav/TopNav'
 import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
-import Construction from '../../../04_Templates/Construction/Construction'
 import Card from '../../../03_Organisms/Card/Card';
-import Nswitch from '../../../../../assets/images/nintendoSwitch.jpeg'
-import aang from '../../../../../assets/images/donor_placeholders/aang.png';
-
+import GlobalState from '../../../globalState'
 
 function YourFeed({ navigation }) {
+    const { user, setUser } = useContext(GlobalState)
+    const [raffles, setRaffles] = useState([])
+    const data = require('../../../IP_ADDRESS.json')
+
+    React.useEffect(() => {
+        async function getRaffle() {
+            let response = await fetch('http://' + data.ipAddress + '/raffle/query?query=archived&val=false')
+            response = await response.json()
+            // filter out the raffles that are hosted by people you follow
+            var followingRaffles = []
+            for (var raffle of response){
+                if (user.following.includes(raffle.hostedBy)){
+                    followingRaffles.push(raffle)
+                }
+            }
+            setRaffles(followingRaffles)
+        }
+        getRaffle()
+
+        // BACKHANDLING FOR ANDROID BOTTOM NAV
+        const backAction = () => {
+            Alert.alert("Hold on!", "Are you sure you want to exit the app?", [
+                {
+                    text: "Cancel",
+                    onPress: () => null,
+                    style: "cancel"
+                },
+                { text: "YES", onPress: () => BackHandler.exitApp() }
+            ]);
+            return true;
+        };
+        const backHandler = BackHandler.addEventListener(
+            "hardwareBackPress",
+            backAction
+        );
+        return () => backHandler.remove();
+
+    }, [])
+
     return (
         <View style={utilities.container}>
-            <Construction></Construction>
-            {/* <ScrollView contentContainerStyle={utilities.scrollview}>
+            <ScrollView contentContainerStyle={utilities.scrollview}>
                 <TopNav navigation={navigation} active='Your Feed' />
                 <View style={utilities.flexCenter}>
-                    <Card
-                        type='notification'
-                        title="barbequeued Appa. btw This is Notification Card"
-                        date='July 16, 11:00 AM'
-                        host={{ name: "theAvatar", pic: aang }}
-                        navigation={navigation}
-                        imageURI={Nswitch} />
-                    <Card
-                        type='notification'
-                        title="barbequeued Appa. btw This is Notification Card"
-                        date='July 16, 11:00 AM'
-                        host={{ name: "theAvatar", pic: aang }}
-                        navigation={navigation}
-                        imageURI={Nswitch} />
+                    {raffles.map((raffle, index) =>
+                        <Card
+                            cardType='feed'
+                            feedType='following'
+                            data={raffle}
+                            key={index}
+                            navigation={navigation}
+                            currUserG={user}
+                            setUserG={setUser}
+                        />
+                    )}
                 </View>
-            </ScrollView> */}
+            </ScrollView>
             <BottomNav navigation={navigation} active={'Home'}></BottomNav>
         </View>
     )
