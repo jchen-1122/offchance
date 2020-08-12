@@ -14,7 +14,7 @@ export default function AskRaffleType({navigation}) {
     return (
         <View style={utilities.container}>
             <View style={styles.content}>
-                <Text style={[fonts.h1, {marginTop: windowHeight*.2, textAlign: "center", fontSize: 23}]}>What kind of raffle would you like to host?</Text>
+                <Text style={[fonts.h1, {marginTop: windowHeight*.2, textAlign: "center", fontSize: 23}]}>What kind of drawing would you like to host?</Text>
                 <BlockButton
                 title="DONATE TO ENTER"
                 color="primary"

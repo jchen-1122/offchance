@@ -3,8 +3,7 @@ import {dimensions} from '../../../settings/all_settings.js';
 
 const styles = StyleSheet.create({
     text: {
-        fontWeight: '700', 
-        fontSize: 50, 
+        fontSize: 30, 
         textAlign: 'center'
     },
     text_light: {
@@ -13,7 +12,6 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     GameBar: {
-        flex: 0,
         flexDirection: 'row',
         justifyContent: 'space-around'
     },
@@ -23,6 +21,11 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start', 
         padding: 15,
+    },
+    GameBar__stat_short: {
+        width: '27%',
+        flexDirection: 'column',
+        paddingVertical: 15
     }
 })
 

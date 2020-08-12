@@ -57,6 +57,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
+    container_game: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    }
 })
 
 export {styles};

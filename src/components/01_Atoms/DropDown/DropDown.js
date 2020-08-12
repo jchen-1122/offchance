@@ -15,7 +15,7 @@ function DropDown(props) {
     }
 
     // for different sizes
-    let containerStyles = [styles.DropDown__picker]
+    let containerStyles = [styles.DropDown__picker,]
     switch (props.size) {
         case 'small':
             containerStyles.push(styles.DropDown__picker_small);

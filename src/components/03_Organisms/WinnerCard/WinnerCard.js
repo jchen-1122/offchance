@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useImperativeHandle, forwardRef } from 'react'
 import { View, Text, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { colors, utilities } from '../../../settings/all_settings';
 import { Overlay } from 'react-native-elements';
@@ -8,9 +8,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useFonts } from 'expo-font';
 import * as Font from 'expo-font';
 
-export default function WinnerCard(props) {
+function WinnerCard(props, ref) {
+
     let winner;
-    if (props.winner){
+    if (props.winner) {
         winner = props.winner
     }
 
@@ -24,7 +25,7 @@ export default function WinnerCard(props) {
         return null;
     }
 
-    const colorMap = ["gold", "silver", "bronze", "blue"]
+    const colorMap = ["black", "gold", "silver", "blue"]
 
     // set styles based on the color of the card
     let gradient; // gradient for the background of the card
@@ -35,18 +36,25 @@ export default function WinnerCard(props) {
     let prizeTitleColor = 'black'
     let winnerLabelColor = colors.darkGreen
     let name = '@' + winner.username.toUpperCase()
-    
+
     if (props.currUser._id === winner._id) {
         name = 'YOU'
     }
     switch (colorMap[props.prize]) {
-        case "gold":
+        case "black":
             gradient = ['#444444', , 'black', '#444444']
             borderGradient = colors.goldGradient
             headerImage = "https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/winnercard-images/gold.png"
             hostNameColor = colors.gold1
             prizeTitleColor = 'white'
             winnerLabelColor = colors.lightGreen
+            break;
+        case "gold":
+            gradient = colors.goldGradientBg
+            borderGradient = colors.goldGradient
+            headerImage = "https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/winnercard-images/gold.png"
+            headerColor = "#44270A"
+            hostNameColor = colors.gold1
             break;
         case "silver":
             gradient = colors.silverGradientBg
@@ -55,7 +63,7 @@ export default function WinnerCard(props) {
             hostNameColor = '#9E9E9E'
             break;
         case "bronze":
-            gradient= colors.bronzeGradientBg
+            gradient = colors.bronzeGradientBg
             borderGradient = colors.bronzeGradient
             headerImage = "https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/winnercard-images/bronze.png"
             headerColor = "#44270A"
@@ -71,6 +79,7 @@ export default function WinnerCard(props) {
             winnerLabelColor = colors.blue
             break;
     }
+
     return (
         <LinearGradient start={[0, 0]} end={[1, 0]}
             colors={borderGradient}>
@@ -102,7 +111,7 @@ export default function WinnerCard(props) {
 
                     {/* title of product */}
                     <View style={{ alignItems: 'center' }}>
-                        <View style={[styles.WinnerCard__prizeTitleWrapper,{borderColor:prizeTitleColor}]}>
+                        <View style={[styles.WinnerCard__prizeTitleWrapper, { borderColor: prizeTitleColor }]}>
                             <Text style={[styles.WinnerCard__prizeTitle, { color: prizeTitleColor, borderColor: prizeTitleColor, fontFamily: 'Steelfish' }]}>{props.raffle.name.toUpperCase()}</Text>
                         </View>
                     </View>
@@ -139,3 +148,6 @@ export default function WinnerCard(props) {
         </LinearGradient>
     )
 }
+
+WinnerCard = forwardRef(WinnerCard);
+export default WinnerCard;

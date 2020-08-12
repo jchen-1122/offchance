@@ -23,6 +23,7 @@ export default function Raffle({ navigation, route }) {
     const { user, setUser } = useContext(GlobalState)
     const mapAPI = 'pk.eyJ1IjoiamNoZW4xMTIyIiwiYSI6ImNrMjZ4dXM0cDF4cnozY21sYnBwYjdzaTAifQ.ItVivcBhnM1Lz9GP5B0PSQ'
     var raffle = route.params
+    const [views, setViews] = useState(null)
     // get host of raffle from db
     const [top5, setTop5] = useState([])
     const [enabled, setEnabled] = useState(true)
@@ -41,6 +42,7 @@ export default function Raffle({ navigation, route }) {
     React.useEffect(() => {
         async function getCurrentRaffle() {
             route.params = await getRaffle(route.params._id)
+            // addView()
             route.params['host'] = await getUser(route.params.hostedBy)
             route.params['top5'] = route.params.users.children.sort((a, b) => b.amountDonated - a.amountDonated).slice(0, 5)
             // geocode raffle address not host address (still need to change)
@@ -57,6 +59,8 @@ export default function Raffle({ navigation, route }) {
                 setLocation(geolib.isPointWithinRadius({ latitude: latHost, longitude: longHost }, { latitude: latUser, longitude: longUser }, route.params.radius * 0.621371 * 1000))
             }
         }
+        setViews(raffle.totalViews)
+        addView()
         getCurrentRaffle()
     }, [])
 
@@ -282,6 +286,20 @@ export default function Raffle({ navigation, route }) {
         return JSON.stringify(res)
     }
 
+    // increment total number of views for the raffle
+    const addView = async () => {
+        console.log(views)
+        // const response = await fetch('http://' + data.ipAddress + '/raffle/edit/' + user._id, {
+        //     method: "PATCH",
+        //     headers: {
+        //         'Accept': 'application/json',
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: makeJSON()
+        // })
+        // const json = await response.json()
+        // return json
+    }
     // get fields of raffle from db
     let name;
     let description;
@@ -367,7 +385,17 @@ export default function Raffle({ navigation, route }) {
           backgroundColor: "rgba(255, 255, 255, 1)",
           });
       }
-// [utilities.container, { backgroundColor: 'white' }]
+    // [utilities.container, { backgroundColor: 'white' }]
+
+    var userIDs = ["5f1717acfe0108ee8b5e5c0b", "5f171974fe0108ee8b5e5c11", "5f1757f7c9deeef8c14b6a40", "5f1a6bdb457f816624a7a48c"]
+
+    const getOpponent = async () => {
+        var opponentID = userIDs[Math.floor(Math.random() * userIDs.length)]
+        const response = await fetch('http://' + ip.ipAddress + '/user/id/' + opponentID)
+        const json = await response.json()
+        return json
+    }
+
     return (
         <View style={containerStyle}>
             <ScrollView contentContainerStyle={utilities.scrollview} scrollEnabled={enableScroll} >
@@ -531,7 +559,7 @@ export default function Raffle({ navigation, route }) {
                     <BlockButton
                         title="PLAY GAME"
                         color="primary"
-                        onPress={() => navigation.navigate('GameController')}
+                        onPress={async() => navigation.navigate('GameController', await getOpponent())}
                         disabled={expired} />
                     <BlockButton
                         title="LIVE DRAWING EXP"
