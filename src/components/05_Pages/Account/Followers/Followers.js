@@ -1,9 +1,9 @@
 import React, {useContext} from 'react'
 import {ScrollView} from 'react-native'
 
-import ListView from '../../04_Templates/ListView/ListView'
+import ListView from '../../../04_Templates/ListView/ListView'
 import { List } from 'native-base'
-import GlobalState from '../../globalState'
+import GlobalState from '../../../globalState'
 
 export default function Followers({navigation, route}) {
     let usersObj = route.params.followers
@@ -21,7 +21,7 @@ export default function Followers({navigation, route}) {
 
     return (
         <ScrollView>
-            <ListView users={usersObj} title="Followers" navigation={navigation} currUser={user} setUser={setUser}></ListView>
+            <ListView users={usersObj} navigation={navigation} currUser={user} setUser={setUser}></ListView>
         </ScrollView>
     )
 }

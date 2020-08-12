@@ -17,6 +17,7 @@ function ToggleTypeMenu(props) {
                 onPress={()=>{
                     setActiveItem('donate')
                     props.setViewType(1)
+                    console.log(props.viewType)
                     props.setToggleMenuOpen(false)
                 }}>
                 <Icon
@@ -36,6 +37,7 @@ function ToggleTypeMenu(props) {
                 onPress={()=>{
                     setActiveItem('buy')
                     props.setViewType(2)
+                    console.log(props.viewType)
                     props.setToggleMenuOpen(false)
                 }}>
                 <Icon
@@ -55,6 +57,7 @@ function ToggleTypeMenu(props) {
                 onPress={()=>{
                     setActiveItem('all')
                     props.setViewType(0)
+                    console.log(props.viewType)
                     props.setToggleMenuOpen(false)
                 }}>
                 <Icon
