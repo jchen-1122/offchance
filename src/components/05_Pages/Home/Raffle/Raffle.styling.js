@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     container: {
       flex: 1,
       justifyContent: 'space-between',
-      backgroundColor: "rgba(255, 255, 255, 0.1)",
+      backgroundColor: "rgba(255, 255, 255, 1)",
 
     },
    content: {
@@ -27,40 +27,40 @@ const styles = StyleSheet.create({
     marginBottom: '5%'
   },
   pickSize: {
-    flex: 0, 
-    flexDirection:'row', 
-    alignItems: 'center', 
-    justifyContent: 'space-between', 
-    marginTop: 15, 
+    flex: 0,
+    flexDirection:'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginTop: 15,
     marginBottom: 15,
     zIndex: 2
   },
   pickSizeSlide: {
-    marginTop: 15, 
+    marginTop: 15,
     marginBottom: 15
   },
   hostedby: {
-    flexDirection:'row', 
-    alignItems:'center', 
-    justifyContent: 'space-between', 
+    flexDirection:'row',
+    alignItems:'center',
+    justifyContent: 'space-between',
     height: 25
   },
   hostedby__profile: {
-    flex: 0, 
-    flexDirection:'row', 
+    flex: 0,
+    flexDirection:'row',
     alignItems: 'center'
   },
   hostedby__image: {
-      width:20, 
-      height: 20, 
+      width:20,
+      height: 20,
       borderRadius: 20 / 2,
       marginRight: 5
   },
   highlightBackground: {
-    backgroundColor: colors.lightGreen, 
+    backgroundColor: colors.lightGreen,
     marginBottom: '5%',
-    marginHorizontal: '-10%', 
-    paddingHorizontal:'10%' 
+    marginHorizontal: '-10%',
+    paddingHorizontal:'10%'
   }
 
 })

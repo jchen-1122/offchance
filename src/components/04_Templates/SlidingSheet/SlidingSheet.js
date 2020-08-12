@@ -41,7 +41,7 @@ function SlidingSheet(props) {
     }, [props.amount])
 
   async function subtractWallet() {
-      console.log('HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH')
+      // console.log('HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH')
       const response = await fetch('http://' + data.ipAddress + '/user/edit/' + props.user._id, {
             method: "PATCH",
             headers: {
@@ -206,7 +206,26 @@ function SlidingSheet(props) {
     };
 
     if (props.sheet) {
-      toValue = 0;
+      switch (props.amountDollar) {
+        case 5:
+          toValue = -150;
+          break;
+        case 10:
+          toValue = -40;
+          break;
+        case 20:
+          toValue = 0;
+          break;
+        case 50:
+          toValue = 30;
+          break;
+        case 100:
+          toValue = 70;
+          break;
+        case 250:
+          toValue = 60;
+          break;
+      }
       toggleSheet();
     } else {
       null;
@@ -225,6 +244,7 @@ function SlidingSheet(props) {
       props.paymentTrigger();
     }
 
+    // console.log('AMOUNT DOLLAR: ', props.amountDollar); // 5, 10, 20, 50, 100, 250
 
     // console.log(props.sheet); 101010
 
@@ -235,7 +255,8 @@ function SlidingSheet(props) {
             { transform: [{ translateY: bounceValue }] }]}>
 
             <View style={styles.container}>
-                {stripe ? <ScrollView style={styles.slidingSheet} showsVerticalScrollIndicator={false}>
+                {stripe ?
+                    <ScrollView style={styles.slidingSheet} showsVerticalScrollIndicator={false}>
                     {/* Title part with a close button */}
                     <View style={styles.slidingSheet__header}>
                         <TouchableOpacity onPress={ () => closeSlidingSheet() }>
@@ -273,14 +294,14 @@ function SlidingSheet(props) {
                           />
                     </View>
 
-                    {(_method === "Wallet Chances") ? 
+                    {(_method === "Wallet Chances") ?
                     <View style={styles.slidingSheet__save}>
                         <Text style={[styles.slidingSheet__content__text]}>{"Current " + props.content[0]}</Text>
                         <Text style={{marginTop: 5}}>{_walletBalance}</Text>
                     </View>
-                    
-                    : 
-                    
+
+                    :
+
                     <View style={[styles.slidingSheet__content, {zIndex: 1}]}>
                         <Text style={styles.slidingSheet__content_text}>{props.content[2]}</Text>
                         <DropDown
@@ -292,7 +313,7 @@ function SlidingSheet(props) {
                           setValue={setAmount}
                           />
                     </View>}
-                    
+
                     {(_method ==='+ Add Credit Card') ? <View style={[styles.slidingSheet__save]}>
                     <CheckBox
                       selected={_save}

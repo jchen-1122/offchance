@@ -33,23 +33,9 @@ export default function Raffle({ navigation, route }) {
     const [winner, setWinner] = useState(Object.keys(raffle).includes('winner') ? raffle.winner : raffle['host'])
 
     // sliding sheet
+    const [enableScroll, setEnableScroll] = useState(true);
     const [containerStyle, setContainerStyle] = useState(styles.container);
     const [sheetController, setSheetController] = useState(false); // 0 - close, 1 - open. TODO: GLOBAL STATE
-
-    const trigger = () => {
-        setSheetController(!sheetController);
-
-        setContainerStyle( !sheetController ?
-          { // light on
-          flex: 1,
-          justifyContent: 'space-between',
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-        } : { // light off
-          flex: 1,
-          justifyContent: 'space-between',
-          backgroundColor: "rgba(255, 255, 255, 0.1)",
-          });
-      }
 
     const ip = require('../../../IP_ADDRESS.json');
     React.useEffect(() => {
@@ -315,7 +301,7 @@ export default function Raffle({ navigation, route }) {
     // entering states
     const [_sizeType, setSizeType] = useState((sizeTypes.length === 0) ? "" : null)
     const [_size, setSize] = useState((sizes.length === 0) ? "" : null)
-    
+
     let images = [];
     for (let i in images_strs) {
         images.push({ uri: images_strs[i] })
@@ -366,9 +352,25 @@ export default function Raffle({ navigation, route }) {
         }
     }
 
+    const trigger = () => {
+        setSheetController(!sheetController);
+        setEnableScroll(!enableScroll);
+
+        setContainerStyle( !sheetController ?
+          { // light on
+          flex: 1,
+          justifyContent: 'space-between',
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+        } : { // light off
+          flex: 1,
+          justifyContent: 'space-between',
+          backgroundColor: "rgba(255, 255, 255, 1)",
+          });
+      }
+// [utilities.container, { backgroundColor: 'white' }]
     return (
-        <View style={[utilities.container, { backgroundColor: 'white' }]}>
-            <ScrollView contentContainerStyle={utilities.scrollview}>
+        <View style={containerStyle}>
+            <ScrollView contentContainerStyle={utilities.scrollview} scrollEnabled={enableScroll} >
                 {images.length > 1 ? <ImageCarousel images={images}></ImageCarousel> : <Image source={images[0]} style={styles.Raffle__image}></Image>}
 
                 {/* raffle title */}
@@ -469,8 +471,6 @@ export default function Raffle({ navigation, route }) {
                             }}>
                                 <Top5Donors users={top5} />
                             </TouchableOpacity>
-                            {/* !!!!!!!!!!!!! TODO: conditionally show progress bar !!!!!!!!!!!!!!*/}
-                            <ProgressBar progress={230 / 500} color={colors.primaryColor} raised={230} goal={500} width={315} />
 
                             {raffle.sizes.length > 0 ?
                                 <View style={styles.pickSizeSlide}>
@@ -484,27 +484,30 @@ export default function Raffle({ navigation, route }) {
                             <BuyOptions options={options} buyOption={buyOption} setBuyOption={setBuyOption} trigger={trigger}/>
 
                             {/* sliding sheet */}
-                            <SlidingSheet
-                            title={(buyOption) ? "Purchase "+ options[buyOption].chances + " chances" : "Purchase Chances"}
-                            type='default'
-                            sheet={sheetController}
-                            trigger={trigger}
-                            height={Dimensions.get('screen').height * 0.536}
-                            user={user}
-                            setUser={setUser}
-                            content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
-                            navigation={navigation}
-                            wallet={false}
-                            amount={(buyOption) ? "$" + buyOption + " = " + options[buyOption].chances + " chances" : "$5 = 10 chances"}
-                            amountDollar={(buyOption) ? parseInt(buyOption) : 0}
-                            chances={(buyOption) ? options[buyOption].chances : 0}
-                            sizeType={(_sizeType || _sizeType === "") ? _sizeType : "notselected"}
-                            size={(_size || _size === "") ? _size : "notselected"}
-                            raffleid={route.params._id}
-                            />
+                            <View style={{marginLeft: '-8%', marginRight: '-8%'}}>
+                                <SlidingSheet
+                                title={(buyOption) ? "Purchase "+ options[buyOption].chances + " chances" : "Purchase Chances"}
+                                type='default'
+                                sheet={sheetController}
+                                trigger={trigger}
+                                height={Dimensions.get('screen').height * 0.7}
+                                user={user}
+                                setUser={setUser}
+                                content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
+                                navigation={navigation}
+                                wallet={false}
+                                amount={(buyOption) ? "$" + buyOption + " = " + options[buyOption].chances + " chances" : "$5 = 10 chances"}
+                                amountDollar={(buyOption) ? parseInt(buyOption) : 0}
+                                chances={(buyOption) ? options[buyOption].chances : 0}
+                                sizeType={(_sizeType || _sizeType === "") ? _sizeType : "notselected"}
+                                size={(_size || _size === "") ? _size : "notselected"}
+                                raffleid={route.params._id}
+                                />
+                            </View>
 
-
-                            <Text style={{ marginRight: -10 }}>*We we will never show donation amounts for any user</Text>
+                            <View style={{zIndex:-1}}>
+                              <Text style={{ marginRight: -10 }}>*We we will never show donation amounts for any user</Text>
+                            </View>
                         </View>
                     }
                     {raffle.live ?
