@@ -415,7 +415,12 @@ export default function Raffle({ navigation, route }) {
                     <View style={{ marginRight: '-5%', marginBottom: 15 }}>
                         <Text style={fonts.italic}>Hosted by:</Text>
                         <View style={styles.hostedby}>
-                            <TouchableOpacity onPress={() => navigation.navigate('OtherUser', { user: raffle.host })}>
+                        <TouchableOpacity
+                        onPress={() => {
+                            user._id === raffle.host._id ?
+                            navigation.navigate('Profile') :
+                            navigation.navigate('OtherUser', {user: raffle.host})
+                            }}>
                                 <View style={styles.hostedby__profile}>
                                     <Image source={{ uri: raffle.host.profilePicture }} style={styles.hostedby__image}></Image>
                                     <Text style={fonts.link}>{'@' + raffle.host.username}</Text>
