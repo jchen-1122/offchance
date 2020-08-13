@@ -16,13 +16,13 @@ function BackCard(props){
     let cardsrc = null
     switch (user["prize"]) {
         case 0:
-            cardsrc = { uri: 'https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/backcard-gold.png' }
+            cardsrc = { uri: 'https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/backcards/black.png' }
             break;
         case 1:
-            cardsrc = { uri: 'https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/backcard-silver.png' }
+            cardsrc = { uri: 'https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/backcards/gold.png' }
             break;
         default:
-            cardsrc = { uri: 'https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/backcard-bronze.png' }
+            cardsrc = { uri: 'https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/backcards/silver.png' }
             break;
     }
 

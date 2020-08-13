@@ -19,17 +19,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         margin: spacing,
     },
-    gold: {
-        backgroundColor: '#D0912E'
-    },
-    silver: {
-        backgroundColor: '#D4D4D4'
-    },
-    orange: {
-        backgroundColor: '#CD7F32'
-    },
-    purple: {
-        backgroundColor: '#410550'
+
+    cardGrid: {
+        marginTop: '5%',
+        width: '100%', 
+        flexDirection: 'row', 
+        flexWrap: 'wrap', 
+        alignItems: 'center', 
+        justifyContent: 'center'
     },
 
     overlay: {
@@ -39,20 +36,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         margin: spacing,
         backgroundColor: 'black'
-    },
-
-    circle_outline: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        backgroundColor: 'white',
-        alignItems: 'center',
-        justifyContent: 'center'
-    },
-    circle_pic: {
-        width: 30,
-        height: 30,
-        resizeMode: 'contain'
     },
 
     // overlay for timer

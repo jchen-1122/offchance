@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { View, ScrollView, Text, Image, Button, Dimensions } from 'react-native'
+import { View, ScrollView, Text, Image, Button, Dimensions, Share, Clipboard, Alert } from 'react-native'
 import { Icon } from 'react-native-elements';
 import { colors, fonts, utilities } from '../../../../settings/all_settings';
 import InfoFeed from '../../../02_Molecules/InfoFeed/InfoFeed'
@@ -24,7 +24,7 @@ function Profile({ navigation }) {
                 }} title="Edit" />
             ),
             headerLeft: () => (
-                <TouchableOpacity style={{paddingLeft: 10}}onPress={() => {
+                <TouchableOpacity style={{ paddingLeft: 10 }} onPress={() => {
                     navigation.navigate("Account", user)
                 }}>
                     <Icon name='menu'
@@ -54,14 +54,47 @@ function Profile({ navigation }) {
         email = user.email
         followers = user.followers
         following = user.following
-        enteredRaffles = user.enteredRaffles
+        enteredRaffles = user.rafflesEntered.children
         address = user.shippingAddress
         sizeType = user.sizeType
         shoeSize = user.shoeSize
         shirtSize = user.shirtSize
-        referralCode = Object.keys(user).includes('referralCode') ? user.referralCode : ''
+        referralCode = Object.keys(user).includes('last4') ? user.username + user.last4 : ''
     }
 
+    // for copying referral code to clipboard
+    const copyToClipboard = () => {
+        Clipboard.setString(referralCode);
+        Alert.alert(
+            "Copied!",
+            "Your referral code has been copied to your clipboard",
+            [
+              { text: "OK", onPress: () => console.log("OK Pressed") }
+            ],
+            { cancelable: false }
+          );
+      }
+
+    // for sharing referral code
+    const onShare = async () => {
+        try {
+            const result = await Share.share({
+                message:
+                    'Your referral code is ' + referralCode,
+            });
+            if (result.action === Share.sharedAction) {
+                if (result.activityType) {
+                    // shared with activity type of result.activityType
+                } else {
+                    // shared
+                }
+            } else if (result.action === Share.dismissedAction) {
+                // dismissed
+            }
+        } catch (error) {
+            alert(error.message);
+        }
+    }
     return (
         <View style={utilities.container}>
             <ScrollView>
@@ -71,15 +104,15 @@ function Profile({ navigation }) {
                         <Image source={{ uri: profilePic }} style={[styles.profilePic]}></Image>
                     </View>
                     {/* <View style={{ zIndex: 1 }}> */}
-                        {/* Green Checkmark*/}
-                        {user.isHost ? 
-                        <View style={{zIndex: 50, position: 'absolute', right: Dimensions.get('window').width*0.35}}>
-                        <Icon name={'check-circle'}
-                            type='octicons'
-                            color={colors.primaryColor}
-                            backgroundColor='white'
-                            style={{borderRadius: 50}} /> 
-                            </View>: null}
+                    {/* Green Checkmark*/}
+                    {user.isHost ?
+                        <View style={{ zIndex: 50, position: 'absolute', right: Dimensions.get('window').width * 0.35 }}>
+                            <Icon name={'check-circle'}
+                                type='octicons'
+                                color={colors.primaryColor}
+                                backgroundColor='white'
+                                style={{ borderRadius: 50 }} />
+                        </View> : null}
                     {/* </View> */}
                 </View>
 
@@ -123,9 +156,19 @@ function Profile({ navigation }) {
                             <Text style={styles.descriptor}>Payment Information</Text>
                             <Text style={styles.description}>**** **** **** 1234</Text>
 
-                            <Text style={styles.descriptor}>Referral Code</Text>
-                            <Text style={styles.description}>{referralCode}</Text>
 
+                            <Text style={styles.descriptor}>Referral Code</Text>
+                            <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                                <Text style={styles.description}>{referralCode}</Text>
+                                <View style={{ flexDirection: 'row', width: '25%', justifyContent: 'space-between' }}>
+                                    <TouchableOpacity onPress={copyToClipboard}>
+                                        <Icon name="clipboard" type="material-community" />
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={onShare} style={{ marginRight: '30%' }}>
+                                        <Icon name="share" type="material-community" />
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
                             {/* <View style={{flexDirection: 'row'}}>
                         <View style={styles.payment}>
                             <BlockButton

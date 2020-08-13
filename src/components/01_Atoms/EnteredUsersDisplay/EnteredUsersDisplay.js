@@ -24,15 +24,20 @@ function EnteredUsersDisplay(props) {
             return users
         }
         var entered = []
+        // keep track of same ids
+        var enteredIds = new Set([])
         for (let i = 0; i < users.length; i++) {
-            let enteredUser = users[i]
-            // if you're following them, add to the top
-            if (user.following.includes(enteredUser.userID)) {
-                entered.unshift(enteredUser)
-            }
-            // if you're not following them, push to back
-            else {
-                entered.push(enteredUser)
+            if (!enteredIds.has(users[i].userID)) {
+                let enteredUser = users[i]
+                // if you're following them, add to the top
+                if (user.following.includes(enteredUser.userID)) {
+                    entered.unshift(enteredUser)
+                }
+                // if you're not following them, push to back
+                else {
+                    entered.push(enteredUser)
+                }
+                enteredIds.add(users[i].userID)
             }
         }
         return entered

@@ -11,7 +11,10 @@ export default function BuyOptions(props) {
                         title={"$" + element + ' for ' + props.options[element].chances + " chances"}
                         color={element == 10 ? "light" : "secondary"}
                         bannerTitle={element == 10 ? 'BEST DEAL' : null}
-                        onPress={() => props.setBuyOption(element)}
+                        onPress={() => {
+                            props.setBuyOption(element)
+                            props.trigger()
+                        }}
                         selected={props.buyOption == element}/>
                 )
             })
