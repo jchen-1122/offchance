@@ -77,7 +77,7 @@ function App() {
           <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ title: 'New Password' }}/>
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
           <Stack.Screen name="SeeAll" component={SeeAll} options={({ route }) => ({ title: route.params.title })}/>
-          <Stack.Screen name="YourFeed" component={YourFeed} options={{ headerShown: false }} />
+          <Stack.Screen name="YourFeed" component={YourFeed} options={{ title: 'Your Feed', headerShown: false }} />
           {/* <Stack.Screen name="Explore" component={Explore} /> */}
           <Stack.Screen name="Raffle" component={Raffle} options={({ route }) => ({ title: route.params.name })}/>
           <Stack.Screen name="PlayGame" component={PlayGame} options={{ headerShown: false }}/>

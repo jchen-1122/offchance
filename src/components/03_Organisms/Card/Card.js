@@ -13,6 +13,7 @@ import { colors, fonts, utilities, dimensions } from '../../../settings/all_sett
 import { in_a_day, is_expired } from '../../../functions/convert_dates';
 import { top5_raffle } from '../../../functions/explore_functions';
 import { time_from_now } from '../../../functions/convert_dates';
+import TextLink from '../../01_Atoms/Buttons/TextLinks/TextLinks'
 
 function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, banner, feedType, prize, userType, otherUser }) {
     const ip = require('../../IP_ADDRESS.json');
@@ -120,34 +121,38 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
         case 'feed':
             var picture;
             var caption;
+            let person;
             if (feedType == 'following' && host) {
-                picture = 
-                <TouchableOpacity onPress={() => {
-                    navigation.navigate('OtherUser', { user: host })
-                }}>
-                    <Image style={styles.notif_host} source={{ uri: host.profilePicture }} />
+                picture =
+                    <TouchableOpacity onPress={() => {
+                        navigation.navigate('OtherUser', { user: host })
+                    }}>
+                        <Image style={styles.notif_host} source={{ uri: host.profilePicture }} />
                     </TouchableOpacity>
-                caption = '@' + host.username + ' posted a drawing for ' + title
+                person = <Text style={{ textDecorationLine: 'underline' }} onPress={() => navigation.navigate('OtherUser', { user: host })}>@{host.username}</Text>
+                caption = ' posted a drawing for '
             }
             else if (feedType == "win" && currUser) {
-                picture = (userType == 'other') ? 
-                <Image style={styles.notif_host} source={{ uri: otherUser.profilePicture }} />: <Image style={styles.notif_host} source={{ uri: currUser.profilePicture }} />
+                picture = (userType == 'other') ?
+                    <Image style={styles.notif_host} source={{ uri: otherUser.profilePicture }} /> : <Image style={styles.notif_host} source={{ uri: currUser.profilePicture }} />
                 let user = (userType == 'other') ? otherUser.username : 'You'
+
                 if (prize == 0) {
-                    caption = user + " won a " + title
+                    caption = user + " won a "
                 }
                 else {
-                    caption = user + " won chances for a drawing for " + title
+                    caption = user + " won chances for a drawing for "
                 }
             }
 
             return (
-                <View style={{ maxHeight: Dimensions.get('window').height * 0.5 }}>
+                <View style={{ maxHeight: Dimensions.get('window').height * 0.48 }}>
                     <ScrollView style={[styles.card, { paddingTop: '5%' }]}>
                         <View style={styles.notif}>
                             {picture}
                             <View>
-                                <Text>{caption}</Text>
+
+                                <Text>{person}{caption}<Text style={{ fontWeight: 'bold' }}>{title}</Text></Text>
                                 <Text style={styles.notif_grey}>{time_from_now(date, true)}</Text>
                             </View>
                         </View>
