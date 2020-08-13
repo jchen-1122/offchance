@@ -77,7 +77,7 @@ function App() {
           <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ title: 'New Password' }}/>
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
           <Stack.Screen name="SeeAll" component={SeeAll} options={({ route }) => ({ title: route.params.title })}/>
-          <Stack.Screen name="YourFeed" component={YourFeed} options={{ title: 'Your Feed', headerShown: false }} />
+          <Stack.Screen name="YourFeed" component={YourFeed} options={{ headerShown: false }} />
           {/* <Stack.Screen name="Explore" component={Explore} /> */}
           <Stack.Screen name="Raffle" component={Raffle} options={({ route }) => ({ title: route.params.name })}/>
           <Stack.Screen name="PlayGame" component={PlayGame} options={{ headerShown: false }}/>
@@ -108,7 +108,6 @@ function App() {
           <Stack.Screen name="NewRaffle" component={NewRaffle} options={{ title: 'Submit Drawing' }}/>
           <Stack.Screen name="ReqBusAcc" component={ReqBusAcc} options={{ title: 'Get Verified' }}/>
           <Stack.Screen name="HostDashboard" component={HostDashboard} options={{ title: 'Your Drawings' }}/>
-
 
         </Stack.Navigator>
       </NavigationContainer>

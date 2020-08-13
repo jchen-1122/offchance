@@ -58,7 +58,7 @@ function Profile({ navigation }) {
     }, [navigation]);
 
     const [info, setInfo] = useState(true)
-    let name, username, profilePic, email, followers, following, enteredRaffles, address, sizeType, shoeSize, shirtSize, referralCode
+    let name, username, profilePic, email, followers, following, enteredRaffles, address, sizeType, shoeSize, shirtSize, referralCode, walletChances
     if (user == null) {
         name = 'John Doe'
         username = '@johndoe'
@@ -76,6 +76,7 @@ function Profile({ navigation }) {
         shoeSize = user.shoeSize
         shirtSize = user.shirtSize
         referralCode = Object.keys(user).includes('last4') ? user.username + user.last4 : ''
+        walletChances = user.walletChances || 0
     }
 
     // for copying referral code to clipboard
@@ -96,7 +97,7 @@ function Profile({ navigation }) {
         try {
             const result = await Share.share({
                 message:
-                    'Your referral code is ' + referralCode,
+                    'Sign up for Off Chance and use the referral code ' + referralCode + ' to get 5 free chances to use in any drawing!',
             });
             if (result.action === Share.sharedAction) {
                 if (result.activityType) {
@@ -122,6 +123,15 @@ function Profile({ navigation }) {
 
                 <Text style={styles.descriptor}>Email</Text>
                 <Text style={styles.description}>{email}</Text>
+
+                <Text style={styles.descriptor}>Wallet Chances</Text>
+                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                        <Text style={styles.description}>{walletChances}</Text>
+                            <TouchableOpacity onPress={() => navigation.navigate('Wallet')} style={{marginLeft: '15%'}}>
+                                <Icon name="wallet" type="material-community" />
+                            </TouchableOpacity>
+
+                    </View>
 
                 <View>
                     <Text style={styles.descriptor}>Shipping Address</Text>
@@ -208,7 +218,6 @@ function Profile({ navigation }) {
                         <View style={styles.toggleBar}>
                             <InfoFeed info={info} setInfo={setInfo}></InfoFeed>
                         </View>
-
 
                         <View>
                             {content}
