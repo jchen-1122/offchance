@@ -14,7 +14,7 @@ import { in_a_day, is_expired } from '../../../functions/convert_dates';
 import { top5_raffle } from '../../../functions/explore_functions';
 import { time_from_now } from '../../../functions/convert_dates';
 
-function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, banner }) {
+function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, banner, feedType, prize }) {
     const ip = require('../../IP_ADDRESS.json');
     const [host, setHost] = useState(null)
     const currUser = currUserG
@@ -27,7 +27,6 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
             setHost(response)
         }
         getHost()
-
     }, [host])
 
     // width for card content
@@ -119,22 +118,45 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
         //     break;
         // for simplified cards in your feed
         case 'feed':
+            var picture;
+            var caption;
+            if (feedType == 'following' && host) {
+                picture = 
+                <TouchableOpacity onPress={() => {
+                    navigation.navigate('OtherUser', { user: host })
+                }}>
+                    <Image style={styles.notif_host} source={{ uri: host.profilePicture }} />
+                    </TouchableOpacity>
+                caption = '@' + host.username + ' posted a drawing for' + title
+            }
+            else if (feedType == "win" && currUser) {
+                picture = <Image style={styles.notif_host} source={{ uri: currUser.profilePicture }} />
+
+                if (prize == 0) {
+                    caption = "You won a " + title
+                }
+                else {
+                    caption = "You won chances for a drawing for " + title
+                }
+            }
+
             return (
-                <View style={{maxHeight: Dimensions.get('window').height*0.5}}>
-                <ScrollView style={[styles.card, { paddingTop: '5%'}]}>
-                    <View style={styles.notif}>
-                        {
-                            (host) ? <Image style={styles.notif_host} source={{ uri: host.profilePicture }} />
-                                : null}
-                        <View>
-                            {(host) ? <Text>@{host.username} posted a drawing for {title}</Text>
-                                : null}
-                            <Text style={styles.notif_grey}>{time_from_now(date, true)}</Text>
+                <View style={{ maxHeight: Dimensions.get('window').height * 0.5 }}>
+                    <ScrollView style={[styles.card, { paddingTop: '5%' }]}>
+                        <View style={styles.notif}>
+                            {picture}
+                            <View>
+                                <Text>{caption}</Text>
+                                <Text style={styles.notif_grey}>{time_from_now(date, true)}</Text>
+                            </View>
                         </View>
-                    </View>
-                    <Image style={styles.notif_pic} source={{ uri: imageURI }} />
-                </ScrollView>
+                        <TouchableOpacity onPress={() => navigation.navigate('Raffle', data)}>
+
+                            <Image style={styles.notif_pic} source={{ uri: imageURI }} />
+                        </TouchableOpacity>
+                    </ScrollView>
                 </View>
+
             )
     }
 
