@@ -394,7 +394,8 @@ export default function Raffle({ navigation, route }) {
                                     <Text style={fonts.link}>{'@' + raffle.host.username}</Text>
                                 </View>
                             </TouchableOpacity>
-                            {typeof user._id === 'undefined' ? null : user.following.includes(raffle.host._id) ?
+                            {/* remove follow button if host is user self*/}
+                            {typeof user._id === 'undefined' ? null : user._id === raffle.host._id ? null : user.following.includes(raffle.host._id) ?
                                 <BlockButton color="secondary" size="small" title='FOLLOWING'
                                     onPress={async () => {
                                         if (enabled) {
