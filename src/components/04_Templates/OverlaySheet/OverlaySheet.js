@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { View, Text, TouchableOpacity, TextInput, ScrollView, Picker, Animated, Alert, Dimensions} from 'react-native'
-import { Icon } from 'react-native-elements'
+import { Icon, Overlay } from 'react-native-elements'
 import CheckBox from '../../02_Molecules/Checkbox/Checkbox'
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -10,7 +10,7 @@ import { utilities, fonts } from '../../../settings/all_settings';
 import DropDown from '../../../components/01_Atoms/DropDown/DropDown';
 import BlockButton from '../../../components/01_Atoms/Buttons/BlockButton/BlockButton';
 
-import styles from './SlidingSheet.styles';
+import styles from './OverlaySheet.styles';
 // https://github.com/alinz/react-native-dropdown
 // import {option, select} from 'react-native-dropdown'
 import Stripe from '../../05_Pages/Account/Wallet/Stripe'
@@ -19,7 +19,7 @@ import { user_logged_in } from '../../../functions/user_functions';
 
 
 // Sliding Sheet update: Removed visible prop, since the sheet will be invisible after sliding off the screen.
-function SlidingSheet(props) {
+function OverlaySheet(props) {
     const [last4, setlast4] = useState(null)
     const data = require('../../IP_ADDRESS.json')
     useEffect(() => {
@@ -164,6 +164,8 @@ function SlidingSheet(props) {
     const [selectedValue, setSelectedValue] = useState("**** **** **** 1234");
     // const [sheetOpen, setSheetOpen] = useState(true); // isHidden
     const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet (1000 is at the bottom)
+    const [visible, setVisible] = useState(false);
+    const [sheetController, setSheetController] = useState(true);
 
     let options1 = []
     if (last4 !== null) {
@@ -181,14 +183,13 @@ function SlidingSheet(props) {
     }
     let options2 = ['$5 = 10 chances', '$10 = 40 chances', '$20 = 50 chances', '$50 = 150 chances', '$100 = 400 chances', '$250 = 1100 chances']
 
-    let slidingStyle = [styles.subView];
-    slidingStyle.push({height: props.height});
 
     const [stripe, setStripe] = useState(true)
     const [_method, setMethod] = useState(null)
     const [_amount, setAmount] = useState('$5 = 10 chances')
     const [_save, setSave] = useState(false)
     const [_buttonText, setButtonText] = useState("CONFIRM PAYMENT")
+    const [_buttonColor, setButtonColor] = useState("light")
     const [_walletBalance, setWalletBalance] = useState(0)
 
     var toValue = 1000;
@@ -205,9 +206,22 @@ function SlidingSheet(props) {
 
     };
 
-    if (props.sheet) {
-      toValue = 0;
-      toggleSheet();
+    const toggleOverlay = () => {
+      if (!visible) {
+        // if not visible, turn visible, set sheetController = false
+        setVisible(true);
+        setSheetController(false);
+      } else {
+        // if visible, turn invisible, set sheetController = true
+        setVisible(false);
+        props.trigger();
+        setSheetController(true)
+      }
+    }
+
+
+    if (props.sheet && sheetController) {
+      toggleOverlay();
     } else {
       null;
     }
@@ -219,142 +233,137 @@ function SlidingSheet(props) {
         props.trigger();
     }
 
-    // summon payment page
-    const payMe = () => {
-      closeSlidingSheet();
-      props.paymentTrigger();
-    }
+    // // summon payment page
+    // const payMe = () => {
+    //   closeSlidingSheet();
+    //   props.paymentTrigger();
+    // }
 
     // console.log('AMOUNT DOLLAR: ', props.amountDollar); // 5, 10, 20, 50, 100, 250
 
     // console.log(props.sheet); 101010
     // TODO: Add a dropdown/button for stripe and apple pay
+
+    // console.log('size type: ', props.sizeType);
+
     return (
-      <View style={styles.container}>
-        <Animated.View
-            style={[slidingStyle,
-            { transform: [{ translateY: bounceValue }] }]}>
+      <View>
+        <Overlay isVisible={visible}
+        onBackdropPress={() => {toggleOverlay()}}
+        overlayStyle={{borderRadius: 30,}}>
 
-            <View style={styles.container}>
-                {stripe ?
-                    <ScrollView style={styles.slidingSheet} showsVerticalScrollIndicator={false}>
-                    {/* Title part with a close button */}
-                    <View style={styles.slidingSheet__header}>
-                        <TouchableOpacity onPress={ () => closeSlidingSheet() }>
-                            <Icon name='close' />
-                        </TouchableOpacity>
-                        <Text style={fonts.h1}>{props.title}</Text>
-                        <View/>
-                    </View>
-                    <View style={styles.slidingSheet__save} >
-                      {(props.sizeType === "notselected") ?
-                        <Text style={{color: 'red', }}> *Please select a size type </Text>
-                        : null }
+        {stripe ? <View style={{flex: 0.6, }}>
 
-                      {(props.size === "notselected") ?
-                        <Text style={{color: 'red'}}> *Please select a size </Text>
-                        : null }
+                {/* Title part with a close button */}
+                <View style={styles.slidingSheet__header}>
+                    <TouchableOpacity onPress={() => {toggleOverlay()}}>
+                        <Icon name='close' />
+                    </TouchableOpacity>
+                    <Text style={fonts.h1}>{props.title}</Text>
+                    <View/>
+                </View>
 
-                      <Text style={{color: 'red'}}>{(_method === "Wallet Chances" && props.user.walletChances - props.chances < 0) ? "*You do not have enough chances in your wallet" : ""}</Text>
-                    </View>
+                <View style={styles.slidingSheet__save}>
+                  {(props.sizeType === "notselected") ?
+                    <Text style={{color: 'red', }}> *Please select a size type </Text>
+                    : <Text style={{color: 'green'}}>  Size Type: {props.sizeType} </Text>}
 
-                    {/* content part - with a text input */}
-                    {/* <View style={styles.slidingSheet__content}>
-                        <Text style={styles.slidingSheet__content_text}>{props.content[0]}</Text>
-                        <TextInput
-                          style={{ height: 40, lineHeight: 23, }}
-                          placeholder='Enter here'
-                          onChangeText={text => onChangeText(text)}
-                          value={value}
-                        />
-                    </View> */}
+                  {(props.size === "notselected") ?
+                    <Text style={{color: 'red'}}> *Please select a size </Text>
+                    : <Text style={{color: 'green'}}>  Size: {props.size} </Text>}
 
-                    <View style={[styles.slidingSheet__content, {zIndex: 2}]}>
-                        <Text style={styles.slidingSheet__content_text}>{props.content[1]}</Text>
-                        <DropDown
-                          placeholder={"PICK A PAYMENT METHOD"}
-                          options={options1}
-                          size='large'
-                          arrowSize={18}
-                          isVisible={false}
-                          setValue={setMethod}
-                          />
-                    </View>
+                  <Text style={{color: 'red'}}>{(_method === "Wallet Chances" && props.user.walletChances - props.chances < 0) ? "*You do not have enough chances in your wallet" : ""}</Text>
+                </View>
 
-                    {(_method === "Wallet Chances") ?
-                    <View style={styles.slidingSheet__save}>
-                        <Text style={[styles.slidingSheet__content__text]}>{"Current " + props.content[0]}</Text>
-                        <Text style={{marginTop: 5}}>{_walletBalance}</Text>
-                    </View>
+                <View style={[styles.slidingSheet__content, {zIndex: 2}]}>
+                    <Text style={styles.slidingSheet__content_text}>{props.content[1]}</Text>
+                    <DropDown
+                      placeholder={"PICK A PAYMENT METHOD"}
+                      options={options1}
+                      size='large'
+                      arrowSize={18}
+                      isVisible={false}
+                      setValue={setMethod}
+                      />
+                </View>
 
-                    :
+                {(_method === "Wallet Chances") ?
+                <View style={styles.slidingSheet__save}>
+                    <Text style={[styles.slidingSheet__content__text]}>{"Current " + props.content[0]}</Text>
+                    <Text style={{marginTop: 5}}>{_walletBalance}</Text>
+                </View>
 
-                    <View style={[styles.slidingSheet__content, {zIndex: 1}]}>
-                        <Text style={styles.slidingSheet__content_text}>{props.content[2]}</Text>
-                        <DropDown
-                          placeholder={_amount}
-                          options={options2}
-                          size='large'
-                          arrowSize={18}
-                          isVisible={false}
-                          setValue={setAmount}
-                          />
-                    </View>}
+                :
 
-                    {(_method ==='+ Add Credit Card') ? <View style={[styles.slidingSheet__save]}>
-                    <CheckBox
-                      selected={_save}
-                      onPress={() => setSave(!_save)}
-                      text='Save my payment information'
-                    />
-                    </View> : null}
+                <View style={[styles.slidingSheet__content, {zIndex: 1}]}>
+                    <Text style={styles.slidingSheet__content_text}>{props.content[2]}</Text>
+                    <DropDown
+                      placeholder={_amount}
+                      options={options2}
+                      size='large'
+                      arrowSize={18}
+                      isVisible={false}
+                      setValue={setAmount}
+                      />
+                </View>}
 
-                    <View style={styles.button}>
-                      { (props.wallet) ?
+                {(_method ==='+ Add Credit Card') ?
+                  <View style={[styles.slidingSheet__save]}>
+                  <CheckBox
+                    selected={_save}
+                    onPress={() => setSave(!_save)}
+                    text='Save my payment information'
+                  />
+                </View> : null}
+
+                <View style={styles.button}>
+                  { (props.wallet) ?
+                    <BlockButton
+                        title={_buttonText}
+                        color="primary"
+                        onPress={() => {
+                          if (_buttonText === "CONFIRM PAYMENT" && _method !== null) {
+                            setButtonText("ADD CHANCES")
+                          } else if (_buttonText !== "CONFIRM PAYMENT" && _method !== null) {
+                            setButtonText("CONFIRM PAYMENT")
+                            setStripe(false)
+                          }}}
+                        /> :
+                        // for drawings
                         <BlockButton
-                            title={_buttonText}
-                            color="primary"
-                            onPress={() => {
-                              if (_buttonText === "CONFIRM PAYMENT" && _method !== null) {
-                                setButtonText("ADD CHANCES")
-                              } else if (_buttonText !== "CONFIRM PAYMENT" && _method !== null) {
-                                setButtonText("CONFIRM PAYMENT")
-                                setStripe(false)
-                              }}}
-                            /> :
-                            // for drawings
-                            <BlockButton
-                            title={_buttonText}
-                            color="primary"
-                            onPress={async () => {
-                              if (_buttonText === "CONFIRM PAYMENT" && _method !== null && props.sizeType !== "notselected" && props.size !== "notselected") {
-                                if (_method === "Wallet Chances" && props.user.walletChances - props.chances < 0) {
-                                  setButtonText("CONFIRM PAYMENT")
-                                } else {
-                                  setButtonText("ENTER DRAWING")
-                                }
-                              } else if (_buttonText !== "CONFIRM PAYMENT" && _method !== null) {
-                                  let updatedUser = await enterUserinRaffle()
-                                  props.setUser(updatedUser)
-                                  await updateRaffle()
-                                if (_method === "Wallet Chances") {
-                                  setButtonText("CONFIRM PAYMENT")
-                                  props.navigation.navigate("Success", {fromRaffle: props.chances})
-                                } else {
-                                  setButtonText("CONFIRM PAYMENT")
-                                  setStripe(false)
-                                }
-                              }}}
-                            />
-                      }
-                    </View>
+                        title={_buttonText}
+                        color={_buttonColor}
+                        onPress={async () => {
+                          if (_buttonText === "CONFIRM PAYMENT" && _method !== null && props.sizeType !== "notselected" && props.size !== "notselected") {
+                            if (_method === "Wallet Chances" && props.user.walletChances - props.chances < 0) {
+                              setButtonText("CONFIRM PAYMENT")
+                            } else {
+                              setButtonText("ENTER DRAWING")
+                              setButtonColor('primary')
+                            }
+                          } else if (_buttonText !== "CONFIRM PAYMENT" && _method !== null) {
+                              let updatedUser = await enterUserinRaffle()
+                              props.setUser(updatedUser)
+                              await updateRaffle()
+                            if (_method === "Wallet Chances") {
+                              setButtonText("CONFIRM PAYMENT")
+                              toggleOverlay();
+                              props.navigation.navigate("Success", {fromRaffle: props.chances})
+                            } else {
+                              setButtonText("CONFIRM PAYMENT")
+                              toggleOverlay();
+                              setStripe(false)
+                            }
+                          }}}
+                        />
+                  }
+              </View>
 
-                </ScrollView> : <Stripe user={props.user} setUser={props.setUser} navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet}></Stripe>}
-            </View>
+        </View> : <Stripe user={props.user} setUser={props.setUser} navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet}></Stripe>}
 
-        </Animated.View>
+        </Overlay>
       </View>
     )
 }
 
-export default SlidingSheet;
+export default OverlaySheet;

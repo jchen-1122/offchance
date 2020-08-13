@@ -12,6 +12,7 @@ import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import BuyOptions from '../../../02_Molecules/BuyOptions/BuyOptions'
 import CountDown from '../../../01_Atoms/Countdown/Countdown'
 import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
+import OverlaySheet from '../../../04_Templates/OverlaySheet/OverlaySheet';
 import SizeCarousel from '../../../01_Atoms/SizeCarousel/SizeCarousel'
 import { unix_to_date, is_expired } from '../../../../functions/convert_dates';
 import { top5_raffle } from '../../../../functions/explore_functions';
@@ -488,7 +489,7 @@ export default function Raffle({ navigation, route }) {
 
                             {/* sliding sheet */}
                             <View style={{marginLeft: '-8%', marginRight: '-8%'}}>
-                                <SlidingSheet
+                                <OverlaySheet
                                 title={(buyOption) ? "Purchase "+ options[buyOption].chances + " chances" : "Purchase Chances"}
                                 type='default'
                                 sheet={sheetController}
