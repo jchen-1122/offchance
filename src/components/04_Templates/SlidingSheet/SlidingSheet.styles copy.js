@@ -34,6 +34,14 @@ const styles = StyleSheet.create({
 
     },
 
+    slidingSheet__save: {
+        flex: 1,
+        marginLeft: '10%',
+        marginRight: '10%',
+        marginBottom: '7%',
+        flexDirection: 'column',
+    },
+
     slidingSheet__content_text: {
         zIndex: -1,
         fontSize: 15,

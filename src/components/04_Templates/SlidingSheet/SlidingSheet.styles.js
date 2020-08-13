@@ -4,12 +4,12 @@ import {StyleSheet, Dimensions} from 'react-native';
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
+      flex: 0.75,
 
     },
 
     slidingSheet: {
-        flex: 1,
+        flex: 0.75,
 
     },
 
@@ -18,19 +18,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
-        marginTop: '7%',
-        marginBottom: '7%',
+        marginTop: '3%',
+        marginBottom: '1%',
 
     },
 
     slidingSheet__content: {
         flex: 1,
-        marginLeft: '10%',
-        marginRight: '10%',
+        marginLeft: '5%',
+        marginRight: '5%',
         marginBottom: '7%',
         flexDirection: 'column',
-        borderBottomColor: '#000000',
-        borderBottomWidth: 1,
 
     },
 
@@ -38,7 +36,6 @@ const styles = StyleSheet.create({
         flex: 1,
         marginLeft: '10%',
         marginRight: '10%',
-        marginBottom: '7%',
         flexDirection: 'column',
     },
 
@@ -54,20 +51,10 @@ const styles = StyleSheet.create({
       zIndex: -1,
       justifyContent: 'center',
       alignItems: 'center',
-      marginBottom: '15%',
+      marginBottom: '-40%',
 
     },
 
-    // Sliding Sheet Style
-    subView: {
-       position: 'absolute',
-       bottom: '-100%',
-       left: 0,
-       right: 0,
-       backgroundColor: "#FFFFFF",
-       height: Dimensions.get('window').height,
-       borderRadius: 20,
-   },
 })
 
 export default styles;
