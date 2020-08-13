@@ -40,10 +40,6 @@ export default function NewRaffle({ navigation, route }) {
     const [_drawingDuration, setDrawingDuration] = useState(null)
     const [_drawingRadius, setDrawingRadius] = useState(null)
     const [_address, setAddress] = useState(null)
-<<<<<<< HEAD
-=======
-
->>>>>>> more-stuff-david-wants
 
     // for going to the next text input
     const priceRef = useRef()
