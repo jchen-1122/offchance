@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Text, View, Dimensions, ScrollView, BackHandler, Alert } from 'react-native'
 import { colors, fonts, utilities } from '../../../../settings/all_settings';
 import GlobalState from '../../../globalState'
@@ -9,13 +9,31 @@ import ToggleType from '../../../01_Atoms/Buttons/ToggleType/ToggleType';
 import ToggleTypeMenu from '../../../03_Organisms/ToggleTypeMenu/ToggleTypeMenu'
 
 function SeeAll({ navigation, route }) {
-    var raffles = route.params.raffles
-    var toggle = route.params.title == 'Trending' || route.params.title == 'Coming Soon'
+    var allRaffles = route.params.raffles
+    var donateRaffles = allRaffles.filter((raffle) => { return raffle.type == 1 })
+    var buyRaffles = allRaffles.filter((raffle) => { return raffle.type == 2 })
+
+    const [raffles, setRaffles] = useState(allRaffles)
+    var titles = ['Trending', 'Coming Soon', 'Entered Drawings']
+    var toggle = titles.includes(route.params.title)
 
     const { user, setUser } = useContext(GlobalState)
     const [viewType, setViewType] = useState(0)
     const [toggleMenuOpen, setToggleMenuOpen] = useState(false)
     
+    useEffect(() => {
+        console.log(allRaffles.length)
+        if (viewType == 0){
+            setRaffles(allRaffles)
+        }
+        if (viewType == 1){
+           setRaffles(donateRaffles)
+        }
+        if (viewType == 2){
+            setRaffles(buyRaffles)
+        }
+    },[viewType])
+
     return (
         <View style={utilities.container}>
             <ScrollView contentContainerStyle={utilities.scrollview}>

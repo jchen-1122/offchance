@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
         borderRadius: borderRadius,
         flex: 0,
         margin: 15,
-        paddingBottom: 15
+        paddingBottom: 15,
     },
     likeButton: {
         width: Dimensions.get('window').width * 0.8,
@@ -56,21 +56,22 @@ const styles = StyleSheet.create({
         height: 40,
         width: 40,
         borderRadius: 40,
-        margin: Dimensions.get('window').width * 0.05
+        marginHorizontal: Dimensions.get('window').width * 0.05
     },
     notif: {
-        width: Dimensions.get('window').width * 0.55,
+        width: Dimensions.get('window').width * 0.6,
         flex: 0,
         flexDirection: 'row',
-        alignItems: 'center',
-    },
+        alignItems: 'flex-start',    },
     notif_grey: {
         color: '#C4C4C4'
     },
     notif_pic: {
         width: Dimensions.get('window').width * 0.7,
-        height: Dimensions.get('window').width * 0.7,
+        height: Dimensions.get('window').height * 0.25,
         marginLeft: Dimensions.get('window').width * 0.05,
+        resizeMode: 'contain',
+        marginVertical: '2%'
     },
     friends: {
         width: Dimensions.get('window').width * 0.6,

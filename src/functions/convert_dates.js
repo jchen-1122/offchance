@@ -16,14 +16,6 @@ export function getTimer(unix_timestamp, showSeconds) {
 export function in_a_day(unix_timestamp) {
     var startTime = moment(unix_timestamp*1000)
     return startTime.isSame(new Date(), 'day');
-    // var date = new Date(unix_timestamp * 1000); // convert to date object
-    // var diff = date.getTime() - Date.now() // calc time until date
-
-    // // check if its 24 hours away
-    // if (diff < (24 * 3.6 * Math.pow(10, 6))) {
-    //     return true;
-    // }
-    // return false;
 }
 
 export function is_expired(unix_timestamp) {
@@ -46,3 +38,13 @@ export function format_date(date) {
     
     return monthNames[date.getMonth()] + ' ' + date.getDate() + ', ' + hour + ':' + placeholder + date.getMinutes() + ampm
 }
+
+// https://momentjscom.readthedocs.io/en/latest/moment/04-displaying/02-fromnow/
+export function time_from_now(unix_timestamp, format_nicely) {
+    var time = moment(unix_timestamp*1000)
+    var prefix = '';
+    if (format_nicely){
+        prefix = (time.isBefore(new Date())) ? 'Started ' : 'Starts '
+    }
+    return prefix+time.fromNow()
+} 

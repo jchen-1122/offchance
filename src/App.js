@@ -18,9 +18,8 @@ import Search from './components/05_Pages/Search/Search'
 import Social from './components/05_Pages/Social/Social'
 
 import EditProfile from './components/05_Pages/Account/EditProfile/EditProfile'
-import Following from './components/05_Pages/Following/Following'
-import Followers from './components/05_Pages/Followers/Followers'
-import RafflesEntered from './components/05_Pages/Account/rafflesEntered/rafflesEntered'
+import Following from './components/05_Pages/Account/Following/Following'
+import Followers from './components/05_Pages/Account/Followers/Followers'
 import Top5List from './components/02_Molecules/Top5List/Top5List'
 import YourFeed from './components/05_Pages/Home/YourFeed/YourFeed';
 import Likes from './components/05_Pages/Account/Likes/Likes'
@@ -78,7 +77,7 @@ function App() {
           <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ title: 'New Password' }}/>
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
           <Stack.Screen name="SeeAll" component={SeeAll} options={({ route }) => ({ title: route.params.title })}/>
-          <Stack.Screen name="YourFeed" component={YourFeed} options={{ headerShown: false }} />
+          <Stack.Screen name="YourFeed" component={YourFeed} options={{ title: 'Your Feed', headerShown: false }} />
           {/* <Stack.Screen name="Explore" component={Explore} /> */}
           <Stack.Screen name="Raffle" component={Raffle} options={({ route }) => ({ title: route.params.name })}/>
           <Stack.Screen name="PlayGame" component={PlayGame} options={{ headerShown: false }}/>
@@ -99,7 +98,6 @@ function App() {
           <Stack.Screen name="EditProfile" component={EditProfile} options={{title: 'Edit Profile'}}/>
           <Stack.Screen name="Following" component={Following} />
           <Stack.Screen name="Followers" component={Followers} />
-          <Stack.Screen name="RafflesEntered" component={RafflesEntered} />
           <Stack.Screen name="Top5List" component={Top5List} />
           <Stack.Screen name="OtherUser" component={OtherUser} options={({ route }) => ({ title: route.params.user.name })} />
           <Stack.Screen name="GameController" component={GameController} options={{ headerShown: false }}/>
