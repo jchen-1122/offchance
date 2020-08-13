@@ -118,18 +118,23 @@ function ListView(props) {
         }
         return JSON.stringify(data)
     }
-
+    // console.log('Curr user id: ', currUser._id);
+    // console.log('props.users is : ', props.users);
     // build rows of usernames and profile pics
     let usernameList = [];
     for (let user in props.users) {
+        // console.log('User is: ', props.users[user]._id);
         usernameList.push(
             <View style={styles.ListViewRow}>
                 <TouchableOpacity
                     onPress={() => {
-                        props.navigation.navigate('OtherUser', {currUser: props.currUser, user: props.users[user]})}}>
+                        currUser._id === props.users[user]._id ?
+                        props.navigation.navigate('Profile') :
+                        props.navigation.navigate('OtherUser', {currUser: props.currUser, user: props.users[user]})
+                        }}>
                     <UsernameDisplay username={props.users[user].username} profPic={{uri: props.users[user].profilePicture}} size="large"/>
                 </TouchableOpacity>
-                {typeof currUser._id === 'undefined' ? null : currUser.following.includes(props.users[user]._id)  ? 
+                {typeof currUser._id === 'undefined' ? null : currUser._id === props.users[user]._id ? null : currUser.following.includes(props.users[user]._id)  ? 
                 <BlockButton color="secondary" size="small" title='FOLLOWING'
                 onPress={async () => {
                     if (enabled[user._id]) {
