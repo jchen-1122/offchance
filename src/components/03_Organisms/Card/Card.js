@@ -14,7 +14,7 @@ import { in_a_day, is_expired } from '../../../functions/convert_dates';
 import { top5_raffle } from '../../../functions/explore_functions';
 import { time_from_now } from '../../../functions/convert_dates';
 
-function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, banner, feedType, prize }) {
+function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, banner, feedType, prize, userType, otherUser }) {
     const ip = require('../../IP_ADDRESS.json');
     const [host, setHost] = useState(null)
     const currUser = currUserG
@@ -130,13 +130,14 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
                 caption = '@' + host.username + ' posted a drawing for' + title
             }
             else if (feedType == "win" && currUser) {
-                picture = <Image style={styles.notif_host} source={{ uri: currUser.profilePicture }} />
-
+                picture = (userType == 'other') ? 
+                <Image style={styles.notif_host} source={{ uri: otherUser.profilePicture }} />: <Image style={styles.notif_host} source={{ uri: currUser.profilePicture }} />
+                let user = (userType == 'other') ? otherUser.username : 'You'
                 if (prize == 0) {
-                    caption = "You won a " + title
+                    caption = user + " won a " + title
                 }
                 else {
-                    caption = "You won chances for a drawing for " + title
+                    caption = user + " won chances for a drawing for " + title
                 }
             }
 

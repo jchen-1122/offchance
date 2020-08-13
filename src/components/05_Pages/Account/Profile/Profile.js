@@ -71,7 +71,7 @@ function Profile({ navigation }) {
         email = user.email
         followers = user.followers
         following = user.following
-        enteredRaffles = user.rafflesEntered.children
+        enteredRaffles = user.rafflesEntered.children || null
         address = user.shippingAddress
         sizeType = user.sizeType
         shoeSize = user.shoeSize

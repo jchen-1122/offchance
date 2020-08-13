@@ -14,6 +14,7 @@ export default function OtherUser({ navigation, route }) {
     const [follow, setFollow] = useState(user.following != null && !user.following.includes(otherUser._id))
     const [enabled, setEnabled] = useState(true)
     const [hostedRaffles, setHostedRaffles] = useState([])
+    const [wonRaffles, setWonRaffles] = useState([])
     const ip = require('../../IP_ADDRESS.json')
 
     React.useEffect(() => {
@@ -27,6 +28,23 @@ export default function OtherUser({ navigation, route }) {
             getRaffle()
         }
     }, [])
+
+    React.useEffect(() => {
+        async function getRaffles() {
+            var wonRaffles = []
+            if (otherUser.rafflesWon) {
+                if (otherUser.rafflesWon.children.length > 0) {
+                    for (var raf of otherUser.rafflesWon.children) {
+                        let response = await fetch('http://' + ip.ipAddress + '/raffle/id/' + raf.raffleID)
+                        response = await response.json()
+                        wonRaffles.push({raffle: response, prize: raf.reward})
+                    }
+                }
+            }
+            setWonRaffles(wonRaffles)
+        }
+        getRaffles()
+    },[])
 
     const addFollower = async () => {
         const data = require('../../IP_ADDRESS.json')
@@ -147,6 +165,28 @@ export default function OtherUser({ navigation, route }) {
                 setUserG={setUser}
             />
         ))
+    }
+    // if you're following each other, should see what stuff they've won
+    else if (otherUser.following.includes(user._id) && user.following.includes(otherUser._id)){
+        feedCards = (
+            <View style={{alignItems: 'center'}}>
+            {wonRaffles.map((raf, index) =>
+                <Card
+                    cardType='feed'
+                    feedType='win'
+                    userType='other'
+                    otherUser={otherUser}
+                    prize={raf.prize}
+                    data={raf.raffle}
+                    key={index}
+                    navigation={navigation}
+                    currUserG={user}
+                    setUserG={setUser}
+                />
+            )}
+    </View>
+)
+
     }
     return (
         <View style={utilities.container}>
