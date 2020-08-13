@@ -189,7 +189,7 @@ function OverlaySheet(props) {
     const [_amount, setAmount] = useState('$5 = 10 chances')
     const [_save, setSave] = useState(false)
     const [_buttonText, setButtonText] = useState("CONFIRM PAYMENT")
-    const [_buttonColor, setButtonColor] = useState("light")
+    const [_buttonColor, setButtonColor] = useState("confirm")
     const [_walletBalance, setWalletBalance] = useState(0)
 
     var toValue = 1000;

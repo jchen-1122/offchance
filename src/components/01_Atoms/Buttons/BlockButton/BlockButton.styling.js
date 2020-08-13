@@ -57,8 +57,11 @@ const styles = StyleSheet.create({
     BlockButton_logOut:{
         backgroundColor: 'red'
     },
+    BlockButton_confirm:{
+        backgroundColor: "#FCD843"
+    },
 
-    // different colors for button text 
+    // different colors for button text
     BlockButton__title: {
         fontSize: 16
     },

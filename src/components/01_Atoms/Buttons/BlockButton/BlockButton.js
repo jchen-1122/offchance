@@ -54,6 +54,9 @@ function BlockButton(props) {
             buttonStyle.push(styles.BlockButton_logOut);
             buttonTitleStyle = [styles.BlockButton__title_logOut];
             break;
+        case "confirm":
+            buttonStyle.push(styles.BlockButton_confirm);
+            break;
     }
 
     // determing what size (large by default)
