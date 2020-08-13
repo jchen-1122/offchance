@@ -127,7 +127,7 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
                 }}>
                     <Image style={styles.notif_host} source={{ uri: host.profilePicture }} />
                     </TouchableOpacity>
-                caption = '@' + host.username + ' posted a drawing for' + title
+                caption = '@' + host.username + ' posted a drawing for ' + title
             }
             else if (feedType == "win" && currUser) {
                 picture = (userType == 'other') ? 
