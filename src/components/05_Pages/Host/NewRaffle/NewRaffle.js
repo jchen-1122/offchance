@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react';
-import { View, Text, Alert, Keyboard } from 'react-native';
+import { View, Text, Alert, Keyboard, Button } from 'react-native';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import InputField from '../../../02_Molecules/InputField/InputField';
 import { fonts, utilities } from '../../../../settings/all_settings';
@@ -25,6 +25,7 @@ export default function NewRaffle({ navigation, route }) {
         shoeSizes.push(i.toString())
     }
 
+    const [buttonTitle, setButtonTitle] = useState('Submit')
     // states for each input value
     const [_name, setName] = useState(null)
     const [_price, setPrice] = useState(null)
@@ -39,6 +40,10 @@ export default function NewRaffle({ navigation, route }) {
     const [_drawingDuration, setDrawingDuration] = useState(null)
     const [_drawingRadius, setDrawingRadius] = useState(null)
     const [_address, setAddress] = useState(null)
+<<<<<<< HEAD
+=======
+
+>>>>>>> more-stuff-david-wants
 
     // for going to the next text input
     const priceRef = useRef()
@@ -129,7 +134,31 @@ export default function NewRaffle({ navigation, route }) {
         }
         return JSON.stringify(data)
     };
-
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => (
+                <Button onPress={() => {
+                    navigation.navigate("HostDashboard")
+                }} title="Cancel" />
+            ),
+            headerRight: () => (
+                <Button title={buttonTitle}
+                onPress={() => {
+                    setButtonTitle('Submitting')
+                    postRaffle()
+                    Alert.alert(
+                        "Success!",
+                        "Your drawing has been submitted for approval. You will get notified if it gets approved.",
+                        [
+                            { text: "OK", onPress: () => console.log("OK Pressed") }
+                        ],
+                        { cancelable: false }
+                    );
+                    navigation.navigate('HostDashboard')
+                }}/>
+            ),
+        });
+    }, [ _type,_name, _price, _value, _numProducts, _description,_goal,_charities,_productType,_drawingDuration,_drawingRadius, _address,_sizeTypes, _sizes, buttonTitle]);
     return (
 
         <View style={utilities.container}>
@@ -156,8 +185,8 @@ export default function NewRaffle({ navigation, route }) {
                                 returnKeyType='done'
                                 onSubmitEditing={() => numProductsRef.current.focus()}
                                 ref={priceRef}
-                                required /> : 
-                                <InputField
+                                required /> :
+                            <InputField
                                 label="Prize Value"
                                 keyboardType="number-pad"
                                 value={_value}
@@ -199,6 +228,12 @@ export default function NewRaffle({ navigation, route }) {
                                 ref={charityRef}
                                 required /> : null
                         }
+                        {(_type == 1) ?
+                            <View style={{ width: '95%', marginLeft: '5%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <Text style={[styles.InputField__label]}>Charity Partner Logos*</Text>
+                                <BlockButton color="secondary" title="CHOOSE" size="small" />
+                            </View> : null
+                        }
                         <InputField
                             label="Description"
                             value={_description}
@@ -210,15 +245,19 @@ export default function NewRaffle({ navigation, route }) {
                             textArea />
 
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 2 }}>
-                            <Text style={styles.InputField__label}>Drawing Duration (Days) <Text style={{ color: 'red' }}>*</Text></Text>
+                            <Text style={styles.InputField__label}>Drawing Duration (Days)*</Text>
                             <Dropdown options={[1, 3, 5, 7, 14, 21, 30]} placeholder="Days" setValue={setDrawingDuration} />
                         </View>
 
-                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 1, marginVertical: '3%' }}>
-                            <Text style={styles.InputField__label}>Drawing Radius (mi) <Text style={{ color: 'red' }}>*</Text></Text>
-                            <Dropdown options={['None', 50, 100, 200, 1000]} placeholder="Miles" setValue={setDrawingRadius} />
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 1 }}>
+                            <Text style={styles.InputField__label}>Drawing Radius* (mi)</Text>
+                            <Dropdown options={['None', 1, 5, 10, 20, 50, 100, 200, 1000]} placeholder="Miles" setValue={setDrawingRadius} />
                         </View>
-
+                        <InputField
+                            label={'Store Address' + ((_drawingRadius && _drawingRadius != 'None') ? '*':'')}
+                            autoCapitalize="words"
+                            value={_address}
+                            onChangeText={(text) => { setAddress(text) }}/>
                         {/* WE NEED THIS FOR ADMIN */}
                         {/* <View style={{ width: '100%', marginLeft: '10%', marginVertical: 15 }}>
                         <Text style={styles.InputField__label}>Drawing Time<Text style={{ color: 'red' }}>*</Text></Text>
@@ -233,7 +272,7 @@ export default function NewRaffle({ navigation, route }) {
                     /> */}
 
                         <View style={{ width: '100%', marginLeft: '10%', marginVertical: 15 }}>
-                            <Text style={styles.InputField__label}>Type of Product<Text style={{ color: 'red' }}>*</Text></Text>
+                            <Text style={styles.InputField__label}>Type of Product*</Text>
                             {productTypes.map((type, index) =>
                                 <Checkbox
                                     text={type.charAt(0).toUpperCase() + type.slice(1)}
@@ -255,21 +294,21 @@ export default function NewRaffle({ navigation, route }) {
 
                         {_productType == 'sneaker' ?
                             <View style={{ height: 75, marginLeft: '5%' }}>
-                                <Text style={[styles.InputField__label]}>Available Sizes <Text style={{ color: 'red' }}>*</Text></Text>
+                                <Text style={[styles.InputField__label]}>Available Sizes*</Text>
                                 <SizeCarousel sizes={shoeSizes} type='multiple' default={1} setSize={setSizes} />
                             </View>
                             : null}
                         {_productType == 'clothing' ?
                             <View style={{ height: 75, marginLeft: '5%', width: '95%' }}>
-                                <Text style={[styles.InputField__label]}>Available Sizes <Text style={{ color: 'red' }}>*</Text></Text>
+                                <Text style={[styles.InputField__label]}>Available Sizes*</Text>
                                 <SizeCarousel sizes={shirtSizes} type='multiple' default={1} setSize={setSizes} />
                             </View>
                             : null}
                         <View style={{ width: '95%', marginLeft: '5%', marginVertical: '5%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <Text style={[styles.InputField__label]}>Product Pictures <Text style={{ color: 'red' }}>*</Text></Text>
+                            <Text style={[styles.InputField__label]}>Product Pictures*</Text>
                             <BlockButton color="secondary" title="CHOOSE" size="small" />
                         </View>
-                        <BlockButton title="SUBMIT FOR APPROVAL" color="primary" onPress={() => {
+                        {/* <BlockButton title="SUBMIT FOR APPROVAL" color="primary" onPress={() => {
                             postRaffle()
                             Alert.alert(
                                 "Success!",
@@ -280,7 +319,7 @@ export default function NewRaffle({ navigation, route }) {
                                 { cancelable: false }
                             );
                             navigation.navigate('HostDashboard')
-                        }} />
+                        }} /> */}
                     </View>
                 </KeyboardAwareScrollView>
             </ScrollView>

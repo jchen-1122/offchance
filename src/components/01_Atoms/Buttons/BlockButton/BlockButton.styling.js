@@ -88,12 +88,6 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
     },
-    BlockButton__title_logOut: {
-        fontSize: 18,
-        color: 'white',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-    },
 
     // different sizes for the button
     BlockButton_short: {

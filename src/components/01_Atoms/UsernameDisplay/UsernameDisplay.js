@@ -33,6 +33,8 @@ function UsernameDisplay(props){
             displayText = 'Hosted by ' +displayText;
             containerStyle = styles.container_hostedBy;
             break;
+        case 'game':
+            containerStyle = styles.container_game;
     }
 
     return (

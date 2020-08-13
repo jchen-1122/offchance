@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react'
-import { ScrollView, View, Text, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, TouchableOpacity } from 'react-native'
+import { ScrollView, View, Text, Image, KeyboardAvoidingView, TouchableWithoutFeedback, Keyboard, TouchableOpacity, Button, Alert } from 'react-native'
 import InputField from '../../../02_Molecules/InputField/InputField'
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import SizeCarousel from '../../../01_Atoms/SizeCarousel/SizeCarousel';
@@ -23,6 +23,7 @@ export default function ({ navigation }) {
     }
 
     const AWS = require('aws-sdk');
+    const [buttonTitle, setButtonTitle] = useState('Save')
 
     const { user, setUser } = useContext(GlobalState)
     const [_name, setName] = useState(user.name)
@@ -47,12 +48,12 @@ export default function ({ navigation }) {
 
     async function getPermissionAsync() {
         if (Constants.platform.ios) {
-          const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-          if (status !== 'granted') {
-            alert('Sorry, we need camera roll permissions to make this work!');
-          }
+            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+            if (status !== 'granted') {
+                alert('Sorry, we need camera roll permissions to make this work!');
+            }
         }
-      }
+    }
 
     const _pickImage = async () => {
         await getPermissionAsync()
@@ -70,9 +71,9 @@ export default function ({ navigation }) {
 
           //console.log(result);
         } catch (E) {
-          console.log(E);
+            console.log(E);
         }
-      };
+    };
 
     AWS.config = new AWS.Config({
         accessKeyId: data.IBMaccessKeyId,
@@ -96,12 +97,12 @@ export default function ({ navigation }) {
             Body: arrayBuffer,
             ContentType: contentType
         }).promise()
-        .then(() => {
-            console.log('Item: ' + _imgname + ' created!');
-        })
-        .catch((e) => {
-            console.error(`ERROR: ${e.code} - ${e.message}\n`);
-        })
+            .then(() => {
+                console.log('Item: ' + _imgname + ' created!');
+            })
+            .catch((e) => {
+                console.error(`ERROR: ${e.code} - ${e.message}\n`);
+            })
     };
 
     const _delImage = (itemName) => {
@@ -115,9 +116,9 @@ export default function ({ navigation }) {
             Bucket: 'oc-profile-pictures',
             Key: itemName.substring(itemName.lastIndexOf('/') + 1)
         }).promise()
-        .catch((e) => {
-            console.error(`ERROR: ${e.code} - ${e.message}\n`);
-        });
+            .catch((e) => {
+                console.error(`ERROR: ${e.code} - ${e.message}\n`);
+            });
     };
 
     const editUser = async () => {
@@ -176,16 +177,61 @@ export default function ({ navigation }) {
             shirtSize: _shirtSize,
             sizeType: _sizeType,
         }
+        console.log(JSON.stringify(newdata))
         if (_newimg == null) return JSON.stringify(data)
         console.log(JSON.stringify(newdata))
         return JSON.stringify(newdata)
     };
 
+    React.useLayoutEffect(() => {
+        console.log('here')
+        navigation.setOptions({
+            headerLeft: () => (
+                <Button onPress={() => {
+                    navigation.navigate("Profile")
+                }} title="Cancel" />
+            ),
+            headerRight: () => (
+                <Button title={buttonTitle}
+                onPress={async () => {
+                    if (!generateErrors()) {
+                        setButtonTitle("Saving")
+                        if (_newimg != null) await _uploadImage()
+                        const userObj = await editUser()
+                        if (userObj.keyValue == null) {
+                            _delImage(user.profilePicture)
+                            setUser(userObj)
+                            Alert.alert(
+                                "Success!",
+                                "Your profile has been saved",
+                                [
+                                  { text: "OK", onPress: () => console.log("OK Pressed") }
+                                ],
+                                { cancelable: false }
+                              );
+                            navigation.navigate('Profile')
+                        } else {
+                            let errors = []
+                            let errMsg = ""
+                            if (userObj.keyValue.username) {
+                                errMsg = "Username is taken. Please try again."
+                            } else if (userObj.keyValue.email) {
+                                errMsg = "Email is taken."
+                            }
+                            errors.push(<Text style={fonts.error}>{errMsg}</Text>)
+                            setErrors(errors)
+                        }
+                    }
+                }}/>
+            ),
+        });
+    }, [navigation,_name, _username,_email,_address, _shoeSize, _shirtSize,_sizeType, _imgname, buttonTitle]);
     return (
         <ScrollView>
             <KeyboardAwareScrollView
                 style={{ backgroundColor: 'transparent' }}
                 resetScrollToCoords={{ x: 0, y: 0 }}>
+                    
                 <View style={{ zIndex: 5 }}>
                     <TouchableOpacity onPress={() => {
                         _pickImage()
@@ -231,7 +277,7 @@ export default function ({ navigation }) {
                                 {['male', 'female', 'both'].map((type, index) =>
                                     <Checkbox
                                         selected={_sizeType == type}
-                                        onPress={() => setSizeType(type)}
+                                        onPress={() => {setSizeType(type)}}
                                         text={type.charAt(0).toUpperCase() + type.slice(1)}
                                     />
                                 )}
@@ -279,8 +325,11 @@ export default function ({ navigation }) {
                                             errors.push(<Text style={fonts.error}>{errMsg}</Text>)
                                             setErrors(errors)
                                         }
+                                        errors.push(<Text style={fonts.error}>{errMsg}</Text>)
+                                        setErrors(errors)
                                     }
-                                }}></BlockButton>
+                                }
+                            }></BlockButton>
                         </View>
                     </View>
                 </View>

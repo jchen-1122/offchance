@@ -1,5 +1,5 @@
-import React, { useState, useContext, useRef } from 'react'
-import { View, Text, Keyboard, ScrollView } from 'react-native';
+import React, { useState, useContext, useRef, useEffect } from 'react'
+import { View, Text, Keyboard, ScrollView, Button, Alert } from 'react-native';
 import InputField from '../../../02_Molecules/InputField/InputField';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import Checkbox from '../../../02_Molecules/Checkbox/Checkbox';
@@ -10,6 +10,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 export default function ReqBusAcc({ navigation }) {
     const { user, setUser } = useContext(GlobalState)
     const [_errors, setErrors] = useState([])
+    const [buttonTitle, setButtonTitle] = useState(user.host_item ? '' : 'Submit')
 
     // local states for form input (i'm not sure if these are redundant heh)
     const [_hostItem, setHostItem] = useState(null)
@@ -27,6 +28,36 @@ export default function ReqBusAcc({ navigation }) {
     const dayRef = useRef()
     const yearRef = useRef()
 
+    // gets an "fewer react hooks rendered than expected" error
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerLeft: () => (
+                <Button onPress={() => {
+                    navigation.navigate("HostDashboard")
+                }} title="Cancel" />
+            ),
+            headerRight: () => (
+                <Button title={buttonTitle}
+                onPress={async () => {
+                    generateErrors()
+                    if (!generateErrors()) {
+                        setButtonTitle('Submitting')
+                        const userObj = await editUser()
+                        setUser(userObj)
+                        Alert.alert(
+                            "Success!",
+                            "Your request has been submitted for approval. You will get notified if it gets approved.",
+                            [
+                                { text: "OK", onPress: () => console.log("OK Pressed") }
+                            ],
+                            { cancelable: false }
+                        );
+                        navigation.navigate('Account')
+                    }
+                }}/>
+            ),
+        });
+    }, [ _hostItem, _hostCharity, _hostDetails, _hostYear, _hostMonth, _hostDay, _hostRaffleType, buttonTitle, _errors]);
 
     // patch request
     const data = require('../../../IP_ADDRESS.json');
@@ -181,7 +212,7 @@ export default function ReqBusAcc({ navigation }) {
                         {_errors}
                     </View>
 
-                    <BlockButton
+                    {/* <BlockButton
                         color="secondary"
                         title="SUBMIT FOR APPROVAL"
                         onPress={async () => {
@@ -200,7 +231,7 @@ export default function ReqBusAcc({ navigation }) {
                                 navigation.navigate('Account')
                             }
                         }}
-                    />
+                    /> */}
                 </View >
             </KeyboardAwareScrollView>
         </ScrollView>

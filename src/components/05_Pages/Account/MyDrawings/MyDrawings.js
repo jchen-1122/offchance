@@ -73,8 +73,6 @@ export default function MyDrawings({navigation}) {
         let contentType = 'image/jpeg';
         let name = Math.round((new Date()).getTime() / 1000) + '.jpeg';
         console.log(name)
-        //console.log(asset)
-        //const { localUri, width, height } = asset;
 
         return cosClient.putObject({
             Bucket: 'oc-mobile-images',

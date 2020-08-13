@@ -6,8 +6,9 @@ var radioButtonSize = 35
 const styles = StyleSheet.create({
     
     InputField__label: {
-        fontSize: 16,
+        fontSize: 14,
         fontWeight: '500', 
+        color: '#888888'
     },
 
     radioButtonCont:{
