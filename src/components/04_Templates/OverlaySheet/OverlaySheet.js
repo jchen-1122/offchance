@@ -1,10 +1,11 @@
-import React, {useState, useEffect} from 'react'
-import { View, Text, TouchableOpacity, TextInput, ScrollView, Picker, Animated, Alert, Dimensions} from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Picker, Animated, Alert, Dimensions } from 'react-native'
 import { Icon, Overlay } from 'react-native-elements'
 import CheckBox from '../../02_Molecules/Checkbox/Checkbox'
 import DropDownPicker from 'react-native-dropdown-picker';
+import SwipeButton from '../../01_Atoms/Buttons/SwipeButton/SwipeButton';
 
-import { utilities, fonts } from '../../../settings/all_settings';
+import { utilities, fonts, colors } from '../../../settings/all_settings';
 
 // https://www.npmjs.com/package/react-native-dropdown-picker
 import DropDown from '../../../components/01_Atoms/DropDown/DropDown';
@@ -20,40 +21,40 @@ import { user_logged_in } from '../../../functions/user_functions';
 
 // Sliding Sheet update: Removed visible prop, since the sheet will be invisible after sliding off the screen.
 function OverlaySheet(props) {
-    const [last4, setlast4] = useState(null)
-    const data = require('../../IP_ADDRESS.json')
-    useEffect(() => {
-      async function getLast4() {
-        let response = await fetch('http://' + data.ipAddress + '/user/id/' + props.user._id)
-        response = await response.json()
-        if (Object.keys(response).includes('last4')) {
-          setlast4(response.last4)
-        }
-        setWalletBalance(response.walletChances)
+  const [last4, setlast4] = useState(null)
+  const data = require('../../IP_ADDRESS.json')
+  useEffect(() => {
+    async function getLast4() {
+      let response = await fetch('http://' + data.ipAddress + '/user/id/' + props.user._id)
+      response = await response.json()
+      if (Object.keys(response).includes('last4')) {
+        setlast4(response.last4)
       }
-      getLast4()
-    }, [])
+      setWalletBalance(response.walletChances)
+    }
+    getLast4()
+  }, [])
 
-    useEffect(() => {
-      if (props.amount) {
-        setAmount(props.amount)
-      }
-    }, [props.amount])
+  useEffect(() => {
+    if (props.amount) {
+      setAmount(props.amount)
+    }
+  }, [props.amount])
 
   async function subtractWallet() {
-      // console.log('HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH')
-      const response = await fetch('http://' + data.ipAddress + '/user/edit/' + props.user._id, {
-            method: "PATCH",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({walletChances: _walletBalance - props.chances})
-        })
-        const json = await response.json()
+    // console.log('HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH')
+    const response = await fetch('http://' + data.ipAddress + '/user/edit/' + props.user._id, {
+      method: "PATCH",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ walletChances: _walletBalance - props.chances })
+    })
+    const json = await response.json()
 
-        return json
-    }
+    return json
+  }
 
   // update user for entered users in the backend
   async function enterUserinRaffle() {
@@ -61,7 +62,7 @@ function OverlaySheet(props) {
     // if first entered raffle
     let currEntered;
     if (!Object.keys(props.user).includes('rafflesEntered') || props.user.rafflesEntered.children.length === 0) {
-      currEntered = {children: [makeEntetedRaffleSchemaJSON(0,0)]}
+      currEntered = { children: [makeEntetedRaffleSchemaJSON(0, 0)] }
     } else {
       currEntered = props.user.rafflesEntered.children
       let oldamount = 0;
@@ -74,7 +75,7 @@ function OverlaySheet(props) {
         }
       }
       currEntered.push(makeEntetedRaffleSchemaJSON(oldamount, oldchances))
-      currEntered = {children: currEntered}
+      currEntered = { children: currEntered }
     }
 
     let walletFinal = _walletBalance
@@ -84,10 +85,10 @@ function OverlaySheet(props) {
     let enteredRaffle = await fetch('http://' + data.ipAddress + '/user/edit/' + props.user._id, {
       method: "PATCH",
       headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({rafflesEntered: currEntered, walletChances: walletFinal})
+      body: JSON.stringify({ rafflesEntered: currEntered, walletChances: walletFinal })
     })
     enteredRaffle = await enteredRaffle.json()
     return enteredRaffle
@@ -115,7 +116,7 @@ function OverlaySheet(props) {
     // update users
     let currEntered;
     if (!Object.keys(raffle).includes('users') || raffle.users.children.length === 0) {
-      currEntered = {children: [makeRaffleJSON(0,0)]}
+      currEntered = { children: [makeRaffleJSON(0, 0)] }
     } else {
       currEntered = raffle.users.children
       let oldamount = 0;
@@ -128,7 +129,7 @@ function OverlaySheet(props) {
         }
       }
       currEntered.push(makeRaffleJSON(oldamount, oldchances))
-      currEntered = {children: currEntered}
+      currEntered = { children: currEntered }
     }
     // update amountRaised
     let amountRaised = raffle.amountRaised
@@ -141,10 +142,10 @@ function OverlaySheet(props) {
     let updatedRaffle = await fetch('http://' + data.ipAddress + '/raffle/edit/' + props.raffleid, {
       method: "PATCH",
       headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
       },
-      body: JSON.stringify({users: currEntered, amountRaised: amountRaised, lastDonatedTo: timeNow})
+      body: JSON.stringify({ users: currEntered, amountRaised: amountRaised, lastDonatedTo: timeNow })
     })
   }
 
@@ -160,210 +161,196 @@ function OverlaySheet(props) {
   }
 
 
-    const [value, onChangeText] = React.useState('');
-    const [selectedValue, setSelectedValue] = useState("**** **** **** 1234");
-    // const [sheetOpen, setSheetOpen] = useState(true); // isHidden
-    const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet (1000 is at the bottom)
-    const [visible, setVisible] = useState(false);
-    const [sheetController, setSheetController] = useState(true);
+  const [value, onChangeText] = React.useState('');
+  const [selectedValue, setSelectedValue] = useState("**** **** **** 1234");
+  // const [sheetOpen, setSheetOpen] = useState(true); // isHidden
+  const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet (1000 is at the bottom)
+  const [visible, setVisible] = useState(false);
+  const [sheetController, setSheetController] = useState(true);
 
-    let options1 = []
-    if (last4 !== null) {
-      options1.push('**** **** **** ' + last4)
-      options1.push('Paypal')
-      if (!props.wallet) {
-        options1.push('Wallet Chances')
-      }
+  let options1 = []
+  if (last4 !== null) {
+    options1.push('**** **** **** ' + last4)
+    options1.push('Paypal')
+    if (!props.wallet) {
+      options1.push('Wallet Chances')
+    }
+  } else {
+    options1.push('+ Add Credit Card')
+    options1.push('Paypal')
+    if (!props.wallet) {
+      options1.push('Wallet Chances')
+    }
+  }
+  let options2 = ['$5 = 10 chances', '$10 = 40 chances', '$20 = 50 chances', '$50 = 150 chances', '$100 = 400 chances', '$250 = 1100 chances']
+
+
+  const [stripe, setStripe] = useState(true)
+  const [_method, setMethod] = useState(null)
+  const [_amount, setAmount] = useState('$5 = 10 chances')
+  const [_save, setSave] = useState(false)
+  const [_buttonText, setButtonText] = useState("CONFIRM PAYMENT")
+  const [_buttonColor, setButtonColor] = useState("confirm")
+  const [_walletBalance, setWalletBalance] = useState(0)
+
+  var toValue = 1000;
+  const toggleSheet = () => {
+
+    Animated.spring(
+      bounceValue, {
+      toValue: toValue,
+      velocity: 3,
+      tension: 2,
+      friction: 8,
+      useNativeDriver: true
+    }).start();
+
+  };
+
+  const toggleOverlay = () => {
+    if (!visible) {
+      // if not visible, turn visible, set sheetController = false
+      setVisible(true);
+      setSheetController(false);
     } else {
-      options1.push('+ Add Credit Card')
-      options1.push('Paypal')
-      if (!props.wallet) {
-        options1.push('Wallet Chances')
-      }
+      // if visible, turn invisible, set sheetController = true
+      setVisible(false);
+      props.trigger();
+      setSheetController(true)
     }
-    let options2 = ['$5 = 10 chances', '$10 = 40 chances', '$20 = 50 chances', '$50 = 150 chances', '$100 = 400 chances', '$250 = 1100 chances']
+  }
 
 
-    const [stripe, setStripe] = useState(true)
-    const [_method, setMethod] = useState(null)
-    const [_amount, setAmount] = useState('$5 = 10 chances')
-    const [_save, setSave] = useState(false)
-    const [_buttonText, setButtonText] = useState("CONFIRM PAYMENT")
-    const [_buttonColor, setButtonColor] = useState("confirm")
-    const [_walletBalance, setWalletBalance] = useState(0)
+  if (props.sheet && sheetController) {
+    toggleOverlay();
+  } else {
+    null;
+  }
 
-    var toValue = 1000;
-    const toggleSheet = () => {
+  // close this sliding sheet
+  const closeSlidingSheet = () => {
+    toValue = 1000;
+    toggleSheet();
+    props.trigger();
+  }
 
-        Animated.spring(
-            bounceValue, {
-            toValue: toValue,
-            velocity: 3,
-            tension: 2,
-            friction: 8,
-            useNativeDriver: true
-        }).start();
+  // // summon payment page
+  // const payMe = () => {
+  //   closeSlidingSheet();
+  //   props.paymentTrigger();
+  // }
 
-    };
+  // console.log('AMOUNT DOLLAR: ', props.amountDollar); // 5, 10, 20, 50, 100, 250
 
-    const toggleOverlay = () => {
-      if (!visible) {
-        // if not visible, turn visible, set sheetController = false
-        setVisible(true);
-        setSheetController(false);
-      } else {
-        // if visible, turn invisible, set sheetController = true
-        setVisible(false);
-        props.trigger();
-        setSheetController(true)
-      }
-    }
+  // console.log(props.sheet); 101010
+  // TODO: Add a dropdown/button for stripe and apple pay
 
+  // console.log('size type: ', props.sizeType);
 
-    if (props.sheet && sheetController) {
-      toggleOverlay();
-    } else {
-      null;
-    }
+  return (
+    <View>
+      <Overlay isVisible={visible}
+        onBackdropPress={() => { toggleOverlay() }}
+        overlayStyle={styles.overlay}>
 
-    // close this sliding sheet
-    const closeSlidingSheet = () => {
-        toValue = 1000;
-        toggleSheet();
-        props.trigger();
-    }
+        {stripe ? <View >
 
-    // // summon payment page
-    // const payMe = () => {
-    //   closeSlidingSheet();
-    //   props.paymentTrigger();
-    // }
+          {/* Title part with a close button */}
+          <View style={styles.slidingSheet__header}>
+            <TouchableOpacity onPress={() => { toggleOverlay() }}>
+              <Icon name='close' />
+            </TouchableOpacity>
+            <Text style={fonts.h1}>{props.title}</Text>
+            <View />
+          </View>
 
-    // console.log('AMOUNT DOLLAR: ', props.amountDollar); // 5, 10, 20, 50, 100, 250
+          <View style={styles.slidingSheet__save}>
+            {(props.sizeType === "notselected") ?
+              <Text style={{ color: 'red', }}> *Please select a size type </Text>
+              : <Text style={{ color: 'green' }}>  Size Type: {props.sizeType} </Text>}
 
-    // console.log(props.sheet); 101010
-    // TODO: Add a dropdown/button for stripe and apple pay
+            {(props.size === "notselected") ?
+              <Text style={{ color: 'red' }}> *Please select a size </Text>
+              : <Text style={{ color: 'green' }}>  Size: {props.size} </Text>}
 
-    // console.log('size type: ', props.sizeType);
+            <Text style={{ color: 'red' }}>{(_method === "Wallet Chances" && props.user.walletChances - props.chances < 0) ? "*You do not have enough chances in your wallet" : ""}</Text>
+          </View>
 
-    return (
-      <View>
-        <Overlay isVisible={visible}
-        onBackdropPress={() => {toggleOverlay()}}
-        overlayStyle={{borderRadius: 30,}}>
+          <View style={[styles.slidingSheet__content, { zIndex: 2 }]}>
+            <Text style={styles.slidingSheet__content_text}>{props.content[1]}</Text>
+            <DropDown
+              placeholder={"PICK A PAYMENT METHOD"}
+              options={options1}
+              size='large'
+              arrowSize={18}
+              isVisible={false}
+              setValue={setMethod}
+            />
+          </View>
 
-        {stripe ? <View style={{flex: 0.6, }}>
+          {(_method === "Wallet Chances") ?
+            <View style={styles.slidingSheet__save}>
+              <Text style={[styles.slidingSheet__content__text]}>{"Current " + props.content[0]}</Text>
+              <Text style={{ marginTop: 5 }}>{_walletBalance}</Text>
+            </View>
 
-                {/* Title part with a close button */}
-                <View style={styles.slidingSheet__header}>
-                    <TouchableOpacity onPress={() => {toggleOverlay()}}>
-                        <Icon name='close' />
-                    </TouchableOpacity>
-                    <Text style={fonts.h1}>{props.title}</Text>
-                    <View/>
-                </View>
+            :
 
-                <View style={styles.slidingSheet__save}>
-                  {(props.sizeType === "notselected") ?
-                    <Text style={{color: 'red', }}> *Please select a size type </Text>
-                    : <Text style={{color: 'green'}}>  Size Type: {props.sizeType} </Text>}
+            <View style={[styles.slidingSheet__content, { zIndex: 1 }]}>
+              <Text style={styles.slidingSheet__content_text}>{props.content[2]}</Text>
+              <DropDown
+                placeholder={_amount}
+                options={options2}
+                size='large'
+                arrowSize={18}
+                isVisible={false}
+                setValue={setAmount}
+              />
+            </View>}
 
-                  {(props.size === "notselected") ?
-                    <Text style={{color: 'red'}}> *Please select a size </Text>
-                    : <Text style={{color: 'green'}}>  Size: {props.size} </Text>}
+          {(_method === '+ Add Credit Card') ?
+            <View style={[styles.slidingSheet__save]}>
+              <CheckBox
+                selected={_save}
+                onPress={() => setSave(!_save)}
+                text='Save my payment information'
+              />
+            </View> : null}
 
-                  <Text style={{color: 'red'}}>{(_method === "Wallet Chances" && props.user.walletChances - props.chances < 0) ? "*You do not have enough chances in your wallet" : ""}</Text>
-                </View>
+            <View style={{ alignItems: 'center', width: '100%' }}>
+                <SwipeButton title="SWIPE TO CONFIRM" onSwipeSuccess={async() => {
+                  // if they've selected a size, sizetype, and payment method
+                  if (_method !== null && props.sizeType !== "notselected" && props.size !== "notselected") {
 
-                <View style={[styles.slidingSheet__content, {zIndex: 2}]}>
-                    <Text style={styles.slidingSheet__content_text}>{props.content[1]}</Text>
-                    <DropDown
-                      placeholder={"PICK A PAYMENT METHOD"}
-                      options={options1}
-                      size='large'
-                      arrowSize={18}
-                      isVisible={false}
-                      setValue={setMethod}
-                      />
-                </View>
+                    // if using wallet chances
+                    if (_method === "Wallet Chances"){
+                      // if they have enough chances
+                      if (props.user.walletChances - props.chances > 0){
+                        let updatedUser = await enterUserinRaffle()
+                        props.setUser(updatedUser)
+                        await updateRaffle()
+                        toggleOverlay();
+                        props.navigation.navigate("Success", { fromRaffle: props.chances })
+                      }
+                    }
 
-                {(_method === "Wallet Chances") ?
-                <View style={styles.slidingSheet__save}>
-                    <Text style={[styles.slidingSheet__content__text]}>{"Current " + props.content[0]}</Text>
-                    <Text style={{marginTop: 5}}>{_walletBalance}</Text>
-                </View>
-
-                :
-
-                <View style={[styles.slidingSheet__content, {zIndex: 1}]}>
-                    <Text style={styles.slidingSheet__content_text}>{props.content[2]}</Text>
-                    <DropDown
-                      placeholder={_amount}
-                      options={options2}
-                      size='large'
-                      arrowSize={18}
-                      isVisible={false}
-                      setValue={setAmount}
-                      />
-                </View>}
-
-                {(_method ==='+ Add Credit Card') ?
-                  <View style={[styles.slidingSheet__save]}>
-                  <CheckBox
-                    selected={_save}
-                    onPress={() => setSave(!_save)}
-                    text='Save my payment information'
-                  />
-                </View> : null}
-
-                <View style={styles.button}>
-                  { (props.wallet) ?
-                    <BlockButton
-                        title={_buttonText}
-                        color="primary"
-                        onPress={() => {
-                          if (_buttonText === "CONFIRM PAYMENT" && _method !== null) {
-                            setButtonText("ADD CHANCES")
-                          } else if (_buttonText !== "CONFIRM PAYMENT" && _method !== null) {
-                            setButtonText("CONFIRM PAYMENT")
-                            setStripe(false)
-                          }}}
-                        /> :
-                        // for drawings
-                        <BlockButton
-                        title={_buttonText}
-                        color={_buttonColor}
-                        onPress={async () => {
-                          if (_buttonText === "CONFIRM PAYMENT" && _method !== null && props.sizeType !== "notselected" && props.size !== "notselected") {
-                            if (_method === "Wallet Chances" && props.user.walletChances - props.chances < 0) {
-                              setButtonText("CONFIRM PAYMENT")
-                            } else {
-                              setButtonText("ENTER DRAWING")
-                              setButtonColor('primary')
-                            }
-                          } else if (_buttonText !== "CONFIRM PAYMENT" && _method !== null) {
-                              let updatedUser = await enterUserinRaffle()
-                              props.setUser(updatedUser)
-                              await updateRaffle()
-                            if (_method === "Wallet Chances") {
-                              setButtonText("CONFIRM PAYMENT")
-                              toggleOverlay();
-                              props.navigation.navigate("Success", {fromRaffle: props.chances})
-                            } else {
-                              setButtonText("CONFIRM PAYMENT")
-                              toggleOverlay();
-                              setStripe(false)
-                            }
-                          }}}
-                        />
+                    // if using a payment method
+                    else {
+                      let updatedUser = await enterUserinRaffle()
+                      props.setUser(updatedUser)
+                      await updateRaffle()
+                      toggleOverlay();
+                      setStripe(false)
+                    }
                   }
+                }} />
               </View>
 
         </View> : <Stripe user={props.user} setUser={props.setUser} navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet}></Stripe>}
 
-        </Overlay>
-      </View>
-    )
+      </Overlay>
+    </View>
+  )
 }
 
 export default OverlaySheet;
