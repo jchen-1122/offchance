@@ -319,49 +319,6 @@ function SlidingSheet(props) {
                 }} />
               </View>
 
-              {/* <View style={styles.button}>
-                {(props.wallet) ?
-                  <BlockButton
-                    title={_buttonText}
-                    color="primary"
-                    onPress={() => {
-                      if (_buttonText === "CONFIRM PAYMENT" && _method !== null) {
-                        setButtonText("ADD CHANCES")
-                      } else if (_buttonText !== "CONFIRM PAYMENT" && _method !== null) {
-                        setButtonText("CONFIRM PAYMENT")
-                        setStripe(false) // if its false, stripe shows up
-                      }
-                    }}
-                  /> :
-                  // for drawings
-                  <BlockButton
-                    title={_buttonText}
-                    color="primary"
-                    onPress={async () => {
-                      // keep this if statement, if they have enough chances -> update user
-                      if (_buttonText === "CONFIRM PAYMENT" && _method !== null && props.sizeType !== "notselected" && props.size !== "notselected") {
-                        if (_method === "Wallet Chances" && props.user.walletChances - props.chances < 0) {
-                          setButtonText("CONFIRM PAYMENT")
-                        } else {
-                          setButtonText("ENTER DRAWING")
-                        }
-                      } else if (_buttonText !== "CONFIRM PAYMENT" && _method !== null) {
-                        let updatedUser = await enterUserinRaffle()
-                        props.setUser(updatedUser)
-                        await updateRaffle()
-                        if (_method === "Wallet Chances") {
-                          setButtonText("CONFIRM PAYMENT")
-                          props.navigation.navigate("Success", { fromRaffle: props.chances })
-                        } else {
-                          setButtonText("CONFIRM PAYMENT")
-                          setStripe(false)
-                        }
-                      }
-                    }}
-                  />
-                }
-              </View> */}
-
             </ScrollView> : <Stripe user={props.user} setUser={props.setUser} navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet}></Stripe>}
         </View>
 

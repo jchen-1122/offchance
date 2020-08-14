@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { View, Text, TouchableOpacity, TextInput, ScrollView, Picker, Animated, Alert, Dimensions } from 'react-native'
+import { View, Text, TouchableOpacity, TextInput, ScrollView, Picker, Animated, Alert, Dimensions, Image } from 'react-native'
 import { Icon, Overlay } from 'react-native-elements'
 import CheckBox from '../../02_Molecules/Checkbox/Checkbox'
-import DropDownPicker from 'react-native-dropdown-picker';
 import SwipeButton from '../../01_Atoms/Buttons/SwipeButton/SwipeButton';
 
 import { utilities, fonts, colors } from '../../../settings/all_settings';
@@ -277,7 +276,7 @@ function OverlaySheet(props) {
           </View>
 
           <View style={[styles.slidingSheet__content, { zIndex: 2 }]}>
-            <Text style={styles.slidingSheet__content_text}>{props.content[1]}</Text>
+            <Text style={styles.slidingSheet__content_text}>Payment Method</Text>
             <DropDown
               placeholder={"PICK A PAYMENT METHOD"}
               options={options1}
@@ -293,11 +292,9 @@ function OverlaySheet(props) {
               <Text style={[styles.slidingSheet__content__text]}>{"Current " + props.content[0]}</Text>
               <Text style={{ marginTop: 5 }}>{_walletBalance}</Text>
             </View>
-
             :
-
             <View style={[styles.slidingSheet__content, { zIndex: 1 }]}>
-              <Text style={styles.slidingSheet__content_text}>{props.content[2]}</Text>
+              <Text style={styles.slidingSheet__content_text}>Purchase Amount</Text>
               <DropDown
                 placeholder={_amount}
                 options={options2}

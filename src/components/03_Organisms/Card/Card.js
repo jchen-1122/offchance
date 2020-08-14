@@ -63,11 +63,17 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
         raffleid = data._id
     }
 
+    let buttonText = 'ENTER DRAWING'
+    for (var raffle of currUser.rafflesEntered.children){
+        if (raffle.raffleID == raffleid){
+            buttonText = 'YOU HAVE ' + raffle.chances + ' CHANCES' + ((raffle.size && raffle.size !== 'One Size') ? ' FOR SIZE ' + raffle.size : '')
+        }
+    }
     // set default values for card
     let startData = null;
     let like = null;
     let pgBar = null;
-    let button = <BlockButton title='Enter Drawing' color="secondary" onPress={() => navigation.navigate('Raffle', data)} />;
+    let button = <BlockButton title={buttonText} color="secondary" onPress={() => navigation.navigate('Raffle', data)} />;
     let friendsEntered = <EnteredUsersDisplay enteredUsers={enteredUsers} navigation={navigation} />
 
     // CHECK WHAT TYPE OF CARD--------------------------------------------------------------
@@ -79,12 +85,12 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
                     {(banner) ? <CardBanner title='DONATE TO WIN' color='lightGreen' /> : null}
                     <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid} />
                 </View>);
-            if (donationGoal) {
-                pgBar =
-                    <View style={{ marginTop: 15 }}>
-                        <ProgressBar progress={230 / donationGoal} color={colors.primaryColor} raised={230} goal={donationGoal} width={contentWidth} />
-                    </View>
-            }
+            // if (donationGoal) {
+            //     pgBar =
+            //         <View style={{ marginTop: 15 }}>
+            //             <ProgressBar progress={230 / donationGoal} color={colors.primaryColor} raised={230} goal={donationGoal} width={contentWidth} />
+            //         </View>
+            // }
             startData = (
                 <View>
                     {expired ?
