@@ -15,6 +15,7 @@ import * as Permissions from 'expo-permissions';
 import AssetUtils from 'expo-asset-utils';
 import * as Abuffer from 'base64-arraybuffer';
 import * as Sharing from 'expo-sharing';
+import Paypal from '../Wallet/paypal'
 
 {/* Matt used this page to test image upload feel free to delete everything*/}
 
@@ -98,14 +99,16 @@ export default function MyDrawings({navigation}) {
 
     return (
         <View style={utilities.container}>
-            <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+          <Text>still working</Text>
+          {/* <Paypal></Paypal> */}
+            {/* <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                 <Button title="Pick an image from camera roll" onPress={async () => {_pickImage()}} />
                 {image && <Button title="Upload image to IBM Cloud" onPress={async () => {_uploadImage()}} /> }
                 {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
                 {image && <TouchableOpacity onPress={openShareDialogAsync} style={styles.button}>
                               <Text style={styles.buttonText}>Share this photo</Text>
                           </TouchableOpacity>}
-            </View>
+            </View> */}
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>
         </View>
     )

@@ -5,6 +5,7 @@ import { WebView } from 'react-native-webview';
 import { stripeCheckoutRedirectHTML } from './stripeCheckout';
 import { stripeFirstPayment } from './stripeFirstPayment'
 import { stripeSavedPayment } from './stripeSavedPayment'
+import Paypal from '../Wallet/paypal'
 import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
 import GlobalState from '../../../globalState'
 
@@ -34,9 +35,8 @@ const PurchaseProduct = (props) => {
     chances = 1100
     amount = 250
   }
-
+  let ip = require('../../../IP_ADDRESS.json')
   async function loadChances() {
-      let ip = require('../../../IP_ADDRESS.json')
       const finalChances = props.user.walletChances + chances
       const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + props.user._id, {
             method: "PATCH",
@@ -103,7 +103,7 @@ const PurchaseProduct = (props) => {
           }
       }}
     /> : 
-    <WebView
+    ((props.method !== 'Paypal') ? <WebView
       originWhitelist={['*']}
       source={{ html: stripeSavedPayment(amount) }}
       onError={() => props.navigation.navigate('Account')}
@@ -126,7 +126,31 @@ const PurchaseProduct = (props) => {
             }
           }
       }}
-    />}
+    /> : <WebView 
+        containerStyle={{marginBottom: 170}}
+        originWhitelist={['*']}
+        source={{ uri: "http://" + ip.ipAddress + "/user/paypal" }}
+        onNavigationStateChange={async (data) => {
+          if (data.url.includes("success") && !loaded) {
+            setLoaded(true)
+            if (props.wallet) {
+              let updatedUser = await loadChances()
+              props.setUser(updatedUser)
+              props.navigation.reset({
+                index: 0,
+                routes: [{ name: 'Success' }]
+              })
+            } else  {
+              props.navigation.reset({
+                index: 0,
+                routes: [{ name: 'Success', params: {fromRaffle: chances} }],
+
+              })
+            }
+          }
+        }}
+        injectedJavaScript={`document.f1.submit()`}
+        />)}
     </View>
     
   );
