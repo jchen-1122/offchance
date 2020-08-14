@@ -7,6 +7,7 @@ import { styles } from './Welcome.styling';
 import { colors, fonts, utilities } from '../../../settings/all_settings';
 import Divider from '../../01_Atoms/Divider/Divider.js';
 import GlobalState from '../../globalState';
+import Social from '../Social/Social'
 
 
 export default function HomeScreen({ navigation }) {
@@ -77,7 +78,6 @@ export default function HomeScreen({ navigation }) {
           style={fonts.link}
           onPress={() => navigation.navigate('Home')} />
       </View>
-
     </View>
   );
 }

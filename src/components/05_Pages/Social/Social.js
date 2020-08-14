@@ -22,7 +22,7 @@ export default class Social extends Component {
 
   componentDidMount() {
     const ip = require('../../IP_ADDRESS.json')
-    this.socket = io("http://" + ip.ipAddress + "");
+    this.socket = io("http://192.168.0.22:4000");
     this.socket.emit("broadcast", { message: 'has joined the chat', profilePicture: this.props.currUser.profilePicture, username: this.props.currUser.username });
     this.socket.on("message", msg => {
       this.setState({ chatMessages: [msg, ...this.state.chatMessages] });
