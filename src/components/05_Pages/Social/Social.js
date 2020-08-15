@@ -56,13 +56,12 @@ export default class Social extends Component {
 
     return (
       <KeyboardAwareScrollView
-        style={{ backgroundColor: 'transparent' }}
-        resetScrollToCoords={{ x: 0, y: 0 }}
+        style={{ backgroundColor: 'transparent', }}
+        // resetScrollToCoords={{ x: 0, y: 0 }}
         scrollEnabled={false}
       >
         <ScrollView
-          directionalLockEnabled={false}
-          scrollEnabled
+          contentInset={{top: Math.max((this.state.chatMessages.length - 4) * 65, 0), bottom: 0 }}
           contentContainerStyle={styles.scroll}>
           {this.state.chatOn ? chatMessages : null}
         </ScrollView>
