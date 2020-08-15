@@ -51,7 +51,7 @@ export default function RaffleResult({ navigation, route }) {
     const WinnerCardRef = useRef();
     const viewShot = useRef()
 
-    const [localTime, localSetTime] = useState(0)
+    const [localTime, localSetTime] = useState(10)
     const [winnerTime, setWinnerTime] = useState(10000)
 
     React.useEffect(() => {
@@ -201,10 +201,10 @@ export default function RaffleResult({ navigation, route }) {
                     {/* Waiting Overlay */}
                     <Overlay isVisible={localTime > 0} overlayStyle={styles.timerOverlay}>
                         <KeyboardAwareScrollView
-                            resetScrollToCoords={{ x: 0, y: 0 }}
                             scrollEnabled={false}
                             contentContainerStyle={{ height: Dimensions.get('window').height, width: Dimensions.get('window').width, marginLeft: '-3%' }}
                             >
+
                             <View style={[utilities.flexCenter]}>
                                 <Text style={[fonts.h1, { color: 'white' }]}>DRAWING IS STARTING IN</Text>
                                 <Text style={styles.timerOverlay__timer}>{localTime} seconds</Text>
@@ -212,9 +212,11 @@ export default function RaffleResult({ navigation, route }) {
                                     {(localTime > 10) ? 'Determining Winners...' : 'Populating Winners...'}
                                 </Text>
                             </View>
-                            <View style={{ height: Dimensions.get('window').height * 0.35 }}>
+
+                            <View style={{ height: Dimensions.get('window').height * 0.25, flex: 1.1, }}>
                                 <Social currUser={user} />
                             </View>
+                            
                         </KeyboardAwareScrollView>
                     </Overlay>
 

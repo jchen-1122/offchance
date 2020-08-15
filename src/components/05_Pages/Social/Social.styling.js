@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
         flexDirection: 'column-reverse', 
         marginLeft: Dimensions.get('screen').width * 0.035, 
         height: Dimensions.get('screen').height * 0.35,
-
     },
 
     chatInput: {
@@ -45,7 +44,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'white', 
         borderRadius: 11, 
         paddingLeft: Dimensions.get('screen').width * 0.02,
-        alignItems: 'flex-end',
     },
     chatInput__hide: {
         fontSize: 14, 
