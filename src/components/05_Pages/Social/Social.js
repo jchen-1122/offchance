@@ -22,7 +22,8 @@ export default class Social extends Component {
 
   componentDidMount() {
     const ip = require('../../IP_ADDRESS.json')
-    this.socket = io("http://192.168.0.22:4000");
+    this.socket = io("https://nameless-woodland-00809.herokuapp.com/");
+    console.log(this.socket)
     this.socket.emit("broadcast", { message: 'has joined the chat', profilePicture: this.props.currUser.profilePicture, username: this.props.currUser.username });
     this.socket.on("message", msg => {
       this.setState({ chatMessages: [msg, ...this.state.chatMessages] });
