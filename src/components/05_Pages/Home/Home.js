@@ -80,7 +80,14 @@ function Home({ navigation }) {
 
     // navigate to a particular page
     // ex: data: {"title": "Hello", "message": "Yes", "page": "Search"}
-    Notifications.addNotificationResponseReceivedListener((response) => navigation.navigate(response.notification.request.content.data.body.page));
+    Notifications.addNotificationResponseReceivedListener((response) => {
+      let page = response.notification.request.content.data.body.page
+      if (page){
+        navigation.navigate(page)
+      }
+    }
+
+    );
 
     // BACKHANDLING FOR ANDROID BOTTOM NAV
     const backAction = () => {
