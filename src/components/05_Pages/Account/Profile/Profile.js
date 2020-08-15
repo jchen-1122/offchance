@@ -49,6 +49,7 @@ function Profile({ navigation }) {
         //     return json
         // }
         // sendMessage()
+
     }, [])
 
     // const makeJSON = () => {

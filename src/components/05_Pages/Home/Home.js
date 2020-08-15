@@ -16,7 +16,7 @@ import Top5Card from '../../03_Organisms/HorizontalCards/Top5Card/Top5Card';
 import LatestWinnerCard from '../../03_Organisms/HorizontalCards/LatestWinnerCard/LatestWinnerCard';
 import RaffleCard from '../../03_Organisms/HorizontalCards/RaffleCard/RaffleCard';
 import registerForPushNotifications from '../../../functions/pushNotifs/registerForPushNotifications';
-import {getPushTokens} from '../../../functions/pushNotifs/getPushTokens';
+import * as Notifications from 'expo-notifications';
 
 function Home({ navigation }) {
   const data = require('../../IP_ADDRESS.json');
@@ -77,6 +77,10 @@ function Home({ navigation }) {
     if (!user.token){
       addToken()
     }
+
+    // navigate to a particular page
+    // ex: data: {"title": "Hello", "message": "Yes", "page": "Search"}
+    Notifications.addNotificationResponseReceivedListener((response) => navigation.navigate(response.notification.request.content.data.body.page));
 
     // BACKHANDLING FOR ANDROID BOTTOM NAV
     const backAction = () => {
