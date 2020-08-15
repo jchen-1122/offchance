@@ -62,7 +62,8 @@ export default class Social extends Component {
       >
         <ScrollView
           contentInset={{top: Math.max((this.state.chatMessages.length - 4) * 65, 0), bottom: 0 }}
-          contentContainerStyle={styles.scroll}>
+          contentContainerStyle={styles.scroll}
+          showsVerticalScrollIndicator={false}>
           {this.state.chatOn ? chatMessages : null}
         </ScrollView>
 
