@@ -26,16 +26,40 @@ function Profile({ navigation }) {
                     for (var raf of user.rafflesWon.children) {
                         let response = await fetch('http://' + ip.ipAddress + '/raffle/id/' + raf.raffleID)
                         response = await response.json()
-                        wonRaffles.push({raffle: response, prize: raf.reward})
+                        wonRaffles.push({ raffle: response, prize: raf.reward })
                     }
                 }
             }
             setWonRaffles(wonRaffles)
         }
-        console.log('oh')
         getRaffles()
-    },[])
 
+        // push notif test
+        // const sendMessage = async () => {
+        //     const response = await fetch('http://' + ip.ipAddress + '/user/message', {
+        //         method: "POST",
+        //         headers: {
+        //             'Accept': 'application/json, text/plain, */*',  // It can be used to overcome cors errors
+        //             'Content-Type': 'application/json'
+        //         },
+        //         body: makeJSON()
+        //     })
+        //     const json = await response.text()
+        //     console.log('JSON', json)
+        //     return json
+        // }
+        // sendMessage()
+    }, [])
+
+    // const makeJSON = () => {
+    //     console.log(user.token)
+    //     let data = {
+    //         pushTokens: ["ExponentPushToken[m4aGivEg8jEZwmTAmANpil]"],
+    //         title: 'Fuck Bitches',
+    //         message: 'Get Money'
+    //     }
+    //     return JSON.stringify(data)
+    // }
     // add edit button in topbar
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -58,7 +82,7 @@ function Profile({ navigation }) {
     }, [navigation]);
 
     const [info, setInfo] = useState(true)
-    let name, username, profilePic, email, followers, following, enteredRaffles, address, sizeType, shoeSize, shirtSize, referralCode
+    let name, username, profilePic, email, followers, following, enteredRaffles, address, sizeType, shoeSize, shirtSize, referralCode, walletChances
     if (user == null) {
         name = 'John Doe'
         username = '@johndoe'
@@ -76,6 +100,7 @@ function Profile({ navigation }) {
         shoeSize = user.shoeSize
         shirtSize = user.shirtSize
         referralCode = Object.keys(user).includes('last4') ? user.username + user.last4 : ''
+        walletChances = user.walletChances || 0
     }
 
     // for copying referral code to clipboard
@@ -96,7 +121,7 @@ function Profile({ navigation }) {
         try {
             const result = await Share.share({
                 message:
-                    'Your referral code is ' + referralCode,
+                    'Sign up for Off Chance and use the referral code ' + referralCode + ' to get 5 free chances to use in any drawing!',
             });
             if (result.action === Share.sharedAction) {
                 if (result.activityType) {
@@ -122,6 +147,15 @@ function Profile({ navigation }) {
 
                 <Text style={styles.descriptor}>Email</Text>
                 <Text style={styles.description}>{email}</Text>
+
+                <Text style={styles.descriptor}>Wallet Chances</Text>
+                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                    <Text style={styles.description}>{walletChances}</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Wallet')} style={{ marginLeft: '15%' }}>
+                        <Icon name="wallet" type="material-community" />
+                    </TouchableOpacity>
+
+                </View>
 
                 <View>
                     <Text style={styles.descriptor}>Shipping Address</Text>
@@ -159,64 +193,63 @@ function Profile({ navigation }) {
             </View>
         )
     }
-    else{
+    else {
         content = (
-            <View style={{alignItems: 'center'}}>
-                    {wonRaffles.map((raf, index) =>
-                        <Card
-                            cardType='feed'
-                            feedType='win'
-                            prize={raf.prize}
-                            data={raf.raffle}
-                            key={index}
-                            navigation={navigation}
-                            currUserG={user}
-                            setUserG={setUser}
-                        />
-                    )}
+            <View style={{ alignItems: 'center' }}>
+                {wonRaffles.map((raf, index) =>
+                    <Card
+                        cardType='feed'
+                        feedType='win'
+                        prize={raf.prize}
+                        data={raf.raffle}
+                        key={index}
+                        navigation={navigation}
+                        currUserG={user}
+                        setUserG={setUser}
+                    />
+                )}
             </View>
         )
     }
     return (
-                <View style={utilities.container}>
-                    <ScrollView>
-                        <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-end', zIndex: 1 }}>
-                            <View style={{ zIndex: -1, backgroundColor: 'transparent' }}>
-                                {/* Profile pic*/}
-                                <Image source={{ uri: profilePic }} style={[styles.profilePic]}></Image>
-                            </View>
-                            {/* <View style={{ zIndex: 1 }}> */}
-                            {/* Green Checkmark*/}
-                            {user.isHost ?
-                                <View style={{ zIndex: 50, position: 'absolute', right: Dimensions.get('window').width * 0.35 }}>
-                                    <Icon name={'check-circle'}
-                                        type='octicons'
-                                        color={colors.primaryColor}
-                                        backgroundColor='white'
-                                        style={{ borderRadius: 50 }} />
-                                </View> : null}
-                            {/* </View> */}
-                        </View>
-
-                        <Text style={styles.header_name}>{name}</Text>
-                        <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
-                            <Text style={styles.header_username}>@{username}</Text>
-                        </View>
-
-                        <StatsBar currUser={user} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>
-
-                        <View style={styles.toggleBar}>
-                            <InfoFeed info={info} setInfo={setInfo}></InfoFeed>
-                        </View>
-
-
-                        <View>
-                            {content}
-                        </View>
-                    </ScrollView>
-
-                    <BottomNav navigation={navigation} active={'Account'}></BottomNav>
+        <View style={utilities.container}>
+            <ScrollView>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-end', zIndex: 1 }}>
+                    <View style={{ zIndex: -1, backgroundColor: 'transparent' }}>
+                        {/* Profile pic*/}
+                        <Image source={{ uri: profilePic }} style={[styles.profilePic]}></Image>
+                    </View>
+                    {/* <View style={{ zIndex: 1 }}> */}
+                    {/* Green Checkmark*/}
+                    {user.isHost ?
+                        <View style={{ zIndex: 50, position: 'absolute', right: Dimensions.get('window').width * 0.35 }}>
+                            <Icon name={'check-circle'}
+                                type='octicons'
+                                color={colors.primaryColor}
+                                backgroundColor='white'
+                                style={{ borderRadius: 50 }} />
+                        </View> : null}
+                    {/* </View> */}
                 </View>
+
+                <Text style={styles.header_name}>{name}</Text>
+                <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
+                    <Text style={styles.header_username}>@{username}</Text>
+                </View>
+
+                <StatsBar currUser={user} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>
+
+                <View style={styles.toggleBar}>
+                    <InfoFeed info={info} setInfo={setInfo}></InfoFeed>
+                </View>
+
+                <View>
+                    {content}
+                </View>
+            </ScrollView>
+
+            <BottomNav navigation={navigation} active={'Account'}></BottomNav>
+        </View>
     )
 }
 

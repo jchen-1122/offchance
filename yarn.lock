@@ -3031,11 +3031,6 @@ expo-image-picker@~8.3.0:
     expo-permissions "~9.0.1"
     uuid "7.0.2"
 
-expo-in-app-purchases@~8.2.1:
-  version "8.2.1"
-  resolved "https://registry.yarnpkg.com/expo-in-app-purchases/-/expo-in-app-purchases-8.2.1.tgz#9ca64b3769e47504671f32c39fd2e8225d388c02"
-  integrity sha512-K8EEzTba7/jEL54etlTL0cduvQ4GTJL0ozi9M8+Urd8O7DJHFj6iOH2ERTSyPTyjyZcllDr5KrSY0oBikCl5sw==
-
 expo-keep-awake@~8.2.1:
   version "8.2.1"
   resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-8.2.1.tgz#a7956ad0fa80eb6ac6a28bb7242408e87c493677"
@@ -3063,13 +3058,6 @@ expo-location@~8.2.1:
   integrity sha512-MixKapt3nijAxyjIISscBzdKi8bwh0H/dWYsL2mCofrjguFHOh2gP07h95902lekb7NVqybl5AIQRW5cvrG4rQ==
   dependencies:
     invariant "^2.2.4"
-
-expo-payments-stripe@~8.2.1:
-  version "8.2.3"
-  resolved "https://registry.yarnpkg.com/expo-payments-stripe/-/expo-payments-stripe-8.2.3.tgz#7e7dadd62d80fe4e48d7e6bfe43adcbb47d314ef"
-  integrity sha512-WS4sxvNbUBYxa0Di/G8nxNHhq1wWe3SxgU4vLybV852CSyq6wJ2z4ggRpxUQOQiVGS96K9d62mZdLx6PHQs59g==
-  dependencies:
-    prop-types "^15.6.0"
 
 expo-permissions@~9.0.1:
   version "9.0.1"
