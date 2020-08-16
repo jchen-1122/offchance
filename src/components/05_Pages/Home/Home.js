@@ -71,7 +71,7 @@ function Home({ navigation }) {
   return (
     <View style={utilities.container}>
       <ScrollView contentContainerStyle={utilities.scrollview}>
-        <TopNav navigation={navigation} active='Home' />
+        <TopNav navigation={navigation} active='Home' admin={false}/>
         <View style={utilities.flexCenter}>
 
           <HorizontalScroll title="Trending" theme="light" seeAllRaffles={trendingRaffles} navigation={navigation} toggle={true}>

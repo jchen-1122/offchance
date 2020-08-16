@@ -25,7 +25,12 @@ export default function HomeScreen({ navigation }) {
       if (currUserid != null) {
         const loggedinUser = await getUser(currUserid)
         setUser(loggedinUser)
-        navigation.navigate('Home')
+        // admin account
+        if (loggedinUser.email === 'admin@admin.com') {
+          navigation.navigate('AdminHome')
+        } else {
+          navigation.navigate('Home')
+        }
       }
     }
     logInRemUser()

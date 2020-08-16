@@ -49,6 +49,13 @@ import AskRaffleType from './components/05_Pages/Host/AskRaffleType/AskRaffleTyp
 import NewRaffle from './components/05_Pages/Host/NewRaffle/NewRaffle';
 import ReqBusAcc from './components/05_Pages/Host/ReqBusAcc/ReqBusAcc';
 
+// Admin pages
+import AdminHome from './components/05_Pages/Home/Admin/AdminHome'
+import AdminHomeHosts from './components/05_Pages/Home/Admin/AdminHomeHosts'
+import AdminEdit from './components/05_Pages/Home/Admin/AdminEdit/AdminEdit'
+import AdminEditHost from './components/05_Pages/Home/Admin/AdminEditHost/AdminEditHost'
+import Report from './components/05_Pages/Home/Admin/Report/Report'
+
 import io from 'socket.io-client'
 const Stack = createStackNavigator();
 console.disableYellowBox = true;
@@ -108,8 +115,11 @@ function App() {
           <Stack.Screen name="NewRaffle" component={NewRaffle} options={{ title: 'Submit Drawing' }}/>
           <Stack.Screen name="ReqBusAcc" component={ReqBusAcc} options={{ title: 'Get Verified' }}/>
           <Stack.Screen name="HostDashboard" component={HostDashboard} options={{ title: 'Your Drawings' }}/>
-
-
+          <Stack.Screen name="AdminHome" component={AdminHome} options={{ headerShown: false }}/>
+          <Stack.Screen name="AdminEdit" component={AdminEdit} />
+          <Stack.Screen name="AdminHomeHosts" component={AdminHomeHosts} options={{ headerShown: false }}/>
+          <Stack.Screen name="AdminEditHost" component={AdminEditHost} />
+          <Stack.Screen name="Report" component={Report} />
         </Stack.Navigator>
       </NavigationContainer>
     </GlobalState.Provider>
