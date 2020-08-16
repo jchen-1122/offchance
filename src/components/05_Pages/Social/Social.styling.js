@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     scroll: {
         flexDirection: 'column-reverse', 
         marginLeft: Dimensions.get('screen').width * 0.035, 
-        height: Dimensions.get('screen').height * 0.25,
+        height: Dimensions.get('screen').height * 0.35,
     },
 
     chatInput: {

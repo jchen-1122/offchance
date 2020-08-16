@@ -190,18 +190,21 @@ export default function RaffleResult({ navigation, route }) {
             resetScrollToCoords={{ x: 0, y: 0 }}
             scrollEnabled={false}
             contentContainerStyle={{ height: Dimensions.get('window').height, justifyContent: 'space-between' }}>
-            <ScrollView>
-                {/* <Text>{feed}</Text> */}
-                <View style={[styles.container]}>
-                    <View style={styles.cardGrid}>
+            <ScrollView >
+                <View style={[styles.container, ]}>
+
+                    {/* Card Display */}
+                    <View style={[styles.cardGrid, ]}>
                         {display}
                     </View>
+
+                    {/* Waiting Overlay */}
                     <Overlay isVisible={localTime > 0} overlayStyle={styles.timerOverlay}>
                         <KeyboardAwareScrollView
-                            resetScrollToCoords={{ x: 0, y: 0 }}
                             scrollEnabled={false}
                             contentContainerStyle={{ height: Dimensions.get('window').height, width: Dimensions.get('window').width, marginLeft: '-3%' }}
-                        >
+                            >
+
                             <View style={[utilities.flexCenter]}>
                                 <Text style={[fonts.h1, { color: 'white' }]}>DRAWING IS STARTING IN</Text>
                                 <Text style={styles.timerOverlay__timer}>{localTime} seconds</Text>
@@ -209,12 +212,17 @@ export default function RaffleResult({ navigation, route }) {
                                     {(localTime > 10) ? 'Determining Winners...' : 'Populating Winners...'}
                                 </Text>
                             </View>
-                            <View style={{ height: Dimensions.get('window').height * 0.35 }}>
+
+                            <View style={{ height: Dimensions.get('window').height * 0.25, flex: 1.1, }}>
                                 <Social currUser={user} />
                             </View>
+                            
                         </KeyboardAwareScrollView>
                     </Overlay>
-                    {(winnerOverlay && winnerTime <= 5) ? <Overlay isVisible={winnerOverlay} onBackdropPress={() => setwinnerOverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
+
+                    {/* Winner Overlay */}
+                    {(winnerOverlay && winnerTime <= 5) ? 
+                    <Overlay isVisible={winnerOverlay} onBackdropPress={() => setwinnerOverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
                         <WinnerCard ref={WinnerCardRef} prize={winnerPrize} winner={user} raffle={raffle} host={host} navigation={navigation} currUser={user} />
                         <ViewShot ref={viewShot} options={{ format: "jpg", quality: 0.9 }}>
                             <View style={{ width: Dimensions.get('window').width * 0.8, alignItems: 'center' }}>
@@ -235,6 +243,8 @@ export default function RaffleResult({ navigation, route }) {
                         />
                     </Overlay> : null}
                     {/* JOSHUA END */}
+
+                    {/* Any Card Overlay */}
                     <Overlay isVisible={overlay} onBackdropPress={() => setoverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
                         <ViewShot ref={viewShot} options={{ format: "jpg", quality: 0.9 }}>
                             <WinnerCard ref={WinnerCardRef} prize={prize} winner={selected} raffle={raffle} host={host} navigation={navigation} currUser={user} />
@@ -254,10 +264,12 @@ export default function RaffleResult({ navigation, route }) {
                             colors={confetti_colors[prize]}
                         />
                     </Overlay>
-                </View>
 
+                </View>
             </ScrollView>
-            <View style={{ marginBottom: '25%' }}>
+
+            {/* Live Chat */}
+            <View style={{ marginBottom: '0%', flex: 3}}>
                 {(localTime <= 0) ? <Social currUser={user}></Social> : null}
             </View>
 
