@@ -18,7 +18,7 @@ export default function SizeCarousel(props) {
                 props.setSize(sizes[i])
             }} underlayColor={colors.lightGreen} style={[styles.button, (selectedValue == sizes[i]) ? styles.green_button : styles.white_button]}>
                 <View >
-                    <Text style={styles.buttonText}>{sizes[i]}</Text>
+                    <Text style={styles.buttonText}>{sizes[i] == 'One Size' ? 'OS' : sizes[i]}</Text>
                 </View>
             </TouchableHighlight>
         )

@@ -151,12 +151,12 @@ function Profile({ navigation }) {
 
                 <Text style={styles.descriptor}>Wallet Chances</Text>
                 <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-                    <Text style={styles.description}>{walletChances}</Text>
-                    <TouchableOpacity onPress={() => navigation.navigate('Wallet')} style={{ marginLeft: '15%' }}>
-                        <Icon name="wallet" type="material-community" />
-                    </TouchableOpacity>
+                        <Text style={styles.description}>{walletChances}</Text>
+                            <TouchableOpacity onPress={() => navigation.navigate('Wallet')} style={{marginLeft: '15%'}}>
+                                <Icon name="wallet" type="material-community" />
+                            </TouchableOpacity>
 
-                </View>
+                    </View>
 
                 <View>
                     <Text style={styles.descriptor}>Shipping Address</Text>
@@ -243,7 +243,9 @@ function Profile({ navigation }) {
                 <View style={styles.toggleBar}>
                     <InfoFeed info={info} setInfo={setInfo}></InfoFeed>
                 </View>
-
+                        <View>
+                            {content}
+                        </View>
                 <View>
                     {content}
                 </View>

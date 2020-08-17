@@ -5,7 +5,7 @@ import styles from './Countdown.styling'
 
 const Countdown = ({ unix_timestamp, type, propsStyle }) => {
     const monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
-    const style = [styles.primary];
+    const style = [styles.primary, propsStyle];
 
     switch (type){
       case 'search':

@@ -1,8 +1,8 @@
 import { StyleSheet, Dimensions } from 'react-native'
-
+import {colors} from '../../../../settings/all_settings' 
 
 var cardSize = Dimensions.get('window').width * 0.6
-var imageSize = Dimensions.get('window').width * 0.4
+var imageSize = Dimensions.get('window').width * 0.35
 
 const styles = StyleSheet.create({
     RaffleCard: {
@@ -10,16 +10,19 @@ const styles = StyleSheet.create({
         height: cardSize,
         width: cardSize,
         alignItems: 'center',
-        padding: '5%',        
-        marginHorizontal: Dimensions.get('window').width * 0.005
+        padding: '5%', 
+        // paddingBottom: '10%',  
+        marginHorizontal: Dimensions.get('window').width * 0.015,
     },
     RaffleCard__image: {
         height: imageSize,
         width: imageSize,
-        resizeMode: 'contain'
+        resizeMode: 'contain',
     },
-    RaffleCard__title: {
-        height: Dimensions.get('window').width * 0.15
+    RaffleCard__startTime: {
+        color: colors.gray, 
+        fontSize: 12,
+        marginTop: '2%',
     }
 
 })

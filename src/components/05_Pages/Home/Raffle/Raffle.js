@@ -388,14 +388,20 @@ export default function Raffle({ navigation, route }) {
           backgroundColor: "rgba(255, 255, 255, 1)",
           });
       }
-// [utilities.container, { backgroundColor: 'white' }]
-    var userIDs = ["5f1717acfe0108ee8b5e5c0b", "5f171974fe0108ee8b5e5c11", "5f1757f7c9deeef8c14b6a40", "5f1a6bdb457f816624a7a48c"]
 
+    var userIDs = ["5f1717acfe0108ee8b5e5c0b", "5f171974fe0108ee8b5e5c11", "5f1757f7c9deeef8c14b6a40", "5f1a6bdb457f816624a7a48c"]
     const getOpponent = async () => {
         var opponentID = userIDs[Math.floor(Math.random() * userIDs.length)]
         const response = await fetch('http://' + ip.ipAddress + '/user/id/' + opponentID)
         const json = await response.json()
         return json
+    }
+
+    let chanceText = 'ENTER DRAWING'
+    for (var raf of user.rafflesEntered.children){
+        if (raf.raffleID == raffle._id){
+            chanceText = 'YOU HAVE ' + raf.chances + ' CHANCES' + ((raf.size && raf.size !== 'One Size') ? ' FOR SIZE ' + raf.size : '')
+        }
     }
     return (
         <View style={containerStyle}>
@@ -407,6 +413,7 @@ export default function Raffle({ navigation, route }) {
 
                 <View style={styles.content}>
                     {(!location && location != null && !expired) ? <Text style={[fonts.bold, fonts.error]}>THIS RAFFLE IS OUT OF YOUR LOCATION</Text> : null}
+                    <Text>{chanceText}</Text>
                     <View style={{ marginVertical: 15 }}>
                         {(expired) ? <Text style={[fonts.bold, fonts.error]}>THIS DRAWING HAS EXPIRED</Text> : <Text style={[fonts.italic]}>Drawing Starts:</Text>}
                         {(expired) ? null : <CountDown unix_timestamp={raffle.startTime} />}
@@ -510,7 +517,11 @@ export default function Raffle({ navigation, route }) {
                             {raffle.sizes.length > 0 ?
                                 <View style={styles.pickSizeSlide}>
                                     <Text>PICK YOUR SIZE</Text>
-                                    <SizeCarousel sizes={sizeTypes} type='single' setSize={setSizeType}/>
+                                    {
+                                        raffle.sizeTypes.length > 0 ? 
+                                        <SizeCarousel sizes={sizeTypes} type='single' setSize={setSizeType}/> :null
+
+                                    }
                                     <SizeCarousel sizes={sizes} type='single' setSize={setSize}/>
                                 </View> : null
                             }
