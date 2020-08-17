@@ -52,7 +52,9 @@ const PurchaseProduct = (props) => {
  
   return (
     <View style={{height: Dimensions.get('window').height * 0.95, flex: 1}}>  
-        {(props.method === '+ Add Credit Card' && !props.save) ? <WebView
+        {(props.method === '+ Add Credit Card' && !props.save) ? 
+        // stripe w/o saving
+        <WebView
         originWhitelist={['*']}
         source={{ html: stripeCheckoutRedirectHTML(chances + " chances", amount) }}
         onError={() => props.navigation.navigate('Account')}
@@ -77,7 +79,11 @@ const PurchaseProduct = (props) => {
               }
             }
         }}
-      /> : (props.method === '+ Add Credit Card' && props.save) ? <WebView
+      /> 
+      : 
+      (props.method === '+ Add Credit Card' && props.save) ? 
+      // stripe w/ saving
+      <WebView
       originWhitelist={['*']}
       source={{ html: stripeFirstPayment(chances + " chances", amount) }}
       onError={() => props.navigation.navigate('Account')}
@@ -103,7 +109,9 @@ const PurchaseProduct = (props) => {
           }
       }}
     /> : 
-    ((props.method !== 'Paypal') ? <WebView
+    ((props.method !== 'Paypal') ? 
+    // paypal
+    <WebView
       originWhitelist={['*']}
       source={{ html: stripeSavedPayment(amount) }}
       onError={() => props.navigation.navigate('Account')}
@@ -126,7 +134,9 @@ const PurchaseProduct = (props) => {
             }
           }
       }}
-    /> : <WebView 
+    /> : 
+    // paypal
+    <WebView 
         containerStyle={{marginBottom: 170}}
         originWhitelist={['*']}
         source={{ uri: "http://" + ip.ipAddress + "/user/paypal" }}

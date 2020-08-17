@@ -13,7 +13,7 @@ import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
 import Stripe from './Stripe'
 
 export default function Wallet({navigation}) {
-
+ 
     const {user, setUser} = useContext(GlobalState)
     const [containerStyle, setContainerStyle] = useState(styles.container);
     const [sheetController, setSheetController] = useState(false); // 0 - close, 1 - open. TODO: GLOBAL STATE
@@ -36,22 +36,6 @@ export default function Wallet({navigation}) {
           });
 
         // console.log(sheetController); 101010
-      }
-
-    const paymentTrigger = () => {
-        setPaymentController(!paymentController);
-
-        setContainerStyle( !paymentController ?
-          { // light on
-          flex: 1,
-          justifyContent: 'space-between',
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-        } : { // light off
-          flex: 1,
-          justifyContent: 'space-between',
-          backgroundColor: "rgba(255, 255, 255, 0.1)",
-          });
-
       }
 
     return (
@@ -90,17 +74,6 @@ export default function Wallet({navigation}) {
             content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
             navigation={navigation}
             wallet={true}/>
-
-            {/* <SlidingSheet
-            title='Payment'
-            type='payment'
-            sheet={paymentController}
-            trigger={paymentTrigger}
-            height={height * 0.8}
-            user={user}
-            content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
-            navigation={navigation}/> */}
-
 
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>
         </View>

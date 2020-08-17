@@ -17,8 +17,6 @@ import Stripe from '../../05_Pages/Account/Wallet/Stripe'
 import { setStatusBarTranslucent } from 'expo-status-bar';
 import { user_logged_in } from '../../../functions/user_functions';
 
-
-// Sliding Sheet update: Removed visible prop, since the sheet will be invisible after sliding off the screen.
 function SlidingSheet(props) {
     const [last4, setlast4] = useState(null)
     const data = require('../../IP_ADDRESS.json')
@@ -219,16 +217,6 @@ function SlidingSheet(props) {
         props.trigger();
     }
 
-    // summon payment page
-    const payMe = () => {
-      closeSlidingSheet();
-      props.paymentTrigger();
-    }
-
-    // console.log('AMOUNT DOLLAR: ', props.amountDollar); // 5, 10, 20, 50, 100, 250
-
-    // console.log(props.sheet); 101010
-    // TODO: Add a dropdown/button for stripe and apple pay
     return (
       <View style={styles.container}>
         <Animated.View
@@ -300,17 +288,20 @@ function SlidingSheet(props) {
                           setValue={setAmount}
                           />
                     </View>}
-
-                    {(_method ==='+ Add Credit Card') ? <View style={[styles.slidingSheet__save]}>
-                    <CheckBox
-                      selected={_save}
-                      onPress={() => setSave(!_save)}
-                      text='Save my payment information'
-                    />
+                    
+                    {/* Checkbox */}
+                    {(_method ==='+ Add Credit Card') ? 
+                    <View style={[styles.slidingSheet__save]}>
+                      <CheckBox
+                        selected={_save}
+                        onPress={() => setSave(!_save)}
+                        text='Save my payment information'
+                      />
                     </View> : null}
 
                     <View style={styles.button}>
                       { (props.wallet) ?
+                        // for wallet
                         <BlockButton
                             title={_buttonText}
                             color="primary"
@@ -349,7 +340,13 @@ function SlidingSheet(props) {
                       }
                     </View>
 
-                </ScrollView> : <Stripe user={props.user} setUser={props.setUser} navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet}></Stripe>}
+                </ScrollView> : <Stripe user={props.user} 
+                                        setUser={props.setUser} 
+                                        navigation={props.navigation} 
+                                        method={_method} 
+                                        amount={_amount} 
+                                        save={_save} 
+                                        wallet={props.wallet}></Stripe>}
             </View>
 
         </Animated.View>
