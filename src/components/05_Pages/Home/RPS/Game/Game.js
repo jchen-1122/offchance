@@ -149,16 +149,22 @@ function Game(props) {
     }
 
     return (
-        <View style={[utilities.container, { paddingTop: 15 }]}>
-            <View style={{ flex: 0, alignItems: 'center', justifyContent: 'space-between', height: '85%' }}>
-                <Text style={fonts.h2}>You</Text>
-                <UsernameDisplay size="game" username={user.username} profPic={{ uri: user.profilePicture }} />
+        <View style={[utilities.container, { paddingTop: 25 }]}>
+            <View style={{ flex: 0, alignItems: 'center', justifyContent: 'center', height: '85%', marginTop: 30, backgroundColor: 'pink' }}>
+                <View style={{ justifyContent: 'center' }}>
+                    <Text style={[fonts.h2, { textAlign: 'center' }]}>You</Text>
+                    <UsernameDisplay size="game" username={user.username} profPic={{ uri: user.profilePicture }} />
+                </View>
+
                 <Text style={messageStyles}>{message}</Text>
                 {playerChoiceImg}
                 <Text style={fonts.h3}>VS</Text>
+
                 {compChoiceImg}
-                <Text style={fonts.h2}>Challenger</Text>
+                <View style={{ justifyContent: 'center' }}>
+                <Text style={[fonts.h2, { textAlign: 'center' }]}>Challenger</Text>
                 <UsernameDisplay size="game" username={props.opponent.username} profPic={{ uri: props.opponent.profilePicture }} />
+                </View>
             </View>
 
             <View style={{ alignItems: 'center', flexDirection: 'row' }}>
@@ -168,7 +174,7 @@ function Game(props) {
                     <Text style={[styles.text_light]}>NEXT ROUND</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.GameBar__stat} onPress={() => props.setPage('EndGame')}>
-                    <Icon name="exit-to-app" type="material-community" size={35}/>
+                    <Icon name="exit-to-app" type="material-community" size={35} />
                     <Text style={[styles.text_light]}>EXIT GAME</Text>
                 </TouchableOpacity>
             </View>

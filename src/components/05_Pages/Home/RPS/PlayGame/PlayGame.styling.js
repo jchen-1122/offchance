@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     rps__choice: {
-        width: Dimensions.get('window').width * 0.45,
-        height: Dimensions.get('window').height * 0.2,
+        width: Dimensions.get('window').width * 0.4,
+        height: Dimensions.get('window').height * 0.15,
         margin: Dimensions.get('window').width * 0.025,
         marginBottom: 0,
         resizeMode: 'contain'
@@ -43,8 +43,8 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     option: {
-        height: Dimensions.get('window').height * 0.16,
-        width: Dimensions.get('window').width * 0.69,
+        height: Dimensions.get('window').height * 0.15,
+        width: Dimensions.get('window').width * 0.6,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-evenly',
