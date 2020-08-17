@@ -1,13 +1,15 @@
-import { StyleSheet, Dimensions } from 'react-native'
-import {colors, dimensions} from '../../../settings/all_settings';
+import { StyleSheet, Dimensions } from 'react-native';
+import {colors} from '../../../settings/all_settings';
+import {isIphoneX} from '../../../functions/user_functions';
 
 let profilePicSize = Dimensions.get('window').width*0.15
 let hostPicSize = Dimensions.get('window').width*0.1
 
+
 const styles = StyleSheet.create({
     overlay: {
         width: Dimensions.get('window').width*0.8,
-        height: Dimensions.get('window').height * 0.8,
+        height: isIphoneX() ? 600 : 500,
         alignItems: 'center',
         justifyContent: 'center',
         margin: 3,

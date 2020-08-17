@@ -1794,7 +1794,7 @@ backo2@1.0.2:
   resolved "https://registry.yarnpkg.com/backo2/-/backo2-1.0.2.tgz#31ab1ac8b129363463e35b3ebb69f4dfcfba7947"
   integrity sha1-MasayLEpNjRj41s+u2n038+6eUc=
 
-badgin@^1.1.2:
+badgin@^1.1.2, badgin@^1.1.5:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/badgin/-/badgin-1.1.8.tgz#6e4c930554945d31752e5de2d8a316036dccda5e"
   integrity sha512-EGbhb5OwZreHS0vd8tFLzdWBqvz3dFREf1sYK5EtivtTDUkYCLSEKz1KvXJ4MBHAyKGDymx8wYPCQwrftQBifw==
@@ -2960,6 +2960,11 @@ expo-app-auth@~9.1.1:
     fbjs "1.0.0"
     invariant "^2.2.4"
 
+expo-application@~2.2.1:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/expo-application/-/expo-application-2.2.1.tgz#f14b83ae0b07e4922850f8856a56f141c168d6d0"
+  integrity sha512-YyYB2EPWmFmXgmnul9AMdZ6Ze290BWaez7RhUfAMq2gQU84EdpvL3vkO9SV5E4zI7Rj2jfS0VcCDpxrcdlBW/w==
+
 expo-asset-utils@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/expo-asset-utils/-/expo-asset-utils-1.2.0.tgz#df52f8e8c836c343ad713a0044db79be69cfe64b"
@@ -2976,7 +2981,7 @@ expo-asset@~8.1.7:
     path-browserify "^1.0.0"
     url-parse "^1.4.4"
 
-expo-constants@~9.1.1:
+expo-constants@9.1.1, expo-constants@~9.1.1:
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-9.1.1.tgz#bca141ee3d4550e308798128f66c6d9c6a206ca1"
   integrity sha512-zCa/wRARODHd6BSwxjBhidmao0AqQnKmLkl0tsVIoZlRyPDHsEaxNR/m+7wqGC7qiC+UpG1qRnvLOLwCGt2ihg==
@@ -3031,11 +3036,6 @@ expo-image-picker@~8.3.0:
     expo-permissions "~9.0.1"
     uuid "7.0.2"
 
-expo-in-app-purchases@~8.2.1:
-  version "8.2.1"
-  resolved "https://registry.yarnpkg.com/expo-in-app-purchases/-/expo-in-app-purchases-8.2.1.tgz#9ca64b3769e47504671f32c39fd2e8225d388c02"
-  integrity sha512-K8EEzTba7/jEL54etlTL0cduvQ4GTJL0ozi9M8+Urd8O7DJHFj6iOH2ERTSyPTyjyZcllDr5KrSY0oBikCl5sw==
-
 expo-keep-awake@~8.2.1:
   version "8.2.1"
   resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-8.2.1.tgz#a7956ad0fa80eb6ac6a28bb7242408e87c493677"
@@ -3064,12 +3064,15 @@ expo-location@~8.2.1:
   dependencies:
     invariant "^2.2.4"
 
-expo-payments-stripe@~8.2.1:
-  version "8.2.3"
-  resolved "https://registry.yarnpkg.com/expo-payments-stripe/-/expo-payments-stripe-8.2.3.tgz#7e7dadd62d80fe4e48d7e6bfe43adcbb47d314ef"
-  integrity sha512-WS4sxvNbUBYxa0Di/G8nxNHhq1wWe3SxgU4vLybV852CSyq6wJ2z4ggRpxUQOQiVGS96K9d62mZdLx6PHQs59g==
+expo-notifications@~0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/expo-notifications/-/expo-notifications-0.3.3.tgz#3c7b7275516028853e02f5c796e3365d4fb572ad"
+  integrity sha512-iBqvlbB6UVkU5yF4W9K/sqdPIbJ52VVeL7543G4IA3ARWhx6wdhfzcuGTCtUgV0XmkJu7vmPs+sC31aXjRa0Kg==
   dependencies:
-    prop-types "^15.6.0"
+    badgin "^1.1.5"
+    expo-application "~2.2.1"
+    expo-constants "9.1.1"
+    uuid "^3.4.0"
 
 expo-permissions@~9.0.1:
   version "9.0.1"
@@ -6158,6 +6161,11 @@ rn-sliding-up-panel@^2.4.3:
   dependencies:
     clamp "^1.0.1"
     prop-types "^15.7.2"
+
+rn-swipe-button@^1.2.9:
+  version "1.2.9"
+  resolved "https://registry.yarnpkg.com/rn-swipe-button/-/rn-swipe-button-1.2.9.tgz#079bfabaee87e9d929107d3443aaf5bd7eba48eb"
+  integrity sha512-KQatMI2gQH4BBX/it4h+i8ihkK6cdOo0BdGeQO6rKAB1fmfVZW5NM/VQRgSZ6IWnmV7Sxrydvzf5ooFLA/E4EA==
 
 rsvp@^4.8.4:
   version "4.8.5"

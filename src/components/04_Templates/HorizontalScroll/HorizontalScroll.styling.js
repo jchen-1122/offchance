@@ -2,16 +2,18 @@ import { StyleSheet, Dimensions } from 'react-native'
 
 const styles = StyleSheet.create({
     HorizontalScroll_dark: {
-        height: Dimensions.get('window').height * 0.45,
+        height: 325,
         width: Dimensions.get('window').width,
         backgroundColor: 'black',
-        padding: '5%'
+        padding: '5%',
+        paddingBottom: '10%',
     },
     HorizontalScroll_light: {
-        height: Dimensions.get('window').height * 0.5,
+        height: 325,
         width: Dimensions.get('window').width,
         backgroundColor: 'transparent',
-        padding: '5%'
+        padding: '5%',
+        // paddingBottom: '10%'
     },
 
     // different style titles for the horizontal card

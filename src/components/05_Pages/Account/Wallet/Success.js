@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react'
 import { ScrollView, View, Text, Dimensions } from 'react-native'
-import { utilities } from '../../../../settings/all_settings'
+import { utilities, fonts } from '../../../../settings/all_settings'
 
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
 import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
@@ -54,14 +54,15 @@ export default function Success({navigation, route}) {
 
     return (
         <View style={utilities.container}>
-            <ScrollView>
-            <Text style={{alignSelf: 'center', fontSize: '30', fontWeight: '500', marginTop: 250}}>Thank You.</Text>
-            <Text style={{textAlign: 'center', fontSize: '18', marginTop: 40}}>{(Object.keys(route.params).includes('fromRaffle')) ? "You have been entered in the raffle with " + route.params.fromRaffle + " chances. Play the game for bonus chances." : "Your chances have been loaded into your wallet. Play the game for bonus chances."}</Text>
+            <ScrollView contentContainerStyle={utilities.flexCenter}>
+            <Text style={[fonts.h1, {textAlign: 'center'}]}>Thank You.</Text>
+            <Text style={[fonts.h2, {textAlign: 'center', fontWeight: 'normal'}]}>{(Object.keys(route.params).includes('fromRaffle')) ? "You have been entered in the raffle with " + route.params.fromRaffle + " chances. Play the game for bonus chances." : "Your chances have been loaded into your wallet. Play the game for bonus chances."}</Text>
                 <BlockButton
-                    title="PLAY GAME"
-                    color="primary"
+                    title="WIN BONUS CHANCES"
+                    color="secondary"
                     onPress={async() => navigation.navigate('GameController',await getOpponent())} />
             </ScrollView>
+
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>
         </View>
     )

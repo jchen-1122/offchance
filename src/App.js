@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StatusBar} from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import * as Notifications from 'expo-notifications';
 import Welcome from './components/05_Pages/Welcome/Welcome'
 import Login from './components/05_Pages/LoginProcess/Login/Login'
 import Signup from './components/05_Pages/Signup/Signup'
@@ -64,6 +65,19 @@ function App() {
   const [user, setUser] = useState({})
   const ip = require('./components/IP_ADDRESS.json')
   const [socket, setSocket] = useState(io('http://'+ip.ipAddress+''))
+
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+      }),
+    });
+
+    // Notifications.addNotificationResponseReceivedListener(console.log('YUH'));
+
+    // Notifications.addNotificationResponseReceivedListener((response) => Stack.navigator.navigate(response.notification.request.content.data.body.page));
+
   return (
     <GlobalState.Provider value={{ user, setUser, socket }}>
       <NavigationContainer>
@@ -84,7 +98,7 @@ function App() {
           <Stack.Screen name="ChangePassword" component={ChangePassword} options={{ title: 'New Password' }}/>
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
           <Stack.Screen name="SeeAll" component={SeeAll} options={({ route }) => ({ title: route.params.title })}/>
-          <Stack.Screen name="YourFeed" component={YourFeed} options={{ title: 'Your Feed', headerShown: false }} />
+          <Stack.Screen name="YourFeed" component={YourFeed} options={{ headerShown: false }} />
           {/* <Stack.Screen name="Explore" component={Explore} /> */}
           <Stack.Screen name="Raffle" component={Raffle} options={({ route }) => ({ title: route.params.name })}/>
           <Stack.Screen name="PlayGame" component={PlayGame} options={{ headerShown: false }}/>

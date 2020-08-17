@@ -15,10 +15,13 @@ import HorizontalScroll from '../../04_Templates/HorizontalScroll/HorizontalScro
 import Top5Card from '../../03_Organisms/HorizontalCards/Top5Card/Top5Card';
 import LatestWinnerCard from '../../03_Organisms/HorizontalCards/LatestWinnerCard/LatestWinnerCard';
 import RaffleCard from '../../03_Organisms/HorizontalCards/RaffleCard/RaffleCard';
+import registerForPushNotifications from '../../../functions/pushNotifs/registerForPushNotifications';
+import * as Notifications from 'expo-notifications';
 
 function Home({ navigation }) {
   const data = require('../../IP_ADDRESS.json');
   const { user, setUser } = useContext(GlobalState)
+  const [token, setToken] = useState(null)
 
   // top 5 donors and latest winners
   const [top5donors, setTop5Donors] = useState([])
@@ -32,9 +35,17 @@ function Home({ navigation }) {
   const [buyRaffles, setBuyRaffles] = useState([])
   const [upcomingRaffles, setUpcomingRaffles] = useState([])
 
+  // React.useEffect(async() => {
+
+  //   editUser()
+  // }, [])
+
   // get all raffles and maybe filter them by type
   React.useEffect(() => {
     async function getRaffle() {
+      if (!user.token) {
+        setToken(await registerForPushNotifications())
+      }
       setTop5Donors(await top5_global())
       setLatestWinners(await getLatestWinners())
       setLatestRaffles(await getLatestRaffles())
@@ -47,6 +58,36 @@ function Home({ navigation }) {
       setRaffles(response)
     }
     getRaffle()
+
+    // if user doesn't have push notifications configured
+    const addToken = async () => {
+      const response = await fetch('http://' + data.ipAddress + '/user/edit/' + user._id, {
+        method: "PATCH",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          token: token
+        })
+      })
+      const json = await response.json()
+      return json
+    }
+    if (!user.token) {
+      addToken()
+    }
+
+    // navigate to a particular page
+    // ex: data: {"title": "Hello", "message": "Yes", "page": "Search"}
+    Notifications.addNotificationResponseReceivedListener((response) => {
+      let page = response.notification.request.content.data.body.page
+      if (page) {
+        navigation.navigate(page)
+      }
+    }
+
+    );
 
     // BACKHANDLING FOR ANDROID BOTTOM NAV
     const backAction = () => {
@@ -68,6 +109,7 @@ function Home({ navigation }) {
 
   }, [])
 
+
   return (
     <View style={utilities.container}>
       <ScrollView contentContainerStyle={utilities.scrollview}>
@@ -75,10 +117,12 @@ function Home({ navigation }) {
         <View style={utilities.flexCenter}>
 
           <HorizontalScroll title="Trending" theme="light" seeAllRaffles={trendingRaffles} navigation={navigation} toggle={true}>
-            {trendingRaffles.map((raffle, index) =>
-              <RaffleCard raffle={raffle} navigation={navigation} />
-            )}
 
+            {trendingRaffles.map((raffle, index) =>
+              <View style={{ marginHorizontal: -14 }}>
+                <RaffleCard raffle={raffle} navigation={navigation} />
+              </View>
+            )}
           </HorizontalScroll>
           <HorizontalScroll title="Top 5 Donors" theme="dark">
             {top5donors.map((donor, index) =>
@@ -88,7 +132,9 @@ function Home({ navigation }) {
 
           <HorizontalScroll title="Donate to Enter Raffles" theme="light" seeAllRaffles={donateRaffles} navigation={navigation}>
             {donateRaffles.map((raffle, index) =>
-              <RaffleCard raffle={raffle} navigation={navigation} />
+              <View style={{ marginHorizontal: -3 }}>
+                <RaffleCard raffle={raffle} navigation={navigation} />
+              </View>
             )}
           </HorizontalScroll>
 
