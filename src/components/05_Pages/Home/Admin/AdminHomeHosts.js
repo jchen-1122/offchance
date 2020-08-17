@@ -6,7 +6,8 @@ import BottomNav from '../../../02_Molecules/BottomNav/BottomNav';
 import TopNav from '../../../02_Molecules/TopNav/TopNav';
 import GlobalState from '../../../globalState';
 import { getPendingUsers } from '../../../../functions/explore_functions';
-import PendingCard from '../../../03_Organisms/PendingCard/PendingCard'
+import PendingCard from '../../../03_Organisms/PendingCard/PendingCard';
+import NavButton from '../../../01_Atoms/Buttons/NavButton/NavButton';
 
 function Home({ navigation }) {
   const data = require('../../../IP_ADDRESS.json');
@@ -19,7 +20,7 @@ function Home({ navigation }) {
   // get all raffles and maybe filter them by type
   React.useEffect(() => {
     async function getWannabeHosts() {
-        setPendingHosts(await getPendingUsers())
+      setPendingHosts(await getPendingUsers())
     }
     getWannabeHosts()
 
@@ -44,23 +45,18 @@ function Home({ navigation }) {
   }, [refresh])
 
   return (
-    <View style={utilities.container}>
-      <ScrollView contentContainerStyle={utilities.scrollview}>
-        <TopNav navigation={navigation} active='ActiveHome' admin={true}/>
-        <Button title={'Refresh'} onPress={() => setRefresh(!refresh)}></Button>
-        <View style={{marginLeft: 10}}>
-            {pendingHosts.map((user, index) =>
-            <TouchableOpacity 
-            onPress={() => {
-                navigation.navigate('AdminEditHost', user)
-            }}
-            style={{flexDirection: 'row', margin: 15}}>
-                <Image source={{ uri: user.profilePicture }} style={{width:30, height: 30, borderRadius: 30/2, marginRight: 5}}></Image>
-                <Text style={{marginTop: 5, fontSize: 18}}>@{user.username}</Text>
-            </TouchableOpacity>)}
+    <View style={[utilities.container, {justifyContent: 'flex-start'}]}>
+      <ScrollView>
+        <TopNav navigation={navigation} active='Hosts' admin={true} />
+        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-end' }}>
+          <Button title={'Refresh'} onPress={() => setRefresh(!refresh)} />
+        </View>
+        <View>
+          {pendingHosts.map((user, index) =>
+          <NavButton title={'@'+user.username} profilePicture={user.profilePicture} onPress={()=>navigation.navigate('AdminEditHost', user)} />)}
         </View>
       </ScrollView>
-      <BottomNav navigation={navigation} active={'AdminHome'} admin={true}/>
+      <BottomNav navigation={navigation} active={'AdminHome'} admin={true} />
     </View>
 
   )

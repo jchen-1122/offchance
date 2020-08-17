@@ -13,6 +13,7 @@ import { colors, fonts, utilities, dimensions } from '../../../settings/all_sett
 import { in_a_day, is_expired } from '../../../functions/convert_dates';
 import { top5_raffle } from '../../../functions/explore_functions';
 import { time_from_now } from '../../../functions/convert_dates';
+import {isIphoneX} from '../../../functions/user_functions'
 import TextLink from '../../01_Atoms/Buttons/TextLinks/TextLinks'
 
 function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, banner, feedType, prize, userType, otherUser }) {
@@ -150,9 +151,9 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
                     caption = user + " won chances for a drawing for "
                 }
             }
-
+            var mult = isIphoneX() ? 0.4 : 0.48
             return (
-                <View style={{ maxHeight: Dimensions.get('window').height * 0.48 }}>
+                <View style={{ maxHeight: Dimensions.get('window').height * mult }}>
                     <ScrollView style={[styles.card, { paddingTop: '5%' }]}>
                         <View style={styles.notif}>
                             {picture}

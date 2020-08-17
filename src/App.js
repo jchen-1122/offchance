@@ -129,10 +129,10 @@ function App() {
           <Stack.Screen name="NewRaffle" component={NewRaffle} options={{ title: 'Submit Drawing' }}/>
           <Stack.Screen name="ReqBusAcc" component={ReqBusAcc} options={{ title: 'Get Verified' }}/>
           <Stack.Screen name="HostDashboard" component={HostDashboard} options={{ title: 'Your Drawings' }}/>
-          <Stack.Screen name="AdminHome" component={AdminHome} options={{ headerShown: false }}/>
-          <Stack.Screen name="AdminEdit" component={AdminEdit} />
-          <Stack.Screen name="AdminHomeHosts" component={AdminHomeHosts} options={{ headerShown: false }}/>
-          <Stack.Screen name="AdminEditHost" component={AdminEditHost} />
+          <Stack.Screen name="AdminHome" component={AdminHome} options={{ headerShown: false, title: 'Drawings' }}/>
+          <Stack.Screen name="AdminEdit" component={AdminEdit} options={({ route }) => ({ title: route.params.name })}/>
+          <Stack.Screen name="AdminHomeHosts" component={AdminHomeHosts} options={{ headerShown: false, title: 'Hosts' }}/>
+          <Stack.Screen name="AdminEditHost" component={AdminEditHost} options={({ route }) => ({ title: route.params.name })}/>
           <Stack.Screen name="Report" component={Report} />
         </Stack.Navigator>
       </NavigationContainer>

@@ -36,6 +36,7 @@ export default function PendingCard(props) {
 
     if (raffle) {
         raffle['host'] = host
+        console.log(host)
         return (
             <TouchableOpacity onPress={() => props.navigation.navigate('AdminEdit', raffle)}>
                 <View style={styles.HostCard}>
@@ -43,12 +44,12 @@ export default function PendingCard(props) {
                     <View style={styles.Info}>
                         <Text style={{ fontWeight: 'bold' }}>{raffle.name}</Text>
                         <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.Info__label}>Prize Value: </Text>
-                            <Text>${raffle.productPrice || '0'}</Text>
+                            <Text style={styles.Info__label}>{raffle.type == 1 ?'Valued At: ': 'Prize Value: '}</Text>
+                            <Text>${raffle.type == 1 ? raffle.valuedAt || '0': raffle.productPrice || '0'}</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
-                            <Text style={styles.Info__label}>Charity Partners: </Text>
-                            <Text>{charityString}</Text>
+                            <Text style={styles.Info__label}>{raffle.type == 1 ?'Charity Partners: ': '# of Products: '}</Text>
+                            <Text>{raffle.type == 1 ? charityString: raffle.numProducts || '1'}</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.Info__label}>Type: </Text>

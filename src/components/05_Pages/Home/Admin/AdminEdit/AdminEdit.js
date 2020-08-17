@@ -28,18 +28,19 @@ export default function AdminEdit({ navigation, route }) {
     // states for each input value
     const [_name, setName] = useState(route.params.name)
     const [_price, setPrice] = useState(route.params.productPrice || 0)
-    const [_value, setValue] = useState(177)
-    const [_numProducts, setNumProducts] = useState(null)
+    const [_value, setValue] = useState(route.params.valuedAt || 0)
+    const [_numProducts, setNumProducts] = useState(route.params.numProducts || 1)
     const [_description, setDescription] = useState(route.params.description)
     const [_goal, setGoal] = useState(null)
     const [_charities, setCharities] = useState(route.params.charities)
-    const [_sizeTypes, setSizeTypes] = useState(['One Size'])
+    const [_sizeTypes, setSizeTypes] = useState(route.params.sizeTypes || ['One Size'])
     const [_sizes, setSizes] = useState(route.params.sizes)
     const [_productType, setProductType] = useState(route.params.productType)
     const [_drawingDuration, setDrawingDuration] = useState(route.params.drawingDuration || 1)
     const [_drawingRadius, setDrawingRadius] = useState(route.params.radius)
     const [_address, setAddress] = useState(null)
     const [_startTime, setStartTime] = useState(null)
+    const [_status, setStatus] = useState(null)
 
     // for going to the next text input
     const priceRef = useRef()
@@ -95,8 +96,9 @@ export default function AdminEdit({ navigation, route }) {
             // CHANGE LATER
             sizeTypes: _sizeTypes,
             sizes: _sizes,
-            startTime: Math.floor(Date.now() / 1000), //should be _startTime @chelly
-            approved: true
+            approved: true,
+            startTime: _startTime,
+            live: (_status == 'Live') ? true: (_status == 'Coming Soon') ? false : null
         }
         console.log(JSON.stringify(data))
         return JSON.stringify(data)
@@ -109,48 +111,89 @@ export default function AdminEdit({ navigation, route }) {
                 <KeyboardAwareScrollView
                     style={{ backgroundColor: 'transparent' }}
                     resetScrollToCoords={{ x: 0, y: 0 }}
-                >   
-                    <View style={{margin: 25}}>
-                        <Text style={{fontStyle: "italic"}}>Hosted by:</Text>
-                        <View style={{flexDirection: 'row', marginTop: 5}}>
-                            <Image source={{ uri: route.params.host.profilePicture }} style={{width:30, height: 30, borderRadius: 30/2, marginRight: 5}}></Image>
-                            <Text style={{marginTop: 5, fontSize: 18}}>@{route.params.host.username}</Text>
+                >
+                    <View style={{ margin: 25 }}>
+                        <Text style={{ fontStyle: "italic" }}>Hosted by:</Text>
+                        <View style={{ flexDirection: 'row', marginTop: 5 }}>
+                            <Image source={{ uri: route.params.host.profilePicture }} style={{ width: 30, height: 30, borderRadius: 30 / 2, marginRight: 5 }}></Image>
+                            <Text style={{ marginTop: 5, fontSize: 18 }}>@{route.params.host.username}</Text>
                         </View>
                     </View>
-                    <View style={[utilities.flexCenter, { marginBottom: 25}]}>
+
+                    <View style={[utilities.flexCenter, { marginBottom: 25 }]}>
                         <InputField
                             label="Name of Product"
                             autoCapitalize="words"
                             value={_name}
                             onChangeText={(text) => { setName(text) }}
+                            onSubmitEditing={(_type == 1) ? () => valueRef.current.focus() : () => priceRef.current.focus()}
                             required />
+                        {(_type == 2) ?
+                            <InputField
+                                label="Buy It Now Price"
+                                keyboardType="number-pad"
+                                value={_price.toString()}
+                                onChangeText={(text) => { setPrice(text) }}
+                                returnKeyType='done'
+                                onSubmitEditing={() => numProductsRef.current.focus()}
+                                ref={priceRef}
+                                required /> :
+                            <InputField
+                                label="Prize Value"
+                                keyboardType="number-pad"
+                                value={_value.toString()}
+                                onChangeText={(text) => { setValue(text) }}
+                                returnKeyType='done'
+                                onSubmitEditing={() => goalRef.current.focus()}
+                                ref={valueRef}
+                                required />
+                        }
+                        {(_type == 2) ?
+                            <InputField
+                                label="# of Products Available"
+                                keyboardType="number-pad"
+                                value={_numProducts.toString()}
+                                onChangeText={(text) => { setNumProducts(text) }}
+                                returnKeyType='done'
+                                onSubmitEditing={() => descriptionRef.current.focus()}
+                                ref={numProductsRef}
+                                required /> : null}
+
+                        {(_type == 1) ?
+                            <InputField
+                                label="Donation Goal ($)"
+                                keyboardType="number-pad"
+                                value={_goal ? _goal.toString() : null}
+                                onChangeText={(text) => { setGoal(text) }}
+                                returnKeyType='done'
+                                onSubmitEditing={() => charityRef.current.focus()}
+                                ref={goalRef} /> : null
+                        }
+                        {(_type == 1) ?
+                            <InputField
+                                label="Charity Partners (sep. by commas)"
+                                autoCapitalize="words"
+                                value={_charities.toString()}
+                                onChangeText={(text) => {
+                                    const cs = text.split(",")
+                                    setCharities(cs)
+                                    console.log(_charities)
+                                }}
+                                onSubmitEditing={() => descriptionRef.current.focus()}
+                                ref={charityRef}
+                                required /> : null
+                        }
                         <InputField
                             label="Description"
                             value={_description}
                             onChangeText={(text) => { setDescription(text) }}
                             ref={descriptionRef}
                             returnKeyType='done'
+                            onSubmitEditing={() => Keyboard.dismiss()}
                             required
                             textArea />
-                        <InputField
-                            label="Prize Value"
-                            value={_price.toString()}
-                            onChangeText={(text) => { setPrice(text) }}
-                            keyboardType="number-pad"
-                            required
-                            />
-                        <InputField
-                            label="Charities (separated by comma)"
-                            value={_charities.toString()}
-                            onChangeText={(text) => { 
-                                const cs = text.split(",")
-                                setCharities(cs)
-                                console.log(_charities)
-                            }}
-                            required
-                            />
 
-                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 2 }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 2, marginVertical: 15 }}>
                             <Text style={styles.InputField__label}>Drawing Duration (Days)*</Text>
                             <Dropdown options={[1, 3, 5, 7, 14, 21, 30]} placeholder={_drawingDuration} setValue={setDrawingDuration} />
                         </View>
@@ -175,10 +218,10 @@ export default function AdminEdit({ navigation, route }) {
                             {!productTypes.includes(_productType) ?
                                 <InputField
                                     autoCapitalize="words"
-                                    value={_productType}
+                                    value={_productType || ''}
                                     onChangeText={(text) => { setProductType(text) }}
                                     returnKeyType='done'
-                                     /> : null}
+                                /> : null}
                         </View>
 
                         {_productType == 'sneaker' ?
@@ -197,39 +240,58 @@ export default function AdminEdit({ navigation, route }) {
                             <Text style={[styles.InputField__label]}>Product Pictures*</Text>
                             <BlockButton color="secondary" title="CHOOSE" size="small" />
                         </View>
-                        
-                    
-                    <View >
-                        {route.params.images.length > 1 ? <ImageCarousel images={route.params.images}></ImageCarousel> : 
-                        <Image source={{uri: route.params.images[0]}} 
-                        style={{height: Dimensions.get('window').height*0.3, width: Dimensions.get('window').width, resizeMode: 'contain', marginBottom: '5%'}}></Image>}
-                    </View>
-                    {/* WE NEED THIS FOR ADMIN */}
-                    {/* // sup chelly, can u also set the _startTime to the correct format */}
-                    <View style={{ width: '100%', marginLeft: '10%', marginVertical: 15 }}>
-                        <Text style={styles.InputField__label}>Drawing Time<Text style={{ color: 'red' }}>*</Text></Text>
-                        <BlockButton color="secondary" size="short" title={_startTime == null ? "Pick A Start Date" : format_date(_startTime)} onPress={showDatePicker} />
-                    </View>
-                    <DateTimePickerModal
-                        isVisible={isDatePickerVisible}
-                        mode="datetime"
-                        headerTextIOS="Pick a start date"
-                        onConfirm={handleConfirm}
-                        onCancel={hideDatePicker}
-                    />
+
+                        <View >
+                            {route.params.images.length > 1 ? <ImageCarousel images={route.params.images}></ImageCarousel> :
+                                <Image source={{ uri: route.params.images[0] }}
+                                    style={{ height: Dimensions.get('window').height * 0.3, width: Dimensions.get('window').width, resizeMode: 'contain', marginBottom: '5%' }}></Image>}
+                        </View>
+
+                        {/* WE NEED THIS FOR ADMIN */}
+                        {/* // sup chelly, can u also set the _startTime to the correct format */}
+                        <View style={{ width: '100%', marginLeft: '10%', marginTop: 15 }}>
+                            <Text style={styles.InputField__label}>Drawing Time*</Text>
+                            <View style={{ width: '95%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <Text style={styles.InputField__label}>{_startTime == null ? "Pick A Start Date" : format_date(_startTime)}</Text>
+                                <BlockButton color="secondary" size="small" title={'CHOOSE'} onPress={showDatePicker} />
+                            </View>
+                        </View>
+                        <View style={{ width: '100%', marginLeft: '10%', marginVertical: 10 }}>
+                            <Text style={styles.InputField__label}>Status*</Text>
+                            <View style={{ flexDirection: 'row' }}>
+                                {['Live', 'Coming Soon'].map((status, index) =>
+                                    <Checkbox
+                                        selected={_status == status}
+                                        onPress={() => {setStatus(status)}}
+                                        text={status}
+                                    />
+                                )}
+                            </View>
+                        </View>
+                        <DateTimePickerModal
+                            isVisible={isDatePickerVisible}
+                            mode="datetime"
+                            headerTextIOS="Pick a start date"
+                            onConfirm={handleConfirm}
+                            onCancel={hideDatePicker}
+                            pickerContainerStyleIOS={{backgroundColor: 'white'}}
+                        />
+
                         <BlockButton title="SUBMIT FOR APPROVAL" color="primary" onPress={() => {
                             Alert.alert(
                                 "Confirm",
                                 "The raffle will be modified, approved, and publicly posted.",
                                 [
-                                    { text: "OK", onPress: () => {
-                                        editRaffle()
-                                        navigation.navigate('AdminHome')
-                                    } },
                                     {
-                                       text: "Cancel", onPress: () => {
-                                           navigation.navigate('AdminEdit', route.params)
-                                       }
+                                        text: "OK", onPress: () => {
+                                            editRaffle()
+                                            navigation.navigate('AdminHome')
+                                        }
+                                    },
+                                    {
+                                        text: "Cancel", onPress: () => {
+                                            navigation.navigate('AdminEdit', route.params)
+                                        }
                                     }
                                 ],
                                 { cancelable: true }
@@ -238,7 +300,7 @@ export default function AdminEdit({ navigation, route }) {
                     </View>
                 </KeyboardAwareScrollView>
             </ScrollView>
-            <BottomNav navigation={navigation} active={'AdminHome'} admin={true}/>
+            <BottomNav navigation={navigation} active={'AdminHome'} admin={true} />
         </View>
 
     );

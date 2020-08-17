@@ -51,29 +51,31 @@ function Home({ navigation }) {
 
   async function getHostObj(hostid) {
     try {
-        let host = await fetch('http://' + data.ipAddress + '/user/id/' + hostid)
-        host = await host.json()
-        return host
+      let host = await fetch('http://' + data.ipAddress + '/user/id/' + hostid)
+      host = await host.json()
+      return host
     } catch (e) {
-        return {}
+      return {}
     }
   }
 
   return (
     <View style={utilities.container}>
       <ScrollView contentContainerStyle={utilities.scrollview}>
-        <TopNav navigation={navigation} active='ActiveHome' admin={true}/>
-        <Button title={'Refresh'} onPress={() => setRefresh(!refresh)}></Button>
+        <TopNav navigation={navigation} active='Drawings' admin={true} />
+        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-end' }}>
+          <Button title={'Refresh'} onPress={() => setRefresh(!refresh)} />
+        </View>
         <View style={utilities.flexCenter}>
-            {pendingRaffles.map((raffle, index) =>
-                <PendingCard
-                    data={raffle}
-                    navigation={navigation}
-                />)}
+          {pendingRaffles.map((raffle, index) =>
+            <PendingCard
+              data={raffle}
+              navigation={navigation}
+            />)}
 
         </View>
       </ScrollView>
-      <BottomNav navigation={navigation} active={'AdminHome'} admin={true}/>
+      <BottomNav navigation={navigation} active={'AdminHome'} admin={true} />
     </View>
 
   )
