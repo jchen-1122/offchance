@@ -43,7 +43,7 @@ function Home({ navigation }) {
   // get all raffles and maybe filter them by type
   React.useEffect(() => {
     async function getRaffle() {
-      if (!user.token){
+      if (!user.token) {
         setToken(await registerForPushNotifications())
       }
       setTop5Donors(await top5_global())
@@ -74,7 +74,7 @@ function Home({ navigation }) {
       const json = await response.json()
       return json
     }
-    if (!user.token){
+    if (!user.token) {
       addToken()
     }
 
@@ -82,7 +82,7 @@ function Home({ navigation }) {
     // ex: data: {"title": "Hello", "message": "Yes", "page": "Search"}
     Notifications.addNotificationResponseReceivedListener((response) => {
       let page = response.notification.request.content.data.body.page
-      if (page){
+      if (page) {
         navigation.navigate(page)
       }
     }
@@ -117,10 +117,12 @@ function Home({ navigation }) {
         <View style={utilities.flexCenter}>
 
           <HorizontalScroll title="Trending" theme="light" seeAllRaffles={trendingRaffles} navigation={navigation} toggle={true}>
-            {trendingRaffles.map((raffle, index) =>
-              <RaffleCard raffle={raffle} navigation={navigation} />
-            )}
 
+            {trendingRaffles.map((raffle, index) =>
+              <View style={{ marginHorizontal: -14 }}>
+                <RaffleCard raffle={raffle} navigation={navigation} />
+              </View>
+            )}
           </HorizontalScroll>
           <HorizontalScroll title="Top 5 Donors" theme="dark">
             {top5donors.map((donor, index) =>
@@ -130,7 +132,9 @@ function Home({ navigation }) {
 
           <HorizontalScroll title="Donate to Enter Raffles" theme="light" seeAllRaffles={donateRaffles} navigation={navigation}>
             {donateRaffles.map((raffle, index) =>
-              <RaffleCard raffle={raffle} navigation={navigation} />
+              <View style={{ marginHorizontal: -3 }}>
+                <RaffleCard raffle={raffle} navigation={navigation} />
+              </View>
             )}
           </HorizontalScroll>
 

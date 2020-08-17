@@ -22,7 +22,7 @@ const utilities = StyleSheet.create({
 
     // for top 5 donors and latest winners
     exploreCard: {
-        height: 225,
+        height: 220,
         width: Dimensions.get('window').width * 0.45,
         backgroundColor: '#555555',
         borderRadius: borderRadius_ExploreCard,

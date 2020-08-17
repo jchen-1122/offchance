@@ -28,7 +28,7 @@ function RaffleCard(props) {
                 <View style={styles.RaffleCard}>
                     <Image style={styles.RaffleCard__image} source={{ uri: raffle.images[0] }} />
                     <Text style={[fonts.h3, {textAlign: 'center'}]}>
-                        {(raffle.name).length < 50 ? raffle.name : raffle.name.substring(0,47) + '...'}
+                        {(raffle.name).length < 45 ? raffle.name : raffle.name.substring(0,42) + '...'}
                         </Text>
                     <Countdown unix_timestamp={raffle.startTime} propsStyle={styles.RaffleCard__startTime}/>
                 </View>

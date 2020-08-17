@@ -2,11 +2,11 @@ import { StyleSheet, Dimensions } from 'react-native'
 
 const styles = StyleSheet.create({
     HorizontalScroll_dark: {
-        height: 330,
+        height: 325,
         width: Dimensions.get('window').width,
         backgroundColor: 'black',
         padding: '5%',
-        paddingBottom: '10%'
+        paddingBottom: '10%',
     },
     HorizontalScroll_light: {
         height: 325,
