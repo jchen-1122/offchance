@@ -13,7 +13,6 @@ import styles from './Bottomnav.styling'
 
 function BottomNav(props) {
   const { user, setUser } = useContext(GlobalState)
-console.log(props.active)
   return (
     <View>
       <Footer>

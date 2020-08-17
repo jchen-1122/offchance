@@ -12,7 +12,7 @@ import GlobalState from '../../../globalState'
 
 const PurchaseProduct = (props) => {
   const [loaded, setLoaded] = useState(false)
-  console.log(props.setUser)
+  //console.log(props.setUser)
   let chances = 10
   let amount = 5
   let options = ['$5 = 10 chances', '$10 = 40 chances', '$20 = 50 chances', '$50 = 150 chances', '$100 = 400 chances', '$250 = 1100 chances']

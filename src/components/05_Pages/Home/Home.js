@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
 import { Text, View, Dimensions, ScrollView, BackHandler, Alert } from 'react-native'
-// import {fonts} from '../../../settings/fonts';
 import { colors, fonts, utilities } from '../../../settings/all_settings';
 import BottomNav from '../../02_Molecules/BottomNav/BottomNav';
 import TopNav from '../../02_Molecules/TopNav/TopNav';
@@ -8,6 +7,7 @@ import Card from '../../03_Organisms/Card/Card';
 import ToggleType from '../../01_Atoms/Buttons/ToggleType/ToggleType';
 import ToggleTypeMenu from '../../03_Organisms/ToggleTypeMenu/ToggleTypeMenu'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
+import Banner from '../../01_Atoms/Banner/Banner'
 import GlobalState from '../../globalState';
 import { user_logged_in } from '../../../functions/user_functions';
 import { top5_global, getLatestRaffles, getLatestWinners, sortTrending } from '../../../functions/explore_functions';
@@ -15,6 +15,7 @@ import HorizontalScroll from '../../04_Templates/HorizontalScroll/HorizontalScro
 import Top5Card from '../../03_Organisms/HorizontalCards/Top5Card/Top5Card';
 import LatestWinnerCard from '../../03_Organisms/HorizontalCards/LatestWinnerCard/LatestWinnerCard';
 import RaffleCard from '../../03_Organisms/HorizontalCards/RaffleCard/RaffleCard';
+import {time_from_now, in_a_day} from '../../../functions/convert_dates';
 
 function Home({ navigation }) {
   const data = require('../../IP_ADDRESS.json');
@@ -31,10 +32,12 @@ function Home({ navigation }) {
   const [donateRaffles, setDonateRaffles] = useState([])
   const [buyRaffles, setBuyRaffles] = useState([])
   const [upcomingRaffles, setUpcomingRaffles] = useState([])
+  const [nextRaffle, setNextRaffle] = useState(null)
 
   // get all raffles and maybe filter them by type
   React.useEffect(() => {
     async function getRaffle() {
+      var date = new Date().getTime();
       setTop5Donors(await top5_global())
       setLatestWinners(await getLatestWinners())
       setLatestRaffles(await getLatestRaffles())
@@ -43,6 +46,11 @@ function Home({ navigation }) {
       setDonateRaffles(response.filter((raffle) => { return raffle.type == 1 }))
       setBuyRaffles(response.filter((raffle) => { return raffle.type == 2 }))
       setUpcomingRaffles(response.filter((raffle) => { return raffle.live == false }))
+      // Getting most upcoming raffle for banner
+      let liveraffles = response.filter((raffle) => { return raffle.live == true })
+      let comingraffles = liveraffles.filter((raffle) => { return raffle.startTime * 1000 > date })
+      let nextraffle = comingraffles.sort((a,b) => (a.startTime > b.startTime) ? 1 : ((b.startTime > a.startTime) ? -1 : 0))
+      if (nextraffle.length > 0 && in_a_day(nextraffle[0].startTime)) setNextRaffle(nextraffle[0])
       setTrendingRaffles(sortTrending(response))
       setRaffles(response)
     }
@@ -71,6 +79,11 @@ function Home({ navigation }) {
   return (
     <View style={utilities.container}>
       <ScrollView contentContainerStyle={utilities.scrollview}>
+      <View style={{ height: 20, backgroundColor: 'black' }}></View>
+      {nextRaffle && <Banner
+          color="black"
+          press={nextRaffle} navigation={navigation}
+          title={"LIVE DRAWING " + time_from_now(nextRaffle.startTime).toUpperCase()} />}
         <TopNav navigation={navigation} active='Home' />
         <View style={utilities.flexCenter}>
 

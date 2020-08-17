@@ -3,17 +3,19 @@ import { colors } from '../../../settings/all_settings.js'
 
 var redHeight = 30;
 var greenHeight = 28;
-var blackHeight = 35;
+var blackHeight = 30;
 
 const styles = StyleSheet.create({
     Banner: {
-        position: "absolute",
-        top: 0,
         width: Dimensions.get('window').width,
         flex: 0,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    Banner__absolute: {
+        position: "absolute",
+        top: 0
     },
     Banner__title: {
         fontSize: 16,
@@ -25,7 +27,7 @@ const styles = StyleSheet.create({
     },
     Banner__black: {
         backgroundColor: 'black',
-        height: blackHeight,
+        height: blackHeight
     },
     Banner__red: {
         backgroundColor: 'red',
