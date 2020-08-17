@@ -44,7 +44,7 @@ function Home({ navigation }) {
 
   // get all raffles and maybe filter them by type
   React.useEffect(() => {
-    async function getRaffle() {
+    async function getRaffle() {  
       if (!user.token) {
         setToken(await registerForPushNotifications())
       }

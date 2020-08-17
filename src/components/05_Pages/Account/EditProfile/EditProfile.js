@@ -51,12 +51,14 @@ export default function ({ navigation }) {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
             if (status !== 'granted') {
                 alert('Sorry, we need camera roll permissions to make this work!');
+                return true;
             }
         }
+        return false;
     }
 
     const _pickImage = async () => {
-        await getPermissionAsync()
+        if (await getPermissionAsync()) return;
         try {
           let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
