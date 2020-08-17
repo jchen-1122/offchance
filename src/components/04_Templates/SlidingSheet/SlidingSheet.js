@@ -134,7 +134,7 @@ function SlidingSheet(props) {
     // update amountRaised
     let amountRaised = raffle.amountRaised
     amountRaised += props.amountDollar
-    console.log(amountRaised)
+    //console.log(amountRaised)
 
     // update lastDonatedTo
     let timeNow = Math.floor(Date.now() / 1000)
