@@ -44,7 +44,7 @@ function Home({ navigation }) {
 
   // get all raffles and maybe filter them by type
   React.useEffect(() => {
-    async function getRaffle() {  
+    async function getRaffle() {
       if (!user.token) {
         setToken(await registerForPushNotifications())
       }
@@ -58,6 +58,7 @@ function Home({ navigation }) {
       setUpcomingRaffles(response.filter((raffle) => { return raffle.live == false }))
       // Getting most upcoming raffle for banner
       let liveraffles = response.filter((raffle) => { return raffle.live == true })
+      let date = new Date()
       let comingraffles = liveraffles.filter((raffle) => { return raffle.startTime * 1000 > date })
       let nextraffle = comingraffles.sort((a,b) => (a.startTime > b.startTime) ? 1 : ((b.startTime > a.startTime) ? -1 : 0))
       if (nextraffle.length > 0 && in_a_day(nextraffle[0].startTime)) setNextRaffle(nextraffle[0])

@@ -12,6 +12,7 @@ function DropDown(props) {
     // convert array of options to dropdown items
     let options = []
     for (let option of props.options) {
+        option = option.toString()
         let optionIcon;
         // add the paypal logo
         if (option.toUpperCase() == ('Paypal').toUpperCase()){
