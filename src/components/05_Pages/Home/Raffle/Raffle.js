@@ -50,7 +50,6 @@ export default function Raffle({ navigation, route }) {
             let coordsUser = await getCoords(user.shippingAddress)
             // let coordsHost = await getCoords(route.params['host'].shippingAddress)
             let coordsHost = Object.keys(route.params).includes("address") ? await getCoords(route.params.address) : coordsUser
-            console.log(coordsHost)
 
             let longUser = coordsUser.features[0].geometry.coordinates[0]
             let latUser = coordsUser.features[0].geometry.coordinates[1]

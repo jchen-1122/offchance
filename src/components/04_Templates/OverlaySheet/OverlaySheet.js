@@ -315,6 +315,30 @@ function OverlaySheet(props) {
             </View> : null}
 
             <View style={{ alignItems: 'center', width: '100%' }}>
+              {/* <BlockButton title="SWIPE TO CONFIRM" color="primary" onPress={async() => {
+                  // if they've selected a size, sizetype, and payment method
+                  if (_method !== null && props.sizeType !== "notselected" && props.size !== "notselected") {
+                    let updatedUser = await enterUserinRaffle()
+                      props.setUser(updatedUser)
+                      await updateRaffle()
+                    // if using wallet chances
+                    if (_method === "Wallet Chances"){
+                      
+                      // if they have enough chances
+                      if (props.user.walletChances - props.chances > 0){
+                        toggleOverlay();
+                        props.navigation.navigate("Success", { fromRaffle: props.chances })
+                      }
+                    }
+
+                    // if using a payment method
+                    else {
+                      console.log(_method)
+                      setStripe(false)
+                      //toggleOverlay();
+                    }
+                  }
+                }} /> */}
                 <SwipeButton title="SWIPE TO CONFIRM" onSwipeSuccess={async() => {
                   // if they've selected a size, sizetype, and payment method
                   if (_method !== null && props.sizeType !== "notselected" && props.size !== "notselected") {
