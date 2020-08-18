@@ -1,73 +1,27 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { View, Text, TouchableOpacity, TextInput, ScrollView, Picker, Animated, Alert, Dimensions } from 'react-native'
 import { Icon } from 'react-native-elements'
-import CheckBox from '../../02_Molecules/Checkbox/Checkbox'
-import DropDownPicker from 'react-native-dropdown-picker';
 import SwipeButton from '../../01_Atoms/Buttons/SwipeButton/SwipeButton';
-
+import GlobalState from '../../globalState';
 import { utilities, fonts } from '../../../settings/all_settings';
-
-// https://www.npmjs.com/package/react-native-dropdown-picker
 import DropDown from '../../../components/01_Atoms/DropDown/DropDown';
 import BlockButton from '../../../components/01_Atoms/Buttons/BlockButton/BlockButton';
-
 import styles from './SlidingSheet.styles';
-// https://github.com/alinz/react-native-dropdown
-// import {option, select} from 'react-native-dropdown'
 import Stripe from '../../05_Pages/Account/Wallet/Stripe'
-import { setStatusBarTranslucent } from 'expo-status-bar';
-import { user_logged_in } from '../../../functions/user_functions';
 
 
 // Sliding Sheet update: Removed visible prop, since the sheet will be invisible after sliding off the screen.
 function SlidingSheet(props) {
   const [last4, setlast4] = useState(null)
-  const data = require('../../IP_ADDRESS.json')
+  // const data = require('../../IP_ADDRESS.json')
+  const {user, setUser} = useContext(GlobalState)
 
   const [stripe, setStripe] = useState(true)
   const [_method, setMethod] = useState(null)
   const [_amount, setAmount] = useState(null)
   const [_save, setSave] = useState(false)
-  const [_walletBalance, setWalletBalance] = useState(0)
-  const [refresh, setRefresh] = useState(true)
-
-
-  useEffect(() => {
-    async function getLast4() {
-      let response = await fetch('http://' + data.ipAddress + '/user/id/' + props.user._id)
-      response = await response.json()
-      if (Object.keys(response).includes('last4')) {
-        setlast4(response.last4)
-      }
-      setWalletBalance(response.walletChances)
-    }
-    getLast4()
-
-  }, [_method, _amount])
-
-  // useEffect(() => {
-  //   if (props.amount) {
-  //     setAmount(props.amount)
-  //   }
-  // }, [props.amount])
 
   const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet (1000 is at the bottom)
-
-  let options1 = []
-  if (last4 !== null) {
-    options1.push('**** **** **** ' + last4)
-    options1.push('Paypal')
-    if (!props.wallet) {
-      options1.push('Wallet Chances')
-    }
-  } else {
-    options1.push('+ Add Credit Card')
-    options1.push('Paypal')
-    if (!props.wallet) {
-      options1.push('Wallet Chances')
-    }
-  }
-  let options2 = ['$5 = 10 chances', '$10 = 40 chances', '$20 = 50 chances', '$50 = 150 chances', '$100 = 400 chances', '$250 = 1100 chances']
 
   let slidingStyle = [styles.subView];
   slidingStyle.push({ height: props.height });
@@ -123,20 +77,20 @@ function SlidingSheet(props) {
               </View>
 
               <View style={[styles.slidingSheet__content, { zIndex: 2 }]}>
-                <Text style={styles.slidingSheet__content_text}>{props.content[1]}</Text>
+                <Text style={styles.slidingSheet__content_text}>PAYMENT METHOD</Text>
                 <DropDown
-                  // placeholder={"PICK A PAYMENT METHOD"}
-                  options={options1}
+                  placeholder={"PICK A PAYMENT METHOD"}
+                  options={props.methodOptions}
                   size='large'
                   setValue={setMethod}
                 />
               </View>
 
               <View style={[styles.slidingSheet__content, { zIndex: 1 }]}>
-                <Text style={styles.slidingSheet__content_text}>{props.content[2]}</Text>
+                <Text style={styles.slidingSheet__content_text}>RELOAD AMOUNT</Text>
                 <DropDown
-                  // placeholder={'PICK A RELOAD AMOUNT'}
-                  options={options2}
+                  placeholder={'PICK A RELOAD AMOUNT'}
+                  options={['$5 = 10 chances', '$10 = 40 chances', '$20 = 50 chances', '$50 = 150 chances', '$100 = 400 chances', '$250 = 1100 chances']}
                   size='large'
                   setValue={setAmount}
                 />
@@ -146,9 +100,7 @@ function SlidingSheet(props) {
               <View style={{ alignItems: 'center', width: '100%' }}>
 
               <SwipeButton title="SWIPE TO SUBMIT" onSwipeSuccess={() => {
-                  // setRefresh(!refresh)
                   console.log('----THIS SWIPES------')
-                  // console.log('walletBalance', _walletBalance)
                   console.log('method', _method)
                   console.log('amount', _amount)
                   if (_method !== null) {
