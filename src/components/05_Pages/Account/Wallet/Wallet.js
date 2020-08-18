@@ -97,7 +97,6 @@ export default function Wallet({navigation}) {
             sheet={sheetController}
             trigger={trigger}
             height={height * 0.7}
-            setUser={setUser}
             methodOptions={methodOptions}
             navigation={navigation}/>
             </View>

@@ -63,7 +63,11 @@ function DropDown(props) {
                         justifyContent: 'flex-start',
                     }}
                     onChangeItem={item => { setSelectedValue(item.value); 
-                                            if (props.setValue) { props.setValue(item.value) }}}
+                                            if (props.setValue) { props.setValue(item.value) };
+                                            if (props.forceUpdateAmount){
+                                                props.forceUpdateAmount(item.value)
+                                            }
+                                        }}
                 />
             </View>
         )

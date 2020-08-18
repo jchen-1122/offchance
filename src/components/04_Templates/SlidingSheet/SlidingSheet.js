@@ -9,17 +9,21 @@ import BlockButton from '../../../components/01_Atoms/Buttons/BlockButton/BlockB
 import styles from './SlidingSheet.styles';
 import Stripe from '../../05_Pages/Account/Wallet/Stripe'
 
+//create your forceUpdate hook
+function useForceUpdate(){
+  const [value, setValue] = useState(0); // integer state
+  return () => setValue(value => ++value); // update the state to force render
+}
 
 // Sliding Sheet update: Removed visible prop, since the sheet will be invisible after sliding off the screen.
 function SlidingSheet(props) {
-  const [last4, setlast4] = useState(null)
-  // const data = require('../../IP_ADDRESS.json')
-  const {user, setUser} = useContext(GlobalState)
+  const forceUpdate = useForceUpdate();
 
   const [stripe, setStripe] = useState(true)
   const [_method, setMethod] = useState(null)
   const [_amount, setAmount] = useState(null)
   const [_save, setSave] = useState(false)
+  const [refresh, setRefresh] = useState(true)
 
   const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet (1000 is at the bottom)
 
@@ -54,10 +58,17 @@ function SlidingSheet(props) {
     props.trigger();
   }
 
-  // console.log('AMOUNT DOLLAR: ', props.amountDollar); // 5, 10, 20, 50, 100, 250
+  const renderSwipeButton = () => (
+    <SwipeButton title="SWIPE TO SUBMIT" onSwipeSuccess={() => {
+      console.log('----THIS SWIPES------')
+      console.log('method', _method)
+      console.log('amount', _amount)
+      if (_method !== null) {
+        setStripe(false) // joshua made false mean that stripe appears -.-
+      }
+    }} />
+  )
 
-  // console.log(props.sheet); 101010
-  // TODO: Add a dropdown/button for stripe and apple pay
   return (
     <View style={styles.container}>
       <Animated.View
@@ -83,6 +94,7 @@ function SlidingSheet(props) {
                   options={props.methodOptions}
                   size='large'
                   setValue={setMethod}
+                  forceUpdate={forceUpdate}
                 />
               </View>
 
@@ -93,23 +105,15 @@ function SlidingSheet(props) {
                   options={['$5 = 10 chances', '$10 = 40 chances', '$20 = 50 chances', '$50 = 150 chances', '$100 = 400 chances', '$250 = 1100 chances']}
                   size='large'
                   setValue={setAmount}
+                  forceUpdate={forceUpdate}
                 />
               </View>
 
               {/* NEW SWIPE BUTTON */}
               <View style={{ alignItems: 'center', width: '100%' }}>
+                {(_method !== null && _amount !== null) ? renderSwipeButton() : null}
 
-              <SwipeButton title="SWIPE TO SUBMIT" onSwipeSuccess={() => {
-                  console.log('----THIS SWIPES------')
-                  console.log('method', _method)
-                  console.log('amount', _amount)
-                  if (_method !== null) {
-                    setStripe(false) // joshua made false mean that stripe appears -.-
-                  }
-                }} />
               </View>
-                {/* <Text>METHOD {_method ? _method : 'null'}</Text>
-                <Text>AMOUNT {_amount ? _amount : 'null'}</Text> */}
 
               {/* <BlockButton
                   color="primary"
