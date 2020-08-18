@@ -14,6 +14,7 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { format_date } from '../../../../../functions/convert_dates';
 import ImageCarousel from '../../../../02_Molecules/ImageCarousel/ImageCarousel'
+import TextLink from '../../../../01_Atoms/Buttons/TextLinks/TextLinks'
 
 export default function AdminEdit({ navigation, route }) {
     var _type = route.params.type
@@ -22,7 +23,7 @@ export default function AdminEdit({ navigation, route }) {
     for (var i = 4; i <= 14; i += 0.5) {
         shoeSizes.push(i.toString())
     }
-    console.log(route.params)
+    //console.log(route.params)
 
     const [buttonTitle, setButtonTitle] = useState('Submit')
     // states for each input value
@@ -39,8 +40,8 @@ export default function AdminEdit({ navigation, route }) {
     const [_drawingDuration, setDrawingDuration] = useState(route.params.drawingDuration || 1)
     const [_drawingRadius, setDrawingRadius] = useState(route.params.radius)
     const [_address, setAddress] = useState(null)
-    const [_startTime, setStartTime] = useState(null)
-    const [_status, setStatus] = useState(null)
+    const [_startTime, setStartTime] = useState((route.params.approved) ? route.params.startTime : null)
+    const [_status, setStatus] = useState((route.params.approved) ? (route.params.live) ? 'Live' : 'Coming Soon' : null)
 
     // for going to the next text input
     const priceRef = useRef()
@@ -59,6 +60,7 @@ export default function AdminEdit({ navigation, route }) {
         setDatePickerVisibility(false);
     };
     const handleConfirm = (date) => {
+        date = new Date(date).getTime() / 1000
         setStartTime(date)
         hideDatePicker();
     };
@@ -77,6 +79,19 @@ export default function AdminEdit({ navigation, route }) {
                 'Content-Type': 'application/json'
             },
             body: makeJSON()
+        })
+        const json = await response.json()
+        console.log(json)
+        return json
+    }
+
+    const deleteRaffle = async () => {
+        const response = await fetch('http://' + data.ipAddress + '/raffle/del/' + route.params._id, {
+            method: "DELETE",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
         })
         const json = await response.json()
         return json
@@ -100,7 +115,6 @@ export default function AdminEdit({ navigation, route }) {
             startTime: _startTime,
             live: (_status == 'Live') ? true: (_status == 'Coming Soon') ? false : null
         }
-        console.log(JSON.stringify(data))
         return JSON.stringify(data)
     };
     return (
@@ -177,7 +191,7 @@ export default function AdminEdit({ navigation, route }) {
                                 onChangeText={(text) => {
                                     const cs = text.split(",")
                                     setCharities(cs)
-                                    console.log(_charities)
+                                    //console.log(_charities)
                                 }}
                                 onSubmitEditing={() => descriptionRef.current.focus()}
                                 ref={charityRef}
@@ -252,8 +266,8 @@ export default function AdminEdit({ navigation, route }) {
                         <View style={{ width: '100%', marginLeft: '10%', marginTop: 15 }}>
                             <Text style={styles.InputField__label}>Drawing Time*</Text>
                             <View style={{ width: '95%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Text style={styles.InputField__label}>{_startTime == null ? "Pick A Start Date" : format_date(_startTime)}</Text>
-                                <BlockButton color="secondary" size="small" title={'CHOOSE'} onPress={showDatePicker} />
+                                <Text style={styles.InputField__label}>{_startTime == null ? "Pick A Start Date" : format_date(new Date(_startTime * 1000))}</Text>
+                                <BlockButton color="secondary" size="small" title={(route.params.approved) ? 'CHANGE' : 'CHOOSE'} onPress={showDatePicker} />
                             </View>
                         </View>
                         <View style={{ width: '100%', marginLeft: '10%', marginVertical: 10 }}>
@@ -277,7 +291,11 @@ export default function AdminEdit({ navigation, route }) {
                             pickerContainerStyleIOS={{backgroundColor: 'white'}}
                         />
 
-                        <BlockButton title="SUBMIT FOR APPROVAL" color="primary" onPress={() => {
+                        <Text style={{color: 'red'}}>{(_status === null) ? "Approved drawings must be either live or coming soon" : null}</Text>
+                        <Text style={{color: 'red'}}>{(_startTime === null) ? "Approved drawings must have a starting time" : null}</Text>
+
+                        <BlockButton title={(route.params.approved) ? "EDIT" : "SUBMIT FOR APPROVAL"} color="primary" onPress={() => {
+                            if (_status !== null && _startTime !== null) {
                             Alert.alert(
                                 "Confirm",
                                 "The raffle will be modified, approved, and publicly posted.",
@@ -285,18 +303,58 @@ export default function AdminEdit({ navigation, route }) {
                                     {
                                         text: "OK", onPress: () => {
                                             editRaffle()
-                                            navigation.navigate('AdminHome')
+                                            if (route.params.approved) {
+                                                navigation.navigate('Active')
+                                            } else {
+                                                navigation.navigate('AdminHome')
+                                            }
+                                            
                                         }
                                     },
                                     {
                                         text: "Cancel", onPress: () => {
-                                            navigation.navigate('AdminEdit', route.params)
                                         }
                                     }
                                 ],
                                 { cancelable: true }
                             );
-                        }} />
+                        }}} />
+                        <TextLink title={"Delete Request (Permanent)"} onPress={() => {
+                             Alert.alert(
+                                "Confirm",
+                                "Delete Drawing Permanently",
+                                [
+                                    {
+                                        text: "OK", onPress: () => {
+                                            Alert.alert(
+                                                "Confirm",
+                                                "This action cannot be undone",
+                                                [
+                                                    {
+                                                        text: "YES", onPress: () => {
+                                                            //deleteRaffle()
+                                                            navigation.navigate('AdminHome')
+                                                            
+                                                        }
+                                                    },
+                                                    {
+                                                        text: "Cancel", onPress: () => {
+                                                        }
+                                                    }
+                                                ],
+                                                { cancelable: true }
+                                            );
+                                                                      
+                                        }
+                                    },
+                                    {
+                                        text: "Cancel", onPress: () => {
+                                        }
+                                    }
+                                ],
+                                { cancelable: true }
+                            );
+                        }}></TextLink>
                     </View>
                 </KeyboardAwareScrollView>
             </ScrollView>
