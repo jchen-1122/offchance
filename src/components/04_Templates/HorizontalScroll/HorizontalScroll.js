@@ -21,9 +21,13 @@ export default function HorizontalScroll(props) {
             <ScrollView
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
+                // contentContainerStyle={{flexDirection: 'row', justifyContent: 'flex-start'}}
                 scrollEventThrottle={200}
                 decelerationRate="normal">
-                {props.children}
+                    <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
+                    {props.children}
+                    </View>
+                
             </ScrollView>
 
         </View>

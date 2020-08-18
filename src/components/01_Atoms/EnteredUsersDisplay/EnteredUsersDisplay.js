@@ -86,6 +86,7 @@ function EnteredUsersDisplay(props) {
             }
         }
         renderInfo()
+
     }, [user1])
 
     const getUserObj = async (ids) => {
@@ -98,8 +99,10 @@ function EnteredUsersDisplay(props) {
         return res
     }
 
-    
-
+    // blank if no entered users
+    if (!props.enteredUsers || props.enteredUsers.length == 0){
+        return null
+    }
     return (
         <TouchableOpacity onPress={async () => {
             const userObjs = await getUserObj(userIds)

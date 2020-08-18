@@ -5,16 +5,9 @@ import {StyleSheet, Dimensions} from 'react-native';
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-
-    },
-
-    slidingSheet: {
-        flex: 1,
-
     },
 
     slidingSheet__header: {
-        flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
@@ -24,22 +17,9 @@ const styles = StyleSheet.create({
     },
 
     slidingSheet__content: {
-        flex: 1,
-        marginLeft: '10%',
-        marginRight: '10%',
+        marginHorizontal: '10%',
         marginBottom: '7%',
-        flexDirection: 'column',
-        borderBottomColor: '#000000',
-        borderBottomWidth: 1,
-
-    },
-
-    slidingSheet__save: {
-        flex: 1,
-        marginLeft: '10%',
-        marginRight: '10%',
-        marginBottom: '7%',
-        flexDirection: 'column',
+        flexDirection: 'column'
     },
 
     slidingSheet__content_text: {
@@ -49,14 +29,6 @@ const styles = StyleSheet.create({
 
     },
 
-    // button
-    button: {
-      zIndex: -1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginBottom: '15%',
-
-    },
 
     // Sliding Sheet Style
     subView: {

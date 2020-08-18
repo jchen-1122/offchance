@@ -56,7 +56,7 @@ export default function Wallet({navigation}) {
 
     return (
         <View style={containerStyle}>
-
+          <View style={{height: '90%'}}>
             {/* Header */}
             <View>
                 <Text style={styles.header}>Balance:</Text>
@@ -90,18 +90,7 @@ export default function Wallet({navigation}) {
             content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
             navigation={navigation}
             wallet={true}/>
-
-            {/* <SlidingSheet
-            title='Payment'
-            type='payment'
-            sheet={paymentController}
-            trigger={paymentTrigger}
-            height={height * 0.8}
-            user={user}
-            content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
-            navigation={navigation}/> */}
-
-
+            </View>
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>
         </View>
     )

@@ -31,7 +31,7 @@ function DropDown(props) {
     }
 
     // for different sizes
-    let containerStyles = [styles.DropDown__picker,]
+    let containerStyles = [styles.DropDown__picker]
     switch (props.size) {
         case 'small':
             containerStyles.push(styles.DropDown__picker_small);
@@ -63,8 +63,7 @@ function DropDown(props) {
                         justifyContent: 'flex-start',
                     }}
                     onChangeItem={item => { setSelectedValue(item.value); 
-                                            if (props.setValue) { props.setValue(item.value) } 
-                                            (item.value === '+ Add Payment Method') ? (setSelectedValue((props.options[0]).toString()), props.parentFunction()) : null }}
+                                            if (props.setValue) { props.setValue(item.value) }}}
                 />
             </View>
         )

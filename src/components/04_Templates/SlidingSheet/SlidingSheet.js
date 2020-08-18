@@ -23,6 +23,15 @@ import { user_logged_in } from '../../../functions/user_functions';
 function SlidingSheet(props) {
   const [last4, setlast4] = useState(null)
   const data = require('../../IP_ADDRESS.json')
+
+  const [stripe, setStripe] = useState(true)
+  const [_method, setMethod] = useState(null)
+  const [_amount, setAmount] = useState(null)
+  const [_save, setSave] = useState(false)
+  const [_walletBalance, setWalletBalance] = useState(0)
+  const [refresh, setRefresh] = useState(true)
+
+
   useEffect(() => {
     async function getLast4() {
       let response = await fetch('http://' + data.ipAddress + '/user/id/' + props.user._id)
@@ -33,137 +42,15 @@ function SlidingSheet(props) {
       setWalletBalance(response.walletChances)
     }
     getLast4()
-  }, [])
 
-  useEffect(() => {
-    if (props.amount) {
-      setAmount(props.amount)
-    }
-  }, [props.amount])
+  }, [_method, _amount])
 
-  async function subtractWallet() {
-    // console.log('HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH')
-    const response = await fetch('http://' + data.ipAddress + '/user/edit/' + props.user._id, {
-      method: "PATCH",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ walletChances: _walletBalance - props.chances })
-    })
-    const json = await response.json()
+  // useEffect(() => {
+  //   if (props.amount) {
+  //     setAmount(props.amount)
+  //   }
+  // }, [props.amount])
 
-    return json
-  }
-
-  // update user for entered users in the backend
-  async function enterUserinRaffle() {
-    // append to user schema
-    // if first entered raffle
-    let currEntered;
-    if (!Object.keys(props.user).includes('rafflesEntered') || props.user.rafflesEntered.children.length === 0) {
-      currEntered = { children: [makeEntetedRaffleSchemaJSON(0, 0)] }
-    } else {
-      currEntered = props.user.rafflesEntered.children
-      let oldamount = 0;
-      let oldchances = 0;
-      for (var i = 0; i < currEntered.length; i++) {
-        if (currEntered[i].raffleID === props.raffleid && currEntered[i].sizeType === props.sizeType && currEntered[i].size === props.size) {
-          oldamount = currEntered[i].amountDonated
-          oldchances = currEntered[i].chances
-          currEntered.splice(i, 1)
-        }
-      }
-      currEntered.push(makeEntetedRaffleSchemaJSON(oldamount, oldchances))
-      currEntered = { children: currEntered }
-    }
-
-    let walletFinal = _walletBalance
-    if (_method === "Wallet Chances") {
-      walletFinal = _walletBalance - props.chances
-    }
-    let enteredRaffle = await fetch('http://' + data.ipAddress + '/user/edit/' + props.user._id, {
-      method: "PATCH",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ rafflesEntered: currEntered, walletChances: walletFinal })
-    })
-    enteredRaffle = await enteredRaffle.json()
-    return enteredRaffle
-  }
-
-  const makeEntetedRaffleSchemaJSON = (oldamount, oldchances) => {
-    return {
-      raffleID: props.raffleid,
-      amountDonated: oldamount + props.amountDollar,
-      chances: oldchances + props.chances,
-      sizeType: props.sizeType,
-      size: props.size,
-      timeDonated: Math.floor(Date.now() / 1000)
-    }
-  }
-
-  // update users, amountRaised, lastDonatedTo in raffle schema (backend)
-  // how it works: https://www.youtube.com/watch?v=dQw4w9WgXcQ
-  async function updateRaffle() {
-
-    // get raffle object
-    let raffle = await fetch('http://' + data.ipAddress + '/raffle/id/' + props.raffleid)
-    raffle = await raffle.json()
-
-    // update users
-    let currEntered;
-    if (!Object.keys(raffle).includes('users') || raffle.users.children.length === 0) {
-      currEntered = { children: [makeRaffleJSON(0, 0)] }
-    } else {
-      currEntered = raffle.users.children
-      let oldamount = 0;
-      let oldchances = 0;
-      for (var i = 0; i < currEntered.length; i++) {
-        if (currEntered[i].userID === props.user._id && currEntered[i].sizeType === props.sizeType && currEntered[i].size === props.size) {
-          oldamount = currEntered[i].amountDonated
-          oldchances = currEntered[i].chances
-          currEntered.splice(i, 1)
-        }
-      }
-      currEntered.push(makeRaffleJSON(oldamount, oldchances))
-      currEntered = { children: currEntered }
-    }
-    // update amountRaised
-    let amountRaised = raffle.amountRaised
-    amountRaised += props.amountDollar
-    //console.log(amountRaised)
-
-    // update lastDonatedTo
-    let timeNow = Math.floor(Date.now() / 1000)
-
-    let updatedRaffle = await fetch('http://' + data.ipAddress + '/raffle/edit/' + props.raffleid, {
-      method: "PATCH",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ users: currEntered, amountRaised: amountRaised, lastDonatedTo: timeNow })
-    })
-  }
-
-  const makeRaffleJSON = (oldamount, oldchances) => {
-    return {
-      userID: props.user._id,
-      amountDonated: oldamount + props.amountDollar,
-      chances: oldchances + props.chances,
-      sizeType: props.sizeType,
-      size: props.size,
-      timeDonated: Math.floor(Date.now() / 1000)
-    }
-  }
-
-
-  const [value, onChangeText] = React.useState('');
-  const [selectedValue, setSelectedValue] = useState("**** **** **** 1234");
-  // const [sheetOpen, setSheetOpen] = useState(true); // isHidden
   const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet (1000 is at the bottom)
 
   let options1 = []
@@ -184,13 +71,6 @@ function SlidingSheet(props) {
 
   let slidingStyle = [styles.subView];
   slidingStyle.push({ height: props.height });
-
-  const [stripe, setStripe] = useState(true)
-  const [_method, setMethod] = useState(null)
-  const [_amount, setAmount] = useState('$5 = 10 chances')
-  const [_save, setSave] = useState(false)
-  const [_buttonText, setButtonText] = useState("CONFIRM PAYMENT")
-  const [_walletBalance, setWalletBalance] = useState(0)
 
   var toValue = 1000;
   const toggleSheet = () => {
@@ -220,12 +100,6 @@ function SlidingSheet(props) {
     props.trigger();
   }
 
-  // summon payment page
-  const payMe = () => {
-    closeSlidingSheet();
-    props.paymentTrigger();
-  }
-
   // console.log('AMOUNT DOLLAR: ', props.amountDollar); // 5, 10, 20, 50, 100, 250
 
   // console.log(props.sheet); 101010
@@ -238,7 +112,7 @@ function SlidingSheet(props) {
 
         <View style={styles.container}>
           {stripe ?
-            <ScrollView style={styles.slidingSheet} showsVerticalScrollIndicator={false}>
+            <View style={styles.slidingSheet}>
               {/* Title part with a close button */}
               <View style={styles.slidingSheet__header}>
                 <TouchableOpacity onPress={() => closeSlidingSheet()}>
@@ -247,79 +121,55 @@ function SlidingSheet(props) {
                 <Text style={fonts.h1}>{props.title}</Text>
                 <View />
               </View>
-              <View style={styles.slidingSheet__save} >
-                {(props.sizeType === "notselected") ?
-                  <Text style={{ color: 'red', }}> *Please select a size type </Text>
-                  : null}
-
-                {(props.size === "notselected") ?
-                  <Text style={{ color: 'red' }}> *Please select a size </Text>
-                  : null}
-
-                <Text style={{ color: 'red' }}>{(_method === "Wallet Chances" && props.user.walletChances - props.chances < 0) ? "*You do not have enough chances in your wallet" : ""}</Text>
-              </View>
-
-              {/* content part - with a text input */}
-              {/* <View style={styles.slidingSheet__content}>
-                        <Text style={styles.slidingSheet__content_text}>{props.content[0]}</Text>
-                        <TextInput
-                          style={{ height: 40, lineHeight: 23, }}
-                          placeholder='Enter here'
-                          onChangeText={text => onChangeText(text)}
-                          value={value}
-                        />
-                    </View> */}
 
               <View style={[styles.slidingSheet__content, { zIndex: 2 }]}>
                 <Text style={styles.slidingSheet__content_text}>{props.content[1]}</Text>
                 <DropDown
-                  placeholder={"PICK A PAYMENT METHOD"}
+                  // placeholder={"PICK A PAYMENT METHOD"}
                   options={options1}
                   size='large'
-                  arrowSize={18}
-                  isVisible={false}
                   setValue={setMethod}
                 />
               </View>
 
-              {(_method === "Wallet Chances") ?
-                <View style={styles.slidingSheet__save}>
-                  <Text style={[styles.slidingSheet__content__text]}>{"Current " + props.content[0]}</Text>
-                  <Text style={{ marginTop: 5 }}>{_walletBalance}</Text>
-                </View>
-
-                :
-
-                <View style={[styles.slidingSheet__content, { zIndex: 1 }]}>
-                  <Text style={styles.slidingSheet__content_text}>{props.content[2]}</Text>
-                  <DropDown
-                    placeholder={_amount}
-                    options={options2}
-                    size='large'
-                    arrowSize={18}
-                    isVisible={false}
-                    setValue={setAmount}
-                  />
-                </View>}
-
-              {(_method === '+ Add Credit Card') ? <View style={[styles.slidingSheet__save]}>
-                <CheckBox
-                  selected={_save}
-                  onPress={() => setSave(!_save)}
-                  text='Save my payment information'
+              <View style={[styles.slidingSheet__content, { zIndex: 1 }]}>
+                <Text style={styles.slidingSheet__content_text}>{props.content[2]}</Text>
+                <DropDown
+                  // placeholder={'PICK A RELOAD AMOUNT'}
+                  options={options2}
+                  size='large'
+                  setValue={setAmount}
                 />
-              </View> : null}
+              </View>
 
               {/* NEW SWIPE BUTTON */}
               <View style={{ alignItems: 'center', width: '100%' }}>
-                <SwipeButton title="SWIPE TO CONFIRM" onSwipeSuccess={() => {
+
+              <SwipeButton title="SWIPE TO SUBMIT" onSwipeSuccess={() => {
+                  // setRefresh(!refresh)
+                  console.log('----THIS SWIPES------')
+                  // console.log('walletBalance', _walletBalance)
+                  console.log('method', _method)
+                  console.log('amount', _amount)
                   if (_method !== null) {
                     setStripe(false) // joshua made false mean that stripe appears -.-
                   }
                 }} />
               </View>
+                {/* <Text>METHOD {_method ? _method : 'null'}</Text>
+                <Text>AMOUNT {_amount ? _amount : 'null'}</Text> */}
 
-            </ScrollView> : <Stripe user={props.user} setUser={props.setUser} navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet}></Stripe>}
+              {/* <BlockButton
+                  color="primary"
+                  title="test"
+                  onPress={() => {
+                    // console.log('walletBalance',_walletBalance)
+                    console.log('method', _method)
+                    console.log('amount', _amount)
+                  }} />  */}
+
+
+            </View> : <Stripe user={props.user} setUser={props.setUser} navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet}></Stripe>}
         </View>
 
       </Animated.View>

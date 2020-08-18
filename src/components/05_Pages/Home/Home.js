@@ -132,9 +132,7 @@ function Home({ navigation }) {
           <HorizontalScroll title="Trending" theme="light" seeAllRaffles={trendingRaffles} navigation={navigation} toggle={true}>
 
             {trendingRaffles.map((raffle, index) =>
-              <View style={{ marginHorizontal: -14 }}>
                 <RaffleCard raffle={raffle} navigation={navigation} />
-              </View>
             )}
           </HorizontalScroll>
           <HorizontalScroll title="Top 5 Donors" theme="dark">
@@ -145,9 +143,7 @@ function Home({ navigation }) {
 
           <HorizontalScroll title="Donate to Enter Raffles" theme="light" seeAllRaffles={donateRaffles} navigation={navigation}>
             {donateRaffles.map((raffle, index) =>
-              <View style={{ marginHorizontal: -3 }}>
                 <RaffleCard raffle={raffle} navigation={navigation} />
-              </View>
             )}
           </HorizontalScroll>
 
