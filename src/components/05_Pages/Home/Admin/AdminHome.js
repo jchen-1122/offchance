@@ -69,7 +69,6 @@ function Home({ navigation }) {
               data={raffle}
               navigation={navigation}
             />)}
-
         </View>
       </ScrollView>
       <BottomNav navigation={navigation} active={'AdminHome'} admin={true} />
