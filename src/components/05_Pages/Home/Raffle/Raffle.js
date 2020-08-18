@@ -397,9 +397,11 @@ export default function Raffle({ navigation, route }) {
     }
 
     let chanceText = 'ENTER DRAWING'
-    for (var raf of user.rafflesEntered.children){
-        if (raf.raffleID == raffle._id){
-            chanceText = 'YOU HAVE ' + raf.chances + ' CHANCES' + ((raf.size && raf.size !== 'One Size') ? ' FOR SIZE ' + raf.size : '')
+    if (Object.keys(user).includes('rafflesEntered')) {
+        for (var raf of user.rafflesEntered.children){
+            if (raf.raffleID == raffle._id){
+                chanceText = 'YOU HAVE ' + raf.chances + ' CHANCES' + ((raf.size && raf.size !== 'One Size') ? ' FOR SIZE ' + raf.size : '')
+            }
         }
     }
     return (

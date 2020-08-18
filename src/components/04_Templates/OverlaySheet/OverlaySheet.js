@@ -295,14 +295,14 @@ function OverlaySheet(props) {
             :
             <View style={[styles.slidingSheet__content, { zIndex: 1 }]}>
               <Text style={styles.slidingSheet__content_text}>Purchase Amount</Text>
-              <DropDown
+              {Object.keys(props).includes('entertobuy') ? <Text style={styles.slidingSheet__content_text}>${props.amountDollar}</Text> : <DropDown
                 placeholder={_amount}
                 options={options2}
                 size='large'
                 arrowSize={18}
                 isVisible={false}
                 setValue={setAmount}
-              />
+              />}
             </View>}
 
           {(_method === '+ Add Credit Card') ?
@@ -315,10 +315,12 @@ function OverlaySheet(props) {
             </View> : null}
 
             <View style={{ alignItems: 'center', width: '100%' }}>
-              {/* <BlockButton title="SWIPE TO CONFIRM" color="primary" onPress={async() => {
+              <BlockButton title="SWIPE TO CONFIRM" color="primary" onPress={async() => {
                   // if they've selected a size, sizetype, and payment method
-                  if (_method !== null && props.sizeType !== "notselected" && props.size !== "notselected") {
-                    let updatedUser = await enterUserinRaffle()
+                  if (_method !== null && props.entertobuy) {
+                    setStripe(false)
+                  } else if (_method !== null && props.sizeType !== "notselected" && props.size !== "notselected") {
+                      let updatedUser = await enterUserinRaffle()
                       props.setUser(updatedUser)
                       await updateRaffle()
                     // if using wallet chances
@@ -338,8 +340,8 @@ function OverlaySheet(props) {
                       //toggleOverlay();
                     }
                   }
-                }} /> */}
-                <SwipeButton title="SWIPE TO CONFIRM" onSwipeSuccess={async() => {
+                }} />
+                {/* <SwipeButton title="SWIPE TO CONFIRM" onSwipeSuccess={async() => {
                   // if they've selected a size, sizetype, and payment method
                   if (_method !== null && props.sizeType !== "notselected" && props.size !== "notselected") {
 
@@ -364,10 +366,10 @@ function OverlaySheet(props) {
                       setStripe(false)
                     }
                   }
-                }} />
+                }} /> */}
               </View>
 
-        </View> : <Stripe user={props.user} setUser={props.setUser} navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet}></Stripe>}
+        </View> : <Stripe user={props.user} setUser={props.setUser} navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet} entertobuy={Object.keys(props).includes('entertobuy') ? true : false}></Stripe>}
 
       </Overlay>
     </View>

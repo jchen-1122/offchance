@@ -20,6 +20,7 @@ import * as Sharing from 'expo-sharing';
 // import CameraRoll from "@react-native-community/cameraroll";
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
+import OverlaySheet from '../../../04_Templates/OverlaySheet/OverlaySheet'
 
 export default function RaffleResult({ navigation, route }) {
     const [selected, setSelected] = useState(0)
@@ -38,13 +39,34 @@ export default function RaffleResult({ navigation, route }) {
     const [winnerObjs, setWinnerObjs] = useState([])
     const [raffle, setRaffle] = useState({})
     const [host, setHost] = useState({})
-    const [currWinner, setCurrWinner] = useState({})
+    const [currUserisWinner, setCurrWinner] = useState(false)
     const [display, setDisplay] = useState([])
     const [feed, setFeed] = useState('')
     const ip = require('../../../IP_ADDRESS.json');
     const { user, setUser } = useContext(GlobalState)
     // test user and raffle for Chelly's card
     //let dummy_user = get_user("Chelly")
+
+    // entertobuy thing
+    const [containerStyle, setContainerStyle] = useState(styles.container);
+    const [sheetController, setSheetController] = useState(false); // 0 - close, 1 - open. TODO: GLOBAL STATE
+
+    const trigger = () => {
+        setSheetController(!sheetController);
+
+        setContainerStyle( !sheetController ?
+          { // light on
+          flex: 1,
+          justifyContent: 'space-between',
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+        } : { // light off
+          flex: 1,
+          justifyContent: 'space-between',
+          backgroundColor: "rgba(255, 255, 255, 0.1)",
+          });
+
+        // console.log(sheetController); 101010
+      }
 
     let confetti_colors = [["black", "#ECB661"], [colors.gold1, colors.gold2], [colors.silver1, colors.silver2], [colors.blue]]
 
@@ -88,6 +110,7 @@ export default function RaffleResult({ navigation, route }) {
         async function getRaffle(id) {
             let response = await fetch('http://' + ip.ipAddress + '/raffle/id/' + id)
             response = await response.json()
+            console.log(response)
             setRaffle(response)
             setEnteredUsers(response.users.children)
             setWinnerObjs(response.winners.children)
@@ -97,6 +120,7 @@ export default function RaffleResult({ navigation, route }) {
             setHost(hostResp)
         }
         getRaffle(route.params.raffle._id)
+        //console.log(winnerObjs)
     }, [])
 
     React.useEffect(() => {
@@ -148,6 +172,7 @@ export default function RaffleResult({ navigation, route }) {
             if (element._id === user._id) {
                 setwinnerOverlay(true)
                 setwinnerPrize(element.prize)
+                setCurrWinner(true)
             }
             {/* JOSHUA END */ }
             if (element.hasOwnProperty("prize")) {
@@ -222,7 +247,10 @@ export default function RaffleResult({ navigation, route }) {
 
                     {/* Winner Overlay */}
                     {(winnerOverlay && winnerTime <= 5) ? 
-                    <Overlay isVisible={winnerOverlay} onBackdropPress={() => setwinnerOverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>
+                    <Overlay isVisible={winnerOverlay} onBackdropPress={() => {
+                        setwinnerOverlay(false)
+                        trigger()
+                        }} overlayStyle={{ backgroundColor: 'transparent' }}>
                         <WinnerCard ref={WinnerCardRef} prize={winnerPrize} winner={user} raffle={raffle} host={host} navigation={navigation} currUser={user} />
                         <ViewShot ref={viewShot} options={{ format: "jpg", quality: 0.9 }}>
                             <View style={{ width: Dimensions.get('window').width * 0.8, alignItems: 'center' }}>
@@ -243,6 +271,29 @@ export default function RaffleResult({ navigation, route }) {
                         />
                     </Overlay> : null}
                     {/* JOSHUA END */}
+                    
+                    {/* only enter to buy raffles */}
+                    {(currUserisWinner && winnerTime <= 1 && raffle.type === 2) ? 
+                         <View style={{marginLeft: '-8%', marginRight: '-8%'}}>
+                         <OverlaySheet
+                         title={raffle.name + "booga"}
+                         type='default'
+                         sheet={sheetController}
+                         trigger={trigger}
+                         height={Dimensions.get('screen').height * 0.7}
+                         user={user}
+                         setUser={setUser}
+                         content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
+                         navigation={navigation}
+                         wallet={false}
+                         amount={raffle.productPrice}
+                         amountDollar={raffle.productPrice}
+                         raffle={raffle._id}
+                         entertobuy={true}
+                         />
+                     </View>:
+                        null
+                    }  
 
                     {/* Any Card Overlay */}
                     <Overlay isVisible={overlay} onBackdropPress={() => setoverlay(false)} overlayStyle={{ backgroundColor: 'transparent' }}>

@@ -12,7 +12,7 @@ import GlobalState from '../../../globalState'
 
 const PurchaseProduct = (props) => {
   const [loaded, setLoaded] = useState(false)
-  //console.log(props.setUser)
+  console.log("BUGGA BUGGA", props.entertobuy)
   let chances = 10
   let amount = 5
   let options = ['$5 = 10 chances', '$10 = 40 chances', '$20 = 50 chances', '$50 = 150 chances', '$100 = 400 chances', '$250 = 1100 chances']
@@ -34,6 +34,9 @@ const PurchaseProduct = (props) => {
   } else if (props.amount === options[5]) {
     chances = 1100
     amount = 250
+  } else if (props.entertobuy) {
+    chances = 0
+    amount = parseInt(props.amount)
   }
   let ip = require('../../../IP_ADDRESS.json')
   async function loadChances() {
@@ -82,7 +85,6 @@ const PurchaseProduct = (props) => {
       source={{ html: stripeFirstPayment(chances + " chances", amount) }}
       onError={() => props.navigation.navigate('Account')}
       onNavigationStateChange={async (e) => {
-          if (e.title === 'blank') {
             if (!loaded) {
               setLoaded(true)
               if (props.wallet) {
@@ -101,13 +103,14 @@ const PurchaseProduct = (props) => {
               }
             }
           }
-      }}
+      }
     /> : 
     ((props.method !== 'Paypal') ? <WebView
       originWhitelist={['*']}
       source={{ html: stripeSavedPayment(amount) }}
       onError={() => props.navigation.navigate('Account')}
       onNavigationStateChange={async (e) => {
+        if (e.loading === false) {
           if (!loaded) {
             setLoaded(true)
             if (props.wallet) {
@@ -125,6 +128,7 @@ const PurchaseProduct = (props) => {
               })
             }
           }
+        }
       }}
     /> : <WebView 
         containerStyle={{marginBottom: 170}}
