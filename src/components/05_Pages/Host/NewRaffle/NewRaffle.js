@@ -220,10 +220,10 @@ export default function NewRaffle({ navigation, route }) {
                 if (_charities.length == 0) {
                     errors.push(<Text style={fonts.error}>Please List Charities To Donate To</Text>)
                 }
-                // CHECK CHARITY IMAGES, AWAIT charity images bxbsfewhrens
-                //if (_charityImg.length != 0) {
-                //    errors.push(<Text style={fonts.error}>Charity Images</Text>)
-                //}
+                // CHECK CHARITY IMAGES, Currently we are not doing anything with the images..
+                if (_charityImg.length == 0) {
+                    errors.push(<Text style={fonts.error}>Charity Images</Text>)
+                }
                 break;
             case 2:
                 if (!_price) {
