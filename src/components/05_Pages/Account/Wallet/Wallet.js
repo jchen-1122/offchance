@@ -91,14 +91,16 @@ export default function Wallet({navigation}) {
             </View>
 
             {/* sliding sheet */}
-            <SlidingSheet
+                        <SlidingSheet
             title='Add Chances'
             type='default'
             sheet={sheetController}
             trigger={trigger}
             height={height * 0.7}
-            methodOptions={methodOptions}
-            navigation={navigation}/>
+            user={user}
+            setUser={setUser}
+            methodOptions={methodOptions}            navigation={navigation}
+            wallet={true}/>
             </View>
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>
         </View>
