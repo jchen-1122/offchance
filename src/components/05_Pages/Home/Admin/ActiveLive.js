@@ -57,13 +57,13 @@ function Home({ navigation }) {
 
   return (
     <View style={utilities.container}>
-      <ScrollView contentContainerStyle={utilities.scrollview}>
+      <ScrollView contentContainerStyle={[utilities.scrollview,{justifyContent: 'flex-start'}]}>
         <TopNav navigation={navigation} active='Live' admin={true} fromActive={true}/>
-        <View style={{ width: '100%', flexDirection: 'row' }}>
+        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
           <Icon name='magnify' type='material-community' color='black' onPress={() => navigation.navigate("Search")} style={{marginTop: 8, marginLeft: 8, marginRight: Dimensions.get('screen').width * 0.35}}/>
           <Button title={'Live Drawings'} onPress={() => setRefresh(!refresh)} />
         </View>
-        <View style={utilities.flexCenter}>
+        <View>
           {liveRaffles.map((raffle, index) =>
             <PendingCard
               data={raffle}
