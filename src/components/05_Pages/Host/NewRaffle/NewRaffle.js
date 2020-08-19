@@ -326,7 +326,7 @@ export default function NewRaffle({ navigation, route }) {
                         {(_type == 2) ?
                             <InputField
                                 label="Buy It Now Price"
-                                keyboardType="number-pad"
+                                keyboardType="decimal-pad"
                                 value={_price}
                                 onChangeText={(text) => { setPrice(text) }}
                                 returnKeyType='done'
@@ -335,7 +335,7 @@ export default function NewRaffle({ navigation, route }) {
                                 required /> :
                             <InputField
                                 label="Prize Value"
-                                keyboardType="number-pad"
+                                keyboardType="decimal-pad"
                                 value={_value}
                                 onChangeText={(text) => { setValue(text) }}
                                 returnKeyType='done'
@@ -357,7 +357,7 @@ export default function NewRaffle({ navigation, route }) {
                         {(_type == 1) ?
                             <InputField
                                 label="Donation Goal ($)"
-                                keyboardType="number-pad"
+                                keyboardType="decimal-pad"
                                 value={_goal}
                                 onChangeText={(text) => { setGoal(text) }}
                                 returnKeyType='done'

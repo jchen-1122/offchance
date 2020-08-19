@@ -30,9 +30,9 @@ function BottomNav(props) {
             <Text style={[styles.textFont, (props.active === 'Report') ? { color: 'white' } : null]}>Report</Text>
           </Button>
 
-          <Button onPress={() => { (props.active === 'Search') ? props.navigation.navigate('Search') : props.navigation.reset({ index: 0, routes: [{ name: 'Search' }] }) }}>
-            {(props.active === 'Search') ? <Icon name='magnify' type='material-community' color='white' /> : <Icon name='magnify' type='material-community' color='grey' />}
-            <Text style={[styles.textFont, (props.active === 'Search') ? { color: 'white' } : null]}>Search</Text>
+          <Button onPress={() => { (props.active === 'Active') ? props.navigation.navigate('Active') : props.navigation.reset({ index: 0, routes: [{ name: 'Active' }] }) }}>
+            {(props.active === 'Active') ? <Icon name='run-fast' type='material-community' color='white' /> : <Icon name='run-fast' type='material-community' color='grey' />}
+            <Text style={[styles.textFont, (props.active === 'Active') ? { color: 'white' } : null]}>Active</Text>
           </Button>
 
           { user_logged_in(user) ? <Button onPress={() => { (props.active === 'Host') ? props.navigation.navigate('HostDashboard') : props.navigation.reset({ index: 0, routes: [{ name: 'HostDashboard' }] }) }}>

@@ -56,6 +56,8 @@ import AdminHomeHosts from './components/05_Pages/Home/Admin/AdminHomeHosts'
 import AdminEdit from './components/05_Pages/Home/Admin/AdminEdit/AdminEdit'
 import AdminEditHost from './components/05_Pages/Home/Admin/AdminEditHost/AdminEditHost'
 import Report from './components/05_Pages/Home/Admin/Report/Report'
+import Active from './components/05_Pages/Home/Admin/Active'
+import ActiveLive from './components/05_Pages/Home/Admin/ActiveLive'
 
 import io from 'socket.io-client'
 const Stack = createStackNavigator();
@@ -134,6 +136,8 @@ function App() {
           <Stack.Screen name="AdminHomeHosts" component={AdminHomeHosts} options={{ headerShown: false, title: 'Hosts' }}/>
           <Stack.Screen name="AdminEditHost" component={AdminEditHost} options={({ route }) => ({ title: route.params.name })}/>
           <Stack.Screen name="Report" component={Report} />
+          <Stack.Screen name="Active" component={Active} />
+          <Stack.Screen name="ActiveLive" component={ActiveLive} />
         </Stack.Navigator>
       </NavigationContainer>
     </GlobalState.Provider>
