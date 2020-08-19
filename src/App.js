@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar} from "react-native";
+import { StatusBar, SafeAreaView} from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Notifications from 'expo-notifications';
@@ -84,6 +84,9 @@ function App() {
     <GlobalState.Provider value={{ user, setUser, socket }}>
       <NavigationContainer>
         <StatusBar backgroundColor="white" barStyle="light-content"/>
+        <SafeAreaView style={{ flex: 0, backgroundColor: 'black' }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }} >
+
         <Stack.Navigator initialRouteName="Welcome"
           screenOptions={{
             headerStyle: {
@@ -139,6 +142,7 @@ function App() {
           <Stack.Screen name="Active" component={Active} />
           <Stack.Screen name="ActiveLive" component={ActiveLive} />
         </Stack.Navigator>
+        </SafeAreaView>
       </NavigationContainer>
     </GlobalState.Provider>
   );

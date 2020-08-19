@@ -129,7 +129,6 @@ function Home({ navigation }) {
   return (
     <View style={utilities.container}>
       <ScrollView contentContainerStyle={utilities.scrollview}>
-        <View style={{ height: 20, backgroundColor: 'black' }}></View>
         {nextRaffle && <Banner
           color="black"
           press={nextRaffle} navigation={navigation}
