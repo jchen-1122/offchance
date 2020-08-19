@@ -43,7 +43,7 @@ export default function AdminEdit({ navigation, route }) {
     const [_address, setAddress] = useState(null)
     const [_startTime, setStartTime] = useState((route.params.approved) ? route.params.startTime : null)
     const [_status, setStatus] = useState((route.params.approved) ? (route.params.live) ? 'Live' : 'Coming Soon' : null)
-    const [_raffle, setRaffle] = useState(null)
+    const [_raffle, setRaffle] = useState(route.params)
 
     // for going to the next text input
     const priceRef = useRef()
@@ -146,6 +146,7 @@ export default function AdminEdit({ navigation, route }) {
             page: 'Raffle',
             raffle: _raffle
         }
+        console.log('DATA', JSON.stringify(data))
         return JSON.stringify(data)
     }
     return (

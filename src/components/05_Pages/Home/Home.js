@@ -89,8 +89,9 @@ function Home({ navigation }) {
     // navigate to a particular page
     // ex: data: {"title": "Hello", "message": "Yes", "page": "Search"}
     Notifications.addNotificationResponseReceivedListener((response) => {
-      let page = response.notification.request.content.data.body.page
-      let raffle = response.notification.request.content.data.body.raffle
+      console.log(response)
+      let page = response.notification.request.content.data.body.data.page
+      let raffle = response.notification.request.content.data.body.data.raffle
       if (page) {
         if (raffle){
           navigation.navigate(page, raffle)
