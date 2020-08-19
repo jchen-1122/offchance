@@ -50,7 +50,7 @@ export default function Raffle({ navigation, route }) {
             let coordsUser = await getCoords(user.shippingAddress)
             // let coordsHost = await getCoords(route.params['host'].shippingAddress)
             let coordsHost = Object.keys(route.params).includes("address") ? await getCoords(route.params.address) : coordsUser
-            console.log(coordsHost)
+            //console.log(coordsHost)
 
             let longUser = coordsUser.features[0].geometry.coordinates[0]
             let latUser = coordsUser.features[0].geometry.coordinates[1]
@@ -398,9 +398,11 @@ export default function Raffle({ navigation, route }) {
     }
 
     let chanceText = 'ENTER DRAWING'
-    for (var raf of user.rafflesEntered.children){
-        if (raf.raffleID == raffle._id){
-            chanceText = 'YOU HAVE ' + raf.chances + ' CHANCES' + ((raf.size && raf.size !== 'One Size') ? ' FOR SIZE ' + raf.size : '')
+    if (Object.keys(user).includes('rafflesEntered')) {
+        for (var raf of user.rafflesEntered.children){
+            if (raf.raffleID == raffle._id){
+                chanceText = 'YOU HAVE ' + raf.chances + ' CHANCES' + ((raf.size && raf.size !== 'One Size') ? ' FOR SIZE ' + raf.size : '')
+            }
         }
     }
     return (
@@ -527,7 +529,7 @@ export default function Raffle({ navigation, route }) {
                             }
 
 
-                            <BuyOptions options={options} buyOption={buyOption} setBuyOption={setBuyOption} trigger={trigger}/>
+                            <BuyOptions options={options} buyOption={buyOption} setBuyOption={setBuyOption} trigger={trigger} navigation={navigation} loggedin={Object.keys(user).includes('_id')}/>
 
                             {/* sliding sheet */}
                             <View style={{marginLeft: '-8%', marginRight: '-8%'}}>

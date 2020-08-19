@@ -12,8 +12,12 @@ export default function BuyOptions(props) {
                         color={element == 10 ? "light" : "secondary"}
                         bannerTitle={element == 10 ? 'BEST DEAL' : null}
                         onPress={() => {
-                            props.setBuyOption(element)
-                            props.trigger()
+                            if (props.loggedin) {
+                                props.setBuyOption(element)
+                                props.trigger()
+                            } else {
+                                props.navigation.navigate('NotLogin')
+                            }
                         }}
                         selected={props.buyOption == element}/>
                 )
