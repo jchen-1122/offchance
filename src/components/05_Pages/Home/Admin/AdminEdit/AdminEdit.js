@@ -14,7 +14,8 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { format_date } from '../../../../../functions/convert_dates';
 import ImageCarousel from '../../../../02_Molecules/ImageCarousel/ImageCarousel'
-import TextLink from '../../../../01_Atoms/Buttons/TextLinks/TextLinks'
+import TextLink from '../../../../01_Atoms/Buttons/TextLinks/TextLinks';
+import {getPushTokens} from '../../../../../functions/pushNotifs/getPushTokens'
 
 export default function AdminEdit({ navigation, route }) {
     var _type = route.params.type
@@ -42,6 +43,7 @@ export default function AdminEdit({ navigation, route }) {
     const [_address, setAddress] = useState(null)
     const [_startTime, setStartTime] = useState((route.params.approved) ? route.params.startTime : null)
     const [_status, setStatus] = useState((route.params.approved) ? (route.params.live) ? 'Live' : 'Coming Soon' : null)
+    const [_raffle, setRaffle] = useState(null)
 
     // for going to the next text input
     const priceRef = useRef()
@@ -81,7 +83,7 @@ export default function AdminEdit({ navigation, route }) {
             body: makeJSON()
         })
         const json = await response.json()
-        console.log(json)
+        setRaffle(json)
         return json
     }
 
@@ -117,6 +119,35 @@ export default function AdminEdit({ navigation, route }) {
         }
         return JSON.stringify(data)
     };
+
+    
+    const sendLiveNotif = async () => {
+        if (_status != 'Live'){
+            return
+        }
+        const response = await fetch('http://' + data.ipAddress + '/user/message', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json, text/plain, */*',  // It can be used to overcome cors errors
+                'Content-Type': 'application/json'
+            },
+            body: await makeJSONpush()
+        })
+        const json = await response.text()
+        console.log(json)
+        return json
+    };
+        const makeJSONpush = async () => {
+        console.log(await getPushTokens(route.params.likedUsers || []))
+        let data = {
+            pushTokens: await getPushTokens(route.params.likedUsers || []),
+            title: "A raffle you liked is now open!",
+            message: _name + " is now open for entries.",
+            page: 'Raffle',
+            raffle: _raffle
+        }
+        return JSON.stringify(data)
+    }
     return (
 
         <View style={utilities.container}>
@@ -303,6 +334,7 @@ export default function AdminEdit({ navigation, route }) {
                                     {
                                         text: "OK", onPress: () => {
                                             editRaffle()
+                                            sendLiveNotif()
                                             if (route.params.approved) {
                                                 navigation.navigate('Active')
                                             } else {

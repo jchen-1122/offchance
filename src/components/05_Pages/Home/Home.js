@@ -45,9 +45,7 @@ function Home({ navigation }) {
   // get all raffles and maybe filter them by type
   React.useEffect(() => {
     async function getRaffle() {
-      if (!user.token) {
         setToken(await registerForPushNotifications())
-      }
       setTop5Donors(await top5_global())
       setLatestWinners(await getLatestWinners())
       setLatestRaffles(await getLatestRaffles())
@@ -76,13 +74,15 @@ function Home({ navigation }) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          token: token
+          token: await registerForPushNotifications()
         })
       })
       const json = await response.json()
       return json
     }
-    if (!user.token) {
+    console.log(token)
+    if (!user.token || user.token == null) {
+      console.log('oh')
       addToken()
     }
 
@@ -90,7 +90,11 @@ function Home({ navigation }) {
     // ex: data: {"title": "Hello", "message": "Yes", "page": "Search"}
     Notifications.addNotificationResponseReceivedListener((response) => {
       let page = response.notification.request.content.data.body.page
+      let raffle = response.notification.request.content.data.body.raffle
       if (page) {
+        if (raffle){
+          navigation.navigate(page, raffle)
+        }
         navigation.navigate(page)
       }
     }
