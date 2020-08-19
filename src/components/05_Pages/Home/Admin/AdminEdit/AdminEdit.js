@@ -14,6 +14,8 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { format_date } from '../../../../../functions/convert_dates';
 import ImageCarousel from '../../../../02_Molecules/ImageCarousel/ImageCarousel'
+import TextLink from '../../../../01_Atoms/Buttons/TextLinks/TextLinks';
+import { getPushTokens } from '../../../../../functions/pushNotifs/getPushTokens'
 
 export default function AdminEdit({ navigation, route }) {
     var _type = route.params.type
@@ -22,7 +24,7 @@ export default function AdminEdit({ navigation, route }) {
     for (var i = 4; i <= 14; i += 0.5) {
         shoeSizes.push(i.toString())
     }
-    console.log(route.params)
+    //console.log(route.params)
 
     const [buttonTitle, setButtonTitle] = useState('Submit')
     // states for each input value
@@ -39,8 +41,10 @@ export default function AdminEdit({ navigation, route }) {
     const [_drawingDuration, setDrawingDuration] = useState(route.params.drawingDuration || 1)
     const [_drawingRadius, setDrawingRadius] = useState(route.params.radius)
     const [_address, setAddress] = useState(null)
-    const [_startTime, setStartTime] = useState(null)
-    const [_status, setStatus] = useState(null)
+    const [_startTime, setStartTime] = useState((route.params.approved) ? route.params.startTime : null)
+    const [_status, setStatus] = useState((route.params.approved) ? (route.params.live) ? 'Live' : 'Coming Soon' : null)
+    const [_approved, setApproved] = useState(route.params.approved)
+    const [_raffle, setRaffle] = useState(route.params)
 
     // for going to the next text input
     const priceRef = useRef()
@@ -59,6 +63,7 @@ export default function AdminEdit({ navigation, route }) {
         setDatePickerVisibility(false);
     };
     const handleConfirm = (date) => {
+        date = new Date(date).getTime() / 1000
         setStartTime(date)
         hideDatePicker();
     };
@@ -77,6 +82,19 @@ export default function AdminEdit({ navigation, route }) {
                 'Content-Type': 'application/json'
             },
             body: makeJSON()
+        })
+        const json = await response.json()
+        setRaffle(json)
+        return json
+    }
+
+    const deleteRaffle = async () => {
+        const response = await fetch('http://' + data.ipAddress + '/raffle/del/' + route.params._id, {
+            method: "DELETE",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
         })
         const json = await response.json()
         return json
@@ -98,13 +116,73 @@ export default function AdminEdit({ navigation, route }) {
             sizes: _sizes,
             approved: true,
             startTime: _startTime,
-            live: (_status == 'Live') ? true: (_status == 'Coming Soon') ? false : null
+            live: (_status == 'Live') ? true : (_status == 'Coming Soon') ? false : null
         }
-        console.log(JSON.stringify(data))
         return JSON.stringify(data)
     };
-    return (
 
+    // for sending a notification when the raffle goes live/approved--------------------------------------------------------------------------------------------------------------
+    
+    // takes in a body, sends request via user route
+    const postMessage = async (body) => {
+        console.log('body', body)
+        const response = await fetch('http://' + data.ipAddress + '/user/message', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json, text/plain, */*',  // It can be used to overcome cors errors
+                'Content-Type': 'application/json'
+            },
+            body: body
+        })
+        const json = await response.text()
+        return json
+    }
+
+    // checks conditions on when to send the notification
+    const sendLiveNotif = async (justApproved) => {
+        // console.log('approved', route.params.approved)
+        // console.log('prev live', route.params.live)
+        // console.log('status', _status)
+
+        // if you changed it from 'Coming Soon' to 'Live'
+        if (route.params.approved && (!route.params.live) && _status == 'Live') {
+            return await postMessage(await makeJSONpush(
+                await getPushTokens(route.params.likedUsers || []),
+                "A raffle you liked is now open!",
+                _name + " is now open for entries."
+            ))
+        }
+        console.log('route.params.approved', route.params.approved)
+        console.log('_approved', justApproved)
+        // if you changed it from !approved to approved
+        if (!route.params.approved && justApproved){
+            console.log('followers', route.params.host.followers)
+            console.log('host', route.params.host.username)
+            return await postMessage(await makeJSONpush(
+                await getPushTokens(route.params.host.followers),
+                "A host you're following has posted a drawing!",
+                route.params.host.username + " just posted a drawing for " + _name
+            ))
+        }
+        return null
+    };
+
+    // takes in params and constructs the push notif data
+    const makeJSONpush = async (users, title, message) => {
+        console.log('users', users)
+        let data = {
+            pushTokens: users,
+            title: title,
+            message: message,
+            page: 'Raffle',
+            raffleID: _raffle._id,
+            host: _raffle.host
+            // raffle: _raffle
+        }
+        return JSON.stringify(data)
+    }
+
+    return (
         <View style={utilities.container}>
 
             <ScrollView>
@@ -177,7 +255,7 @@ export default function AdminEdit({ navigation, route }) {
                                 onChangeText={(text) => {
                                     const cs = text.split(",")
                                     setCharities(cs)
-                                    console.log(_charities)
+                                    //console.log(_charities)
                                 }}
                                 onSubmitEditing={() => descriptionRef.current.focus()}
                                 ref={charityRef}
@@ -252,8 +330,8 @@ export default function AdminEdit({ navigation, route }) {
                         <View style={{ width: '100%', marginLeft: '10%', marginTop: 15 }}>
                             <Text style={styles.InputField__label}>Drawing Time*</Text>
                             <View style={{ width: '95%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Text style={styles.InputField__label}>{_startTime == null ? "Pick A Start Date" : format_date(_startTime)}</Text>
-                                <BlockButton color="secondary" size="small" title={'CHOOSE'} onPress={showDatePicker} />
+                                <Text style={styles.InputField__label}>{_startTime == null ? "Pick A Start Date" : format_date(new Date(_startTime * 1000))}</Text>
+                                <BlockButton color="secondary" size="small" title={(route.params.approved) ? 'CHANGE' : 'CHOOSE'} onPress={showDatePicker} />
                             </View>
                         </View>
                         <View style={{ width: '100%', marginLeft: '10%', marginVertical: 10 }}>
@@ -262,7 +340,7 @@ export default function AdminEdit({ navigation, route }) {
                                 {['Live', 'Coming Soon'].map((status, index) =>
                                     <Checkbox
                                         selected={_status == status}
-                                        onPress={() => {setStatus(status)}}
+                                        onPress={() => { setStatus(status) }}
                                         text={status}
                                     />
                                 )}
@@ -274,29 +352,77 @@ export default function AdminEdit({ navigation, route }) {
                             headerTextIOS="Pick a start date"
                             onConfirm={handleConfirm}
                             onCancel={hideDatePicker}
-                            pickerContainerStyleIOS={{backgroundColor: 'white'}}
+                            pickerContainerStyleIOS={{ backgroundColor: 'white' }}
                         />
 
-                        <BlockButton title="SUBMIT FOR APPROVAL" color="primary" onPress={() => {
+                        <Text style={{ color: 'red' }}>{(_status === null) ? "Approved drawings must be either live or coming soon" : null}</Text>
+                        <Text style={{ color: 'red' }}>{(_startTime === null) ? "Approved drawings must have a starting time" : null}</Text>
+
+                        <BlockButton title={(route.params.approved) ? "EDIT" : "SUBMIT FOR APPROVAL"} color="primary" onPress={() => {
+                            if (_status !== null && _startTime !== null) {
+                                Alert.alert(
+                                    "Confirm",
+                                    "The raffle will be modified, approved, and publicly posted.",
+                                    [
+                                        {
+                                            text: "OK", onPress: () => {
+                                                editRaffle()
+                                                // if it was already approved
+                                                if (route.params.approved) {
+                                                    sendLiveNotif(false)
+                                                    navigation.navigate('Active')
+                                                } else {
+                                                    sendLiveNotif(true)
+                                                    navigation.navigate('AdminHome')
+                                                }
+
+                                            }
+                                        },
+                                        {
+                                            text: "Cancel", onPress: () => {
+                                            }
+                                        }
+                                    ],
+                                    { cancelable: true }
+                                );
+                            }
+                        }} />
+                        <TextLink title={"Delete Request (Permanent)"} onPress={() => {
                             Alert.alert(
                                 "Confirm",
-                                "The raffle will be modified, approved, and publicly posted.",
+                                "Delete Drawing Permanently",
                                 [
                                     {
                                         text: "OK", onPress: () => {
-                                            editRaffle()
-                                            navigation.navigate('AdminHome')
+                                            Alert.alert(
+                                                "Confirm",
+                                                "This action cannot be undone",
+                                                [
+                                                    {
+                                                        text: "YES", onPress: () => {
+                                                            //deleteRaffle()
+                                                            navigation.navigate('AdminHome')
+
+                                                        }
+                                                    },
+                                                    {
+                                                        text: "Cancel", onPress: () => {
+                                                        }
+                                                    }
+                                                ],
+                                                { cancelable: true }
+                                            );
+
                                         }
                                     },
                                     {
                                         text: "Cancel", onPress: () => {
-                                            navigation.navigate('AdminEdit', route.params)
                                         }
                                     }
                                 ],
                                 { cancelable: true }
                             );
-                        }} />
+                        }}></TextLink>
                     </View>
                 </KeyboardAwareScrollView>
             </ScrollView>

@@ -81,11 +81,12 @@ function EnteredUsersDisplay(props) {
                 await renderImages(enteredUsers)
                 // changes display text if theres entered users
                 if (enteredUsers.length > 0) {
-                    setCountMsg("Entered by " + user1 + " and " + enteredUsers.length.toString() + " others")
+                    setCountMsg("Entered by @" + user1 + ((enteredUsers.length > 1) ? " and " + (enteredUsers.length-1).toString() + " others" : ''))
                 }
             }
         }
         renderInfo()
+
     }, [user1])
 
     const getUserObj = async (ids) => {
@@ -98,14 +99,16 @@ function EnteredUsersDisplay(props) {
         return res
     }
 
-    
-
+    // blank if no entered users
+    if (!props.enteredUsers || props.enteredUsers.length == 0){
+        return null
+    }
     return (
         <TouchableOpacity onPress={async () => {
             const userObjs = await getUserObj(userIds)
             props.navigation.navigate('EnteredUsers', {userObjs: userObjs})}}>
             <View style={styles.container}>
-                {image1 != '' ? <Image style={[styles.image, styles.image_overlapped]} source={{ uri: image1 }} /> : null}
+                {image1 != '' ? <Image style={[styles.image,(props.enteredUsers.length > 1) ? styles.image_overlapped:{ height: 20, width: 20, marginRight: 5 }]} source={{ uri: image1 }} /> : null}
                 {image2 != '' ? <Image style={[styles.image, { marginRight: 5 }]} source={{ uri: image2 }} /> : null}
                 <Text style={fonts.p}>{countMsg}</Text>
             </View>
