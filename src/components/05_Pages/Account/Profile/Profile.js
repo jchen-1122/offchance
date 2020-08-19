@@ -95,7 +95,7 @@ function Profile({ navigation }) {
         email = user.email
         followers = user.followers
         following = user.following
-        enteredRaffles = user.rafflesEntered.children || null
+        enteredRaffles = Object.keys(user).includes('rafflesEntered') ? user.rafflesEntered.children : []
         address = user.shippingAddress
         sizeType = user.sizeType
         shoeSize = user.shoeSize
@@ -246,9 +246,7 @@ function Profile({ navigation }) {
                         <View>
                             {content}
                         </View>
-                <View>
-                    {content}
-                </View>
+
             </ScrollView>
 
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>

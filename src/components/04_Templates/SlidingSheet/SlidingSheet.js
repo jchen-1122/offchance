@@ -312,11 +312,18 @@ function SlidingSheet(props) {
 
               {/* NEW SWIPE BUTTON */}
               <View style={{ alignItems: 'center', width: '100%' }}>
-                <SwipeButton title="SWIPE TO CONFIRM" onSwipeSuccess={() => {
+              <BlockButton title="SWIPE TO CONFIRM" color="primary" onPress={() => {
+                  console.log('here')
                   if (_method !== null) {
                     setStripe(false) // joshua made false mean that stripe appears -.-
                   }
                 }} />
+                {/* <SwipeButton title="SWIPE TO CONFIRM" onSwipeSuccess={() => {
+                  console.log('here')
+                  if (_method !== null) {
+                    setStripe(false) // joshua made false mean that stripe appears -.-
+                  }
+                }} /> */}
               </View>
 
             </ScrollView> : <Stripe user={props.user} setUser={props.setUser} navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet}></Stripe>}

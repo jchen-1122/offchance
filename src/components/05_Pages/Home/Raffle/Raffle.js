@@ -46,6 +46,12 @@ export default function Raffle({ navigation, route }) {
             // addView()
             route.params['host'] = await getUser(route.params.hostedBy)
             route.params['top5'] = route.params.users.children.sort((a, b) => b.amountDonated - a.amountDonated).slice(0, 5)
+            let temp = []
+            for (var i = 0; i < route.params['top5'].length; i++) {
+                const user = await getUser(route.params['top5'][i].userID)
+                temp.push(user)
+            }
+            setTop5(temp)
             // geocode raffle address not host address (still need to change)
             let coordsUser = await getCoords(user.shippingAddress)
             // let coordsHost = await getCoords(route.params['host'].shippingAddress)
@@ -67,18 +73,26 @@ export default function Raffle({ navigation, route }) {
         getCurrentRaffle()
     }, [])
 
-    React.useEffect(() => {
-        async function getTop5(ids) {
-            // get top 5 donors of this raffle
-            let temp = []
-            for (var i = 0; i < ids.length; i++) {
-                const user = await getUser(ids[i].userID)
-                temp.push(user)
-            }
-            setTop5(temp)
-        }
-        getTop5(raffle.top5)
-    }, [])
+    // React.useEffect(() => {
+    //     console.log(raffle.top5)
+    // })
+
+    // React.useEffect(() => {
+    //     async function getTop5(ids) {
+    //         // get top 5 donors of this raffle
+    //         try {
+    //             let temp = []
+    //             for (var i = 0; i < ids.length; i++) {
+    //                 const user = await getUser(ids[i].userID)
+    //                 temp.push(user)
+    //             }
+    //             setTop5(temp)
+    //         } catch (e) {
+                
+    //         }
+    //     }
+    //     getTop5(raffle.top5)
+    // }, [raffle.top5])
 
     const getWinners = () => {
         const enteredUsers = raffle.users.children
@@ -291,7 +305,7 @@ export default function Raffle({ navigation, route }) {
 
     // increment total number of views for the raffle
     const addView = async () => {
-        console.log(views)
+        //console.log(views)
         // const response = await fetch('http://' + data.ipAddress + '/raffle/edit/' + user._id, {
         //     method: "PATCH",
         //     headers: {
@@ -405,7 +419,7 @@ export default function Raffle({ navigation, route }) {
             }
         }
     }
-    return (
+    return ( (Object.keys(route.params).includes('host')) ? 
         <View style={containerStyle}>
             <ScrollView contentContainerStyle={utilities.scrollview} scrollEnabled={enableScroll} >
                 {images.length > 1 ? <ImageCarousel images={images}></ImageCarousel> : <Image source={images[0]} style={styles.Raffle__image}></Image>}
@@ -417,7 +431,7 @@ export default function Raffle({ navigation, route }) {
                     {(!location && location != null && !expired) ? <Text style={[fonts.bold, fonts.error]}>THIS RAFFLE IS OUT OF YOUR LOCATION</Text> : null}
                     <Text>{chanceText}</Text>
                     <View style={{ marginVertical: 15 }}>
-                        {(expired) ? <Text style={[fonts.bold, fonts.error]}>THIS DRAWING HAS EXPIRED</Text> : <Text style={[fonts.italic]}>Drawing Starts:</Text>}
+                        {(expired && raffle.archived) ? <Text style={[fonts.bold, fonts.error]}>THIS DRAWING HAS EXPIRED</Text> : (expired && !raffle.archived) ? <Text style={[fonts.italic]}>LIVE DRAWING IN PROGRESS</Text> : <Text style={[fonts.italic]}>Drawing Starts:</Text>}
                         {(expired) ? null : <CountDown unix_timestamp={raffle.startTime} />}
                     </View>
 
@@ -550,6 +564,7 @@ export default function Raffle({ navigation, route }) {
                                 sizeType={(_sizeType || _sizeType === "") ? _sizeType : "notselected"}
                                 size={(_size || _size === "") ? _size : "notselected"}
                                 raffleid={route.params._id}
+                                type={route.params.type}
                                 />
                             </View>
 
@@ -588,7 +603,8 @@ export default function Raffle({ navigation, route }) {
                             // navigation.navigate('RaffleResult', {raffle: route.params})
                             navigation.navigate('RaffleResult', { raffle: raffle })
                         }}
-                        disabled={expired} />
+                        //expired
+                        disabled={false} />
 
                     {/* <BlockButton
                         title="ENTER DRAWING"
@@ -606,6 +622,6 @@ export default function Raffle({ navigation, route }) {
 
             </ScrollView>
             <BottomNav navigation={navigation} active={'Home'}></BottomNav>
-        </View>
+        </View> : null
     )
 }

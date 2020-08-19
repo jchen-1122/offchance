@@ -15,7 +15,7 @@ export default function PendingCard(props) {
 
     useEffect(() => {
         let charityS = ""
-        if (raffle.charities === null) {
+        if (!Object.keys(raffle).includes('charities') || raffle.charities === null) {
             raffle.charities = []
         }
         for (var i = 0; i < raffle.charities.length; i++) {
