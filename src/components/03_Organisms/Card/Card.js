@@ -67,7 +67,7 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
     let buttonText = 'ENTER DRAWING'
     for (var raffle of currUser.rafflesEntered.children){
         if (raffle.raffleID == raffleid){
-            buttonText = 'YOU HAVE ' + raffle.chances + ' CHANCES' + ((raffle.size && raffle.size !== 'One Size') ? ' FOR SIZE ' + raffle.size : '')
+            buttonText = 'YOU HAVE ' + raffle.chances + ' CHANCES'
         }
     }
     // set default values for card
@@ -196,7 +196,7 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
                         }}>
                         {username}
                     </TouchableOpacity>
-                    {friendsEntered}
+                    {(enteredUsers && enteredUsers.length > 0)? friendsEntered:null}
                     {startData}
                 </View>
                 {pgBar}

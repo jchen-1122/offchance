@@ -25,6 +25,7 @@ export default function Raffle({ navigation, route }) {
     const mapAPI = 'pk.eyJ1IjoiamNoZW4xMTIyIiwiYSI6ImNrMjZ4dXM0cDF4cnozY21sYnBwYjdzaTAifQ.ItVivcBhnM1Lz9GP5B0PSQ'
     var raffle = route.params
     const [views, setViews] = useState(null)
+    const [boughtChances, setBoughtChances] = useState(0)
     // get host of raffle from db
     const [top5, setTop5] = useState([])
     const [enabled, setEnabled] = useState(true)
@@ -96,9 +97,7 @@ export default function Raffle({ navigation, route }) {
 
     const getWinners = () => {
         const enteredUsers = raffle.users.children
-
         const winners = []
-
         // will change based on the number of rewards
         // rewards[0] = grand prize (1)
         // rewards[1] = 50 chances (2)
@@ -335,8 +334,9 @@ export default function Raffle({ navigation, route }) {
 
     // entering states
     const [_sizeType, setSizeType] = useState((sizeTypes.length === 0) ? "" : null)
-    const [_size, setSize] = useState((sizes.length === 0) ? "" : null)
+    const [_size, setSize] = useState((sizeTypes.length === 0) ? "One Size" : (sizes.length === 0) ? "" : null)
 
+    // images for charities
     let images = [];
     for (let i in images_strs) {
         images.push({ uri: images_strs[i] })
@@ -374,7 +374,7 @@ export default function Raffle({ navigation, route }) {
             20: { chances: 50 },
             50: { chances: 150 },
             100: { chances: 400 },
-            250: { chances: 1100}
+            250: { chances: 1100 }
         }
         // if the value/donation goal is > 500 add another option
         if ((raffle.valuedAt && raffle.valuedAt >= 500) || (raffle.donationGoal && raffle.donationGoal >= 500)) {
@@ -391,17 +391,17 @@ export default function Raffle({ navigation, route }) {
         setSheetController(!sheetController);
         setEnableScroll(!enableScroll);
 
-        setContainerStyle( !sheetController ?
-          { // light on
-          flex: 1,
-          justifyContent: 'space-between',
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-        } : { // light off
-          flex: 1,
-          justifyContent: 'space-between',
-          backgroundColor: "rgba(255, 255, 255, 1)",
-          });
-      }
+        setContainerStyle(!sheetController ?
+            { // light on
+                flex: 1,
+                justifyContent: 'space-between',
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+            } : { // light off
+                flex: 1,
+                justifyContent: 'space-between',
+                backgroundColor: "rgba(255, 255, 255, 1)",
+            });
+    }
 
     var userIDs = ["5f1717acfe0108ee8b5e5c0b", "5f171974fe0108ee8b5e5c11", "5f1757f7c9deeef8c14b6a40", "5f1a6bdb457f816624a7a48c"]
     const getOpponent = async () => {
@@ -425,25 +425,25 @@ export default function Raffle({ navigation, route }) {
                 {images.length > 1 ? <ImageCarousel images={images}></ImageCarousel> : <Image source={images[0]} style={styles.Raffle__image}></Image>}
 
                 {/* raffle title */}
-                <Text style={[fonts.h1, { marginLeft: '8%', marginBottom: 0 }]}>{name}</Text>
+                <Text style={[fonts.h1, { marginLeft: '8%'}]}>{name}</Text>
 
                 <View style={styles.content}>
                     {(!location && location != null && !expired) ? <Text style={[fonts.bold, fonts.error]}>THIS RAFFLE IS OUT OF YOUR LOCATION</Text> : null}
-                    <Text>{chanceText}</Text>
+                    <Text>{(boughtChances > 0) ? 'YOU HAVE ' + boughtChances + ' CHANCES':null}</Text>
                     <View style={{ marginVertical: 15 }}>
                         {(expired && raffle.archived) ? <Text style={[fonts.bold, fonts.error]}>THIS DRAWING HAS EXPIRED</Text> : (expired && !raffle.archived) ? <Text style={[fonts.italic]}>LIVE DRAWING IN PROGRESS</Text> : <Text style={[fonts.italic]}>Drawing Starts:</Text>}
                         {(expired) ? null : <CountDown unix_timestamp={raffle.startTime} />}
                     </View>
 
-                    <View style={{ marginRight: '-5%', marginBottom: 15 }}>
+                    <View style={{ marginRight: '-5%', marginBottom: 20 }}>
                         <Text style={fonts.italic}>Hosted by:</Text>
                         <View style={styles.hostedby}>
-                        <TouchableOpacity
-                        onPress={() => {
-                            user._id === raffle.host._id ?
-                            navigation.navigate('Profile') :
-                            navigation.navigate('OtherUser', {user: raffle.host})
-                            }}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    user._id === raffle.host._id ?
+                                        navigation.navigate('Profile') :
+                                        navigation.navigate('OtherUser', { user: raffle.host })
+                                }}>
                                 <View style={styles.hostedby__profile}>
                                     <Image source={{ uri: raffle.host.profilePicture }} style={styles.hostedby__image}></Image>
                                     <Text style={fonts.link}>{'@' + raffle.host.username}</Text>
@@ -513,32 +513,36 @@ export default function Raffle({ navigation, route }) {
                     }
 
                     <Text style={fonts.italic}>Description</Text  >
-                    <Text style={{ marginBottom: 15 }}>{description}</Text>
+                    <Text style={{ marginBottom: 20 }}>{description}</Text>
 
-                    {raffle.valuedAt ?
+                    {(raffle.type == 1 && raffle.valuedAt) ?
                         <View>
                             <Text style={fonts.italic}>Valued At</Text  >
-                            <Text style={{ marginBottom: 15 }}>${raffle.valuedAt}</Text>
+                            <Text style={{ marginBottom: 20 }}>${raffle.valuedAt}</Text>
+                        </View> :
+                        <View>
+                            <Text style={fonts.italic}>Buy It Now Price</Text  >
+                            <Text style={{ marginBottom: 20 }}>${raffle.productPrice}</Text>
                         </View>
-                        : null}
+                    }
 
                     {(expired || !raffle.live) ? null :
                         <View>
-                            <TouchableOpacity onPress={() => {
-                                navigation.navigate("Top5List", { users: top5 })
-                            }}>
-                                <Top5Donors users={top5} />
-                            </TouchableOpacity>
+                            {(raffle.type == 1) ?
+                                <TouchableOpacity onPress={() => {
+                                    navigation.navigate("Top5List", { users: top5 })
+                                }}>
+                                    <Top5Donors users={top5} />
+                                </TouchableOpacity>
+                                : null
+                            }
 
-                            {raffle.sizes.length > 0 ?
+                            {(raffle.sizes.length > 0 && raffle.sizes[0] !== 'One Size') ? // if there's more than just one size
                                 <View style={styles.pickSizeSlide}>
                                     <Text>PICK YOUR SIZE</Text>
-                                    {
-                                        raffle.sizeTypes.length > 0 ? 
-                                        <SizeCarousel sizes={sizeTypes} type='single' setSize={setSizeType}/> :null
-
-                                    }
-                                    <SizeCarousel sizes={sizes} type='single' setSize={setSize}/>
+                                    {raffle.sizeTypes.length > 0 ?
+                                        <SizeCarousel sizes={sizeTypes} type='single' setSize={setSizeType} /> : null}
+                                    <SizeCarousel sizes={sizes} type='single' setSize={setSize} />
                                 </View> : null
                             }
 
@@ -546,7 +550,7 @@ export default function Raffle({ navigation, route }) {
                             <BuyOptions options={options} buyOption={buyOption} setBuyOption={setBuyOption} trigger={trigger} navigation={navigation} loggedin={Object.keys(user).includes('_id')}/>
 
                             {/* sliding sheet */}
-                            <View style={{marginLeft: '-8%', marginRight: '-8%'}}>
+                            <View style={{ marginLeft: '-8%', marginRight: '-8%' }}>
                                 <OverlaySheet
                                 title={(buyOption) ? "Purchase "+ options[buyOption].chances + " chances" : "Purchase Chances"}
                                 type='default'
@@ -567,18 +571,16 @@ export default function Raffle({ navigation, route }) {
                                 type={route.params.type}
                                 />
                             </View>
-
-                            <View style={{zIndex:-1}}>
-                              <Text style={{ marginRight: -10 }}>*We we will never show donation amounts for any user</Text>
-                            </View>
                         </View>
                     }
-                    {raffle.live ?
-                        <View>
 
+                    {(raffle.live && raffle.type == 0) ? // raffle should be donate to enter + live
+                        <View>
+                            <View style={{ zIndex: -1 }}>
+                                <Text style={{ marginRight: -10 }}>*We we will never show donation amounts for any user</Text>
+                            </View>
                             <View style={[styles.highlightBackground, { paddingVertical: '5%', marginVertical: '5%' }]}>
                                 <Text style={[fonts.p, { textAlign: 'justify' }]}>Off Chance is a for-good company that hosts drawings for incredible products to raise money for charities and important causes that affect us all. All net proceeds (after hosting and platform fees) for this drawing will benefit the partners below:</Text>
-
                             </View>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: '5%' }}>
                                 <Image source={donors[0]} />
@@ -586,16 +588,10 @@ export default function Raffle({ navigation, route }) {
                             </View>
                         </View> : null
                     }
-
-                    <Text style={[fonts.p, { textAlign: 'justify' }]}>*All prizes are guaranteed to be 100% authentic and deadstock. You will be notified via email once donation goal is met and drawing starts.</Text>
+                    <Text style={[fonts.p, { marginBottom: 20 }]}>*All prizes are guaranteed to be 100% authentic and deadstock. You will be notified via email once donation goal is met and drawing starts.</Text>
                 </View>
 
                 <View style={[styles.content, { flex: 0, alignItems: 'center', zIndex: -1 }]}>
-                    <BlockButton
-                        title="PLAY GAME"
-                        color="primary"
-                        onPress={async() => navigation.navigate('GameController', await getOpponent())}
-                        disabled={expired} />
                     <BlockButton
                         title="LIVE DRAWING EXP"
                         color="primary"
@@ -612,14 +608,6 @@ export default function Raffle({ navigation, route }) {
                         onPress={() => toggleSheet()}
                         disabled={expired} /> */}
                 </View>
-                {/* disable enter drawing if a person is not within the radius (state: location) */}
-                {/* sliding sheet */}
-                {/* <Animated.View
-                    style={[styles.subView,
-                    { transform: [{ translateY: bounceValue }] }]}>
-                    <SlidingSheet title='Enter Drawing' context={['abc']} visible={sheetOpen} toggleSheet={toggleSheet} />
-                </Animated.View> */}
-
             </ScrollView>
             <BottomNav navigation={navigation} active={'Home'}></BottomNav>
         </View> : null

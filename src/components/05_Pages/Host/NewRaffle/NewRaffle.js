@@ -51,6 +51,7 @@ export default function NewRaffle({ navigation, route }) {
     const [_productImg, setProductImg] = useState([])
     const [_productprevImg, setProductPrevImg] = useState([])
     const [_productName, setProductName] = useState([])
+    const [_errors, setErrors] = useState([])
     // only for admin
     const [_startTime, setStartTime] = useState(null)
     const [_status, setStatus] = useState(null)
@@ -205,25 +206,66 @@ export default function NewRaffle({ navigation, route }) {
     //     return validator.isEmail(String(_email).toLowerCase());
     //   }
 
-    //   // check for any errors in input, returns array of errors
-    //   const generateErrors = () => {
-    //     let errors = []
-    //     // if not a valid email
-    //     if (!isValidEmail()) {
-    //       errors.push(<Text style={fonts.error}>Email is not valid</Text>)
-    //       setErrors(errors)
-    //       return true
-    //     } else {
-    //       setErrors([])
-    //       return false
-    //     }
-
-    //   }
+       // check for any errors in input, returns array of errors
+    const generateErrors = () => {
+        let errors = []
+        switch(_type) {
+            case 1:
+                if (!_value) {
+                    errors.push(<Text style={fonts.error}>Please Fill In Product Value</Text>)
+                }
+                if (!_goal) {
+                    errors.push(<Text style={fonts.error}>Please Fill In Donation Goal</Text>)
+                }
+                if (_charities.length == 0) {
+                    errors.push(<Text style={fonts.error}>Please List Charities To Donate To</Text>)
+                }
+                // CHECK CHARITY IMAGES, Currently we are not doing anything with the images..
+                if (_charityImg.length == 0) {
+                    errors.push(<Text style={fonts.error}>Charity Images</Text>)
+                }
+                break;
+            case 2:
+                if (!_price) {
+                    errors.push(<Text style={fonts.error}>Please Fill In Purchase Price</Text>)
+                }
+                if (!_numProducts) {
+                    errors.push(<Text style={fonts.error}>Please Input Amount of Products</Text>)
+                }
+                break;
+        }
+        if (!_name) {
+            errors.push(<Text style={fonts.error}>Please Fill in Product Name</Text>)
+        }
+        if (!_description) {
+            errors.push(<Text style={fonts.error}>Please Provide a Description</Text>)
+        }
+        if (!_drawingDuration) {
+            errors.push(<Text style={fonts.error}>Please Specify Drawing Duration</Text>)
+        }
+        if (!_drawingRadius) {
+            errors.push(<Text style={fonts.error}>Please Specify Drawing Radius</Text>)
+        }
+        if (_drawingRadius != null && _drawingRadius != 'None' && !_address) {
+            errors.push(<Text style={fonts.error}>Please Fill In Address</Text>)
+        }
+        if (_productType == 'sneaker' || _productType == 'clothing' && !_sizes) {
+            errors.push(<Text style={fonts.error}>Please Input Product Sizes</Text>)
+        }
+        if (_productImg.length == 0) {
+            errors.push(<Text style={fonts.error}>Please Upload Images</Text>)
+        }
+         // if not a valid email
+        setErrors(errors)
+        if (errors.length == 0) {
+            return false
+        }
+        return true
+   }
 
     // makes a json object with all the input fields
     const makeJSON = () => {
         let data = {
-            images: ["https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/oc-logo.png"], //hardcoded for demo
             type: _type,
             hostedBy: user._id,
             name: _name,
@@ -255,18 +297,29 @@ export default function NewRaffle({ navigation, route }) {
             headerRight: () => (
                 <Button title={buttonTitle}
                     onPress={() => {
-                        setButtonTitle('Submitting')
-                        _multiUpload()
-                        postRaffle()
-                        Alert.alert(
-                            "Success!",
-                            "Your drawing has been submitted for approval. You will get notified if it gets approved.",
-                            [
-                                { text: "OK", onPress: () => console.log("OK Pressed") }
-                            ],
-                            { cancelable: false }
-                        );
-                        navigation.navigate('HostDashboard')
+                        if (!generateErrors()) {
+                            setButtonTitle('Submitting')
+                            _multiUpload()
+                            postRaffle()
+                            Alert.alert(
+                                "Success!",
+                                "Your drawing has been submitted for approval. You will get notified if it gets approved.",
+                                [
+                                    { text: "OK", onPress: () => console.log("OK Pressed") }
+                                ],
+                                { cancelable: false }
+                            );
+                            navigation.navigate('HostDashboard')
+                        } else {
+                            Alert.alert(
+                                "Error",
+                                "Please fill in all required fields.",
+                                [
+                                    { text: "OK", onPress: () => console.log("OK Pressed") }
+                                ],
+                                { cancelable: false }
+                            );
+                        }
                     }} />
             ),
         });
@@ -326,7 +379,7 @@ export default function NewRaffle({ navigation, route }) {
                         {(_type == 2) ?
                             <InputField
                                 label="Buy It Now Price"
-                                keyboardType="number-pad"
+                                keyboardType="decimal-pad"
                                 value={_price}
                                 onChangeText={(text) => { setPrice(text) }}
                                 returnKeyType='done'
@@ -335,7 +388,7 @@ export default function NewRaffle({ navigation, route }) {
                                 required /> :
                             <InputField
                                 label="Prize Value"
-                                keyboardType="number-pad"
+                                keyboardType="decimal-pad"
                                 value={_value}
                                 onChangeText={(text) => { setValue(text) }}
                                 returnKeyType='done'
@@ -357,7 +410,7 @@ export default function NewRaffle({ navigation, route }) {
                         {(_type == 1) ?
                             <InputField
                                 label="Donation Goal ($)"
-                                keyboardType="number-pad"
+                                keyboardType="decimal-pad"
                                 value={_goal}
                                 onChangeText={(text) => { setGoal(text) }}
                                 returnKeyType='done'
@@ -465,6 +518,7 @@ export default function NewRaffle({ navigation, route }) {
                             {_productprevImg}
                         </View>
                         {adminContent}
+                        {_errors}
 
                         {/* <BlockButton color="secondary" title="CHOOSE" size="small" onPress={async () => _multiUpload()}/> */}
                         {/* <BlockButton title="SUBMIT FOR APPROVAL" color="primary" onPress={() => {

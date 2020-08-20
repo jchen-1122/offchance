@@ -13,6 +13,9 @@ export default function PendingCard(props) {
     const [host, setHost] = useState(null)
     const [charityString, setCharity] = useState("")
 
+    if (!raffle){
+        return null
+    }
     useEffect(() => {
         let charityS = ""
         if (!Object.keys(raffle).includes('charities') || raffle.charities === null) {
@@ -20,10 +23,10 @@ export default function PendingCard(props) {
         }
         for (var i = 0; i < raffle.charities.length; i++) {
             // dont want comma at the end
-            if (i === raffle.charities.length - 1) {
-                charityS += raffle.charities[i]
+            if (i === charities.length - 1) {
+                charityS += charities[i]
             } else {
-                charityS += raffle.charities[i] + ", "
+                charityS += charities[i] + ", "
             }
         }
         setCharity(charityS.substring())
