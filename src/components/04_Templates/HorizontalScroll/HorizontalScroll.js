@@ -5,7 +5,7 @@ import styles from './HorizontalScroll.styling'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function HorizontalScroll(props) {
-    console.log(props.toggle)
+    //console.log(props.toggle)
     return (
         <View style={(props.theme == "dark") ? styles.HorizontalScroll_dark : styles.HorizontalScroll_light}>
             <View style={styles.titleHeader}>

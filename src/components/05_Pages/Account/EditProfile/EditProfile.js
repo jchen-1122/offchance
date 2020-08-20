@@ -51,12 +51,14 @@ export default function ({ navigation }) {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
             if (status !== 'granted') {
                 alert('Sorry, we need camera roll permissions to make this work!');
+                return true;
             }
         }
+        return false;
     }
 
     const _pickImage = async () => {
-        await getPermissionAsync()
+        if (await getPermissionAsync()) return;
         try {
           let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -122,7 +124,6 @@ export default function ({ navigation }) {
     };
 
     const editUser = async () => {
-        console.log('http://' + data.ipAddress + '/user/edit/' + user._id)
         const response = await fetch('http://' + data.ipAddress + '/user/edit/' + user._id, {
             method: "PATCH",
             headers: {
@@ -177,14 +178,11 @@ export default function ({ navigation }) {
             shirtSize: _shirtSize,
             sizeType: _sizeType,
         }
-        console.log(JSON.stringify(newdata))
         if (_newimg == null) return JSON.stringify(data)
-        console.log(JSON.stringify(newdata))
         return JSON.stringify(newdata)
     };
 
     React.useLayoutEffect(() => {
-        console.log('here')
         navigation.setOptions({
             headerLeft: () => (
                 <Button onPress={() => {
@@ -309,7 +307,6 @@ export default function ({ navigation }) {
                                     if (!generateErrors()) {
                                         if (_newimg != null) await _uploadImage()
                                         const userObj = await editUser()
-                                        console.log(userObj)
                                         if (userObj.keyValue == null) {
                                             _delImage(user.profilePicture)
                                             setUser(userObj)

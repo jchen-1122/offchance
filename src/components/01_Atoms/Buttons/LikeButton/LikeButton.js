@@ -15,10 +15,11 @@ function LikeButton(props) {
     const inLikesPage = (props.inLikesPage != null) ? props.inLikesPage : false
     const [color, setColor] = useState((typeof currUser._id === 'undefined' ? true : currUser.likedRaffles.includes(raffle)))
 
-    async function getLikes(id) {
+    // gets number of likes (raffle.amountLiked)
+    async function getRaffle(id) {
         let response = await fetch('http://' + ip.ipAddress + '/raffle/id/' + id)
         response = await response.json()
-        return response.amountLiked
+        return response
     }
 
     const setLike = async () => {
@@ -74,7 +75,7 @@ function LikeButton(props) {
     }
 
     // for editing amountLiked field
-    const editLikes = async(body) => {
+    const editLikes = async (body) => {
         const response = await fetch('http://' + ip.ipAddress + '/raffle/edit/' + raffle, {
             method: "PATCH",
             headers: {
@@ -89,15 +90,22 @@ function LikeButton(props) {
     }
 
     // increment number of amountLiked
-    const incLikes = async() => {
-        var likes = await getLikes(raffle)
-        editLikes({amountLiked: likes+1})
+    const incLikes = async () => {
+        console.log(currUser._id)
+        var raf = await getRaffle(raffle)
+        var likes = raf.amountLiked
+        var users = raf.likedUsers || []
+        users.push(currUser._id)
+        editLikes({ amountLiked: likes + 1, likedUsers: users})
     }
 
     // decrement number of amountLiked
-    const decLikes = async() => {
-        var likes = await getLikes(raffle)
-        editLikes({amountLiked: likes-1})
+    const decLikes = async () => {
+        var raf = await getRaffle(raffle)
+        var likes = raf.amountLiked
+        var users = raf.likedUsers || []
+        users.splice(users.indexOf(currUser._id),1)
+        editLikes({ amountLiked: likes - 1, likedUsers: users })
     }
 
     if (inLikesPage) {

@@ -41,11 +41,11 @@ function PlayGame(props) {
     }, [localTime])
 
     return (
-        <View style={[utilities.container, { paddingVertical: 15}]}>
+        <View style={[utilities.container, { paddingVertical: 10}]}>
             <View style={styles.optionsContainer}>
                 <Text style={fonts.h2}>You</Text>
                 <UsernameDisplay size="game" username={user.username} profPic={{uri: user.profilePicture}}/>
-                <Text style={[fonts.h3,{marginTop: 10}]}>CHOOSE ONE</Text>
+                <Text style={[fonts.h3,{marginTop: 10, color: colors.limeGreen}]}>CHOOSE ONE</Text>
                 <TouchableOpacity onPress={() => {
                     props.setOpacity([1, 0.2, 0.2])
                     props.setChoice("rock")

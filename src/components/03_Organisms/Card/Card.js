@@ -13,6 +13,7 @@ import { colors, fonts, utilities, dimensions } from '../../../settings/all_sett
 import { in_a_day, is_expired } from '../../../functions/convert_dates';
 import { top5_raffle } from '../../../functions/explore_functions';
 import { time_from_now } from '../../../functions/convert_dates';
+import {isIphoneX} from '../../../functions/user_functions'
 import TextLink from '../../01_Atoms/Buttons/TextLinks/TextLinks'
 
 function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, banner, feedType, prize, userType, otherUser }) {
@@ -63,11 +64,17 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
         raffleid = data._id
     }
 
+    let buttonText = 'ENTER DRAWING'
+    for (var raffle of currUser.rafflesEntered.children){
+        if (raffle.raffleID == raffleid){
+            buttonText = 'YOU HAVE ' + raffle.chances + ' CHANCES' + ((raffle.size && raffle.size !== 'One Size') ? ' FOR SIZE ' + raffle.size : '')
+        }
+    }
     // set default values for card
     let startData = null;
     let like = null;
     let pgBar = null;
-    let button = <BlockButton title='Enter Drawing' color="secondary" onPress={() => navigation.navigate('Raffle', data)} />;
+    let button = <BlockButton title={buttonText} color="secondary" onPress={() => navigation.navigate('Raffle', data)} />;
     let friendsEntered = <EnteredUsersDisplay enteredUsers={enteredUsers} navigation={navigation} />
 
     // CHECK WHAT TYPE OF CARD--------------------------------------------------------------
@@ -79,12 +86,12 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
                     {(banner) ? <CardBanner title='DONATE TO WIN' color='lightGreen' /> : null}
                     <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid} />
                 </View>);
-            if (donationGoal) {
-                pgBar =
-                    <View style={{ marginTop: 15 }}>
-                        <ProgressBar progress={230 / donationGoal} color={colors.primaryColor} raised={230} goal={donationGoal} width={contentWidth} />
-                    </View>
-            }
+            // if (donationGoal) {
+            //     pgBar =
+            //         <View style={{ marginTop: 15 }}>
+            //             <ProgressBar progress={230 / donationGoal} color={colors.primaryColor} raised={230} goal={donationGoal} width={contentWidth} />
+            //         </View>
+            // }
             startData = (
                 <View>
                     {expired ?
@@ -144,9 +151,9 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
                     caption = user + " won chances for a drawing for "
                 }
             }
-
+            var mult = isIphoneX() ? 0.4 : 0.48
             return (
-                <View style={{ maxHeight: Dimensions.get('window').height * 0.48 }}>
+                <View style={{ maxHeight: Dimensions.get('window').height * mult }}>
                     <ScrollView style={[styles.card, { paddingTop: '5%' }]}>
                         <View style={styles.notif}>
                             {picture}

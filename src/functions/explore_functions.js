@@ -160,6 +160,44 @@ export async function getLatestWinners() {
     return latestWinners
 }
 
+export async function getPendingRaffles() {
+    let response = await fetch('http://' + ip.ipAddress + '/raffle/query?query=approved&val=false')
+    response = await response.json()
+    return response
+}
+
+export async function getPendingUsers() {
+    let response = await fetch('http://' + ip.ipAddress + '/user/query?query=isHost&val=false')
+    response = await response.json()
+    let res = []
+    for (var i = 0; i < response.length; i++) {
+        
+        // console.log(response[i].username)
+        // console.log(response[i].host_charity)
+        // console.log(response[i].host_details)
+        // console.log(response[i].host_item)
+    
+        if ((!Object.keys(response[i]).includes('host_charity') || response[i].host_charity.length === 0) && (!Object.keys(response[i]).includes('host_details') || response[i].host_details.length === 0) && (!Object.keys(response[i]).includes('host_item') || response[i].host_item.length === 0)) {
+            continue
+        } else {
+            res.push(response[i])
+        }
+    }
+    return res
+}
+
+export async function getReportedUsers() {
+    let response = await fetch('http://' + ip.ipAddress + '/user/query')
+    response = await response.json()
+    let reported = []
+    for (var i = 0; i < response.length; i++) {
+        if (response[i].reports.length > 0) {
+            reported.push(response[i])
+        }
+    }
+    return reported
+}
+
 // get multiple users doesn't return the users in the same order as the input so you have to re-sort
 function sortUsers(ids, users){
     var sorted = []

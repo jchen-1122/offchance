@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react';
-import { View, Text, Alert, Keyboard, Button } from 'react-native';
+import { View, Text, Alert, Keyboard, Button, Image } from 'react-native';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import InputField from '../../../02_Molecules/InputField/InputField';
 import { fonts, utilities } from '../../../../settings/all_settings';
@@ -16,6 +16,11 @@ import { format_date } from '../../../../functions/convert_dates';
 import { styles } from './NewRaffle.styling';
 import { colors } from '../../../../settings/all_settings'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import * as ImagePicker from 'expo-image-picker';
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
+import AssetUtils from 'expo-asset-utils';
+import * as Abuffer from 'base64-arraybuffer';
 
 export default function NewRaffle({ navigation, route }) {
     var _type = route.params.type
@@ -40,6 +45,15 @@ export default function NewRaffle({ navigation, route }) {
     const [_drawingDuration, setDrawingDuration] = useState(null)
     const [_drawingRadius, setDrawingRadius] = useState(null)
     const [_address, setAddress] = useState(null)
+    const [_charityImg, setCharityImg] = useState([])
+    const [_previewImg, setPreviewImg] = useState([])
+    const [_charityName, setCharityName] = useState([])
+    const [_productImg, setProductImg] = useState([])
+    const [_productprevImg, setProductPrevImg] = useState([])
+    const [_productName, setProductName] = useState([])
+    // only for admin
+    const [_startTime, setStartTime] = useState(null)
+    const [_status, setStatus] = useState(null)
 
     // for going to the next text input
     const priceRef = useRef()
@@ -62,11 +76,13 @@ export default function NewRaffle({ navigation, route }) {
         hideDatePicker();
     };
 
+    const admins = require('../../../05_Pages/Home/Admin/admin_emails.json')
     const productTypes = ['sneaker', 'clothing', 'collectibles', 'art']
     const { user, setUser } = useContext(GlobalState)
     //console.log(typeof user._id)
 
     // METHOD FOR POSTING RAFFLE
+    const AWS = require('aws-sdk');
     const data = require('../../../IP_ADDRESS.json');
     const postRaffle = async () => {
         const response = await fetch('http://' + data.ipAddress + '/raffle/new', {
@@ -81,6 +97,103 @@ export default function NewRaffle({ navigation, route }) {
         //console.log(json)
         return json
     }
+
+    async function getPermissionAsync() {
+        if (Constants.platform.ios) {
+            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+            if (status !== 'granted') {
+                alert('Sorry, we need camera roll permissions to make this work!');
+                return false;
+            }
+        }
+        return true;
+    }
+
+    const _pickImage = async (char) => {
+        //console.log(char)
+        if (await getPermissionAsync()) {
+            try {
+                let result = await ImagePicker.launchImageLibraryAsync({
+                    mediaTypes: ImagePicker.MediaTypeOptions.All,
+                    allowsEditing: true,
+                    allowsMultipleSelection: true,
+                    aspect: [4, 3],
+                    quality: 1,
+                });
+                if (!result.cancelled) {
+                    //setNewimg(result.uri);
+                    if (char) {
+                        var temp = _charityImg
+                        temp.push(result.uri)
+                        //console.log(temp)
+                        setCharityImg(temp)
+                        setPreviewImg(_charityImg.map((charimg) =>
+                            <Image source={{ uri: charimg }} style={{ width: 100, height: 100 }} />))
+                    }
+                    else {
+                        var temp = _productImg
+                        temp.push(result.uri)
+                        //console.log(temp)
+                        setProductImg(temp)
+                        setProductPrevImg(_productImg.map((prodimg) =>
+                            <Image source={{ uri: prodimg }} style={{ width: 100, height: 100 }} />))
+                    }
+                    //setImgname(_username + Math.round((new Date()).getTime() / 1000) + '.jpeg')
+                }
+
+                //console.log(result);
+            } catch (E) {
+                console.log(E);
+            }
+        }
+    };
+
+    AWS.config = new AWS.Config({
+        accessKeyId: data.IBMaccessKeyId,
+        secretAccessKey: data.IBMsecretAccessKey,
+        endpoint: 's3.us-east.cloud-object-storage.appdomain.cloud',
+        region: 'us-east-standard'
+    });
+
+    const cosClient = new AWS.S3();
+
+    const _multiUpload = () => {
+        console.log(user.username)
+        let imgname = user.username + Math.round((new Date()).getTime() / 1000)
+        _charityImg.map((charimg, index) => {
+            _uploadImage(charimg, 'oc-charity-images', index, imgname)
+            let temp = _charityName
+            temp.push('https://oc-charity-images.s3.us-east.cloud-object-storage.appdomain.cloud/' + imgname + '-' + index + '.jpeg')
+            setCharityName(temp)
+        })
+        _productImg.map((prodimg, index) => {
+            _uploadImage(prodimg, 'oc-drawing-images', index, imgname)
+            let temp = _productName
+            temp.push('https://oc-drawing-images.s3.us-east.cloud-object-storage.appdomain.cloud/' + imgname + '-' + index + '.jpeg')
+            setProductName(temp)
+        })
+    };
+
+    const _uploadImage = async (imguri, bucketname, index, imgname) => {
+        //console.log(imgname + '-' + index + '.jpeg')
+        const asset = await AssetUtils.base64forImageUriAsync(imguri);
+        const arrayBuffer = Abuffer.decode(asset.data);
+        let contentType = 'image/jpeg';
+        //console.log(arrayBuffer)
+        //const { localUri, width, height } = asset;
+        return cosClient.putObject({
+            Bucket: bucketname,
+            Key: imgname + '-' + index + '.jpeg',
+            Body: arrayBuffer,
+            ContentType: contentType
+        }).promise()
+            .then(() => {
+                console.log('Item: created!');
+            })
+            .catch((e) => {
+                console.error(`ERROR: ${e.code} - ${e.message}\n`);
+            })
+    };
 
     //   // states for each input value
     //   const [_email, setEmail] = useState(null)
@@ -124,9 +237,11 @@ export default function NewRaffle({ navigation, route }) {
             drawingDuration: _drawingDuration,
             radius: _drawingRadius === 'None' ? 25000 : _drawingRadius,
             address: _address,
-            // CHANGE LATER
+            images: _productName,
             sizeTypes: _sizeTypes,
-            sizes: _sizes
+            sizes: _sizes,
+            startTime: _startTime,
+            live: (_status == 'Live') ? true: (_status == 'Coming Soon') ? false : null
         }
         return JSON.stringify(data)
     };
@@ -139,22 +254,58 @@ export default function NewRaffle({ navigation, route }) {
             ),
             headerRight: () => (
                 <Button title={buttonTitle}
-                onPress={() => {
-                    setButtonTitle('Submitting')
-                    postRaffle()
-                    Alert.alert(
-                        "Success!",
-                        "Your drawing has been submitted for approval. You will get notified if it gets approved.",
-                        [
-                            { text: "OK", onPress: () => console.log("OK Pressed") }
-                        ],
-                        { cancelable: false }
-                    );
-                    navigation.navigate('HostDashboard')
-                }}/>
+                    onPress={() => {
+                        setButtonTitle('Submitting')
+                        _multiUpload()
+                        postRaffle()
+                        Alert.alert(
+                            "Success!",
+                            "Your drawing has been submitted for approval. You will get notified if it gets approved.",
+                            [
+                                { text: "OK", onPress: () => console.log("OK Pressed") }
+                            ],
+                            { cancelable: false }
+                        );
+                        navigation.navigate('HostDashboard')
+                    }} />
             ),
         });
-    }, [ _type,_name, _price, _value, _numProducts, _description,_goal,_charities,_productType,_drawingDuration,_drawingRadius, _address,_sizeTypes, _sizes, buttonTitle]);
+    }, [_type, _name, _price, _value, _numProducts, _description, _goal, _charities, _productType, _drawingDuration, _drawingRadius, _address, _sizeTypes, _sizes, buttonTitle]);
+
+    let adminContent;
+    if (admins.admins.includes(user.email)) {
+        adminContent = (
+            <View style={{width: '90%'}}>
+                <View style={{ width: '100%', marginTop: 15 }}>
+                    <Text style={styles.InputField__label}>Drawing Time*</Text>
+                    <View style={{ width: '105%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Text style={styles.InputField__label}>{_startTime == null ? "Pick A Start Date" : format_date(_startTime)}</Text>
+                        <BlockButton color="secondary" size="small" title={'CHOOSE'} onPress={showDatePicker} />
+                    </View>
+                </View>
+                <View style={{ width: '100%', marginVertical: 10 }}>
+                    <Text style={styles.InputField__label}>Status*</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        {['Live', 'Coming Soon'].map((status, index) =>
+                            <Checkbox
+                                selected={_status == status}
+                                onPress={() => { setStatus(status) }}
+                                text={status}
+                            />
+                        )}
+                    </View>
+                </View>
+                <DateTimePickerModal
+                    isVisible={isDatePickerVisible}
+                    mode="datetime"
+                    headerTextIOS="Pick a start date"
+                    onConfirm={handleConfirm}
+                    onCancel={hideDatePicker}
+                    pickerContainerStyleIOS={{ backgroundColor: 'white' }}
+                />
+            </View>
+        )
+    }
     return (
 
         <View style={utilities.container}>
@@ -211,8 +362,7 @@ export default function NewRaffle({ navigation, route }) {
                                 onChangeText={(text) => { setGoal(text) }}
                                 returnKeyType='done'
                                 onSubmitEditing={() => charityRef.current.focus()}
-                                ref={goalRef}
-                                required /> : null
+                                ref={goalRef} /> : null
                         }
                         {(_type == 1) ?
                             <InputField
@@ -227,9 +377,14 @@ export default function NewRaffle({ navigation, route }) {
                         {(_type == 1) ?
                             <View style={{ width: '95%', marginLeft: '5%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <Text style={[styles.InputField__label]}>Charity Partner Logos*</Text>
-                                <BlockButton color="secondary" title="CHOOSE" size="small" />
+                                <BlockButton color="secondary" title={_charityImg.length < 4 ? "CHOOSE" : "MAX 4"} size="small" onPress={async () => {
+                                    if (_charityImg.length < 4) _pickImage(true)
+                                }} />
                             </View> : null
                         }
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                            {_previewImg}
+                        </View>
                         <InputField
                             label="Description"
                             value={_description}
@@ -250,10 +405,10 @@ export default function NewRaffle({ navigation, route }) {
                             <Dropdown options={['None', 1, 5, 10, 20, 50, 100, 200, 1000]} placeholder="Miles" setValue={setDrawingRadius} />
                         </View>
                         <InputField
-                            label={'Store Address' + ((_drawingRadius && _drawingRadius != 'None') ? '*':'')}
+                            label={'Store Address' + ((_drawingRadius && _drawingRadius != 'None') ? '*' : '')}
                             autoCapitalize="words"
                             value={_address}
-                            onChangeText={(text) => { setAddress(text) }}/>
+                            onChangeText={(text) => { setAddress(text) }} />
                         {/* WE NEED THIS FOR ADMIN */}
                         {/* <View style={{ width: '100%', marginLeft: '10%', marginVertical: 15 }}>
                         <Text style={styles.InputField__label}>Drawing Time<Text style={{ color: 'red' }}>*</Text></Text>
@@ -302,8 +457,16 @@ export default function NewRaffle({ navigation, route }) {
                             : null}
                         <View style={{ width: '95%', marginLeft: '5%', marginVertical: '5%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                             <Text style={[styles.InputField__label]}>Product Pictures*</Text>
-                            <BlockButton color="secondary" title="CHOOSE" size="small" />
+                            <BlockButton color="secondary" title="CHOOSE" size="small" onPress={async () => {
+                                if (_productImg.length < 4) _pickImage(false)
+                            }} />
                         </View>
+                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                            {_productprevImg}
+                        </View>
+                        {adminContent}
+
+                        {/* <BlockButton color="secondary" title="CHOOSE" size="small" onPress={async () => _multiUpload()}/> */}
                         {/* <BlockButton title="SUBMIT FOR APPROVAL" color="primary" onPress={() => {
                             postRaffle()
                             Alert.alert(

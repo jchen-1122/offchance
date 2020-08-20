@@ -15,9 +15,8 @@ const styles = StyleSheet.create({
     },
 
     welcomeImage: {
-      height: Dimensions.get('window').height*0.4
-      ,
-      width: Dimensions.get('window').width,
+      height: Dimensions.get('window').height*0.4,
+      width: Dimensions.get('window').width*0.7,
       resizeMode:'contain'
     },
 

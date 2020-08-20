@@ -176,7 +176,12 @@ export default function Login({ navigation, route }) {
               if (userObj.error == null) {
                 setUser(userObj)
                 await AsyncStorage.setItem('user', userObj._id)
-                navigation.navigate('Home')
+                if (userObj.email === 'admin@admin.com') {
+                  console.log(userObj)
+                  navigation.navigate('AdminHome')
+                } else {
+                  navigation.navigate('Home')
+                }
                 {/* TODO: Comment out for the sake of convenience. At the end of the day modify plz.
                  {/* https://stackoverflow.com/questions/42831685/disable-back-button-in-react-navigation}
               navigation.reset({

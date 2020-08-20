@@ -13,8 +13,45 @@ import styles from './Bottomnav.styling'
 
 function BottomNav(props) {
   const { user, setUser } = useContext(GlobalState)
-console.log(props.active)
   return (
+    (user.email === 'admin@admin.com') ? 
+    // admin footer
+    <View>
+      <Footer>
+        <FooterTab style={{ backgroundColor: 'black' }}>
+
+          <Button onPress={() => { (props.active === 'AdminHome') ? props.navigation.navigate('AdminHome') : props.navigation.reset({ index: 0, routes: [{ name: 'AdminHome' }] }) }}>
+            {(props.active === 'AdminHome') ? <Icon name='clock' type='material-community' color='white' /> : <Icon name='clock-outline' type='material-community' color='grey' />}
+            <Text style={[styles.textFont, (props.active === 'AdminHome') ? { color: 'white' } : null]}>Pending</Text>
+          </Button>
+
+          <Button onPress={() => { (props.active === 'Report') ? props.navigation.navigate('Report') : props.navigation.reset({ index: 0, routes: [{ name: 'Report' }] }) }}>
+            {(props.active === 'Report') ? <Icon name='chat' type='material-community' color='white' /> : <Icon name='chat-outline' type='material-community' color='grey' />}
+            <Text style={[styles.textFont, (props.active === 'Report') ? { color: 'white' } : null]}>Report</Text>
+          </Button>
+
+          <Button onPress={() => { (props.active === 'Search') ? props.navigation.navigate('Search') : props.navigation.reset({ index: 0, routes: [{ name: 'Search' }] }) }}>
+            {(props.active === 'Search') ? <Icon name='magnify' type='material-community' color='white' /> : <Icon name='magnify' type='material-community' color='grey' />}
+            <Text style={[styles.textFont, (props.active === 'Search') ? { color: 'white' } : null]}>Search</Text>
+          </Button>
+
+          { user_logged_in(user) ? <Button onPress={() => { (props.active === 'Host') ? props.navigation.navigate('HostDashboard') : props.navigation.reset({ index: 0, routes: [{ name: 'HostDashboard' }] }) }}>
+            {(props.active === 'Host') ? <Icon name='checkbox-marked-circle' type='material-community' color='white' /> : <Icon name='checkbox-marked-circle-outline' type='material-community' color='grey' />}
+            <Text style={[styles.textFont, (props.active === 'Host') ? { color: 'white' } : null]}>Host</Text>
+          </Button> :
+          <Button onPress={() => { (props.active === 'Host') ? props.navigation.navigate('NotLogin') : props.navigation.reset({ index: 0, routes: [{ name: 'NotLogin' }] }) }}>
+            {(props.active === 'Host') ? <Icon name='checkbox-marked-circle' type='material-community' color='white' /> : <Icon name='checkbox-marked-circle-outline' type='material-community' color='grey' />}
+            <Text style={[styles.textFont, (props.active === 'Host') ? { color: 'white' } : null]}>Host</Text>
+          </Button> }
+
+          <Button onPress={() => (user_logged_in(user)) ? props.navigation.navigate('Profile') : props.navigation.navigate('NotLogin')}>
+            {(props.active === 'Account') ? <Icon name='account' type='material-community' color='white' /> : <Icon name='account-outline' type='material-community' color='grey' />}
+            <Text style={[styles.textFont, (props.active === 'Account') ? { color: 'white' } : null]}>Account</Text>
+          </Button>
+        </FooterTab>
+      </Footer>
+    </View>
+    : 
     <View>
       <Footer>
         <FooterTab style={{ backgroundColor: 'black' }}>

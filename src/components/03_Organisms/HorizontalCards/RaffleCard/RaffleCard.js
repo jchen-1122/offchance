@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Text, Image, View, TouchableOpacity } from 'react-native';
 import styles from './RaffleCard.styling';
-import { utilities, fonts } from '../../../../settings/all_settings'
+import Countdown from '../../../01_Atoms/Countdown/Countdown'
+import { utilities, fonts, colors } from '../../../../settings/all_settings'
 
 // for small RaffleCard in horizontal carousel
 function RaffleCard(props) {
@@ -26,7 +27,10 @@ function RaffleCard(props) {
             <TouchableOpacity onPress={() => {props.navigation.navigate('Raffle',raffle)}}>
                 <View style={styles.RaffleCard}>
                     <Image style={styles.RaffleCard__image} source={{ uri: raffle.images[0] }} />
-                    <Text style={[fonts.h3, styles.RaffleCard__title]}>{raffle.name}</Text>
+                    <Text style={[fonts.h3, {textAlign: 'center'}]}>
+                        {(raffle.name).length < 45 ? raffle.name : raffle.name.substring(0,42) + '...'}
+                        </Text>
+                    <Countdown unix_timestamp={raffle.startTime} propsStyle={styles.RaffleCard__startTime}/>
                 </View>
             </TouchableOpacity>
         )
