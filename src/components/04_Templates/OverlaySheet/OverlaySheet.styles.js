@@ -5,16 +5,17 @@ import {StyleSheet, Dimensions} from 'react-native';
 const styles = StyleSheet.create({
     overlay: {
         borderRadius: 30, 
-        maxHeight: Dimensions.get('window').height* 0.6, 
+        maxHeight: Dimensions.get('window').height* 0.9, 
+        minWidth: '95%',
         justifyContent: 'space-between',
         paddingBottom: '8%'
     },
     container: {
-      flex: 0.75,
+      flex: 1,
     },
 
     slidingSheet: {
-        flex: 0.75,
+        flex: 1,
     },
 
     slidingSheet__header: {
@@ -28,18 +29,16 @@ const styles = StyleSheet.create({
     },
 
     slidingSheet__content: {
-        flex: 1,
-        marginLeft: '5%',
-        marginRight: '5%',
+        // flex: 1,
+        marginHorizontal: '5%',
         marginBottom: '7%',
         flexDirection: 'column',
 
     },
-
     slidingSheet__save: {
         flex: 1,
-        marginLeft: '3%',
-        flexDirection: 'column',
+        marginHorizontal: '5%',
+        width: 300
     },
 
     slidingSheet__content_text: {

@@ -1,17 +1,15 @@
 // insta button + facebook button + login button
 
 import React from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text, Image } from 'react-native';
 import { styles } from "./BlockButton.styling";
 import { SocialIcon } from 'react-native-elements';
+import { colors } from '../../../../settings/all_settings';
 
 function BlockButton(props) {
-
-    let icon; // for fb and insta
+    let icon;
     let buttonStyle = [styles.BlockButton];
     let buttonTitleStyle = [styles.BlockButton__title_primary];
-    let selectedButtonStyle;
-    let selectedButtonTitleStyle;
 
     // determine what kind/color of button it is
     switch (props.color) {
@@ -21,8 +19,7 @@ function BlockButton(props) {
         case "secondary":
             buttonStyle.push(styles.BlockButton_secondary);
             buttonTitleStyle = [styles.BlockButton__title_secondary];
-            // if selected in BuyOptions
-            if (props.selected){
+            if (props.selected) {
                 buttonStyle.push(styles.BlockButton_secondarySelected);
                 buttonTitleStyle = [styles.BlockButton__title_tertiary];
             }
@@ -34,12 +31,16 @@ function BlockButton(props) {
         case "light":
             buttonStyle.push(styles.BlockButton_light);
             buttonTitleStyle = [styles.BlockButton__title_secondary];
-             // if selected in BuyOptions
-            if (props.selected){
+            if (props.selected) {
                 buttonStyle.push(styles.BlockButton_primary);
                 buttonTitleStyle = [styles.buttonTitleStyle];
             }
             break;
+        case "confirm":
+            buttonStyle.push(styles.BlockButton_confirm);
+            break;
+
+        // different social login buttons
         case "facebook":
             buttonStyle.push(styles.BlockButton_facebook);
             buttonTitleStyle = [styles.BlockButton__title_tertiary];
@@ -49,13 +50,6 @@ function BlockButton(props) {
             buttonStyle.push(styles.BlockButton_google);
             buttonTitleStyle = [styles.BlockButton__title_google];
             icon = <SocialIcon type='google' raised={false} iconStyle={styles.google_icon} style={styles.iconBg} iconSize={30} />
-            break;
-        case "logOut":
-            buttonStyle.push(styles.BlockButton_logOut);
-            buttonTitleStyle = [styles.BlockButton__title_logOut];
-            break;
-        case "confirm":
-            buttonStyle.push(styles.BlockButton_confirm);
             break;
     }
 
@@ -99,8 +93,8 @@ function BlockButton(props) {
 
     return (
         <TouchableOpacity style={[buttonStyle, props.style]} onPress={props.onPress} disabled={props.disabled}>
-            {icon}
-            <Text style={[buttonTitleStyle, (props.title == "FOLLOWING" && props.size == 'small') ? { fontSize: 11 } : null]}>{props.title}</Text>
+            {props.icon || icon}
+            <Text style={[buttonTitleStyle, props.titleStyle, (props.title == "FOLLOWING" && props.size == 'small') ? { fontSize: 11 } : null]}>{props.title}</Text>
             {banner}
         </TouchableOpacity>
     )

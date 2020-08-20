@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        zIndex: 0
+        zIndex: 0,
     },
 
     // if button is disabled
@@ -142,7 +142,8 @@ const styles = StyleSheet.create({
     BlockButton__bannerTitle: {
         fontSize: 8,
         color: 'white'
-    }
+    },
+
 })
 
 export {styles};

@@ -149,15 +149,6 @@ function Profile({ navigation }) {
                 <Text style={styles.descriptor}>Email</Text>
                 <Text style={styles.description}>{email}</Text>
 
-                <Text style={styles.descriptor}>Wallet Chances</Text>
-                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-                        <Text style={styles.description}>{walletChances}</Text>
-                            <TouchableOpacity onPress={() => navigation.navigate('Wallet')} style={{marginLeft: '15%'}}>
-                                <Icon name="wallet" type="material-community" />
-                            </TouchableOpacity>
-
-                    </View>
-
                 <View>
                     <Text style={styles.descriptor}>Shipping Address</Text>
                     <Text style={styles.description}>{address}</Text>
@@ -241,11 +232,23 @@ function Profile({ navigation }) {
                 <StatsBar currUser={user} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>
 
                 <View style={styles.toggleBar}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: -20, width: '90%' }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                            <Text style={styles.descriptor}>Wallet Chances: </Text>
+                            <Text style={styles.description}>{walletChances}</Text>
+                        </View>
+
+                        <TouchableOpacity onPress={() => navigation.navigate('Wallet')}>
+                            <Icon name="wallet" type="material-community" />
+                        </TouchableOpacity>
+                    </View>
+
+
                     <InfoFeed info={info} setInfo={setInfo}></InfoFeed>
                 </View>
-                        <View>
-                            {content}
-                        </View>
+                <View>
+                    {content}
+                </View>
 
             </ScrollView>
 

@@ -198,7 +198,7 @@ export default function AdminEdit({ navigation, route }) {
                         </View>
                     </View>
 
-                    <View style={[utilities.flexCenter, { marginBottom: 25 }]}>
+                    <View style={[{ alignItems: 'center',marginBottom: 25 }]}>
                         <InputField
                             label="Name of Product"
                             autoCapitalize="words"
