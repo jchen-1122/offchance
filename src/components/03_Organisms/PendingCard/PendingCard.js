@@ -23,10 +23,10 @@ export default function PendingCard(props) {
         }
         for (var i = 0; i < raffle.charities.length; i++) {
             // dont want comma at the end
-            if (i === charities.length - 1) {
-                charityS += charities[i]
+            if (i === raffle.charities.length - 1) {
+                charityS += raffle.charities[i]
             } else {
-                charityS += charities[i] + ", "
+                charityS += raffle.charities[i] + ", "
             }
         }
         setCharity(charityS.substring())

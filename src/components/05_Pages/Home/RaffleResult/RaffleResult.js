@@ -178,9 +178,11 @@ export default function RaffleResult({ navigation, route }) {
             {/* JOSHUA START */ }
             // set current logged in user winner card
             if (element._id === user._id) {
-                setwinnerOverlay(true)
-                setwinnerPrize(element.prize)
-                setCurrWinner(true)
+                if (element.reward === 0) {
+                    setwinnerOverlay(true)
+                    setwinnerPrize(element.prize)
+                    setCurrWinner(true)
+                }
             }
             {/* JOSHUA END */ }
             if (element.hasOwnProperty("prize")) {
@@ -191,7 +193,7 @@ export default function RaffleResult({ navigation, route }) {
                 }
                 CardArray.push(
                     <View style={{marginHorizontal: '1%', marginVertical: '0.5%'}}>
-                        <BackCard currUser={user} user={element} time={count * 1000 + (1000 * Math.max(localTime, 0) + 5000)} setoverlay={setoverlay} setSelected={setSelected} setPrize={setPrize} setFeed={setFeed} />
+                        <BackCard currUser={user} user={element} time={count * 1000 + (1000 * Math.max(localTime - 1, -1))} setoverlay={setoverlay} setSelected={setSelected} setPrize={setPrize} setFeed={setFeed} />
                     </View>
                 )
             }

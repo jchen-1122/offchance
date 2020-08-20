@@ -27,7 +27,9 @@ function BackCard(props){
 
     return (
         <TouchableOpacity onPress={() => {
-            props.setoverlay(true)
+            if (show) {
+                props.setoverlay(true)
+            }
             props.setSelected(user)
             props.setPrize(user["prize"])
         }}>
