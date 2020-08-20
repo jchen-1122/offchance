@@ -8,12 +8,12 @@ import { COLOR } from 'react-native-material-ui';
 import { color } from 'react-native-reanimated';
 
 export default function HowItWorks({navigation, route}) {
-    const images = [require('../../../../../assets/images/10-chance-lives.png'),
-                    require('../../../../../assets/images/RPS-Game.png'),
-                    require('../../../../../assets/images/wins-chance.png'),
-                    require('../../../../../assets/images/10-chance-claim.png'),];
+    const images = [require('../../../../assets/images/10-chance-lives.png'),
+                    require('../../../../assets/images/RPS-Game.png'),
+                    require('../../../../assets/images/wins-chance.png'),
+                    require('../../../../assets/images/10-chance-claim.png'),];
 
-    const gif = require('../../../../../assets/images/vanfleet.gif');
+    const gif = require('../../../../assets/images/vanfleet.gif');
 
     const windowWidth = Dimensions.get('window').width;
     const windowHeight = Dimensions.get('window').height;

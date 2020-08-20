@@ -30,8 +30,6 @@ export default function HomeScreen({ navigation }) {
     logInRemUser()
   }, [])
 
-  var image = require('../../../../assets/images/background.jpg')
-
   // // BACKHANDLING FOR ANDROID BOTTOM NAV
   // const backAction = () => {
   //   Alert.alert("Hold on!", "Are you sure you want to exit the app?", [

@@ -17,8 +17,8 @@ function WinnerCard(props, ref) {
 
     // load fonts for the cards
     const [loaded, error] = useFonts({
-        'Steelfish': require('../../../../assets/fonts/Steelfish.ttf'),
-        'Josefin Sans': require('../../../../assets/fonts/JosefinSans.ttf'),
+        'Steelfish': require('../../../assets/fonts/Steelfish.ttf'),
+        'Josefin Sans': require('../../../assets/fonts/JosefinSans.ttf'),
 
     });
     if (!loaded) {
@@ -137,8 +137,8 @@ function WinnerCard(props, ref) {
                         <View style={[utilities.flexCenter]}>
                             <Text style={[styles.hostLabel, { fontFamily: 'Josefin Sans' }]}>BENEFITTING:</Text>
                             <View style={{ flexDirection: 'row' }}>
-                                <Image style={styles.charity} source={require('../../../../assets/images/aclu.png')} />
-                                <Image style={styles.charity} source={require('../../../../assets/images/naacp.png')} />
+                                <Image style={styles.charity} source={require('../../../assets/images/aclu.png')} />
+                                <Image style={styles.charity} source={require('../../../assets/images/naacp.png')} />
                             </View>
                         </View>
                     </View>

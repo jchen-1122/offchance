@@ -327,7 +327,7 @@ export default function Raffle({ navigation, route }) {
     for (let i in images_strs) {
         images.push({ uri: images_strs[i] })
     }
-    const donors = [require('../../../../../assets/images/naacp.png'), require('../../../../../assets/images/aclu.png')]
+    const donors = [require('../../../../assets/images/naacp.png'), require('../../../../assets/images/aclu.png')]
 
     // for sliding sheet (payment)
     const [sheetOpen, setSheetOpen] = useState(false);

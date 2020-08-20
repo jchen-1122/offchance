@@ -7,7 +7,6 @@ import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
 import Card from '../../../03_Organisms/Card/Card'
 import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
 import StatsBar from '../../../02_Molecules/StatsBar/StatsBar'
-import Nswitch from '../../../../../assets/images/switch.jpeg'
 import { styles } from './Profile.styling'
 import GlobalState from '../../../globalState';
 import Construction from '../../../04_Templates/Construction/Construction'
