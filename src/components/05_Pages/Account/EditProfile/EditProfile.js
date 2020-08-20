@@ -288,7 +288,7 @@ export default function ({ navigation }) {
 
                     </View>
                     {_errors}
-
+{/* 
                     <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                         <View >
                             <BlockButton
@@ -328,7 +328,7 @@ export default function ({ navigation }) {
                                 }
                             }></BlockButton>
                         </View>
-                    </View>
+                    </View> */}
                 </View>
             </KeyboardAwareScrollView>
         </ScrollView>

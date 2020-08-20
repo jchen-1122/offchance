@@ -19,7 +19,7 @@ function WinnerCard(props, ref) {
     const [loaded, error] = useFonts({
         'Steelfish': require('../../../../assets/fonts/Steelfish.ttf'),
         'Josefin Sans': require('../../../../assets/fonts/JosefinSans.ttf'),
-
+        'Roboto_medium': require('../../../../assets/fonts/Roboto_medium.ttf')
     });
     if (!loaded) {
         return null;

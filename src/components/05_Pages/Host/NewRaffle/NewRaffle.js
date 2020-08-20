@@ -72,6 +72,7 @@ export default function NewRaffle({ navigation, route }) {
         setDatePickerVisibility(false);
     };
     const handleConfirm = (date) => {
+        // date = new Date(date).getTime() / 1000
         setStartTime(date)
         hideDatePicker();
     };
@@ -94,7 +95,7 @@ export default function NewRaffle({ navigation, route }) {
             body: makeJSON()
         })
         const json = await response.json()
-        //console.log(json)
+        console.log(json)
         return json
     }
 
@@ -240,9 +241,12 @@ export default function NewRaffle({ navigation, route }) {
             images: _productName,
             sizeTypes: _sizeTypes,
             sizes: _sizes,
-            startTime: _startTime,
-            live: (_status == 'Live') ? true: (_status == 'Coming Soon') ? false : null
+            startTime: new Date(_startTime).getTime() / 1000,
+            live: (_status == 'Live') ? true: (_status == 'Coming Soon') ? false : null,
+            approved: (admins.admins.includes(user.email)) ? true : false
         }
+        console.log('status',_status)
+        console.log('live',data.live)
         return JSON.stringify(data)
     };
     React.useLayoutEffect(() => {
@@ -397,30 +401,18 @@ export default function NewRaffle({ navigation, route }) {
 
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 2 }}>
                             <Text style={styles.InputField__label}>Drawing Duration (Days)*</Text>
-                            <Dropdown options={[1, 3, 5, 7, 14, 21, 30]} placeholder="Days" setValue={setDrawingDuration} />
+                            <Dropdown options={['1', '3', '5', '7', '14', '21', '30']} placeholder={"Days"} setValue={setDrawingDuration}/>
                         </View>
 
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 1 }}>
                             <Text style={styles.InputField__label}>Drawing Radius* (mi)</Text>
-                            <Dropdown options={['None', 1, 5, 10, 20, 50, 100, 200, 1000]} placeholder="Miles" setValue={setDrawingRadius} />
+                            <Dropdown options={['None', '1', '5', '10', '20', '50', '100', '200', '1000']} placeholder="Miles" setValue={setDrawingRadius}/>
                         </View>
                         <InputField
                             label={'Store Address' + ((_drawingRadius && _drawingRadius != 'None') ? '*' : '')}
                             autoCapitalize="words"
                             value={_address}
                             onChangeText={(text) => { setAddress(text) }} />
-                        {/* WE NEED THIS FOR ADMIN */}
-                        {/* <View style={{ width: '100%', marginLeft: '10%', marginVertical: 15 }}>
-                        <Text style={styles.InputField__label}>Drawing Time<Text style={{ color: 'red' }}>*</Text></Text>
-                        <BlockButton color="secondary" size="short" title={_startTime == null ? "Pick A Start Date" : format_date(_startTime)} onPress={showDatePicker} />
-                    </View>
-                    <DateTimePickerModal
-                        isVisible={isDatePickerVisible}
-                        mode="datetime"
-                        headerTextIOS="Pick a start date"
-                        onConfirm={handleConfirm}
-                        onCancel={hideDatePicker}
-                    /> */}
 
                         <View style={{ width: '100%', marginLeft: '10%', marginVertical: 15 }}>
                             <Text style={styles.InputField__label}>Type of Product*</Text>
@@ -466,19 +458,6 @@ export default function NewRaffle({ navigation, route }) {
                         </View>
                         {adminContent}
 
-                        {/* <BlockButton color="secondary" title="CHOOSE" size="small" onPress={async () => _multiUpload()}/> */}
-                        {/* <BlockButton title="SUBMIT FOR APPROVAL" color="primary" onPress={() => {
-                            postRaffle()
-                            Alert.alert(
-                                "Success!",
-                                "Your drawing has been submitted for approval. You will get notified if it gets approved.",
-                                [
-                                    { text: "OK", onPress: () => console.log("OK Pressed") }
-                                ],
-                                { cancelable: false }
-                            );
-                            navigation.navigate('HostDashboard')
-                        }} /> */}
                     </View>
                 </KeyboardAwareScrollView>
             </ScrollView>

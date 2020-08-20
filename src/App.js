@@ -3,6 +3,7 @@ import { StatusBar, SafeAreaView} from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Notifications from 'expo-notifications';
+import { useFonts } from 'expo-font';
 import Welcome from './components/05_Pages/Welcome/Welcome'
 import Login from './components/05_Pages/LoginProcess/Login/Login'
 import Signup from './components/05_Pages/Signup/Signup'
@@ -76,14 +77,19 @@ function App() {
       }),
     });
 
-    // Notifications.addNotificationResponseReceivedListener(console.log('YUH'));
+        // load fonts for the cards
+        const [loaded, error] = useFonts({
+          'Roboto_medium': require('../assets/fonts/Roboto_medium.ttf')
+      });
+      if (!loaded) {
+          return null;
+      }
 
-    // Notifications.addNotificationResponseReceivedListener((response) => Stack.navigator.navigate(response.notification.request.content.data.body.page));
-
+      
   return (
     <GlobalState.Provider value={{ user, setUser, socket }}>
       <NavigationContainer>
-        <StatusBar backgroundColor="white" barStyle="light-content"/>
+        <StatusBar backgroundColor="black" barStyle="light-content"/>
         <SafeAreaView style={{ flex: 0, backgroundColor: 'black' }} />
         <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }} >
 
@@ -92,8 +98,12 @@ function App() {
             headerStyle: {
               backgroundColor: 'black',
             },
+            headerTitleStyle: {
+              textAlign: 'center'
+            },
             headerTintColor: '#fff',
-          }}>
+          }
+          }>
           <Stack.Screen name=" " component={Welcome} options={{ headerShown: false }} />
           <Stack.Screen name="Signup" component={Signup} options={{ title: 'Sign Up' }} />
           <Stack.Screen name="PhoneVerify" component={PhoneVerify} options={{ title: 'Verify Account' }} />
