@@ -1,7 +1,7 @@
-import { StyleSheet, Dimensions } from 'react-native'
+import { StyleSheet, Dimensions, Platform } from 'react-native'
 
 
-var imageSize = Dimensions.get('window').width * 0.25
+var imageSize = 100
 
 const styles = StyleSheet.create({
     touchable: {
@@ -20,7 +20,9 @@ const styles = StyleSheet.create({
         width: imageSize,
         borderRadius: imageSize,
         backgroundColor: 'white',
-        resizeMode: 'contain',
+        paddingVertical: 20,
+        resizeMode: Platform.OS === 'android' ? 'cover' : 'contain',
+        overflow: 'hidden',
         marginBottom: '10%'
     },
     raffleName: {

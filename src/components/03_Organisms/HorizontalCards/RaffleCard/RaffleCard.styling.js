@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
         width: cardSize,
         alignItems: 'center',
         justifyContent: 'center',
-        // padding: '5%', 
+        padding: 10, 
         // paddingBottom: '10%',  
         marginHorizontal: 10,
     },

@@ -14,6 +14,10 @@ const styles = StyleSheet.create({
     right: 0,
     backgroundColor: "#FFFFFF",
     height: 100,
+  },
+  description: {
+    width: '90%',
+    fontSize: 11
   }
 
 })

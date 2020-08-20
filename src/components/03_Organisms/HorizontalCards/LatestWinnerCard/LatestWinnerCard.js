@@ -11,7 +11,7 @@ function LatestWinnerCard(props) {
     var winner = props.winner
     var raffle = props.raffle
     const [host, setHost] = useState(null)
-    
+
     useEffect(() => {
         async function getHost() {
             let response = await fetch('http://' + ip.ipAddress + '/user/id/' + props.raffle.hostedBy)
@@ -23,7 +23,7 @@ function LatestWinnerCard(props) {
         }
     }, [raffle])
 
-    if (raffle){
+    if (raffle) {
         raffle['host'] = host
         raffle['winner'] = winner
         return (
@@ -34,7 +34,7 @@ function LatestWinnerCard(props) {
                     <Image style={styles.raffleImage} source={{ uri: raffle.images[0] }} />
                     <Text style={[styles.raffleName]}>{raffle.name}</Text>
                 </TouchableOpacity>
-                
+
                 <TouchableOpacity onPress={() => {
                     props.navigation.navigate('OtherUser', { user: winner })
                 }}>

@@ -9,16 +9,15 @@ let hostPicSize = Dimensions.get('window').width*0.1
 const styles = StyleSheet.create({
     overlay: {
         width: Dimensions.get('window').width*0.8,
-        height: isIphoneX() ? 600 : 500,
+        height: isIphoneX() ? 510 : 460,
         alignItems: 'center',
         justifyContent: 'center',
         margin: 3,
         backgroundColor: "white",
-        // borderWidth: 3,
     },
 
     header: {
-        height: '17%',
+        height: '15%',
         width: '100%',
         flexDirection: 'column',
         alignItems: 'center',
@@ -31,13 +30,16 @@ const styles = StyleSheet.create({
     },
 
     WinnerCard__image: {
-        height: '100%',
-        width: '80%',
+        height: 150,
+        width: 150,
         resizeMode: 'contain',
+        borderRadius: 150,
+        backgroundColor: 'white',
+        marginVertical: isIphoneX() ? 10 : 5,
     },
 
     WinnerCard__prizeTitle: {
-        fontSize: 24,
+        fontSize: 22,
         letterSpacing: 4,
         textAlign: 'center',
         borderWidth: 2,
@@ -88,8 +90,8 @@ const styles = StyleSheet.create({
     },
 
     charity: {
-        height: Dimensions.get('window').height*0.05,
-        width: Dimensions.get('window').width*0.1,
+        height: 28,
+        width: 28,
         resizeMode: 'contain',
         margin: 0
     }

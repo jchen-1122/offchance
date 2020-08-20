@@ -273,7 +273,7 @@ export default function AdminEdit({ navigation, route }) {
 
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 2, marginVertical: 15 }}>
                             <Text style={styles.InputField__label}>Drawing Duration (Days)*</Text>
-                            <Dropdown options={[1, 3, 5, 7, 14, 21, 30]} placeholder={_drawingDuration} setValue={setDrawingDuration} />
+                            <Dropdown options={['1', '3', '5', '7', '14', '21', '30']} placeholder={_drawingDuration.toString()} setValue={setDrawingDuration} />
                         </View>
 
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 1 }}>
