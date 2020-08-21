@@ -9,7 +9,7 @@ function RaffleCard(props) {
     var raffle = props.raffle
     const ip = require('../../../IP_ADDRESS.json')
     const [host, setHost] = useState(null)
-    
+
     useEffect(() => {
         async function getHost() {
             let response = await fetch('http://' + ip.ipAddress + '/user/id/' + props.raffle.hostedBy)
@@ -21,16 +21,20 @@ function RaffleCard(props) {
         }
     }, [raffle])
 
-    if (raffle){
+    if (raffle) {
         raffle['host'] = host
         return (
-            <TouchableOpacity onPress={() => {props.navigation.navigate('Raffle',raffle)}}>
+            <TouchableOpacity onPress={() => { props.navigation.navigate('Raffle', raffle) }}>
                 <View style={styles.RaffleCard}>
                     <Image style={styles.RaffleCard__image} source={{ uri: raffle.images[0] }} />
-                    <Text style={[fonts.h3, {textAlign: 'center'}]}>
-                        {(raffle.name).length < 45 ? raffle.name : raffle.name.substring(0,42) + '...'}
-                        </Text>
-                    <Countdown unix_timestamp={raffle.startTime} propsStyle={styles.RaffleCard__startTime}/>
+                    <Text style={[fonts.h3, { textAlign: 'center' }]}>
+                        {(raffle.name).length < 45 ? raffle.name : raffle.name.substring(0, 42) + '...'}
+                    </Text>
+                    {raffle.live ?
+                        <Countdown unix_timestamp={raffle.startTime} propsStyle={styles.RaffleCard__startTime} />
+                        :
+                        <Text style={{color: 'gray', fontSize: 12, fontWeight: 'bold'}}>Coming Soon</Text>
+                    }
                 </View>
             </TouchableOpacity>
         )

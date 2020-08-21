@@ -76,7 +76,7 @@ export default function Social({ navigation }) {
             <View style={{ width: '100%', marginBottom: 30 }}>
                 <Banner
                     color="green"
-                    title={"LIVE DRAWING HAPPENING " + fromNow.toUpperCase()} />
+                    title={"LIVE DRAWING " + fromNow.toUpperCase()} />
             </View>
         )
     }
