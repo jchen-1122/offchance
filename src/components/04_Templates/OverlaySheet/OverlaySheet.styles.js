@@ -5,9 +5,7 @@ import {StyleSheet, Dimensions} from 'react-native';
 const styles = StyleSheet.create({
     overlay: {
         borderRadius: 30, 
-        maxHeight: Dimensions.get('window').height* 0.9, 
-        minWidth: '95%',
-        justifyContent: 'space-between',
+        maxHeight: Dimensions.get('window').height* 0.8, 
         paddingBottom: '8%'
     },
     container: {

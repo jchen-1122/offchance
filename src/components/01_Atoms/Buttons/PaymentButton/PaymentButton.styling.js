@@ -4,7 +4,8 @@ import {colors} from "../../../../settings/all_settings.js";
 const styles = StyleSheet.create({
     PaymentButton: {
         backgroundColor: '#E7E7E7',
-        marginVertical: 5
+        marginVertical: 5,
+        width: 300
     },
 
     PaymentButton__logo: {

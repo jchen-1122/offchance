@@ -7,10 +7,11 @@ import { utilities, fonts } from '../../../settings/all_settings';
 import DropDown from '../../../components/01_Atoms/DropDown/DropDown';
 import BlockButton from '../../../components/01_Atoms/Buttons/BlockButton/BlockButton';
 import styles from './SlidingSheet.styles';
-import Stripe from '../../05_Pages/Account/Wallet/Stripe'
+import Stripe from '../../05_Pages/Account/Wallet/Stripe';
+import PaymentButton from '../../../components/01_Atoms/Buttons/PaymentButton/PaymentButton';
 
 //create your forceUpdate hook
-function useForceUpdate(){
+function useForceUpdate() {
   const [value, setValue] = useState(0); // integer state
   return () => setValue(value => ++value); // update the state to force render
 }
@@ -23,7 +24,6 @@ function SlidingSheet(props) {
   const [_method, setMethod] = useState(null)
   const [_amount, setAmount] = useState(null)
   const [_save, setSave] = useState(false)
-  const [refresh, setRefresh] = useState(true)
 
   const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet (1000 is at the bottom)
 
@@ -86,19 +86,7 @@ function SlidingSheet(props) {
                 <Text style={fonts.h1}>{props.title}</Text>
                 <View />
               </View>
-
               <View style={[styles.slidingSheet__content, { zIndex: 2 }]}>
-                <Text style={styles.slidingSheet__content_text}>PAYMENT METHOD</Text>
-                <DropDown
-                  placeholder={"PICK A PAYMENT METHOD"}
-                  options={props.methodOptions}
-                  size='large'
-                  setValue={setMethod}
-                  forceUpdate={forceUpdate}
-                />
-              </View>
-
-              <View style={[styles.slidingSheet__content, { zIndex: 1 }]}>
                 <Text style={styles.slidingSheet__content_text}>RELOAD AMOUNT</Text>
                 <DropDown
                   placeholder={'PICK A RELOAD AMOUNT'}
@@ -107,6 +95,36 @@ function SlidingSheet(props) {
                   setValue={setAmount}
                   forceUpdate={forceUpdate}
                 />
+              </View>
+
+              <View style={[styles.slidingSheet__content, { zIndex: 1 }]}>
+                <Text style={styles.slidingSheet__content_text}>PAYMENT METHOD</Text>
+                <View style={{width: '100%', alignItems: 'center'}}>
+                <PaymentButton
+                  type="applePay"
+                  onPress={() => setMethod('applepay')}
+                  selected={_method == 'applepay'} />
+                <PaymentButton
+                  type="paypal"
+                  onPress={() => setMethod('Paypal')}
+                  selected={_method == 'Paypal'} />
+                {(!props.last4) ?
+                  <BlockButton
+                    color="secondary" title="+ Add Credit Card"
+                    type="payment"
+                    selected={_method == "+ Add Credit Card"}
+                    style={{ marginVertical: 5 }}
+                    onPress={() => setMethod('+ Add Credit Card')} />
+                  :
+                  // @ JOSHUA - PLS CHANGE WHAT TYPE OF CARD IT IS, TYPES ARE:
+                  // amex, dinersclub, discover,jcb, maestro, mastercard, unionpay, visa
+                  <PaymentButton
+                    type="visa"
+                    last4={props.last4}
+                    selected={_method == ('**** **** **** ' + props.last4)}
+                    onPress={() => setMethod('**** **** **** ' + props.last4)} />
+                }
+                </View>
               </View>
 
               {/* NEW SWIPE BUTTON */}
