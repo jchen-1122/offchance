@@ -25,7 +25,7 @@ function Banner(props){
             break;
         case "red":
             bannerStyle=styles.Banner__red;
-            icon = <Icon name='file-alert-outline' type='material-community' color='white' />
+            icon = <Icon name='file-alert-outline' type='material-community' color='white' size={props.size}/>
             break;
     }
 

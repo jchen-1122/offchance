@@ -5,6 +5,7 @@ import { utilities, fonts, colors } from '../../../settings/all_settings';
 import styles from './Social.styling';
 import GlobalState from '../../globalState'
 import Card from '../../03_Organisms/Card/Card'
+import Banner from '../../01_Atoms/Banner/Banner'
 import { user_logged_in } from '../../../functions/user_functions';
 import { live_drawing_now } from '../../../functions/raffle_functions'
 import { in_a_day, is_expired } from '../../../functions/convert_dates'
@@ -56,24 +57,38 @@ export default function Social({ navigation }) {
     // determine the text of the header
     var headerContainer = [utilities.flexCenter, styles.headerContainer]
     let header = 'Live Drawing Happening '
+    let banner;
     var nextRaffle = raffles[0]
     if (live_drawing_now(nextRaffle)) {
         header = header + 'Now'
-        headerContainer.push({backgroundColor: 'red'})
+        headerContainer.push({ backgroundColor: 'red' })
+        banner = (
+            <Banner
+                color="red"
+                title="LIVE DRAWING HAPPENING NOW" />
+        )
     }
     else {
         var time = moment(nextRaffle.startTime * 1000)
         var fromNow = time.fromNow()
         header = header + titleCase(fromNow)
+        banner = (
+            <View style={{ width: '100%', marginBottom: 30 }}>
+                <Banner
+                    color="green"
+                    title={"LIVE DRAWING HAPPENING " + fromNow.toUpperCase()} />
+            </View>
+        )
     }
 
     return (
         <View style={utilities.container}>
             <ScrollView contentContainerStyle={utilities.scrollview}>
                 <View style={utilities.flexCenter}>
-                    <View style={headerContainer}>
+                    {banner}
+                    {/* <View style={headerContainer}>
                     <Text style={[fonts.h1, styles.header]}>{header}</Text>
-                    </View>
+                    </View> */}
                     {raffles.map((raffle, index) =>
                         <Card
                             data={raffle}
