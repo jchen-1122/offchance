@@ -20,7 +20,7 @@ function Game(props) {
     let localTokens = 0
     let localRounds = 0
 
-    const [localTime, localSetTime] = useState(10)
+    const [localTime, localSetTime] = useState(5)
 
     useEffect(() => {
         let interval = null
@@ -37,7 +37,7 @@ function Game(props) {
                 props.setTokens(props.tokens + localTokens)
                 props.setOpacity([1, 1, 1])
                 props.setChoice("Pick Rock Paper or Scissors")
-                props.setTime(10)
+                props.setTime(5)
             }
             clearInterval(interval)
         }
@@ -150,7 +150,7 @@ function Game(props) {
 
     return (
         <View style={[utilities.container, { paddingTop: 25 }]}>
-            <View style={{ flex: 0, alignItems: 'center', justifyContent: 'center', height: '85%', marginTop: 30, backgroundColor: 'pink' }}>
+            <View style={{ flex: 0, alignItems: 'center', justifyContent: 'center', height: '85%', marginTop: 30}}>
                 <View style={{ justifyContent: 'center' }}>
                     <Text style={[fonts.h2, { textAlign: 'center' }]}>You</Text>
                     <UsernameDisplay size="game" username={user.username} profPic={{ uri: user.profilePicture }} />

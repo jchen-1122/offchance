@@ -1,5 +1,5 @@
 import { StyleSheet, Dimensions } from 'react-native'
-import {dimensions} from '../../../../settings/all_settings';
+import {colors} from '../../../../settings/all_settings';
 
 const styles = StyleSheet.create({
    content: {
@@ -15,9 +15,21 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF",
     height: 100,
   },
+
   description: {
+    flexDirection: 'row',
     width: '90%',
-    fontSize: 11
+    backgroundColor: '#DCDCDC',
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+  },
+  description__text: {
+    width: '90%',
+    fontSize: 11,
+    margin: 0
+  },
+  description__symbol: {
+    marginRight: 5
   }
 
 })
