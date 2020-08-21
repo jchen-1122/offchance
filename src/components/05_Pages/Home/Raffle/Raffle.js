@@ -19,6 +19,7 @@ import { top5_raffle } from '../../../../functions/explore_functions';
 import GlobalState from '../../../globalState';
 import * as geolib from 'geolib';
 import { set } from 'react-native-reanimated';
+import LikeButton from '../../../01_Atoms/Buttons/LikeButton/LikeButton'
 
 export default function Raffle({ navigation, route }) {
     const { user, setUser } = useContext(GlobalState)
@@ -74,6 +75,13 @@ export default function Raffle({ navigation, route }) {
         getCurrentRaffle()
     }, [])
 
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <LikeButton navigation={navigation} currUser={user} setUser={setUser} raffle={raffle._id} style={{backgroundColor: 'transparent'}} color='white'/>
+            )
+        });
+    }, [navigation]);
     // React.useEffect(() => {
     //     console.log(raffle.top5)
     // })

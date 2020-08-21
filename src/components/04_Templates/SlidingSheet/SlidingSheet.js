@@ -60,9 +60,6 @@ function SlidingSheet(props) {
 
   const renderSwipeButton = () => (
     <SwipeButton title="SWIPE TO SUBMIT" onSwipeSuccess={() => {
-      console.log('----THIS SWIPES------')
-      console.log('method', _method)
-      console.log('amount', _amount)
       if (_method !== null) {
         setStripe(false) // joshua made false mean that stripe appears -.-
       }
@@ -99,31 +96,31 @@ function SlidingSheet(props) {
 
               <View style={[styles.slidingSheet__content, { zIndex: 1 }]}>
                 <Text style={styles.slidingSheet__content_text}>PAYMENT METHOD</Text>
-                <View style={{width: '100%', alignItems: 'center'}}>
-                <PaymentButton
-                  type="applePay"
-                  onPress={() => setMethod('applepay')}
-                  selected={_method == 'applepay'} />
-                <PaymentButton
-                  type="paypal"
-                  onPress={() => setMethod('Paypal')}
-                  selected={_method == 'Paypal'} />
-                {(!props.last4) ?
-                  <BlockButton
-                    color="secondary" title="+ Add Credit Card"
-                    type="payment"
-                    selected={_method == "+ Add Credit Card"}
-                    style={{ marginVertical: 5 }}
-                    onPress={() => setMethod('+ Add Credit Card')} />
-                  :
-                  // @ JOSHUA - PLS CHANGE WHAT TYPE OF CARD IT IS, TYPES ARE:
-                  // amex, dinersclub, discover,jcb, maestro, mastercard, unionpay, visa
+                <View style={{ width: '100%', alignItems: 'center' }}>
                   <PaymentButton
-                    type="visa"
-                    last4={props.last4}
-                    selected={_method == ('**** **** **** ' + props.last4)}
-                    onPress={() => setMethod('**** **** **** ' + props.last4)} />
-                }
+                    type="applePay"
+                    onPress={() => setMethod('applepay')}
+                    selected={_method == 'applepay'} />
+                  <PaymentButton
+                    type="paypal"
+                    onPress={() => setMethod('Paypal')}
+                    selected={_method == 'Paypal'} />
+                  {(!props.last4) ?
+                    <BlockButton
+                      color="secondary" title="+ Add Credit Card"
+                      type="payment"
+                      selected={_method == "+ Add Credit Card"}
+                      style={{ marginVertical: 5 }}
+                      onPress={() => setMethod('+ Add Credit Card')} />
+                    :
+                    // @ JOSHUA - PLS CHANGE WHAT TYPE OF CARD IT IS, TYPES ARE:
+                    // amex, dinersclub, discover,jcb, maestro, mastercard, unionpay, visa
+                    <PaymentButton
+                      type="visa"
+                      last4={props.last4}
+                      selected={_method == ('**** **** **** ' + props.last4)}
+                      onPress={() => setMethod('**** **** **** ' + props.last4)} />
+                  }
                 </View>
               </View>
 

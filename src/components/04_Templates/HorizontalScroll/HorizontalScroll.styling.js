@@ -20,6 +20,7 @@ const styles = StyleSheet.create({
     title: {
         marginBottom: '5%',
         fontWeight: 'normal',
+        fontSize: 15
     },
     title_dark: {
         color: 'white',
