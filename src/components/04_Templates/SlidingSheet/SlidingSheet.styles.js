@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     },
 
     slidingSheet__content: {
-        // marginHorizontal: '10%',
+        marginHorizontal: '10%',
         marginBottom: '7%',
         flexDirection: 'column',
     },
