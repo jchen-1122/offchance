@@ -22,7 +22,6 @@ function Search({navigation}) {
     const [raffles, setRaffles] = useState([]);
     const [users, setUsers] = useState([]);
     const [displayUser, setDisplayUser] = useState(false);
-    const [buttonStyle, setButtonStyle] = useState(false);
 
     const { width, height } = Dimensions.get('window');
 
@@ -106,10 +105,8 @@ function Search({navigation}) {
     const changeData = (obj) => {
       if (obj==='switch') {
         setDisplayUser(false)
-        setButtonStyle(false)
       } else {
         setDisplayUser(true)
-        setButtonStyle(true)
       }
       setSearchTerm('');
     };
@@ -134,19 +131,13 @@ function Search({navigation}) {
             />
 
             <View style={styles.switch}>
-              <View style={ buttonStyle ? styles.childView_1 : styles.childView_2 }>
-                <Button
-                title="Drawings"
-                color='grey'
-                onPress={() => changeData('switch')}/>
-              </View>
+                <TouchableOpacity style={[styles.switch__item,(!displayUser) ? styles.switch__item_active : null]} onPress={() => changeData('switch')}>
+                  <Text>DRAWINGS</Text>
+                </TouchableOpacity>
 
-              <View style={ buttonStyle ? styles.childView_2 : styles.childView_1 }>
-                <Button
-                title="People"
-                color='grey'
-                onPress={() => changeData('user')}/>
-              </View>
+                <TouchableOpacity style={[styles.switch__item,(displayUser) ? styles.switch__item_active : null]} onPress={() => changeData('user')}>
+                  <Text>PEOPLE</Text>
+                </TouchableOpacity>
             </View>
 
             <Text style={{fontSize: 18, padding: height*0.02, marginTop: -10, fontWeight: '700'}}> { searchTerm === '' ? 'Recent' : 'Results' } </Text>
