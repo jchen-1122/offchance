@@ -50,6 +50,10 @@ export default function AdminEditHost({navigation, route}) {
             <Text style={styles.host_text}>{(new Date(route.params.host_birthday * 1000)).toDateString().substring(4)}</Text>
             <Text style={styles.host_description}>Drivers License Photo</Text>
             {/* MATT PLEASE DO THIS TY */}
+            <Text style={styles.host_description}>Phone Number</Text>
+            <Text style={styles.host_text}>{route.params.phoneNumber}</Text>
+            <Text style={styles.host_description}>Email</Text>
+            <Text style={styles.host_text}>{route.params.email}</Text>
         </View>
 
         <View style={{alignItems: 'center'}}>

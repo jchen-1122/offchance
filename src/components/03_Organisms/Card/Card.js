@@ -65,9 +65,11 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
     }
 
     let buttonText = 'ENTER DRAWING'
-    for (var raffle of currUser.rafflesEntered.children){
-        if (raffle.raffleID == raffleid){
-            buttonText = 'YOU HAVE ' + raffle.chances + ' CHANCES'
+    if (Object.keys(currUser).includes('rafflesEntered')) {
+        for (var raffle of currUser.rafflesEntered.children){
+            if (raffle.raffleID == raffleid){
+                buttonText = 'YOU HAVE ' + raffle.chances + ' CHANCES'
+            }
         }
     }
     // set default values for card

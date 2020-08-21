@@ -18,6 +18,7 @@ import TextLink from '../../../../01_Atoms/Buttons/TextLinks/TextLinks';
 import { getPushTokens } from '../../../../../functions/pushNotifs/getPushTokens'
 
 export default function AdminEdit({ navigation, route }) {
+    console.log(route.params)
     var _type = route.params.type
     var shirtSizes = ['S', 'M', 'L', 'XL']
     var shoeSizes = [];
@@ -45,6 +46,8 @@ export default function AdminEdit({ navigation, route }) {
     const [_status, setStatus] = useState((route.params.approved) ? (route.params.live) ? 'Live' : 'Coming Soon' : null)
     const [_approved, setApproved] = useState(route.params.approved)
     const [_raffle, setRaffle] = useState(route.params)
+    // sup matt, this is the reason you're sending throught the request body
+    const [_reason, setReason] = useState('')
 
     // for going to the next text input
     const priceRef = useRef()
@@ -114,8 +117,8 @@ export default function AdminEdit({ navigation, route }) {
             // CHANGE LATER
             sizeTypes: _sizeTypes,
             sizes: _sizes,
-            approved: true,
-            startTime: _startTime,
+            approved: (_status !== 'Resubmit') ? true : false,
+            startTime: (_status !== 'Live') ? null : _startTime,
             live: (_status == 'Live') ? true : (_status == 'Coming Soon') ? false : null
         }
         return JSON.stringify(data)
@@ -184,7 +187,6 @@ export default function AdminEdit({ navigation, route }) {
 
     return (
         <View style={utilities.container}>
-
             <ScrollView>
                 <KeyboardAwareScrollView
                     style={{ backgroundColor: 'transparent' }}
@@ -198,7 +200,7 @@ export default function AdminEdit({ navigation, route }) {
                         </View>
                     </View>
 
-                    <View style={[utilities.flexCenter, { marginBottom: 25 }]}>
+                    <View style={ {margin: 25, }}>
                         <InputField
                             label="Name of Product"
                             autoCapitalize="words"
@@ -266,8 +268,6 @@ export default function AdminEdit({ navigation, route }) {
                             value={_description}
                             onChangeText={(text) => { setDescription(text) }}
                             ref={descriptionRef}
-                            returnKeyType='done'
-                            onSubmitEditing={() => Keyboard.dismiss()}
                             required
                             textArea />
 
@@ -281,7 +281,7 @@ export default function AdminEdit({ navigation, route }) {
                             <Dropdown options={['None', 1, 5, 10, 20, 50, 100, 200, 1000]} placeholder={_drawingRadius} setValue={setDrawingRadius} />
                         </View>
 
-                        <View style={{ width: '100%', marginLeft: '10%', marginVertical: 15 }}>
+                        <View style={{ width: '100%', marginVertical: 15 }}>
                             <Text style={styles.InputField__label}>Type of Product*</Text>
                             {productTypes.map((type, index) =>
                                 <Checkbox
@@ -303,49 +303,58 @@ export default function AdminEdit({ navigation, route }) {
                         </View>
 
                         {_productType == 'sneaker' ?
-                            <View style={{ height: 75, marginLeft: '5%' }}>
+                            <View style={{ height: 75 }}>
                                 <Text style={[styles.InputField__label]}>Available Sizes*</Text>
                                 <SizeCarousel sizes={route.params.sizes} type='multiple' default={1} setSize={setSizes} />
                             </View>
                             : null}
                         {_productType == 'clothing' ?
-                            <View style={{ height: 75, marginLeft: '5%', width: '95%' }}>
+                            <View style={{ height: 75, width: '95%' }}>
                                 <Text style={[styles.InputField__label]}>Available Sizes*</Text>
                                 <SizeCarousel sizes={route.params.sizes} type='multiple' default={1} setSize={setSizes} />
                             </View>
                             : null}
-                        <View style={{ width: '95%', marginLeft: '5%', marginVertical: '5%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <View style={{ width: '95%', marginVertical: '5%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                             <Text style={[styles.InputField__label]}>Product Pictures*</Text>
                             <BlockButton color="secondary" title="CHOOSE" size="small" />
                         </View>
 
-                        <View >
+                        <View style={{alignItems: 'center'}}>
                             {route.params.images.length > 1 ? <ImageCarousel images={route.params.images}></ImageCarousel> :
                                 <Image source={{ uri: route.params.images[0] }}
                                     style={{ height: Dimensions.get('window').height * 0.3, width: Dimensions.get('window').width, resizeMode: 'contain', marginBottom: '5%' }}></Image>}
                         </View>
-
-                        {/* WE NEED THIS FOR ADMIN */}
-                        {/* // sup chelly, can u also set the _startTime to the correct format */}
-                        <View style={{ width: '100%', marginLeft: '10%', marginTop: 15 }}>
-                            <Text style={styles.InputField__label}>Drawing Time*</Text>
-                            <View style={{ width: '95%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Text style={styles.InputField__label}>{_startTime == null ? "Pick A Start Date" : format_date(new Date(_startTime * 1000))}</Text>
-                                <BlockButton color="secondary" size="small" title={(route.params.approved) ? 'CHANGE' : 'CHOOSE'} onPress={showDatePicker} />
-                            </View>
-                        </View>
-                        <View style={{ width: '100%', marginLeft: '10%', marginVertical: 10 }}>
+                        <View style={{ width: '100%', marginVertical: 10 }}>
                             <Text style={styles.InputField__label}>Status*</Text>
                             <View style={{ flexDirection: 'row' }}>
-                                {['Live', 'Coming Soon'].map((status, index) =>
+                                {['Live', 'Coming Soon', 'Resubmit'].map((status, index) =>
                                     <Checkbox
                                         selected={_status == status}
-                                        onPress={() => { setStatus(status) }}
+                                        onPress={() => { 
+                                            if (status === 'Live') {
+                                                setReason("Your drawing for " + _name + " has been approved and set to live!")
+                                            } else if (status === 'Coming Soon') {
+                                                setReason("Your drawing for " + _name + " has been approved and is coming soon!")
+                                            } else if (status === 'Resubmit') {
+                                                setReason("Your drawing for " + _name + " needs to be modified in order to be approved.")
+                                            }
+                                            
+                                            setStatus(status) }}
                                         text={status}
                                     />
                                 )}
                             </View>
                         </View>
+
+                        {/* WE NEED THIS FOR ADMIN */}
+                        {/* // sup chelly, can u also set the _startTime to the correct format */}
+                        {(_status === 'Live') ? <View style={{ width: '100%',  marginTop: 15 }}>
+                            <Text style={styles.InputField__label}>Drawing Time*</Text>
+                            <View style={{ width: '95%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <Text style={styles.InputField__label}>{_startTime == null ? "Pick A Start Date" : format_date(new Date(_startTime * 1000))}</Text>
+                                <BlockButton color="secondary" size="small" title={(route.params.approved) ? 'CHANGE' : 'CHOOSE'} onPress={showDatePicker} />
+                            </View>
+                        </View> : null}
                         <DateTimePickerModal
                             isVisible={isDatePickerVisible}
                             mode="datetime"
@@ -355,11 +364,18 @@ export default function AdminEdit({ navigation, route }) {
                             pickerContainerStyleIOS={{ backgroundColor: 'white' }}
                         />
 
-                        <Text style={{ color: 'red' }}>{(_status === null) ? "Approved drawings must be either live or coming soon" : null}</Text>
-                        <Text style={{ color: 'red' }}>{(_startTime === null) ? "Approved drawings must have a starting time" : null}</Text>
+                        <InputField
+                            label="Response to Host"
+                            value={_reason}
+                            onChangeText={(text) => { setReason(text)}}
+                            required
+                            textArea />
 
-                        <BlockButton title={(route.params.approved) ? "EDIT" : "SUBMIT FOR APPROVAL"} color="primary" onPress={() => {
-                            if (_status !== null && _startTime !== null) {
+                        <Text style={{ color: 'red' }}>{(_status === null) ? "Approved drawings must be either live or coming soon" : null}</Text>
+                        <Text style={{ color: 'red' }}>{(_startTime === null && _status === 'Live') ? "Approved drawings must have a starting time" : null}</Text>
+
+                        <BlockButton title={(route.params.approved) ? "EDIT" : "SUBMIT AND NOTIFY HOST"} color="primary" onPress={() => {
+                            if (_status !== null && (_status !== 'Live' || _startTime !== null)) {
                                 Alert.alert(
                                     "Confirm",
                                     "The raffle will be modified, approved, and publicly posted.",
@@ -387,7 +403,7 @@ export default function AdminEdit({ navigation, route }) {
                                 );
                             }
                         }} />
-                        <TextLink title={"Delete Request (Permanent)"} onPress={() => {
+                        <TextLink style={{textAlign: 'center'}}title={"Delete Request (Permanent)"} onPress={() => {
                             Alert.alert(
                                 "Confirm",
                                 "Delete Drawing Permanently",

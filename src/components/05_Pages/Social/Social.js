@@ -113,7 +113,7 @@ export default class Social extends Component {
 
         <View style={styles.chatInput}>
           {/* <TouchableOpacity onPress={() => this.setState({ keyboardPadding: true })}> */}
-            <TextInput
+            {(!Object.keys(this.props.currUser).includes('bannedUntil') || Math.floor(Date.now() / 1000) > this.props.currUser.bannedUntil) ? <TextInput
               style={styles.chatInput__Box}
               placeholder={'Comment...'}
               // pointerEvents={this.state.keyboardPadding ? "auto" : "none"}
@@ -123,7 +123,7 @@ export default class Social extends Component {
               onChangeText={chatMessage => {
                 this.setState({ chatMessage });
               }}
-            />
+            /> : null}
           {/* </TouchableOpacity> */}
 
           {this.state.chatOn ?

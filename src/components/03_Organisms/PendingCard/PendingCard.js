@@ -53,6 +53,10 @@ export default function PendingCard(props) {
                             <Text style={styles.Info__label}>{'Start Time: '}</Text>
                             <Text>{(new Date(raffle.startTime * 1000)).toDateString().substring(4)}</Text>
                         </View> : null}
+                        {(raffle.approved) ? <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.Info__label}>{'Likes: '}</Text>
+                            <Text>{raffle.amountLiked}</Text>
+                        </View> : null}
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.Info__label}>{raffle.type == 1 ?'Valued At: ': 'Prize Value: '}</Text>
                             <Text>${raffle.type == 1 ? raffle.valuedAt || '0': raffle.productPrice || '0'}</Text>

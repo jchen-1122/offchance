@@ -99,13 +99,8 @@ export default function RaffleResult({ navigation, route }) {
         // if (winnerTime === null) {
         //     setWinnerTime(parseInt(Math.floor(Date.now() / 1000) - raffle.startTime + timeBuffer))
         // }
+        //console.log(winnerTime)
         if (winnerTime > 0) {
-            if (localTime < 0) {
-                if (feedId < winners.length) {
-                    setFeed(winners[feedId].username + ' won ' + winners[feedId].prize)
-                    setFeedId(feedId + 1)
-                }
-            }
             interval = setInterval(() => {
                 setWinnerTime(winnerTime => winnerTime - 1)
             }, 1000)
@@ -129,7 +124,7 @@ export default function RaffleResult({ navigation, route }) {
         }
         getRaffle(route.params.raffle._id)
         //console.log(winnerObjs)
-    }, [])
+    }, [route.params.raffle])
 
     React.useEffect(() => {
         async function winnerData() {
@@ -177,12 +172,11 @@ export default function RaffleResult({ navigation, route }) {
         winners.forEach((element, index) => {
             {/* JOSHUA START */ }
             // set current logged in user winner card
+            //console.log(element)
             if (element._id === user._id) {
-                if (element.reward === 0) {
-                    setwinnerOverlay(true)
-                    setwinnerPrize(element.prize)
-                    setCurrWinner(true)
-                }
+                setwinnerOverlay(true)
+                setwinnerPrize(element.prize)
+                setCurrWinner(true)
             }
             {/* JOSHUA END */ }
             if (element.hasOwnProperty("prize")) {
@@ -193,13 +187,13 @@ export default function RaffleResult({ navigation, route }) {
                 }
                 CardArray.push(
                     <View style={{marginHorizontal: '1%', marginVertical: '0.5%'}}>
-                        <BackCard currUser={user} user={element} time={count * 1000 + (1000 * Math.max(localTime - 1, -1))} setoverlay={setoverlay} setSelected={setSelected} setPrize={setPrize} setFeed={setFeed} />
+                        <BackCard currUser={user} user={element} time={count * 1000 + (1000 * localTime)} setoverlay={setoverlay} setSelected={setSelected} setPrize={setPrize} setFeed={setFeed} />
                     </View>
                 )
             }
         });
         setDisplay(CardArray)
-        setWinnerTime(winners.length + Math.max(localTime + 2, 0) + 10)
+        setWinnerTime(winners.length + Math.max(localTime, 0))
     }, [winners])
 
     const [selectedImage, setSelectedImage] = useState(null);
@@ -227,7 +221,6 @@ export default function RaffleResult({ navigation, route }) {
             contentContainerStyle={{ height: Dimensions.get('window').height, justifyContent: 'space-between' }}>
             <ScrollView >
                 <View style={[styles.container, ]}>
-                <Text>{feed}</Text>
                     {/* Card Display */}
                     <View style={[styles.cardGrid, ]}>
                         {display}
@@ -256,7 +249,7 @@ export default function RaffleResult({ navigation, route }) {
                     </Overlay>
 
                     {/* Winner Overlay */}
-                    {(winnerTime <= 5) ? 
+                    {(winnerTime <= 0) ? 
                     <Overlay isVisible={winnerOverlay} onBackdropPress={() => {
                         setwinnerOverlay(false)
                         trigger()
@@ -330,7 +323,7 @@ export default function RaffleResult({ navigation, route }) {
             </ScrollView>
 
             {/* Live Chat */}
-            <View style={{ marginBottom: '0%', flex: 3}}>
+             <View style={{ marginBottom: '0%', flex: 3}}>
                 {(localTime <= 0) ? <Social currUser={user}></Social> : null}
             </View>
 

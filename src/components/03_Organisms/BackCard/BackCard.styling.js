@@ -27,12 +27,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         resizeMode: 'contain',
-        shadowColor: colors.lightGreen,
+        shadowColor: colors.limeGreen,
         shadowOffset: {
             width: 0,
             height: 12,
         },
-        shadowOpacity: 0.58,
+        shadowOpacity: 1,
         shadowRadius: 16.00,
 
         elevation: 24,
