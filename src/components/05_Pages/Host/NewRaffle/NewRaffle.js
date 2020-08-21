@@ -145,6 +145,8 @@ export default function NewRaffle({ navigation, route }) {
 
                 //console.log(result);
             } catch (E) {
+
+                //E
                 console.log(E);
             }
         }
@@ -283,7 +285,7 @@ export default function NewRaffle({ navigation, route }) {
             images: _productName,
             sizeTypes: _sizeTypes,
             sizes: _sizes,
-            startTime: new Date(_startTime).getTime() / 1000,
+            startTime: (_starTime === null) ? null : new Date(_startTime).getTime() / 1000,
             live: (_status == 'Live') ? true: (_status == 'Coming Soon') ? false : null,
             approved: (admins.admins.includes(user.email)) ? true : false
         }

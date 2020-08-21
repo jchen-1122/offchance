@@ -29,6 +29,7 @@ export default function Success({navigation, route}) {
                     body: JSON.stringify({ customer: userResponse.paymentInfo })
                 })
                 last4CC = await last4CC.json()
+                last4CC = last4CC.last4
                 let updatedUser = await fetch('http://' + ip.ipAddress + '/user/edit/' + user._id, {
                     method: "PATCH",
                     headers: {

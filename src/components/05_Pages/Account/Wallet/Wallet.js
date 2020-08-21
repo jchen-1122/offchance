@@ -99,7 +99,8 @@ export default function Wallet({navigation}) {
             height={height * 0.7}
             user={user}
             setUser={setUser}
-            methodOptions={methodOptions}            navigation={navigation}
+            methodOptions={methodOptions}        
+            navigation={navigation}
             wallet={true}/>
             </View>
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>
