@@ -14,7 +14,7 @@ export default function HorizontalScroll(props) {
                     <TouchableOpacity
                         style={{ marginBottom: '30%' }}
                         onPress={() => { props.navigation.navigate('SeeAll', { raffles: props.seeAllRaffles, title: props.title }) }}>
-                        <Text style={{ fontSize: 16 }}>See All</Text>
+                        <Text style={{ fontSize: 14 }}>See All</Text>
                     </TouchableOpacity>
                     : null}
             </View>

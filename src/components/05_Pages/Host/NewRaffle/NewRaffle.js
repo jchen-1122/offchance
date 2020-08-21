@@ -217,9 +217,6 @@ export default function NewRaffle({ navigation, route }) {
                 if (!_value) {
                     errors.push(<Text style={fonts.error}>Please Fill In Product Value</Text>)
                 }
-                if (!_goal) {
-                    errors.push(<Text style={fonts.error}>Please Fill In Donation Goal</Text>)
-                }
                 if (_charities.length == 0) {
                     errors.push(<Text style={fonts.error}>Please List Charities To Donate To</Text>)
                 }
@@ -252,7 +249,7 @@ export default function NewRaffle({ navigation, route }) {
         if (_drawingRadius != null && _drawingRadius != 'None' && !_address) {
             errors.push(<Text style={fonts.error}>Please Fill In Address</Text>)
         }
-        if (_productType == 'sneaker' || _productType == 'clothing' && !_sizes) {
+        if ((_productType == 'sneaker' || _productType == 'clothing') && !_sizes) {
             errors.push(<Text style={fonts.error}>Please Input Product Sizes</Text>)
         }
         if (_productImg.length == 0) {
@@ -285,12 +282,10 @@ export default function NewRaffle({ navigation, route }) {
             images: _productName,
             sizeTypes: _sizeTypes,
             sizes: _sizes,
-            startTime: (_starTime === null) ? null : new Date(_startTime).getTime() / 1000,
+            startTime: (_startTime == null) ? null : new Date(_startTime).getTime() / 1000,
             live: (_status == 'Live') ? true: (_status == 'Coming Soon') ? false : null,
             approved: (admins.admins.includes(user.email)) ? true : false
         }
-        console.log('status',_status)
-        console.log('live',data.live)
         return JSON.stringify(data)
     };
     React.useLayoutEffect(() => {
@@ -302,6 +297,7 @@ export default function NewRaffle({ navigation, route }) {
             ),
             headerRight: () => (
                 <Button title={buttonTitle}
+                    disabled={buttonTitle=='Submitting'}
                     onPress={() => {
                         if (!generateErrors()) {
                             setButtonTitle('Submitting')

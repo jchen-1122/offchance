@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     toggleBar: {
         alignItems: 'center',
         marginTop: 20
-    },
+        },
     descriptor: {
         fontWeight: '800',
         fontSize: 15

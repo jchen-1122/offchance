@@ -150,7 +150,7 @@ function Game(props) {
 
     return (
         <View style={[utilities.container, { paddingTop: 25 }]}>
-            <View style={{ flex: 0, alignItems: 'center', justifyContent: 'center', height: '85%', marginTop: 30, backgroundColor: 'pink' }}>
+            <View style={{ flex: 0, alignItems: 'center', justifyContent: 'center', height: '85%', marginTop: 30}}>
                 <View style={{ justifyContent: 'center' }}>
                     <Text style={[fonts.h2, { textAlign: 'center' }]}>You</Text>
                     <UsernameDisplay size="game" username={user.username} profPic={{ uri: user.profilePicture }} />

@@ -19,6 +19,7 @@ import { top5_raffle } from '../../../../functions/explore_functions';
 import GlobalState from '../../../globalState';
 import * as geolib from 'geolib';
 import { set } from 'react-native-reanimated';
+import LikeButton from '../../../01_Atoms/Buttons/LikeButton/LikeButton'
 
 export default function Raffle({ navigation, route }) {
     const { user, setUser } = useContext(GlobalState)
@@ -74,6 +75,13 @@ export default function Raffle({ navigation, route }) {
         getCurrentRaffle()
     }, [])
 
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <LikeButton navigation={navigation} currUser={user} setUser={setUser} raffle={raffle._id} style={{backgroundColor: 'transparent'}} color='white'/>
+            )
+        });
+    }, [navigation]);
     // React.useEffect(() => {
     //     console.log(raffle.top5)
     // })
@@ -89,7 +97,7 @@ export default function Raffle({ navigation, route }) {
     //             }
     //             setTop5(temp)
     //         } catch (e) {
-                
+
     //         }
     //     }
     //     getTop5(raffle.top5)
@@ -413,23 +421,23 @@ export default function Raffle({ navigation, route }) {
 
     let chanceText = 'ENTER DRAWING'
     if (Object.keys(user).includes('rafflesEntered')) {
-        for (var raf of user.rafflesEntered.children){
-            if (raf.raffleID == raffle._id){
-                chanceText = 'YOU HAVE ' + raf.chances + ' CHANCES' + ((raf.size && raf.size !== 'One Size') ? ' FOR SIZE ' + raf.size : '')
+        for (var raf of user.rafflesEntered.children) {
+            if (raf.raffleID == raffle._id) {
+                chanceText = 'YOU HAVE ' + raf.chances + ' CHANCES'
             }
         }
     }
-    return ( (Object.keys(route.params).includes('host')) ? 
+    return ((Object.keys(route.params).includes('host')) ?
         <View style={containerStyle}>
             <ScrollView contentContainerStyle={utilities.scrollview} scrollEnabled={enableScroll} >
                 {images.length > 1 ? <ImageCarousel images={images}></ImageCarousel> : <Image source={images[0]} style={styles.Raffle__image}></Image>}
 
                 {/* raffle title */}
-                <Text style={[fonts.h1, { marginLeft: '8%'}]}>{name}</Text>
+                <Text style={[fonts.h1, { marginLeft: '8%' }]}>{name}</Text>
 
                 <View style={styles.content}>
                     {(!location && location != null && !expired) ? <Text style={[fonts.bold, fonts.error]}>THIS RAFFLE IS OUT OF YOUR LOCATION</Text> : null}
-                    <Text>{(boughtChances > 0) ? 'YOU HAVE ' + boughtChances + ' CHANCES':null}</Text>
+                    <Text>{chanceText}</Text>
                     <View style={{ marginVertical: 15 }}>
                         {(expired && raffle.archived) ? <Text style={[fonts.bold, fonts.error]}>THIS DRAWING HAS EXPIRED</Text> : (expired && !raffle.archived) ? <Text style={[fonts.italic]}>LIVE DRAWING IN PROGRESS</Text> : <Text style={[fonts.italic]}>Drawing Starts:</Text>}
                         {(expired) ? null : <CountDown unix_timestamp={raffle.startTime} />}
@@ -547,28 +555,28 @@ export default function Raffle({ navigation, route }) {
                             }
 
 
-                            <BuyOptions options={options} buyOption={buyOption} setBuyOption={setBuyOption} trigger={trigger} navigation={navigation} loggedin={Object.keys(user).includes('_id')}/>
+                            <BuyOptions options={options} buyOption={buyOption} setBuyOption={setBuyOption} trigger={trigger} navigation={navigation} loggedin={Object.keys(user).includes('_id')} />
 
                             {/* sliding sheet */}
-                            <View style={{ marginLeft: '-8%', marginRight: '-8%' }}>
+                            <View >
                                 <OverlaySheet
-                                title={(buyOption) ? "Purchase "+ options[buyOption].chances + " chances" : "Purchase Chances"}
-                                type='default'
-                                sheet={sheetController}
-                                trigger={trigger}
-                                height={Dimensions.get('screen').height * 0.7}
-                                user={user}
-                                setUser={setUser}
-                                content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
-                                navigation={navigation}
-                                wallet={false}
-                                amount={(buyOption) ? "$" + buyOption + " = " + options[buyOption].chances + " chances" : "$5 = 10 chances"}
-                                amountDollar={(buyOption) ? parseInt(buyOption) : 0}
-                                chances={(buyOption) ? options[buyOption].chances : 0}
-                                sizeType={(_sizeType || _sizeType === "") ? _sizeType : "notselected"}
-                                size={(_size || _size === "") ? _size : "notselected"}
-                                raffleid={route.params._id}
-                                type={route.params.type}
+                                    title={(buyOption) ? "Purchase " + options[buyOption].chances + " chances" : "Purchase Chances"}
+                                    type='default'
+                                    sheet={sheetController}
+                                    trigger={trigger}
+                                    height={Dimensions.get('screen').height * 0.7}
+                                    user={user}
+                                    setUser={setUser}
+                                    content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
+                                    navigation={navigation}
+                                    wallet={false}
+                                    amount={(buyOption) ? "$" + buyOption + " = " + options[buyOption].chances + " chances" : "$5 = 10 chances"}
+                                    amountDollar={(buyOption) ? parseInt(buyOption) : 0}
+                                    chances={(buyOption) ? options[buyOption].chances : 0}
+                                    sizeType={(_sizeType || _sizeType === "") ? _sizeType : "notselected"}
+                                    size={(_size || _size === "") ? _size : "notselected"}
+                                    raffleid={route.params._id}
+                                    type={route.params.type}
                                 />
                             </View>
                         </View>

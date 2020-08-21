@@ -80,7 +80,9 @@ function Home({ navigation }) {
       const json = await response.json()
       return json
     }
-    if (!user.token || user.token == null) {
+    if (user.token && user.token !== token) {
+      console.log('user.token', user.token)
+      console.log('token')
       addToken()
     }
 

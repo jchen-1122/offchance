@@ -13,7 +13,7 @@ import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
 import Stripe from './Stripe'
 
 export default function Wallet({navigation}) {
-
+    
     const {user, setUser} = useContext(GlobalState)
     const [containerStyle, setContainerStyle] = useState(styles.container);
     const [sheetController, setSheetController] = useState(false); // 0 - close, 1 - open. TODO: GLOBAL STATE
@@ -99,7 +99,9 @@ export default function Wallet({navigation}) {
             height={height * 0.7}
             user={user}
             setUser={setUser}
-            methodOptions={methodOptions}        
+            methodOptions={methodOptions}
+            last4={user.last4}
+            brand={user.brand}            
             navigation={navigation}
             wallet={true}/>
             </View>

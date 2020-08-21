@@ -5,6 +5,7 @@ import {StyleSheet, Dimensions} from 'react-native';
 const styles = StyleSheet.create({
     container: {
       flex: 1,
+      paddingBottom: 20,
     },
 
     slidingSheet__header: {
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
     slidingSheet__content: {
         marginHorizontal: '10%',
         marginBottom: '7%',
-        flexDirection: 'column'
+        flexDirection: 'column',
     },
 
     slidingSheet__content_text: {
@@ -27,6 +28,11 @@ const styles = StyleSheet.create({
         fontSize: 15,
         color: 'rgba(52, 52, 52, .8)',
 
+    },
+    slidingSheet__save: {
+        flex: 1,
+        marginHorizontal: '5%',
+        width: 300
     },
 
 

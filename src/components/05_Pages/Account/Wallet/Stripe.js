@@ -12,7 +12,7 @@ import GlobalState from '../../../globalState'
 
 const PurchaseProduct = (props) => {
   const [loaded, setLoaded] = useState(false)
-  console.log("BUGGA BUGGA", props.entertobuy)
+  console.log(props)
   let chances = 10
   let amount = 5
   let options = ['$5 = 10 chances', '$10 = 40 chances', '$20 = 50 chances', '$50 = 150 chances', '$100 = 400 chances', '$250 = 1100 chances']
@@ -85,6 +85,7 @@ const PurchaseProduct = (props) => {
       source={{ html: stripeFirstPayment(chances + " chances", amount) }}
       onError={() => props.navigation.navigate('Account')}
       onNavigationStateChange={async (e) => {
+        if (e.title === 'blank') {
             if (!loaded) {
               setLoaded(true)
               if (props.wallet) {
@@ -92,17 +93,18 @@ const PurchaseProduct = (props) => {
                 props.setUser(updatedUser)
                 props.navigation.reset({
                   index: 0,
-                  routes: [{ name: 'Success' }]
+                  routes: [{ name: 'Success', params: {save: true} }]
                 })
               } else {
                 props.navigation.reset({
                   index: 0,
-                  routes: [{ name: 'Success', params: {fromRaffle: chances} }],
+                  routes: [{ name: 'Success', params: {fromRaffle: chances, save: true} }],
   
                 })
               }
             }
           }
+        }
       }
     /> : 
     ((props.method !== 'Paypal') ? <WebView

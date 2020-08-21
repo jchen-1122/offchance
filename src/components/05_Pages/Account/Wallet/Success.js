@@ -18,7 +18,8 @@ export default function Success({navigation, route}) {
         async function updateCC() {
             let userResponse = await fetch('http://' + ip.ipAddress + '/user/id/' + user._id)
             userResponse = await userResponse.json()
-            if (Object.keys(userResponse).includes('paymentInfo') && (!Object.keys(userResponse).includes('last4') || userResponse.last4 === "")) {
+            if (Object.keys(userResponse).includes('paymentInfo') && (Object.keys(route.params).includes('save'))) {
+                console.log('PUTTING IN DB')
                 // add last 4
                 let last4CC = await fetch('http://' + ip.ipAddress + '/user/getLast4', {
                     method: "POST",
@@ -29,15 +30,17 @@ export default function Success({navigation, route}) {
                     body: JSON.stringify({ customer: userResponse.paymentInfo })
                 })
                 last4CC = await last4CC.json()
-                last4CC = last4CC.last4
+                let last4 = last4CC.last4
+                let brand = last4CC.brand
                 let updatedUser = await fetch('http://' + ip.ipAddress + '/user/edit/' + user._id, {
                     method: "PATCH",
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ last4: last4CC })
+                    body: JSON.stringify({ last4: last4, brand: brand })
                 })
+                //setUser(updatedUser)
             }
         }
         updateCC()

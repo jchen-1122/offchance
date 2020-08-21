@@ -20,7 +20,8 @@ const styles = StyleSheet.create({
         // backgroundColor: 'pink'
     },
     name: {
-        color: 'white'
+        color: 'darkgray',
+        fontWeight: 'normal'
     },
     image: {
         height: imageSize,

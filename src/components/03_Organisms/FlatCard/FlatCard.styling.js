@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     },
 
     FlatCard__title: {
-        fontSize: 14,
+        fontSize: 12,
         fontWeight: 'bold',
         textAlign: 'center'
     },
