@@ -14,3 +14,14 @@ Each component has its own folder, with the actual structure in ComponentName.js
 * Did you copy package.json from Github?
 * Did you run `expo upgrade`?
 * Did you use Stripe???
+
+### Important Constants
+* `admins`
+    * located in src>components>pages>home>admin>admin_emails.json
+    * list of emails for all the admin users
+* `LDE_duration`
+    * located in src>functions>raffle_functions
+    * duration in minutes of the live drawing experience
+* `opponents`
+    * located in src>components>home>RPS>opponent_ids.json
+    * list of user IDS in the database that will be selected as a rock paper scissors opponent

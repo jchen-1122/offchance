@@ -20,6 +20,11 @@ const styles = StyleSheet.create({
         textAlign: 'center', 
         marginTop: 7, 
         color: '#888888' 
+    },
+    // if the button has a string, ex. 'Men', 'Women', 'Unisex'
+    buttonText_string: {
+        fontSize: 8,
+        marginTop: 10
     }
 })
 

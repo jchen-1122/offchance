@@ -10,7 +10,7 @@ import WinnerCard from '../../../03_Organisms/WinnerCard/WinnerCard';
 import BackCard from '../../../03_Organisms/BackCard/BackCard';
 import { LinearGradient } from 'expo-linear-gradient';
 import { get_user, get_raffle } from '../../../fake_users/live-drawing-test';
-import Social from '../../Social/Social'
+import Social from '../../../03_Organisms/Chat/Chat'
 import GlobalState from '../../../globalState';
 import Card from '../../../03_Organisms/Card/Card';
 import ConfettiCannon from 'react-native-confetti-cannon';

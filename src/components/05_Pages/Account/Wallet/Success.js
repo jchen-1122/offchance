@@ -1,7 +1,6 @@
 import React, { useEffect, useContext } from 'react'
 import { ScrollView, View, Text, Dimensions } from 'react-native'
 import { utilities, fonts } from '../../../../settings/all_settings'
-
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
 import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
 import GlobalState from '../../../globalState'
@@ -46,7 +45,8 @@ export default function Success({navigation, route}) {
         updateCC()
     })
 
-    var userIDs = ["5f1717acfe0108ee8b5e5c0b", "5f171974fe0108ee8b5e5c11", "5f1757f7c9deeef8c14b6a40", "5f1a6bdb457f816624a7a48c"]
+    var opponents = require('../../Home/RPS/opponent_ids.json')
+    var userIDs = opponents.userIDs
 
     const getOpponent = async () => {
         var opponentID = userIDs[Math.floor(Math.random() * userIDs.length)]

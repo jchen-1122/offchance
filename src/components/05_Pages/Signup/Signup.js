@@ -15,7 +15,7 @@ export default function Signup({ navigation }) {
   const data = require('../../IP_ADDRESS.json');
 
   // array of states in the us
-  const jsonData = require('../../../functions/us_states.json')
+  const jsonData = require('./us_states.json')
   var us_states = []
   for (var i in jsonData) us_states.push(i)
 
