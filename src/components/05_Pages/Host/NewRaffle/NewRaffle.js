@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react';
-import { View, Text, Alert, Keyboard, Button, Image } from 'react-native';
+import { View, Text, Alert, Keyboard, Button, Image, Dimensions} from 'react-native';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import InputField from '../../../02_Molecules/InputField/InputField';
 import { fonts, utilities } from '../../../../settings/all_settings';
@@ -23,15 +23,22 @@ import AssetUtils from 'expo-asset-utils';
 import * as Abuffer from 'base64-arraybuffer';
 
 export default function NewRaffle({ navigation, route }) {
+    const [buttonTitle, setButtonTitle] = useState('Submit')
+    const admins = require('../../../05_Pages/Home/Admin/admin_emails.json') // list of admin emails
+    const productTypes = ['sneaker', 'clothing', 'collectibles', 'art']
+    const { user, setUser } = useContext(GlobalState)
     var _type = route.params.type
+
+
+    //size stuff-------------------------------------------------------------------------------------
+    var sizeTypes = ['Men', 'Women', "Unisex"]
     var shirtSizes = ['S', 'M', 'L', 'XL']
     var shoeSizes = [];
     for (var i = 4; i <= 14; i += 0.5) {
         shoeSizes.push(i.toString())
     }
 
-    const [buttonTitle, setButtonTitle] = useState('Submit')
-    // states for each input value
+    // states for each input value-------------------------------------------------------------------
     const [_name, setName] = useState(null)
     const [_price, setPrice] = useState(null)
     const [_value, setValue] = useState(null)
@@ -56,7 +63,7 @@ export default function NewRaffle({ navigation, route }) {
     const [_startTime, setStartTime] = useState(null)
     const [_status, setStatus] = useState(null)
 
-    // for going to the next text input
+    // for going to the next text input--------------------------------------------------------------
     const priceRef = useRef()
     const valueRef = useRef()
     const goalRef = useRef()
@@ -64,7 +71,7 @@ export default function NewRaffle({ navigation, route }) {
     const descriptionRef = useRef()
     const numProductsRef = useRef()
 
-    // stuff for date picker (start time)
+    // stuff for date picker (start time)------------------------------------------------------------
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -73,21 +80,17 @@ export default function NewRaffle({ navigation, route }) {
         setDatePickerVisibility(false);
     };
     const handleConfirm = (date) => {
-        // date = new Date(date).getTime() / 1000
         setStartTime(date)
         hideDatePicker();
     };
 
-    const admins = require('../../../05_Pages/Home/Admin/admin_emails.json')
-    const productTypes = ['sneaker', 'clothing', 'collectibles', 'art']
-    const { user, setUser } = useContext(GlobalState)
-    //console.log(typeof user._id)
 
-    // METHOD FOR POSTING RAFFLE
+    // METHOD FOR POSTING RAFFLE---------------------------------------------------------------------
     const AWS = require('aws-sdk');
     const data = require('../../../IP_ADDRESS.json');
     const postRaffle = async () => {
-        const response = await fetch('http://' + data.ipAddress + '/raffle/new', {
+        // create a new raffle in the database
+        const raffle_response = await fetch('http://' + data.ipAddress + '/raffle/new', {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -95,11 +98,51 @@ export default function NewRaffle({ navigation, route }) {
             },
             body: makeJSON()
         })
-        const json = await response.json()
-        console.log(json)
-        return json
+        const raffle_json = await raffle_response.json()
+
+        // post raffle id to the user's rafflesPosted
+        var postedRaffles = user.rafflesPosted
+        postedRaffles.push(raffle_json._id)
+        const user_response = await fetch('http://' + data.ipAddress + '/user/edit/' + user._id, {
+            method: "PATCH",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                rafflesPosted: postedRaffles
+            })
+        })
+        const user_json = await user_response.json()
+        return user_json
     }
 
+    const makeJSON = () => {
+        let data = {
+            type: _type,
+            hostedBy: user._id,
+            name: _name,
+            productPrice: _price,
+            valuedAt: _value,
+            numProducts: _numProducts,
+            description: _description,
+            donationGoal: _goal,
+            charities: (_charities.length > 0) ? _charities.split(',').map(item => item.trim()) : null,
+            productType: _productType,
+            drawingDuration: _drawingDuration,
+            radius: _drawingRadius === 'None' ? 25000 : _drawingRadius,
+            address: _address,
+            images: _productName,
+            sizeTypes: _sizeTypes,
+            sizes: _sizes,
+            startTime: (_startTime == null) ? null : new Date(_startTime).getTime() / 1000,
+            live: (_status == 'Live') ? true : (_status == 'Coming Soon') ? false : null,
+            approved: (admins.admins.includes(user.email)) ? true : false
+        }
+        return JSON.stringify(data)
+    };
+
+    // image stuff-------------------------------------------------------------------------------------------------------
     async function getPermissionAsync() {
         if (Constants.platform.ios) {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -140,10 +183,7 @@ export default function NewRaffle({ navigation, route }) {
                         setProductPrevImg(_productImg.map((prodimg) =>
                             <Image source={{ uri: prodimg }} style={{ width: 100, height: 100 }} />))
                     }
-                    //setImgname(_username + Math.round((new Date()).getTime() / 1000) + '.jpeg')
                 }
-
-                //console.log(result);
             } catch (E) {
                 console.log(E);
             }
@@ -197,20 +237,10 @@ export default function NewRaffle({ navigation, route }) {
             })
     };
 
-    //   // states for each input value
-    //   const [_email, setEmail] = useState(null)
-    //   const [_password, setPassword] = useState(null)
-    //   const [_errors, setErrors] = useState([])
-
-    //   // validates email input
-    //   const isValidEmail = () => {
-    //     return validator.isEmail(String(_email).toLowerCase());
-    //   }
-
-       // check for any errors in input, returns array of errors
+    // ERROR HANDLING: check for any errors in input, returns array of errors-----------------------------------------------------
     const generateErrors = () => {
         let errors = []
-        switch(_type) {
+        switch (_type) {
             case 1:
                 if (!_value) {
                     errors.push(<Text style={fonts.error}>Please Fill In Product Value</Text>)
@@ -253,39 +283,15 @@ export default function NewRaffle({ navigation, route }) {
         if (_productImg.length == 0) {
             errors.push(<Text style={fonts.error}>Please Upload Images</Text>)
         }
-         // if not a valid email
+        // if not a valid email
         setErrors(errors)
         if (errors.length == 0) {
             return false
         }
         return true
-   }
+    }
 
-    // makes a json object with all the input fields
-    const makeJSON = () => {
-        let data = {
-            type: _type,
-            hostedBy: user._id,
-            name: _name,
-            productPrice: _price,
-            valuedAt: _value,
-            numProducts: _numProducts,
-            description: _description,
-            donationGoal: _goal,
-            charities: (_charities.length > 0) ? _charities.split(',').map(item => item.trim()) : null,
-            productType: _productType,
-            drawingDuration: _drawingDuration,
-            radius: _drawingRadius === 'None' ? 25000 : _drawingRadius,
-            address: _address,
-            images: _productName,
-            sizeTypes: _sizeTypes,
-            sizes: _sizes,
-            startTime: (_startTime == null) ? null : new Date(_startTime).getTime() / 1000,
-            live: (_status == 'Live') ? true: (_status == 'Coming Soon') ? false : null,
-            approved: (admins.admins.includes(user.email)) ? true : false
-        }
-        return JSON.stringify(data)
-    };
+    // navigation bar on the top----------------------------------------------------------------------------------------------
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerLeft: () => (
@@ -295,7 +301,7 @@ export default function NewRaffle({ navigation, route }) {
             ),
             headerRight: () => (
                 <Button title={buttonTitle}
-                    disabled={buttonTitle=='Submitting'}
+                    disabled={buttonTitle == 'Submitting'}
                     onPress={() => {
                         if (!generateErrors()) {
                             setButtonTitle('Submitting')
@@ -325,10 +331,12 @@ export default function NewRaffle({ navigation, route }) {
         });
     }, [_type, _name, _price, _value, _numProducts, _description, _goal, _charities, _productType, _drawingDuration, _drawingRadius, _address, _sizeTypes, _sizes, buttonTitle]);
 
+
+    // MARKUP=========================================================================================================================
     let adminContent;
     if (admins.admins.includes(user.email)) {
         adminContent = (
-            <View style={{width: '90%'}}>
+            <View style={{ width: '90%' }}>
                 <View style={{ width: '100%', marginTop: 15 }}>
                     <Text style={styles.InputField__label}>Drawing Time*</Text>
                     <View style={{ width: '105%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -360,15 +368,13 @@ export default function NewRaffle({ navigation, route }) {
         )
     }
     return (
-
         <View style={utilities.container}>
-
             <ScrollView>
                 <KeyboardAwareScrollView
                     style={{ backgroundColor: 'transparent' }}
                     resetScrollToCoords={{ x: 0, y: 0 }}
                 >
-                    <View style={[utilities.flexCenter, { marginBottom: 25 }]}>
+                    <View style={{ alignItems: 'center' }}>
                         <InputField
                             label="Name of Product"
                             autoCapitalize="words"
@@ -428,7 +434,7 @@ export default function NewRaffle({ navigation, route }) {
                                 required /> : null
                         }
                         {(_type == 1) ?
-                            <View style={{ width: '95%', marginLeft: '5%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                            <View style={styles.buttonContainer}>
                                 <Text style={[styles.InputField__label]}>Charity Partner Logos*</Text>
                                 <BlockButton color="secondary" title={_charityImg.length < 4 ? "CHOOSE" : "MAX 4"} size="small" onPress={async () => {
                                     if (_charityImg.length < 4) _pickImage(true)
@@ -448,14 +454,14 @@ export default function NewRaffle({ navigation, route }) {
                             required
                             textArea />
 
-                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 2 }}>
+                        <View style={[styles.dropdownContainer, { zIndex: 2 }]}>
                             <Text style={styles.InputField__label}>Drawing Duration (Days)*</Text>
-                            <Dropdown options={['1', '3', '5', '7', '14', '21', '30']} placeholder={"Days"} setValue={setDrawingDuration}/>
+                            <Dropdown options={['1', '3', '5', '7', '14', '21', '30']} placeholder={"Days"} setValue={setDrawingDuration} />
                         </View>
 
-                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 1 }}>
+                        <View style={[styles.dropdownContainer, { zIndex: 1 }]}>
                             <Text style={styles.InputField__label}>Drawing Radius* (mi)</Text>
-                            <Dropdown options={['None', '1', '5', '10', '20', '50', '100', '200', '1000']} placeholder="Miles" setValue={setDrawingRadius}/>
+                            <Dropdown options={['None', '1', '5', '10', '20', '50', '100', '200', '1000']} placeholder="Miles" setValue={setDrawingRadius} />
                         </View>
                         <InputField
                             label={'Store Address' + ((_drawingRadius && _drawingRadius != 'None') ? '*' : '')}
@@ -485,29 +491,41 @@ export default function NewRaffle({ navigation, route }) {
                         </View>
 
                         {_productType == 'sneaker' ?
-                            <View style={{ height: 75, marginLeft: '5%' }}>
-                                <Text style={[styles.InputField__label]}>Available Sizes*</Text>
-                                <SizeCarousel sizes={shoeSizes} type='multiple' default={1} setSize={setSizes} />
+                            <View style={{ marginHorizontal: '5%' }}>
+                                <View style={styles.sizeCarouselContainer}>
+                                    <Text style={[styles.InputField__label, { marginBottom: -10 }]}>Available Sizes Types*</Text>
+                                    <SizeCarousel sizes={sizeTypes} type='multiple' default={1} setSize={setSizeTypes} string/>
+                                </View>
+                                <View style={styles.sizeCarouselContainer}>
+                                    <Text style={[styles.InputField__label, { marginTop: 10, marginBottom: -10 }]}>Available Sizes*</Text>
+                                    <SizeCarousel sizes={shoeSizes} type='multiple' default={1} setSize={setSizes} />
+                                </View>
                             </View>
                             : null}
                         {_productType == 'clothing' ?
-                            <View style={{ height: 75, marginLeft: '5%', width: '95%' }}>
-                                <Text style={[styles.InputField__label]}>Available Sizes*</Text>
-                                <SizeCarousel sizes={shirtSizes} type='multiple' default={1} setSize={setSizes} />
+                            <View style={{ marginHorizontal: '5%' }}>
+                                <View style={styles.sizeCarouselContainer}>
+                                    <Text style={[styles.InputField__label, { marginBottom: -10 }]}>Available Sizes Types*</Text>
+                                    <SizeCarousel sizes={sizeTypes} type='multiple' default={1} setSize={setSizeTypes} string/>
+                                </View>
+                                <View style={styles.sizeCarouselContainer}>
+                                    <Text style={[styles.InputField__label, { marginTop: 10, marginBottom: -10 }]}>Available Sizes*</Text>
+                                    <SizeCarousel sizes={shirtSizes} type='multiple' default={1} setSize={setSizes} />
+                                </View>
                             </View>
                             : null}
-                        <View style={{ width: '95%', marginLeft: '5%', marginVertical: '5%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+
+                        <View style={styles.buttonContainer}>
                             <Text style={[styles.InputField__label]}>Product Pictures*</Text>
                             <BlockButton color="secondary" title="CHOOSE" size="small" onPress={async () => {
                                 if (_productImg.length < 4) _pickImage(false)
                             }} />
                         </View>
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <View style={{ flexDirection: 'row' }}>
                             {_productprevImg}
                         </View>
                         {adminContent}
                         {_errors}
-
                     </View>
                 </KeyboardAwareScrollView>
             </ScrollView>
