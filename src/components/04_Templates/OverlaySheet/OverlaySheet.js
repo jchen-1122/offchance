@@ -68,15 +68,18 @@ function OverlaySheet(props) {
       currEntered = props.user.rafflesEntered.children
       let oldamount = 0;
       let oldchances = 0;
+      let tempCurr = []
       for (var i = 0; i < currEntered.length; i++) {
-        if (currEntered[i].raffleID === props.raffleid && currEntered[i].sizeType === props.sizeType && currEntered[i].size === props.size) {
+        //  && currEntered[i].sizeType === props.sizeType && currEntered[i].size === props.size (different sizes now count as the same entry)
+        if (currEntered[i].raffleID === props.raffleid) {
           oldamount = currEntered[i].amountDonated
           oldchances = currEntered[i].chances
-          currEntered.splice(i, 1)
+          tempCurr.push(makeEntetedRaffleSchemaJSON(oldamount, oldchances))
+        } else {
+          tempCurr.push(currEntered[i])
         }
       }
-      currEntered.push(makeEntetedRaffleSchemaJSON(oldamount, oldchances))
-      currEntered = { children: currEntered }
+      currEntered = { children: tempCurr }
     }
 
     let walletFinal = _walletBalance
@@ -122,15 +125,18 @@ function OverlaySheet(props) {
       currEntered = raffle.users.children
       let oldamount = 0;
       let oldchances = 0;
+      let tempCurr = []
       for (var i = 0; i < currEntered.length; i++) {
-        if (currEntered[i].userID === props.user._id && currEntered[i].sizeType === props.sizeType && currEntered[i].size === props.size) {
+        //  && currEntered[i].sizeType === props.sizeType && currEntered[i].size === props.size (different sizes now count as the same entry)
+        if (currEntered[i].userID === props.user._id) {
           oldamount = currEntered[i].amountDonated
           oldchances = currEntered[i].chances
-          currEntered.splice(i, 1)
+          tempCurr.push(makeRaffleJSON(oldamount, oldchances))
+        } else {
+          tempCurr.push(currEntered[i])
         }
       }
-      currEntered.push(makeRaffleJSON(oldamount, oldchances))
-      currEntered = { children: currEntered }
+      currEntered = { children: tempCurr }
     }
     // update amountRaised
     let amountRaised = raffle.amountRaised
@@ -209,7 +215,7 @@ function OverlaySheet(props) {
 
   const renderSwipeButton = () => (
     <SwipeButton title="SWIPE TO CONFIRM" onSwipeFailure={()=>console.log('failed')}onSwipeSuccess={async () => {
-      console.log('swiped')
+      //console.log('swiped')
       // if they've selected a size, sizetype, and payment method
       if (_method !== null && props.entertobuy) {
         setStripe(false)
@@ -220,16 +226,16 @@ function OverlaySheet(props) {
         // if using wallet chances
         if (_method === "Wallet Chances") {
 
-          // if they have enough chances
+          // if they have enough chances  
           if (props.user.walletChances - props.chances > 0) {
             toggleOverlay();
-            props.navigation.navigate("Success", { fromRaffle: props.chances })
+            props.navigation.navigate("Success", { fromRaffle: props.chances, raffleid: props.raffleid })
           }
         }
 
         // if using a payment method
         else {
-          console.log(_method)
+          //console.log(_method)
           setStripe(false)
           //toggleOverlay();
         }
@@ -361,7 +367,7 @@ function OverlaySheet(props) {
                 }} /> */}
           </View>
 
-        </View> : <Stripe user={props.user} setUser={props.setUser} navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet} entertobuy={Object.keys(props).includes('entertobuy') ? true : false}></Stripe>}
+        </View> : <Stripe raffleid={props.raffleid} user={props.user} setUser={props.setUser} navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet} entertobuy={Object.keys(props).includes('entertobuy') ? true : false}></Stripe>}
 
       </Overlay>
     </View>

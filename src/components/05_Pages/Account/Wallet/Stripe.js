@@ -12,7 +12,7 @@ import GlobalState from '../../../globalState'
 
 const PurchaseProduct = (props) => {
   const [loaded, setLoaded] = useState(false)
-  console.log(props)
+  console.log('STRIPE', props)
   let chances = 10
   let amount = 5
   let options = ['$5 = 10 chances', '$10 = 40 chances', '$20 = 50 chances', '$50 = 150 chances', '$100 = 400 chances', '$250 = 1100 chances']
@@ -73,7 +73,7 @@ const PurchaseProduct = (props) => {
                 } else {
                   props.navigation.reset({
                     index: 0,
-                    routes: [{ name: 'Success', params: {fromRaffle: chances} }],
+                    routes: [{ name: 'Success', params: {fromRaffle: chances, raffleid: props.raffleid} }],
     
                   })
                 }
@@ -98,7 +98,7 @@ const PurchaseProduct = (props) => {
               } else {
                 props.navigation.reset({
                   index: 0,
-                  routes: [{ name: 'Success', params: {fromRaffle: chances, save: true} }],
+                  routes: [{ name: 'Success', params: {fromRaffle: chances, save: true, raffleid: props.raffleid} }],
   
                 })
               }
@@ -125,7 +125,7 @@ const PurchaseProduct = (props) => {
             } else {
               props.navigation.reset({
                 index: 0,
-                routes: [{ name: 'Success', params: {fromRaffle: chances} }],
+                routes: [{ name: 'Success', params: {fromRaffle: chances, raffleid: props.raffleid} }],
 
               })
             }
@@ -133,10 +133,13 @@ const PurchaseProduct = (props) => {
         }
       }}
     /> : <WebView 
-        containerStyle={{marginBottom: 170}}
+        containerStyle={{marginBottom: 100}}
         originWhitelist={['*']}
-        source={{ uri: "http://" + ip.ipAddress + "/user/paypal" }}
+        source={{ uri: "http://" + ip.ipAddress + "/user/paypal", method: "POST", headers: {'Accept': 'application/json', 'Content-Type': 'application/json'}, body: JSON.stringify({ name: chances + " chances", amount: amount + "" }) }}
         onNavigationStateChange={async (data) => {
+          if (data.navigationType === "backforward") {
+            props.navigation.navigate('Account')
+          }
           if (data.url.includes("success") && !loaded) {
             setLoaded(true)
             if (props.wallet) {
@@ -149,7 +152,7 @@ const PurchaseProduct = (props) => {
             } else  {
               props.navigation.reset({
                 index: 0,
-                routes: [{ name: 'Success', params: {fromRaffle: chances} }],
+                routes: [{ name: 'Success', params: {fromRaffle: chances, raffleid: props.raffleid} }],
 
               })
             }

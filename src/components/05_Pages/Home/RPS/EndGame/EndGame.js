@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { View, Text } from 'react-native'
 import { colors, fonts, utilities } from '../../../../../settings/all_settings';
 import BottomNav from '../../../../02_Molecules/BottomNav/BottomNav';
@@ -8,7 +8,48 @@ import GlobalState from '../../../../globalState'
 
 function EndGame(props) {
     const { user, setUser } = useContext(GlobalState)
-
+    // add bonus chances to user and to raffle
+    useEffect(() => {
+        async function bonus() {
+            const ip = require('../../../../IP_ADDRESS.json')
+            let olduser = await fetch('http://' + ip.ipAddress + '/user/id/' + user._id)
+            olduser = await olduser.json()
+            let newEntered = []
+            for (var i = 0; i < olduser.rafflesEntered.children.length; i++) {
+                if (props.raffleid === olduser.rafflesEntered.children[i].raffleID) {
+                    olduser.rafflesEntered.children[i].chances += Math.floor(props.wins / 2)
+                } 
+                newEntered.push(olduser.rafflesEntered.children[i])
+            }
+            let updatedUser = await fetch('http://' + ip.ipAddress + '/user/edit/' + user._id, {
+                method: "PATCH",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ rafflesEntered: {children: newEntered} })
+            })
+            // raffle update chances
+            let oldraffle = await fetch('http://' + ip.ipAddress + '/raffle/id/' + props.raffleid)
+            oldraffle = await oldraffle.json()
+            let newEnteredR = []
+            for (var i = 0; i < oldraffle.users.children.length; i++) {
+                if (user._id === oldraffle.users.children[i].userID) {
+                    oldraffle.users.children[i].chances += Math.floor(props.wins / 2)
+                } 
+                newEnteredR.push( oldraffle.users.children[i])
+            }
+            let updatedRaffle = await fetch('http://' + ip.ipAddress + '/raffle/edit/' + props.raffleid, {
+                method: "PATCH",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ users: {children: newEnteredR} })
+            })
+        }
+        bonus()
+    })
     return (
         <View style={utilities.container}>
             <View style={{ alignItems: 'center', height: '90%', paddingVertical: '5%', justifyContent: 'space-between' }}>

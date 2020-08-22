@@ -92,6 +92,23 @@ export default function AdminEdit({ navigation, route }) {
     }
 
     const deleteRaffle = async () => {
+        // delete from user rafflesPosted
+        let user = await fetch('http://' + data.ipAddress + '/user/id/' + route.params.hostedBy)
+        user = await user.json()
+        let res = []
+        for (var i = 0; i < user.rafflesPosted.length; i++) {
+            if (route.params._id !== user.rafflesPosted[i]) {
+                res.push(user.rafflesPosted[i])
+            }
+        }
+        const updatedUser = await fetch('http://' + data.ipAddress + '/user/edit/' + route.params.hostedBy, {
+            method: "PATCH",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({rafflesPosted: res})
+        })
         const response = await fetch('http://' + data.ipAddress + '/raffle/del/' + route.params._id, {
             method: "DELETE",
             headers: {
@@ -416,7 +433,7 @@ export default function AdminEdit({ navigation, route }) {
                                                 [
                                                     {
                                                         text: "YES", onPress: () => {
-                                                            //deleteRaffle()
+                                                            deleteRaffle()
                                                             navigation.navigate('AdminHome')
 
                                                         }

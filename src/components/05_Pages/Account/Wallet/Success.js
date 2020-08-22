@@ -6,7 +6,7 @@ import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
 import GlobalState from '../../../globalState'
 
 export default function Success({navigation, route}) {
-    console.log(route.params)
+    // console.log(route.params)
     if (route.params === undefined) {
         route.params = {}
     }
@@ -64,7 +64,7 @@ export default function Success({navigation, route}) {
                 <BlockButton
                     title="WIN BONUS CHANCES"
                     color="secondary"
-                    onPress={async() => navigation.navigate('GameController',await getOpponent())} />
+                    onPress={async() => navigation.navigate('GameController', {opponent: await getOpponent(), raffleid: route.params.raffleid})} />
             </ScrollView>
 
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>
