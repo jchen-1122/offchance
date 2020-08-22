@@ -159,7 +159,7 @@ export default function NewRaffle({ navigation, route }) {
 
     const cosClient = new AWS.S3();
 
-    const _multiUpload = () => {
+    const _multiUpload = async() => {
         console.log(user.username)
         let imgname = user.username + Math.round((new Date()).getTime() / 1000)
         _charityImg.map((charimg, index) => {
@@ -223,7 +223,7 @@ export default function NewRaffle({ navigation, route }) {
                 }
                 // CHECK CHARITY IMAGES, Currently we are not doing anything with the images..
                 if (_charityImg.length == 0) {
-                    errors.push(<Text style={fonts.error}>Charity Images</Text>)
+                    errors.push(<Text style={fonts.error}>Please Provide Charity Logos/Images</Text>)
                 }
                 break;
             case 2:
@@ -283,6 +283,7 @@ export default function NewRaffle({ navigation, route }) {
             images: _productName,
             sizeTypes: _sizeTypes,
             sizes: _sizes,
+            charityImgs: _charityName,
             startTime: new Date(_startTime).getTime() / 1000,
             live: (_status == 'Live') ? true: (_status == 'Coming Soon') ? false : null,
             approved: (admins.admins.includes(user.email)) ? true : false
@@ -434,8 +435,8 @@ export default function NewRaffle({ navigation, route }) {
                         {(_type == 1) ?
                             <View style={{ width: '95%', marginLeft: '5%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                                 <Text style={[styles.InputField__label]}>Charity Partner Logos*</Text>
-                                <BlockButton color="secondary" title={_charityImg.length < 4 ? "CHOOSE" : "MAX 4"} size="small" onPress={async () => {
-                                    if (_charityImg.length < 4) _pickImage(true)
+                                <BlockButton color="secondary" title={_charityImg.length < 2 ? "CHOOSE" : "MAX 2"} size="small" onPress={async () => {
+                                    if (_charityImg.length < 2) _pickImage(true)
                                 }} />
                             </View> : null
                         }
@@ -502,7 +503,7 @@ export default function NewRaffle({ navigation, route }) {
                             : null}
                         <View style={{ width: '95%', marginLeft: '5%', marginVertical: '5%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                             <Text style={[styles.InputField__label]}>Product Pictures*</Text>
-                            <BlockButton color="secondary" title="CHOOSE" size="small" onPress={async () => {
+                            <BlockButton color="secondary" title={_productImg.length < 4 ? "CHOOSE" : "MAX 4"} size="small" onPress={async () => {
                                 if (_productImg.length < 4) _pickImage(false)
                             }} />
                         </View>

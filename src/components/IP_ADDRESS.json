@@ -1,5 +1,5 @@
 {
-    "ipAddress" : "192.168.0.22:3000",
+    "ipAddress" : "10.0.0.145:3000",
     "oldSendGrid" : "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",
     "sendGrid": "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",
     "IBMaccessKeyId": "da62c56fb48940a7aada0c86062cf9a6",
