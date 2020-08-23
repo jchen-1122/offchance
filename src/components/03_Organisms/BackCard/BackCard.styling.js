@@ -10,7 +10,32 @@ const styles = StyleSheet.create({
         height: cardHeight,
         alignItems: 'center',
         justifyContent: 'center',
-        resizeMode: 'contain'
+        resizeMode: 'contain',
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 12,
+        },
+        shadowOpacity: 0.58,
+        shadowRadius: 16.00,
+
+        elevation: 24,
+    },
+    greenimgBackground: {
+        width: cardWidth,
+        height: cardHeight,
+        alignItems: 'center',
+        justifyContent: 'center',
+        resizeMode: 'contain',
+        shadowColor: colors.limeGreen,
+        shadowOffset: {
+            width: 0,
+            height: 12,
+        },
+        shadowOpacity: 1,
+        shadowRadius: 16.00,
+
+        elevation: 24,
     },
     circle_outline: {
         width: cardWidth*0.5,

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { View, ScrollView, Text, Image, Animated, Button, TouchableHighlight, Dimensions} from 'react-native'
 import { WebView } from 'react-native-webview';
 import { set } from 'react-native-reanimated';
@@ -13,13 +13,25 @@ import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
 import Stripe from './Stripe'
 
 export default function Wallet({navigation}) {
- 
+    
     const {user, setUser} = useContext(GlobalState)
     const [containerStyle, setContainerStyle] = useState(styles.container);
     const [sheetController, setSheetController] = useState(false); // 0 - close, 1 - open. TODO: GLOBAL STATE
     const [paymentController, setPaymentController] = useState(false);
+    const [methodOptions, setMethodOptions] = useState(['Paypal'])
 
     const { width, height } = Dimensions.get('window');
+
+    useEffect(() => {
+      let options = ['Paypal']
+      if (user.last4){
+        options.push('**** **** **** ' + user.last4)
+      }
+      else{
+        options.push('+ Add Credit Card')
+      }
+      setMethodOptions(options)
+    }, [])
 
     const trigger = () => {
         setSheetController(!sheetController);
@@ -40,7 +52,7 @@ export default function Wallet({navigation}) {
 
     return (
         <View style={containerStyle}>
-
+          <View style={{height: '90%'}}>
             {/* Header */}
             <View>
                 <Text style={styles.header}>Balance:</Text>
@@ -63,7 +75,7 @@ export default function Wallet({navigation}) {
             </View>
 
             {/* sliding sheet */}
-            <SlidingSheet
+                        <SlidingSheet
             title='Add Chances'
             type='default'
             sheet={sheetController}
@@ -71,10 +83,12 @@ export default function Wallet({navigation}) {
             height={height * 0.7}
             user={user}
             setUser={setUser}
-            content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
+            methodOptions={methodOptions}
+            last4={user.last4}
+            brand={user.brand}            
             navigation={navigation}
             wallet={true}/>
-
+            </View>
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>
         </View>
     )

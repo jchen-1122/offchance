@@ -129,7 +129,7 @@ async function getWinnerObjs(latestWinnersIDs) {
         ids: latestWinnersIDs
     }
     data = JSON.stringify(data)
-    console.log(latestWinnersIDs)
+    // console.log(latestWinnersIDs)
     // make API call with multiple IDs
     const winnerRes = await fetch('http://' + ip.ipAddress + '/user/ids/', {
         method: "PATCH",
@@ -140,7 +140,7 @@ async function getWinnerObjs(latestWinnersIDs) {
         body: data
     })
     let res = await winnerRes.json() // top 5 sorting is lost
-    console.log(res.length)
+    // console.log(res.length)
     res = sortUsers(latestWinnersIDs, res)
     return res
 }
@@ -196,6 +196,32 @@ export async function getReportedUsers() {
         }
     }
     return reported
+}
+
+// get coming soon
+export async function getComingSoon() {
+    let response = await fetch('http://' + ip.ipAddress + '/raffle/query?query=approved&val=true')
+    response = await response.json()
+    let res = []
+    for (var i = 0; i < response.length; i++) {
+        if (!response[i].live) {
+            res.push(response[i])
+        }
+    }
+    return res
+}
+
+// get live raffles
+export async function getLive() {
+    let response = await fetch('http://' + ip.ipAddress + '/raffle/query?query=approved&val=true')
+    response = await response.json()
+    let res = []
+    for (var i = 0; i < response.length; i++) {
+        if (response[i].live) {
+            res.push(response[i])
+        }
+    }
+    return res
 }
 
 // get multiple users doesn't return the users in the same order as the input so you have to re-sort

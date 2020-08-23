@@ -136,7 +136,7 @@ function LikeButton(props) {
                 setUser(currUser)
             }}>
             {color ? <Icon name='heart' type='material-community' color={'red'} /> :
-                <Icon name='heart-outline' type='material-community' />}
+                <Icon name='heart-outline' type='material-community' color={props.color}/>}
         </TouchableOpacity>
     )
 }

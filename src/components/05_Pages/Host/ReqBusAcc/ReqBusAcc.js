@@ -1,11 +1,16 @@
 import React, { useState, useContext, useRef, useEffect } from 'react'
-import { View, Text, Keyboard, ScrollView, Button, Alert } from 'react-native';
+import { View, Text, Keyboard, ScrollView, Button, Alert, Image } from 'react-native';
 import InputField from '../../../02_Molecules/InputField/InputField';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import Checkbox from '../../../02_Molecules/Checkbox/Checkbox';
 import { utilities, fonts } from '../../../../settings/all_settings';
 import GlobalState from '../../../globalState'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import * as ImagePicker from 'expo-image-picker';
+import Constants from 'expo-constants';
+import * as Permissions from 'expo-permissions';
+import AssetUtils from 'expo-asset-utils';
+import * as Abuffer from 'base64-arraybuffer';
 
 export default function ReqBusAcc({ navigation }) {
     const { user, setUser } = useContext(GlobalState)
@@ -21,12 +26,18 @@ export default function ReqBusAcc({ navigation }) {
     const [_hostMonth, setHostMonth] = useState(null)
     const [_hostDay, setHostDay] = useState(null)
     const [_hostYear, setHostYear] = useState(null)
+    const [_hostLicense, setHostLicense] = useState(null)
+    const [_license, setLicense] = useState(null)
+    const [_licenseURL, setLicenseURL] = useState(null)
 
     // for going to the next text input
     const charityRef = useRef()
     const detailsRef = useRef()
     const dayRef = useRef()
     const yearRef = useRef()
+
+    const data = require('../../../IP_ADDRESS.json');
+    const AWS = require('aws-sdk');
 
     // gets an "fewer react hooks rendered than expected" error
     React.useLayoutEffect(() => {
@@ -42,6 +53,7 @@ export default function ReqBusAcc({ navigation }) {
                     generateErrors()
                     if (!generateErrors()) {
                         setButtonTitle('Submitting')
+                        _uploadImage()
                         const userObj = await editUser()
                         setUser(userObj)
                         Alert.alert(
@@ -59,8 +71,71 @@ export default function ReqBusAcc({ navigation }) {
         });
     }, [ _hostItem, _hostCharity, _hostDetails, _hostYear, _hostMonth, _hostDay, _hostRaffleType, buttonTitle, _errors]);
 
+    async function getPermissionAsync() {
+        if (Constants.platform.ios) {
+            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+            if (status !== 'granted') {
+                alert('Sorry, we need camera roll permissions to make this work!');
+                return false;
+            }
+        }
+        return true;
+    }
+
+    const _pickImage = async () => {
+        //console.log(char)
+        if (await getPermissionAsync()) {
+            try {
+                let result = await ImagePicker.launchImageLibraryAsync({
+                    mediaTypes: ImagePicker.MediaTypeOptions.All,
+                    allowsEditing: true,
+                    allowsMultipleSelection: true,
+                    aspect: [4, 3],
+                    quality: 1,
+                });
+                if (!result.cancelled) {
+                    setHostLicense(result.uri)
+                    setLicenseURL(user.username + Math.round((new Date()).getTime() / 1000) + '.jpeg')
+                    setLicense(<Image source={{ uri: result.uri }} style={{ width: 100, height: 100, marginBottom: 30 }} />)
+                }
+
+                //console.log(result);
+            } catch (E) {
+                console.log(E);
+            }
+        }
+    };
+
+    AWS.config = new AWS.Config({
+        accessKeyId: data.IBMaccessKeyId,
+        secretAccessKey: data.IBMsecretAccessKey,
+        endpoint: 's3.us-east.cloud-object-storage.appdomain.cloud',
+        region: 'us-east-standard'
+    });
+
+    const cosClient = new AWS.S3();
+
+    const _uploadImage = async () => {
+
+        const asset = await AssetUtils.base64forImageUriAsync(_hostLicense);
+        const arrayBuffer = Abuffer.decode(asset.data);
+        let contentType = 'image/jpeg';
+
+        return cosClient.putObject({
+            Bucket: 'oc-drivers-license',
+            Key: _licenseURL,
+            Body: arrayBuffer,
+            ContentType: contentType
+        }).promise()
+        .then(() => {
+            console.log(`Item: testupload created!`);
+        })
+        .catch((e) => {
+            console.error(`ERROR: ${e.code} - ${e.message}\n`);
+        })
+    };
+
     // patch request
-    const data = require('../../../IP_ADDRESS.json');
     const editUser = async () => {
         const response = await fetch('http://' + data.ipAddress + '/user/edit/' + user._id, {
             method: "PATCH",
@@ -81,7 +156,8 @@ export default function ReqBusAcc({ navigation }) {
             host_charity: _hostCharity,
             host_details: _hostDetails,
             host_birthday: new Date(_hostYear + '-' + _hostMonth + '-' + _hostDay).getTime() / 1000,
-            host_raffleType: _hostRaffleType
+            host_raffleType: _hostRaffleType,
+            host_license: 'https://oc-drivers-license.s3.us-east.cloud-object-storage.appdomain.cloud/' + _licenseURL
         }
         return JSON.stringify(data)
     };
@@ -103,6 +179,9 @@ export default function ReqBusAcc({ navigation }) {
         }
         if (!_hostRaffleType) {
             errors.push(<Text style={fonts.error}>Please enter what type of drawing you want to host.</Text>)
+        }
+        if (!_hostLicense) {
+            errors.push(<Text style={fonts.error}>Please upload a valid ID card.</Text>)
         }
         setErrors(errors)
         if (errors.length > 0) {
@@ -206,8 +285,12 @@ export default function ReqBusAcc({ navigation }) {
                             <BlockButton
                                 color="secondary"
                                 title="CHOOSE"
-                                size="small" />
+                                size="small" 
+                                onPress={async () => {
+                                    _pickImage()
+                                }}/>
                         </View>
+                        {_license}
 
                         {_errors}
                     </View>

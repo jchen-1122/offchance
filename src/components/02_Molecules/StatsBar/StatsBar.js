@@ -39,10 +39,15 @@ export default function(props) {
         // console.log(props.enteredRaffles)
         const data = require('../../IP_ADDRESS.json')
         let res = []
+        //console.log(props.enteredRaffles)
         for (var raffle of props.enteredRaffles) {
-            let response = await fetch('http://'+data.ipAddress+'/raffle/id/'+raffle.raffleID)
-            response = await response.json()
-            res.push(response)
+            try {
+                let response = await fetch('http://'+data.ipAddress+'/raffle/id/'+raffle.raffleID)
+                response = await response.json()
+                res.push(response)
+            } catch (e) {
+                continue
+            }
         }
         // console.log(res)
         props.navigation.navigate('SeeAll', { raffles: res, title: 'Entered Drawings' })

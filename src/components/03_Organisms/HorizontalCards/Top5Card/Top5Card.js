@@ -115,8 +115,12 @@ function Top5Card(props) {
             <TouchableOpacity style={styles.touchable} onPress={() => props.navigation.navigate('OtherUser',{user: user})}>
                 <Image style={styles.image} source={{ uri: user.profilePicture }} />
                 <Text style={[fonts.h3, styles.name]}>@{user.username}</Text>
+                {/* {(user.city) ? <Text style={styles.city}>{user.city}</Text>:null} */}
             </TouchableOpacity>
-            {!Object.keys(currUser).includes('following') ? null : currUser.following.includes(user._id)  ? 
+            {
+                (currUser._id == user._id) ?
+                <View style={{height: 25, marginVertical: 15}}/>:
+                !Object.keys(currUser).includes('following') ? null : currUser.following.includes(user._id)  ? 
                 <BlockButton color="tertiary" size="small" title='FOLLOWING'
                 onPress={async () => {
                     if (enabled) {
@@ -136,7 +140,9 @@ function Top5Card(props) {
                         setEnabled(true)
                     }
                 }}
-                />}
+                />
+            }
+
         </View>
     )
 }

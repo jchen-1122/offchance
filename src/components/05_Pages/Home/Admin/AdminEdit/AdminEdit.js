@@ -14,15 +14,18 @@ import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { format_date } from '../../../../../functions/convert_dates';
 import ImageCarousel from '../../../../02_Molecules/ImageCarousel/ImageCarousel'
+import TextLink from '../../../../01_Atoms/Buttons/TextLinks/TextLinks';
+import { getPushTokens } from '../../../../../functions/pushNotifs/getPushTokens'
 
 export default function AdminEdit({ navigation, route }) {
+    console.log(route.params)
     var _type = route.params.type
     var shirtSizes = ['S', 'M', 'L', 'XL']
     var shoeSizes = [];
     for (var i = 4; i <= 14; i += 0.5) {
         shoeSizes.push(i.toString())
     }
-    console.log(route.params)
+    //console.log(route.params)
 
     const [buttonTitle, setButtonTitle] = useState('Submit')
     // states for each input value
@@ -39,8 +42,12 @@ export default function AdminEdit({ navigation, route }) {
     const [_drawingDuration, setDrawingDuration] = useState(route.params.drawingDuration || 1)
     const [_drawingRadius, setDrawingRadius] = useState(route.params.radius)
     const [_address, setAddress] = useState(null)
-    const [_startTime, setStartTime] = useState(null)
-    const [_status, setStatus] = useState(null)
+    const [_startTime, setStartTime] = useState((route.params.approved) ? route.params.startTime : null)
+    const [_status, setStatus] = useState((route.params.approved) ? (route.params.live) ? 'Live' : 'Coming Soon' : null)
+    const [_approved, setApproved] = useState(route.params.approved)
+    const [_raffle, setRaffle] = useState(route.params)
+    // sup matt, this is the reason you're sending throught the request body
+    const [_reason, setReason] = useState('')
 
     // for going to the next text input
     const priceRef = useRef()
@@ -59,6 +66,7 @@ export default function AdminEdit({ navigation, route }) {
         setDatePickerVisibility(false);
     };
     const handleConfirm = (date) => {
+        date = new Date(date).getTime() / 1000
         setStartTime(date)
         hideDatePicker();
     };
@@ -79,6 +87,36 @@ export default function AdminEdit({ navigation, route }) {
             body: makeJSON()
         })
         const json = await response.json()
+        setRaffle(json)
+        return json
+    }
+
+    const deleteRaffle = async () => {
+        // delete from user rafflesPosted
+        let user = await fetch('http://' + data.ipAddress + '/user/id/' + route.params.hostedBy)
+        user = await user.json()
+        let res = []
+        for (var i = 0; i < user.rafflesPosted.length; i++) {
+            if (route.params._id !== user.rafflesPosted[i]) {
+                res.push(user.rafflesPosted[i])
+            }
+        }
+        const updatedUser = await fetch('http://' + data.ipAddress + '/user/edit/' + route.params.hostedBy, {
+            method: "PATCH",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({rafflesPosted: res})
+        })
+        const response = await fetch('http://' + data.ipAddress + '/raffle/del/' + route.params._id, {
+            method: "DELETE",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        })
+        const json = await response.json()
         return json
     }
 
@@ -96,17 +134,76 @@ export default function AdminEdit({ navigation, route }) {
             // CHANGE LATER
             sizeTypes: _sizeTypes,
             sizes: _sizes,
-            approved: true,
-            startTime: _startTime,
-            live: (_status == 'Live') ? true: (_status == 'Coming Soon') ? false : null
+            approved: (_status !== 'Resubmit') ? true : false,
+            startTime: (_status !== 'Live') ? null : _startTime,
+            live: (_status == 'Live') ? true : (_status == 'Coming Soon') ? false : null
         }
-        console.log(JSON.stringify(data))
         return JSON.stringify(data)
     };
+
+    // for sending a notification when the raffle goes live/approved--------------------------------------------------------------------------------------------------------------
+    
+    // takes in a body, sends request via user route
+    const postMessage = async (body) => {
+        console.log('body', body)
+        const response = await fetch('http://' + data.ipAddress + '/user/message', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json, text/plain, */*',  // It can be used to overcome cors errors
+                'Content-Type': 'application/json'
+            },
+            body: body
+        })
+        const json = await response.text()
+        return json
+    }
+
+    // checks conditions on when to send the notification
+    const sendLiveNotif = async (justApproved) => {
+        // console.log('approved', route.params.approved)
+        // console.log('prev live', route.params.live)
+        // console.log('status', _status)
+
+        // if you changed it from 'Coming Soon' to 'Live'
+        if (route.params.approved && (!route.params.live) && _status == 'Live') {
+            return await postMessage(await makeJSONpush(
+                await getPushTokens(route.params.likedUsers || []),
+                "A raffle you liked is now open!",
+                _name + " is now open for entries."
+            ))
+        }
+        console.log('route.params.approved', route.params.approved)
+        console.log('_approved', justApproved)
+        // if you changed it from !approved to approved
+        if (!route.params.approved && justApproved){
+            console.log('followers', route.params.host.followers)
+            console.log('host', route.params.host.username)
+            return await postMessage(await makeJSONpush(
+                await getPushTokens(route.params.host.followers),
+                "A host you're following has posted a drawing!",
+                route.params.host.username + " just posted a drawing for " + _name
+            ))
+        }
+        return null
+    };
+
+    // takes in params and constructs the push notif data
+    const makeJSONpush = async (users, title, message) => {
+        console.log('users', users)
+        let data = {
+            pushTokens: users,
+            title: title,
+            message: message,
+            page: 'Raffle',
+            raffleID: _raffle._id,
+            host: _raffle.host
+            // raffle: _raffle
+        }
+        return JSON.stringify(data)
+    }
+
     return (
-
         <View style={utilities.container}>
-
             <ScrollView>
                 <KeyboardAwareScrollView
                     style={{ backgroundColor: 'transparent' }}
@@ -120,7 +217,7 @@ export default function AdminEdit({ navigation, route }) {
                         </View>
                     </View>
 
-                    <View style={[utilities.flexCenter, { marginBottom: 25 }]}>
+                    <View style={ {margin: 25, }}>
                         <InputField
                             label="Name of Product"
                             autoCapitalize="words"
@@ -177,7 +274,7 @@ export default function AdminEdit({ navigation, route }) {
                                 onChangeText={(text) => {
                                     const cs = text.split(",")
                                     setCharities(cs)
-                                    console.log(_charities)
+                                    //console.log(_charities)
                                 }}
                                 onSubmitEditing={() => descriptionRef.current.focus()}
                                 ref={charityRef}
@@ -188,14 +285,12 @@ export default function AdminEdit({ navigation, route }) {
                             value={_description}
                             onChangeText={(text) => { setDescription(text) }}
                             ref={descriptionRef}
-                            returnKeyType='done'
-                            onSubmitEditing={() => Keyboard.dismiss()}
                             required
                             textArea />
 
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 2, marginVertical: 15 }}>
                             <Text style={styles.InputField__label}>Drawing Duration (Days)*</Text>
-                            <Dropdown options={[1, 3, 5, 7, 14, 21, 30]} placeholder={_drawingDuration} setValue={setDrawingDuration} />
+                            <Dropdown options={['1', '3', '5', '7', '14', '21', '30']} placeholder={_drawingDuration.toString()} setValue={setDrawingDuration} />
                         </View>
 
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 1 }}>
@@ -203,7 +298,7 @@ export default function AdminEdit({ navigation, route }) {
                             <Dropdown options={['None', 1, 5, 10, 20, 50, 100, 200, 1000]} placeholder={_drawingRadius} setValue={setDrawingRadius} />
                         </View>
 
-                        <View style={{ width: '100%', marginLeft: '10%', marginVertical: 15 }}>
+                        <View style={{ width: '100%', marginVertical: 15 }}>
                             <Text style={styles.InputField__label}>Type of Product*</Text>
                             {productTypes.map((type, index) =>
                                 <Checkbox
@@ -225,78 +320,142 @@ export default function AdminEdit({ navigation, route }) {
                         </View>
 
                         {_productType == 'sneaker' ?
-                            <View style={{ height: 75, marginLeft: '5%' }}>
+                            <View style={{ height: 75 }}>
                                 <Text style={[styles.InputField__label]}>Available Sizes*</Text>
                                 <SizeCarousel sizes={route.params.sizes} type='multiple' default={1} setSize={setSizes} />
                             </View>
                             : null}
                         {_productType == 'clothing' ?
-                            <View style={{ height: 75, marginLeft: '5%', width: '95%' }}>
+                            <View style={{ height: 75, width: '95%' }}>
                                 <Text style={[styles.InputField__label]}>Available Sizes*</Text>
                                 <SizeCarousel sizes={route.params.sizes} type='multiple' default={1} setSize={setSizes} />
                             </View>
                             : null}
-                        <View style={{ width: '95%', marginLeft: '5%', marginVertical: '5%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <View style={{ width: '95%', marginVertical: '5%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                             <Text style={[styles.InputField__label]}>Product Pictures*</Text>
                             <BlockButton color="secondary" title="CHOOSE" size="small" />
                         </View>
 
-                        <View >
+                        <View style={{alignItems: 'center'}}>
                             {route.params.images.length > 1 ? <ImageCarousel images={route.params.images}></ImageCarousel> :
                                 <Image source={{ uri: route.params.images[0] }}
                                     style={{ height: Dimensions.get('window').height * 0.3, width: Dimensions.get('window').width, resizeMode: 'contain', marginBottom: '5%' }}></Image>}
                         </View>
-
-                        {/* WE NEED THIS FOR ADMIN */}
-                        {/* // sup chelly, can u also set the _startTime to the correct format */}
-                        <View style={{ width: '100%', marginLeft: '10%', marginTop: 15 }}>
-                            <Text style={styles.InputField__label}>Drawing Time*</Text>
-                            <View style={{ width: '95%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Text style={styles.InputField__label}>{_startTime == null ? "Pick A Start Date" : format_date(_startTime)}</Text>
-                                <BlockButton color="secondary" size="small" title={'CHOOSE'} onPress={showDatePicker} />
-                            </View>
-                        </View>
-                        <View style={{ width: '100%', marginLeft: '10%', marginVertical: 10 }}>
+                        <View style={{ width: '100%', marginVertical: 10 }}>
                             <Text style={styles.InputField__label}>Status*</Text>
                             <View style={{ flexDirection: 'row' }}>
-                                {['Live', 'Coming Soon'].map((status, index) =>
+                                {['Live', 'Coming Soon', 'Resubmit'].map((status, index) =>
                                     <Checkbox
                                         selected={_status == status}
-                                        onPress={() => {setStatus(status)}}
+                                        onPress={() => { 
+                                            if (status === 'Live') {
+                                                setReason("Your drawing for " + _name + " has been approved and set to live!")
+                                            } else if (status === 'Coming Soon') {
+                                                setReason("Your drawing for " + _name + " has been approved and is coming soon!")
+                                            } else if (status === 'Resubmit') {
+                                                setReason("Your drawing for " + _name + " needs to be modified in order to be approved.")
+                                            }
+                                            
+                                            setStatus(status) }}
                                         text={status}
                                     />
                                 )}
                             </View>
                         </View>
+
+                        {/* WE NEED THIS FOR ADMIN */}
+                        {/* // sup chelly, can u also set the _startTime to the correct format */}
+                        {(_status === 'Live') ? <View style={{ width: '100%',  marginTop: 15 }}>
+                            <Text style={styles.InputField__label}>Drawing Time*</Text>
+                            <View style={{ width: '95%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                                <Text style={styles.InputField__label}>{_startTime == null ? "Pick A Start Date" : format_date(new Date(_startTime * 1000))}</Text>
+                                <BlockButton color="secondary" size="small" title={(route.params.approved) ? 'CHANGE' : 'CHOOSE'} onPress={showDatePicker} />
+                            </View>
+                        </View> : null}
                         <DateTimePickerModal
                             isVisible={isDatePickerVisible}
                             mode="datetime"
                             headerTextIOS="Pick a start date"
                             onConfirm={handleConfirm}
                             onCancel={hideDatePicker}
-                            pickerContainerStyleIOS={{backgroundColor: 'white'}}
+                            pickerContainerStyleIOS={{ backgroundColor: 'white' }}
                         />
 
-                        <BlockButton title="SUBMIT FOR APPROVAL" color="primary" onPress={() => {
+                        <InputField
+                            label="Response to Host"
+                            value={_reason}
+                            onChangeText={(text) => { setReason(text)}}
+                            required
+                            textArea />
+
+                        <Text style={{ color: 'red' }}>{(_status === null) ? "Approved drawings must be either live or coming soon" : null}</Text>
+                        <Text style={{ color: 'red' }}>{(_startTime === null && _status === 'Live') ? "Approved drawings must have a starting time" : null}</Text>
+
+                        <BlockButton title={(route.params.approved) ? "EDIT" : "SUBMIT AND NOTIFY HOST"} color="primary" onPress={() => {
+                            if (_status !== null && (_status !== 'Live' || _startTime !== null)) {
+                                Alert.alert(
+                                    "Confirm",
+                                    "The raffle will be modified, approved, and publicly posted.",
+                                    [
+                                        {
+                                            text: "OK", onPress: () => {
+                                                editRaffle()
+                                                // if it was already approved
+                                                if (route.params.approved) {
+                                                    sendLiveNotif(false)
+                                                    navigation.navigate('Active')
+                                                } else {
+                                                    sendLiveNotif(true)
+                                                    navigation.navigate('AdminHome')
+                                                }
+
+                                            }
+                                        },
+                                        {
+                                            text: "Cancel", onPress: () => {
+                                            }
+                                        }
+                                    ],
+                                    { cancelable: true }
+                                );
+                            }
+                        }} />
+                        <TextLink style={{textAlign: 'center'}}title={"Delete Request (Permanent)"} onPress={() => {
                             Alert.alert(
                                 "Confirm",
-                                "The raffle will be modified, approved, and publicly posted.",
+                                "Delete Drawing Permanently",
                                 [
                                     {
                                         text: "OK", onPress: () => {
-                                            editRaffle()
-                                            navigation.navigate('AdminHome')
+                                            Alert.alert(
+                                                "Confirm",
+                                                "This action cannot be undone",
+                                                [
+                                                    {
+                                                        text: "YES", onPress: () => {
+                                                            deleteRaffle()
+                                                            navigation.navigate('AdminHome')
+
+                                                        }
+                                                    },
+                                                    {
+                                                        text: "Cancel", onPress: () => {
+                                                        }
+                                                    }
+                                                ],
+                                                { cancelable: true }
+                                            );
+
                                         }
                                     },
                                     {
                                         text: "Cancel", onPress: () => {
-                                            navigation.navigate('AdminEdit', route.params)
                                         }
                                     }
                                 ],
                                 { cancelable: true }
                             );
-                        }} />
+                        }}></TextLink>
                     </View>
                 </KeyboardAwareScrollView>
             </ScrollView>

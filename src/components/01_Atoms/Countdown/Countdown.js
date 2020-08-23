@@ -4,7 +4,6 @@ import {format_date, in_a_day} from '../../../functions/convert_dates';
 import styles from './Countdown.styling'
 
 const Countdown = ({ unix_timestamp, type, propsStyle }) => {
-    const monthNames = ["January", "February", "March", "April", "May", "June","July", "August", "September", "October", "November", "December"];
     const style = [styles.primary, propsStyle];
 
     switch (type){
@@ -41,9 +40,22 @@ const Countdown = ({ unix_timestamp, type, propsStyle }) => {
       // when we update it
     }, [timeLeft]);
 
+    let timeString = ''
+    var hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24)
+    if (hours > 0){
+      timeString = timeString+hours.toString()+'h '
+    }
+    var minutes = Math.floor((timeLeft / (1000 * 60)) % 60)
+    if (minutes > 0){
+      timeString = timeString+minutes.toString()+'m '
+    }
+    var seconds = Math.floor((timeLeft / 1000) % 60)
+    if (seconds > 0){
+      timeString = timeString+seconds.toString()+'s'
+    }
     return (
         (timeLeft <= 0) ? <Text style={[style]}>{format_date(date)}</Text> : 
-        <Text style={[style]}>{Math.floor((timeLeft / (1000 * 60 * 60)) % 24)}h {Math.floor((timeLeft / (1000 * 60)) % 60)}m {Math.floor((timeLeft / 1000) % 60)}s</Text>
+        <Text style={[style]}>{timeString}</Text>
     );
   };
 

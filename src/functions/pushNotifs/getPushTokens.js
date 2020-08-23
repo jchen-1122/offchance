@@ -10,7 +10,8 @@ export async function getPushTokens(userIDs){
             pushTokens.push(user.token)
         }
         else{
-            console.error("Could not find token for user "+user.username)
+            console.log("Could not find token for user "+user.username)
+            continue
         }
     }
     return pushTokens

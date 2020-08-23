@@ -6,6 +6,7 @@ export function stripeFirstPayment(name, amount) {
     const {user, setUser} = useContext(GlobalState)
     const [sessionId, setSessionId] = useState(null)
     const data = require('../../../IP_ADDRESS.json');
+    console.log('SAVING PAY')
 
     // Called everytime the URL starts to load in the webview
     useEffect(() => {

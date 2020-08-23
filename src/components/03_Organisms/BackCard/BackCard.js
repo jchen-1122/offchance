@@ -6,11 +6,13 @@ import UsernameDisplay from '../../01_Atoms/UsernameDisplay/UsernameDisplay'
 
 // for small, unclickable cards like in Latest Winners
 function BackCard(props){
-
     const [show, setShow] = useState(false)
-
     var user = props.user
-    setTimeout(function() { setShow(true) }, props.time);
+    setTimeout(function() { setShow(true), setStrobe(!strobe) }, props.time);
+    const [strobe, setStrobe] = useState(true)
+    // useEffect(() => {
+    //     setStrobe(!strobe)
+    // }, [])
 
     var userpic = { uri: user.profilePicture }
     let cardsrc = null
@@ -28,12 +30,14 @@ function BackCard(props){
 
     return (
         <TouchableOpacity onPress={() => {
-            props.setoverlay(true)
+            if (show) {
+                props.setoverlay(true)
+            }
             props.setSelected(user)
             props.setPrize(user["prize"])
         }}>
             <ImageBackground 
-              style={ styles.imgBackground }
+              style={(props.user._id === props.currUser._id && show && strobe) ? styles.greenimgBackground : styles.imgBackground }
               source={cardsrc}>
                 {show && <View style={styles.circle_outline} >
                     <Image

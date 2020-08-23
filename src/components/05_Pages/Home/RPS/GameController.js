@@ -4,6 +4,7 @@ import Game from './Game/Game';
 import EndGame from './EndGame/EndGame'
 
 function GameController({ navigation, route }) {
+    
     let initialTokens = 10
     const [page, setPage] = useState('PlayGame') // controls which page you see
     const [round, setRound] = useState(1)
@@ -20,7 +21,7 @@ function GameController({ navigation, route }) {
         return (
             <PlayGame
                 navigation={navigation}
-                opponent={route.params}
+                opponent={route.params.opponent}
                 time={time} setTime={setTime}
                 opacity={opacity} setOpacity={setOpacity}
                 setPage={setPage}
@@ -34,7 +35,7 @@ function GameController({ navigation, route }) {
         return (
             <Game
                 navigation={navigation}
-                opponent={route.params}
+                opponent={route.params.opponent}
                 time={time} setTime={setTime}
                 compChoice={compChoice}
                 opacity={opacity} setOpacity={setOpacity}
@@ -49,13 +50,14 @@ function GameController({ navigation, route }) {
         return (
             <EndGame
                 navigation={navigation}
-                opponent={route.params}
+                opponent={route.params.opponent}
                 time={time} setTime={setTime}
                 opacity={opacity} setOpacity={setOpacity}
                 setPage={setPage}
                 round={round} setRound={setRound}
                 tokens={tokens} setTokens={setTokens}
                 wins={wins} setWins={setWins}
+                raffleid={route.params.raffleid}
                 setChoice={setChoice} choice={choice} />
         )
     }

@@ -13,8 +13,14 @@ export default function PendingCard(props) {
     const [host, setHost] = useState(null)
     const [charityString, setCharity] = useState("")
 
+    if (!raffle){
+        return null
+    }
     useEffect(() => {
         let charityS = ""
+        if (!Object.keys(raffle).includes('charities') || raffle.charities === null) {
+            raffle.charities = []
+        }
         for (var i = 0; i < raffle.charities.length; i++) {
             // dont want comma at the end
             if (i === raffle.charities.length - 1) {
@@ -36,13 +42,21 @@ export default function PendingCard(props) {
 
     if (raffle) {
         raffle['host'] = host
-        console.log(host)
+        //console.log(host)
         return (
             <TouchableOpacity onPress={() => props.navigation.navigate('AdminEdit', raffle)}>
                 <View style={styles.HostCard}>
                     <Image style={styles.HostCard__image} source={{ uri: raffle.images[0] }} />
                     <View style={styles.Info}>
                         <Text style={{ fontWeight: 'bold' }}>{raffle.name}</Text>
+                        {(raffle.approved) ? <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.Info__label}>{'Start Time: '}</Text>
+                            <Text>{(new Date(raffle.startTime * 1000)).toDateString().substring(4)}</Text>
+                        </View> : null}
+                        {(raffle.approved) ? <View style={{ flexDirection: 'row' }}>
+                            <Text style={styles.Info__label}>{'Likes: '}</Text>
+                            <Text>{raffle.amountLiked}</Text>
+                        </View> : null}
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.Info__label}>{raffle.type == 1 ?'Valued At: ': 'Prize Value: '}</Text>
                             <Text>${raffle.type == 1 ? raffle.valuedAt || '0': raffle.productPrice || '0'}</Text>

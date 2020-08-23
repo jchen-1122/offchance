@@ -11,7 +11,7 @@ export function stripeSavedPayment(amount) {
 
   useEffect(() => {
     async function onLoadStart() {
-        console.log('here')
+        //console.log('here')
         let response = await fetch('http://' + data.ipAddress + '/user/autopay', {
             method: "POST",
             headers: {
@@ -23,8 +23,8 @@ export function stripeSavedPayment(amount) {
       let json = await response.json()
       setIntent(json.payment_intent.client_secret)
       setCard(json.payment_id)
-      console.log(json.payment_intent.client_secret)
-      console.log(json.payment_id)
+      //console.log(json.payment_intent.client_secret)
+      //console.log(json.payment_id)
     }
     onLoadStart()
   }, [])

@@ -5,10 +5,7 @@ import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import TextLink from '../../01_Atoms/Buttons/TextLinks/TextLinks';
 import { styles } from './Welcome.styling';
 import { colors, fonts, utilities } from '../../../settings/all_settings';
-import Divider from '../../01_Atoms/Divider/Divider.js';
 import GlobalState from '../../globalState';
-import Social from '../Social/Social'
-
 
 export default function HomeScreen({ navigation }) {
   const data = require('../../IP_ADDRESS.json');

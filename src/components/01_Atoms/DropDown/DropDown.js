@@ -15,23 +15,23 @@ function DropDown(props) {
         option = option.toString()
         let optionIcon;
         // add the paypal logo
-        if (option.toUpperCase() == ('Paypal').toUpperCase()){
-            optionIcon = <Image source={{uri: 'https://dwglogo.com/wp-content/uploads/2016/08/PayPal_Logo_Icon.png'}} style={{height: 20, width: 20}}/>
+        if (option.toUpperCase() == ('Paypal').toUpperCase()) {
+            optionIcon = <Image source={{ uri: 'https://dwglogo.com/wp-content/uploads/2016/08/PayPal_Logo_Icon.png' }} style={{ height: 20, width: 20 }} />
         }
         // add wallet logo
-        else if (option.toUpperCase() == ('Wallet Chances').toUpperCase()){
-            optionIcon = <Icon name="wallet" type="material-community" size={20}/>
+        else if (option.toUpperCase() == ('Wallet Chances').toUpperCase()) {
+            optionIcon = <Icon name="wallet" type="material-community" size={20} />
         }
         // add credit card logo
-        else if (option.includes('**** **** ****')){
-            optionIcon = <Icon name="credit-card-outline" type="material-community"  size={20}/>
+        else if (option.includes('**** **** ****')) {
+            optionIcon = <Icon name="credit-card-outline" type="material-community" size={20} />
         }
-        options.push({label: option.toString(), value: option, icon: () => optionIcon})
+        options.push({ label: option.toString(), value: option, icon: () => optionIcon })
 
     }
 
     // for different sizes
-    let containerStyles = [styles.DropDown__picker,]
+    let containerStyles = [styles.DropDown__picker]
     switch (props.size) {
         case 'small':
             containerStyles.push(styles.DropDown__picker_small);
@@ -55,16 +55,20 @@ function DropDown(props) {
                     max={10}
                     defaultValue={(props.placeholder) ? null : selectedValue}
                     placeholder={props.placeholder}
-                    placeholderStyle={{color: '#888888'}}
+                    placeholderStyle={{ color: '#888888' }}
                     style={styles.DropDown__box}
                     containerStyle={containerStyles}
                     zIndex={props.zIndex}
                     itemStyle={{
                         justifyContent: 'flex-start',
                     }}
-                    onChangeItem={item => { setSelectedValue(item.value); 
-                                            if (props.setValue) { props.setValue(item.value) } 
-                                            (item.value === '+ Add Payment Method') ? (setSelectedValue((props.options[0]).toString()), props.parentFunction()) : null }}
+                    onChangeItem={item => {
+                        setSelectedValue(item.value);
+                        if (props.setValue) {
+                            let value = (isNaN(item.value)) ? item.value : parseInt(item.value)
+                            props.setValue(value)
+                        };
+                    }}
                 />
             </View>
         )
@@ -77,8 +81,17 @@ function DropDown(props) {
                 mode='dropdown'
                 selectedValue={selectedValue}
                 style={styles.Picker}
-                onValueChange={(itemValue, itemIndex) => {setSelectedValue(itemValue); if (props.setValue) { props.setValue(itemValue) }}}
-                itemStyle={{backgroundColor: 'pink'}}>
+                onValueChange={(itemValue, itemIndex) => {
+                    setSelectedValue(itemValue);
+                    if (props.setValue) {
+                        // if it should be a number
+                        if (!isNaN(itemValue)) {
+                            itemValue = parseInt(itemValue)
+                        }
+                        props.setValue(itemValue)
+                    }
+                }}
+                itemStyle={{ backgroundColor: 'pink' }}>
                 {props.options.map((option, index) =>
                     <Picker.Item label={option} value={option} />
                 )}

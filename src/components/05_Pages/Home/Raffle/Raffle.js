@@ -19,12 +19,14 @@ import { top5_raffle } from '../../../../functions/explore_functions';
 import GlobalState from '../../../globalState';
 import * as geolib from 'geolib';
 import { set } from 'react-native-reanimated';
+import LikeButton from '../../../01_Atoms/Buttons/LikeButton/LikeButton'
 
 export default function Raffle({ navigation, route }) {
     const { user, setUser } = useContext(GlobalState)
     const mapAPI = 'pk.eyJ1IjoiamNoZW4xMTIyIiwiYSI6ImNrMjZ4dXM0cDF4cnozY21sYnBwYjdzaTAifQ.ItVivcBhnM1Lz9GP5B0PSQ'
     var raffle = route.params
     const [views, setViews] = useState(null)
+    const [boughtChances, setBoughtChances] = useState(0)
     // get host of raffle from db
     const [top5, setTop5] = useState([])
     const [enabled, setEnabled] = useState(true)
@@ -46,11 +48,17 @@ export default function Raffle({ navigation, route }) {
             // addView()
             route.params['host'] = await getUser(route.params.hostedBy)
             route.params['top5'] = route.params.users.children.sort((a, b) => b.amountDonated - a.amountDonated).slice(0, 5)
+            let temp = []
+            for (var i = 0; i < route.params['top5'].length; i++) {
+                const user = await getUser(route.params['top5'][i].userID)
+                temp.push(user)
+            }
+            setTop5(temp)
             // geocode raffle address not host address (still need to change)
             let coordsUser = await getCoords(user.shippingAddress)
             // let coordsHost = await getCoords(route.params['host'].shippingAddress)
             let coordsHost = Object.keys(route.params).includes("address") ? await getCoords(route.params.address) : coordsUser
-            console.log(coordsHost)
+            //console.log(coordsHost)
 
             let longUser = coordsUser.features[0].geometry.coordinates[0]
             let latUser = coordsUser.features[0].geometry.coordinates[1]
@@ -67,90 +75,103 @@ export default function Raffle({ navigation, route }) {
         getCurrentRaffle()
     }, [])
 
-    React.useEffect(() => {
-        async function getTop5(ids) {
-            // get top 5 donors of this raffle
-            let temp = []
-            for (var i = 0; i < ids.length; i++) {
-                const user = await getUser(ids[i].userID)
-                temp.push(user)
-            }
-            setTop5(temp)
-        }
-        getTop5(raffle.top5)
-    }, [])
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <LikeButton navigation={navigation} currUser={user} setUser={setUser} raffle={raffle._id} style={{backgroundColor: 'transparent'}} color='white'/>
+            )
+        });
+    }, [navigation]);
+    // React.useEffect(() => {
+    //     console.log(raffle.top5)
+    // })
 
-    const getWinners = () => {
-        const enteredUsers = raffle.users.children
+    // React.useEffect(() => {
+    //     async function getTop5(ids) {
+    //         // get top 5 donors of this raffle
+    //         try {
+    //             let temp = []
+    //             for (var i = 0; i < ids.length; i++) {
+    //                 const user = await getUser(ids[i].userID)
+    //                 temp.push(user)
+    //             }
+    //             setTop5(temp)
+    //         } catch (e) {
 
-        const winners = []
+    //         }
+    //     }
+    //     getTop5(raffle.top5)
+    // }, [raffle.top5])
 
-        // will change based on the number of rewards
-        // rewards[0] = grand prize (1)
-        // rewards[1] = 50 chances (2)
-        // rewards[2] = 20 chanes (3)
-        // rewards[3] = 10 chances (4)
-        let rewards = [1, 2, 3, 4]
-        let numRewards = 10
-        let currPrize = 0
+    // const getWinners = () => {
+    //     const enteredUsers = raffle.users.children
+    //     const winners = []
+    //     // will change based on the number of rewards
+    //     // rewards[0] = grand prize (1)
+    //     // rewards[1] = 50 chances (2)
+    //     // rewards[2] = 20 chanes (3)
+    //     // rewards[3] = 10 chances (4)
+    //     let rewards = [1, 2, 3, 4]
+    //     let numRewards = 10
+    //     let currPrize = 0
 
-        // const winners = raffle.raffle.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,numWinners)
+    //     // const winners = raffle.raffle.users.children.sort((a,b)=>b.amountDonated - a.amountDonated).slice(0,numWinners)
 
-        // randomly and proportionally assign rewards to users
+    //     // randomly and proportionally assign rewards to users
 
-        while (numRewards !== 0) {
-            // 1. assign everyone a range of numbers based on the number of chances
-            let ranges = {}
-            let count = 1
-            let numChances = 0
-            for (var i = 0; i < enteredUsers.length; i++) {
-                ranges[enteredUsers[i].userID] = [count, count + enteredUsers[i].chances - 1]
-                count += enteredUsers[i].chances
-                numChances += enteredUsers[i].chances
-            }
+    //     while (numRewards !== 0) {
+    //         // 1. assign everyone a range of numbers based on the number of chances
+    //         let ranges = {}
+    //         let count = 1
+    //         let numChances = 0
+    //         for (var i = 0; i < enteredUsers.length; i++) {
+    //             ranges[enteredUsers[i].userID] = [count, count + enteredUsers[i].chances - 1]
+    //             count += enteredUsers[i].chances
+    //             numChances += enteredUsers[i].chances
+    //         }
 
-            // 2. Generate a random number from 0 to numChances
-            const rand = Math.floor((Math.random() * numChances) + 1)
+    //         // 2. Generate a random number from 0 to numChances
+    //         const rand = Math.floor((Math.random() * numChances) + 1)
 
-            // 3. determine who's range qualifies (both ends inclusive)
-            let winner = -1
-            for (var i = 0; i < enteredUsers.length; i++) {
-                if (ranges[enteredUsers[i].userID][0] <= rand && ranges[enteredUsers[i].userID][1] >= rand) {
-                    winner = enteredUsers[i].userID
-                    winners.push({ userID: enteredUsers[i].userID, reward: currPrize })
-                    break
-                }
-            }
+    //         // 3. determine who's range qualifies (both ends inclusive)
+    //         let winner = -1
+    //         for (var i = 0; i < enteredUsers.length; i++) {
+    //             if (ranges[enteredUsers[i].userID][0] <= rand && ranges[enteredUsers[i].userID][1] >= rand) {
+    //                 winner = enteredUsers[i].userID
+    //                 winners.push({ userID: enteredUsers[i].userID, reward: currPrize })
+    //                 break
+    //             }
+    //         }
 
-            // 4. update variables for next loop
-            numRewards--;
-            rewards[currPrize] -= 1
-            if (rewards[currPrize] == 0) {
-                currPrize += 1
-            }
+    //         // 4. update variables for next loop
+    //         numRewards--;
+    //         rewards[currPrize] -= 1
+    //         if (rewards[currPrize] == 0) {
+    //             currPrize += 1
+    //         }
 
-            // 5. delete current winner from array
-            for (var i = enteredUsers.length - 1; i >= 0; i--) {
-                if (enteredUsers[i].userID === winner) {
-                    // console.log('deleted')
-                    enteredUsers.splice(i, 1);
-                    break
-                }
-            }
-        }
-        return winners
-    }
+    //         // 5. delete current winner from array
+    //         for (var i = enteredUsers.length - 1; i >= 0; i--) {
+    //             if (enteredUsers[i].userID === winner) {
+    //                 // console.log('deleted')
+    //                 enteredUsers.splice(i, 1);
+    //                 break
+    //             }
+    //         }
+    //     }
+    //     return winners
+    // }
 
-    React.useEffect(() => {
-        async function loadWinners() {
-            // raffle.winners.children.length == 0
-            if (raffle.startTime - Math.floor(Date.now() / 1000) <= 600) {
-                const winners = getWinners()
-                await postWinners(winners)
-            }
-        }
-        loadWinners()
-    }, [])
+    // React.useEffect(() => {
+    //     async function loadWinners() {
+    //         // raffle.winners.children.length == 0
+    //         if (raffle.startTime - Math.floor(Date.now() / 1000) <= 600) {
+    //             const winners = getWinners()
+    //             await postWinners(winners)
+    //         }
+    //     }
+    //     loadWinners()
+    // }, [])
 
     async function getRaffle(id) {
         let response = await fetch('http://' + ip.ipAddress + '/raffle/id/' + id)
@@ -291,7 +312,7 @@ export default function Raffle({ navigation, route }) {
 
     // increment total number of views for the raffle
     const addView = async () => {
-        console.log(views)
+        //console.log(views)
         // const response = await fetch('http://' + data.ipAddress + '/raffle/edit/' + user._id, {
         //     method: "PATCH",
         //     headers: {
@@ -321,8 +342,9 @@ export default function Raffle({ navigation, route }) {
 
     // entering states
     const [_sizeType, setSizeType] = useState((sizeTypes.length === 0) ? "" : null)
-    const [_size, setSize] = useState((sizes.length === 0) ? "" : null)
+    const [_size, setSize] = useState((sizeTypes.length === 0) ? "One Size" : (sizes.length === 0) ? "" : null)
 
+    // images for charities
     let images = [];
     for (let i in images_strs) {
         images.push({ uri: images_strs[i] })
@@ -360,7 +382,7 @@ export default function Raffle({ navigation, route }) {
             20: { chances: 50 },
             50: { chances: 150 },
             100: { chances: 400 },
-            250: { chances: 1100}
+            250: { chances: 1100 }
         }
         // if the value/donation goal is > 500 add another option
         if ((raffle.valuedAt && raffle.valuedAt >= 500) || (raffle.donationGoal && raffle.donationGoal >= 500)) {
@@ -377,19 +399,21 @@ export default function Raffle({ navigation, route }) {
         setSheetController(!sheetController);
         setEnableScroll(!enableScroll);
 
-        setContainerStyle( !sheetController ?
-          { // light on
-          flex: 1,
-          justifyContent: 'space-between',
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-        } : { // light off
-          flex: 1,
-          justifyContent: 'space-between',
-          backgroundColor: "rgba(255, 255, 255, 1)",
-          });
-      }
+        setContainerStyle(!sheetController ?
+            { // light on
+                flex: 1,
+                justifyContent: 'space-between',
+                backgroundColor: "rgba(0, 0, 0, 0.5)",
+            } : { // light off
+                flex: 1,
+                justifyContent: 'space-between',
+                backgroundColor: "rgba(255, 255, 255, 1)",
+            });
+    }
 
-    var userIDs = ["5f1717acfe0108ee8b5e5c0b", "5f171974fe0108ee8b5e5c11", "5f1757f7c9deeef8c14b6a40", "5f1a6bdb457f816624a7a48c"]
+    var opponents = require('../RPS/opponent_ids.json')
+    var userIDs = opponents.userIDs
+
     const getOpponent = async () => {
         var opponentID = userIDs[Math.floor(Math.random() * userIDs.length)]
         const response = await fetch('http://' + ip.ipAddress + '/user/id/' + opponentID)
@@ -398,36 +422,38 @@ export default function Raffle({ navigation, route }) {
     }
 
     let chanceText = 'ENTER DRAWING'
-    for (var raf of user.rafflesEntered.children){
-        if (raf.raffleID == raffle._id){
-            chanceText = 'YOU HAVE ' + raf.chances + ' CHANCES' + ((raf.size && raf.size !== 'One Size') ? ' FOR SIZE ' + raf.size : '')
+    if (Object.keys(user).includes('rafflesEntered')) {
+        for (var raf of user.rafflesEntered.children) {
+            if (raf.raffleID == raffle._id) {
+                chanceText = 'YOU HAVE ' + raf.chances + ' CHANCES'
+            }
         }
     }
-    return (
+    return ((Object.keys(route.params).includes('host')) ?
         <View style={containerStyle}>
             <ScrollView contentContainerStyle={utilities.scrollview} scrollEnabled={enableScroll} >
                 {images.length > 1 ? <ImageCarousel images={images}></ImageCarousel> : <Image source={images[0]} style={styles.Raffle__image}></Image>}
 
                 {/* raffle title */}
-                <Text style={[fonts.h1, { marginLeft: '8%', marginBottom: 0 }]}>{name}</Text>
+                <Text style={[fonts.h1, { marginLeft: '8%' }]}>{name}</Text>
 
                 <View style={styles.content}>
                     {(!location && location != null && !expired) ? <Text style={[fonts.bold, fonts.error]}>THIS RAFFLE IS OUT OF YOUR LOCATION</Text> : null}
                     <Text>{chanceText}</Text>
                     <View style={{ marginVertical: 15 }}>
-                        {(expired) ? <Text style={[fonts.bold, fonts.error]}>THIS DRAWING HAS EXPIRED</Text> : <Text style={[fonts.italic]}>Drawing Starts:</Text>}
+                        {(expired && raffle.archived) ? <Text style={[fonts.bold, fonts.error]}>THIS DRAWING HAS EXPIRED</Text> : (expired && !raffle.archived) ? <Text style={[fonts.italic]}>LIVE DRAWING IN PROGRESS</Text> : <Text style={[fonts.italic]}>Drawing Starts:</Text>}
                         {(expired) ? null : <CountDown unix_timestamp={raffle.startTime} />}
                     </View>
 
-                    <View style={{ marginRight: '-5%', marginBottom: 15 }}>
+                    <View style={{ marginRight: '-5%', marginBottom: 20 }}>
                         <Text style={fonts.italic}>Hosted by:</Text>
                         <View style={styles.hostedby}>
-                        <TouchableOpacity
-                        onPress={() => {
-                            user._id === raffle.host._id ?
-                            navigation.navigate('Profile') :
-                            navigation.navigate('OtherUser', {user: raffle.host})
-                            }}>
+                            <TouchableOpacity
+                                onPress={() => {
+                                    user._id === raffle.host._id ?
+                                        navigation.navigate('Profile') :
+                                        navigation.navigate('OtherUser', { user: raffle.host })
+                                }}>
                                 <View style={styles.hostedby__profile}>
                                     <Image source={{ uri: raffle.host.profilePicture }} style={styles.hostedby__image}></Image>
                                     <Text style={fonts.link}>{'@' + raffle.host.username}</Text>
@@ -497,71 +523,74 @@ export default function Raffle({ navigation, route }) {
                     }
 
                     <Text style={fonts.italic}>Description</Text  >
-                    <Text style={{ marginBottom: 15 }}>{description}</Text>
+                    <Text style={{ marginBottom: 20 }}>{description}</Text>
 
-                    {raffle.valuedAt ?
+                    {(raffle.type == 1 && raffle.valuedAt) ?
                         <View>
                             <Text style={fonts.italic}>Valued At</Text  >
-                            <Text style={{ marginBottom: 15 }}>${raffle.valuedAt}</Text>
+                            <Text style={{ marginBottom: 20 }}>${raffle.valuedAt}</Text>
+                        </View> :
+                        <View>
+                            <Text style={fonts.italic}>Buy It Now Price</Text  >
+                            <Text style={{ marginBottom: 20 }}>${raffle.productPrice}</Text>
                         </View>
-                        : null}
+                    }
 
                     {(expired || !raffle.live) ? null :
                         <View>
-                            <TouchableOpacity onPress={() => {
-                                navigation.navigate("Top5List", { users: top5 })
-                            }}>
-                                <Top5Donors users={top5} />
-                            </TouchableOpacity>
+                            {(raffle.type == 1) ?
+                                <TouchableOpacity onPress={() => {
+                                    navigation.navigate("Top5List", { users: top5 })
+                                }}>
+                                    <Top5Donors users={top5} />
+                                </TouchableOpacity>
+                                : null
+                            }
 
-                            {raffle.sizes.length > 0 ?
+                            {(raffle.sizes.length > 0 && raffle.sizes[0] !== 'One Size') ? // if there's more than just one size
                                 <View style={styles.pickSizeSlide}>
                                     <Text>PICK YOUR SIZE</Text>
-                                    {
-                                        raffle.sizeTypes.length > 0 ? 
-                                        <SizeCarousel sizes={sizeTypes} type='single' setSize={setSizeType}/> :null
-
-                                    }
-                                    <SizeCarousel sizes={sizes} type='single' setSize={setSize}/>
+                                    {raffle.sizeTypes.length > 0 ?
+                                        <SizeCarousel sizes={sizeTypes} type='single' setSize={setSizeType} /> : null}
+                                    <SizeCarousel sizes={sizes} type='single' setSize={setSize} />
                                 </View> : null
                             }
 
 
-                            <BuyOptions options={options} buyOption={buyOption} setBuyOption={setBuyOption} trigger={trigger}/>
+                            <BuyOptions options={options} buyOption={buyOption} setBuyOption={setBuyOption} trigger={trigger} navigation={navigation} loggedin={Object.keys(user).includes('_id')} />
 
                             {/* sliding sheet */}
-                            <View style={{marginLeft: '-8%', marginRight: '-8%'}}>
+                            <View >
                                 <OverlaySheet
-                                title={(buyOption) ? "Purchase "+ options[buyOption].chances + " chances" : "Purchase Chances"}
-                                type='default'
-                                sheet={sheetController}
-                                trigger={trigger}
-                                height={Dimensions.get('screen').height * 0.7}
-                                user={user}
-                                setUser={setUser}
-                                content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
-                                navigation={navigation}
-                                wallet={false}
-                                amount={(buyOption) ? "$" + buyOption + " = " + options[buyOption].chances + " chances" : "$5 = 10 chances"}
-                                amountDollar={(buyOption) ? parseInt(buyOption) : 0}
-                                chances={(buyOption) ? options[buyOption].chances : 0}
-                                sizeType={(_sizeType || _sizeType === "") ? _sizeType : "notselected"}
-                                size={(_size || _size === "") ? _size : "notselected"}
-                                raffleid={route.params._id}
+                                    title={(buyOption) ? "Purchase " + options[buyOption].chances + " chances" : "Purchase Chances"}
+                                    type='default'
+                                    sheet={sheetController}
+                                    trigger={trigger}
+                                    height={Dimensions.get('screen').height * 0.7}
+                                    user={user}
+                                    setUser={setUser}
+                                    content={['Wallet Balance', 'Reload Source', 'Reload Amount']}
+                                    navigation={navigation}
+                                    wallet={false}
+                                    amount={(buyOption) ? "$" + buyOption + " = " + options[buyOption].chances + " chances" : "$5 = 10 chances"}
+                                    amountDollar={(buyOption) ? parseInt(buyOption) : 0}
+                                    chances={(buyOption) ? options[buyOption].chances : 0}
+                                    sizeType={(_sizeType || _sizeType === "") ? _sizeType : "notselected"}
+                                    size={(_size || _size === "") ? _size : "notselected"}
+                                    raffleid={route.params._id}
+                                    type={route.params.type}
                                 />
-                            </View>
-
-                            <View style={{zIndex:-1}}>
-                              <Text style={{ marginRight: -10 }}>*We we will never show donation amounts for any user</Text>
                             </View>
                         </View>
                     }
-                    {raffle.live ?
-                        <View>
 
+                    {(raffle.live && raffle.type == 0) ? // raffle should be donate to enter + live
+                        <View>
+                            <View style={{ zIndex: -1 }}>
+                                <Text style={{ marginRight: -10 }}>*We we will never show donation amounts for any user</Text>
+                            </View>
                             <View style={[styles.highlightBackground, { paddingVertical: '5%', marginVertical: '5%' }]}>
                                 <Text style={[fonts.p, { textAlign: 'justify' }]}>Off Chance is a for-good company that hosts drawings for incredible products to raise money for charities and important causes that affect us all. All net proceeds (after hosting and platform fees) for this drawing will benefit the partners below:</Text>
-
                             </View>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: '5%' }}>
                                 <Image source={donors[0]} />
@@ -569,16 +598,10 @@ export default function Raffle({ navigation, route }) {
                             </View>
                         </View> : null
                     }
-
-                    <Text style={[fonts.p, { textAlign: 'justify' }]}>*All prizes are guaranteed to be 100% authentic and deadstock. You will be notified via email once donation goal is met and drawing starts.</Text>
+                    <Text style={[fonts.p, { marginBottom: 20 }]}>*All prizes are guaranteed to be 100% authentic and deadstock. You will be notified via email once donation goal is met and drawing starts.</Text>
                 </View>
 
                 <View style={[styles.content, { flex: 0, alignItems: 'center', zIndex: -1 }]}>
-                    <BlockButton
-                        title="PLAY GAME"
-                        color="primary"
-                        onPress={async() => navigation.navigate('GameController', await getOpponent())}
-                        disabled={expired} />
                     <BlockButton
                         title="LIVE DRAWING EXP"
                         color="primary"
@@ -586,7 +609,8 @@ export default function Raffle({ navigation, route }) {
                             // navigation.navigate('RaffleResult', {raffle: route.params})
                             navigation.navigate('RaffleResult', { raffle: raffle })
                         }}
-                        disabled={expired} />
+                        //expired
+                        disabled={false} />
 
                     {/* <BlockButton
                         title="ENTER DRAWING"
@@ -594,16 +618,8 @@ export default function Raffle({ navigation, route }) {
                         onPress={() => toggleSheet()}
                         disabled={expired} /> */}
                 </View>
-                {/* disable enter drawing if a person is not within the radius (state: location) */}
-                {/* sliding sheet */}
-                {/* <Animated.View
-                    style={[styles.subView,
-                    { transform: [{ translateY: bounceValue }] }]}>
-                    <SlidingSheet title='Enter Drawing' context={['abc']} visible={sheetOpen} toggleSheet={toggleSheet} />
-                </Animated.View> */}
-
             </ScrollView>
             <BottomNav navigation={navigation} active={'Home'}></BottomNav>
-        </View>
+        </View> : null
     )
 }

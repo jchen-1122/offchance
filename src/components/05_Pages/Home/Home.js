@@ -17,7 +17,8 @@ import LatestWinnerCard from '../../03_Organisms/HorizontalCards/LatestWinnerCar
 import RaffleCard from '../../03_Organisms/HorizontalCards/RaffleCard/RaffleCard';
 import registerForPushNotifications from '../../../functions/pushNotifs/registerForPushNotifications';
 import * as Notifications from 'expo-notifications';
-import {time_from_now, in_a_day} from '../../../functions/convert_dates';
+import { time_from_now, in_a_day } from '../../../functions/convert_dates';
+import { live_drawing_now} from '../../../functions/raffle_functions'
 
 function Home({ navigation }) {
   const data = require('../../IP_ADDRESS.json');
@@ -45,9 +46,7 @@ function Home({ navigation }) {
   // get all raffles and maybe filter them by type
   React.useEffect(() => {
     async function getRaffle() {
-      if (!user.token) {
-        setToken(await registerForPushNotifications())
-      }
+      setToken(await registerForPushNotifications())
       setTop5Donors(await top5_global())
       setLatestWinners(await getLatestWinners())
       setLatestRaffles(await getLatestRaffles())
@@ -57,11 +56,10 @@ function Home({ navigation }) {
       setBuyRaffles(response.filter((raffle) => { return raffle.type == 2 }))
       setUpcomingRaffles(response.filter((raffle) => { return raffle.live == false }))
       // Getting most upcoming raffle for banner
-      let liveraffles = response.filter((raffle) => { return raffle.live == true })
-      let date = new Date()
-      let comingraffles = liveraffles.filter((raffle) => { return raffle.startTime * 1000 > date })
-      let nextraffle = comingraffles.sort((a,b) => (a.startTime > b.startTime) ? 1 : ((b.startTime > a.startTime) ? -1 : 0))
-      if (nextraffle.length > 0 && in_a_day(nextraffle[0].startTime)) setNextRaffle(nextraffle[0])
+      let comingraffles = response.filter((raffle) => { return (in_a_day(raffle.startTime) && !raffle.archived) })
+      comingraffles.sort((a, b) => (a.startTime < b.startTime) ? 1 : -1)
+      let nextraffle = comingraffles[0]
+      if (comingraffles.length > 0 && in_a_day(nextraffle.startTime)) setNextRaffle(nextraffle)
       setTrendingRaffles(sortTrending(response))
       setRaffles(response)
     }
@@ -76,27 +74,39 @@ function Home({ navigation }) {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          token: token
+          token: await registerForPushNotifications()
         })
       })
       const json = await response.json()
       return json
     }
-    if (!user.token) {
+    if (user.token && user.token !== token) {
+      console.log('user.token', user.token)
+      console.log('token')
       addToken()
     }
 
     // navigate to a particular page
-    // ex: data: {"title": "Hello", "message": "Yes", "page": "Search"}
-    Notifications.addNotificationResponseReceivedListener((response) => {
-      let page = response.notification.request.content.data.body.page
+    Notifications.addNotificationResponseReceivedListener(async (response) => {
+      let page = response.notification.request.content.data.body.data.page
+      let host = response.notification.request.content.data.body.data.host
+      let raffle = await getRaffleByID(response.notification.request.content.data.body.data.raffleID)
+      raffle['host'] = host
+
       if (page) {
+        // if you're supposed to navigate to a certain raffle page
+        if (raffle) {
+          navigation.navigate(page, raffle)
+        }
         navigation.navigate(page)
       }
     }
-
     );
-
+    async function getRaffleByID(id) {
+      let response = await fetch('http://' + data.ipAddress + '/raffle/id/' + id)
+      response = await response.json()
+      return response
+    }
     // BACKHANDLING FOR ANDROID BOTTOM NAV
     const backAction = () => {
       Alert.alert("Hold on!", "Are you sure you want to exit the app?", [
@@ -121,20 +131,28 @@ function Home({ navigation }) {
   return (
     <View style={utilities.container}>
       <ScrollView contentContainerStyle={utilities.scrollview}>
-      <View style={{ height: 20, backgroundColor: 'black' }}></View>
-      {nextRaffle && <Banner
-          color="black"
-          press={nextRaffle} navigation={navigation}
-          title={"LIVE DRAWING " + time_from_now(nextRaffle.startTime).toUpperCase()} />}
+        {(nextRaffle) ?
+        (live_drawing_now(nextRaffle))?
+        <Banner
+        color="red"
+        press={nextRaffle} navigation={navigation}
+        title={"LIVE DRAWING HAPPENING NOW" } />
+        :
+        <View style={{height: 25}}>
+        <Banner
+        color="green"
+        press={nextRaffle} navigation={navigation}
+        title={"LIVE DRAWING " + time_from_now(nextRaffle.startTime).toUpperCase()} />
+        </View>
+
+        : null}
         <TopNav navigation={navigation} active='Home' />
         <View style={utilities.flexCenter}>
 
           <HorizontalScroll title="Trending" theme="light" seeAllRaffles={trendingRaffles} navigation={navigation} toggle={true}>
 
             {trendingRaffles.map((raffle, index) =>
-              <View style={{ marginHorizontal: -14 }}>
-                <RaffleCard raffle={raffle} navigation={navigation} />
-              </View>
+              <RaffleCard raffle={raffle} navigation={navigation} />
             )}
           </HorizontalScroll>
           <HorizontalScroll title="Top 5 Donors" theme="dark">
@@ -145,9 +163,7 @@ function Home({ navigation }) {
 
           <HorizontalScroll title="Donate to Enter Raffles" theme="light" seeAllRaffles={donateRaffles} navigation={navigation}>
             {donateRaffles.map((raffle, index) =>
-              <View style={{ marginHorizontal: -3 }}>
-                <RaffleCard raffle={raffle} navigation={navigation} />
-              </View>
+              <RaffleCard raffle={raffle} navigation={navigation} />
             )}
           </HorizontalScroll>
 

@@ -6,31 +6,26 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-between',
         backgroundColor: 'white',
-        marginTop: 10,
 
     },
+    switch__item: {
+        backgroundColor: 'pink',
+        height: 40,
+        width: Dimensions.get('window').width * 0.5,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+        paddingBottom: 10,
+        marginBottom: 10,
 
+
+    },
+    switch__item_active: {
+        borderBottomWidth: 3,
+        borderBottomColor: 'black'
+    },
     switch: {
         flexDirection: 'row',
-        justifyContent: 'space-evenly',
-
-    },
-
-    childView_1: {
-        width: Dimensions.get('window').width * 0.5,
-        backgroundColor: 'rgba(0, 0, 0, 0.05)',
-        height: 47,
-        marginBottom: 10,
-        borderBottomWidth :0,
-        borderBottomColor: '#000',
-    },
-
-    childView_2: {
-        width: Dimensions.get('window').width * 0.5,
-        backgroundColor: 'rgba(0, 0, 0, 0.05)',
-        marginBottom: 10,
-        borderBottomWidth :3,
-        borderBottomColor: '#000',
     },
 
 });

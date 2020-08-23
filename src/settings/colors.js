@@ -7,9 +7,12 @@ var colors = {
     lightGray: '#EFEFEF',
     gray: '#878787',
     darkGray: '#545454',
-    facebookBlue: '#3B5998', // for login/sign in to fb
     green: '#1D9000',
     red: '#FF0000',
+
+    // company specific
+    facebookBlue: '#3B5998',
+    paypalYellow: '#F8BF38',
 
     // colors for the WinnerCard
     gold1: '#D0912E',

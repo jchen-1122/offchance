@@ -7,7 +7,7 @@ import BottomNav from '../../../02_Molecules/BottomNav/BottomNav';
 import TopNav from '../../../02_Molecules/TopNav/TopNav';
 import Search from '../../Search/Search'
 import GlobalState from '../../../globalState';
-import { getPendingRaffles } from '../../../../functions/explore_functions';
+import { getLive } from '../../../../functions/explore_functions';
 import PendingCard from '../../../03_Organisms/PendingCard/PendingCard'
 
 function Home({ navigation }) {
@@ -15,13 +15,13 @@ function Home({ navigation }) {
   const { user, setUser } = useContext(GlobalState)
 
   // different sets of raffles
-  const [pendingRaffles, setPendingRaffles] = useState([])
+  const [liveRaffles, setLiveRaffles] = useState([])
   const [refresh, setRefresh] = useState(true)
 
   // get all raffles and maybe filter them by type
   React.useEffect(() => {
     async function getRaffle() {
-      setPendingRaffles(await getPendingRaffles())
+        setLiveRaffles(await getLive())
     }
     getRaffle()
 
@@ -58,20 +58,21 @@ function Home({ navigation }) {
   return (
     <View style={utilities.container}>
       <ScrollView contentContainerStyle={[utilities.scrollview,{justifyContent: 'flex-start'}]}>
-        <TopNav navigation={navigation} active='Drawings' admin={true} />
-        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
+        <TopNav navigation={navigation} active='Live' admin={true} fromActive={true}/>
+        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between' }}>
           <Icon name='magnify' type='material-community' color='black' onPress={() => navigation.navigate("Search")} style={{marginTop: 8, marginLeft: 8, marginRight: Dimensions.get('screen').width * 0.35}}/>
-          <Button title={'Drawings Pending Approval'} onPress={() => setRefresh(!refresh)} />
+          <Button title={'Live Drawings'} onPress={() => setRefresh(!refresh)} />
         </View>
         <View>
-          {pendingRaffles.map((raffle, index) =>
+          {liveRaffles.map((raffle, index) =>
             <PendingCard
               data={raffle}
               navigation={navigation}
             />)}
+
         </View>
       </ScrollView>
-      <BottomNav navigation={navigation} active={'AdminHome'} admin={true} />
+      <BottomNav navigation={navigation} active={'Active'} admin={true} />
     </View>
 
   )

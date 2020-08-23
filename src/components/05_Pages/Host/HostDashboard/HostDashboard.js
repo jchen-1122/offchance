@@ -10,6 +10,8 @@ import { styles } from './HostDashboard.styling'
 export default function HostDashboard({ navigation }) {
     const { user, setUser } = useContext(GlobalState)
     const [raffles, setRaffles] = useState([])
+    const [_postedRaffles, setPostedRaffles] = useState([])
+    const [_pendingRaffles, setPendingRaffles] = useState([])
     const [totalRaised, setTotalRaised] = useState(0)
     var ip = require('../../../IP_ADDRESS.json')
 
@@ -28,11 +30,14 @@ export default function HostDashboard({ navigation }) {
                 }
             }
             setTotalRaised(total)
+            setPostedRaffles(hostedRaffles.filter((raffle) => { return raffle.approved == true }))
+            setPendingRaffles(hostedRaffles.filter((raffle) => { return raffle.approved == false }))
             setRaffles(hostedRaffles)
         }
         getRaffles()
     }, []);
 
+    // if they're not a host, lead them to the ReqBusAcc form
     if (!user.isHost) {
         return (
             <View style={utilities.container}>
@@ -42,6 +47,40 @@ export default function HostDashboard({ navigation }) {
                 </View>
                 <BottomNav navigation={navigation} active={'Host'} />
             </View>
+        )
+    }
+
+    // drawings that have been approved and posted
+    let postedDrawings;
+    if (_postedRaffles.length > 0) {
+        postedDrawings = (
+            <View>
+                <Text style={[fonts.h1, { marginTop: '5%', marginLeft: '2%' }]}>Your Posted Drawings</Text>
+                {_postedRaffles.map((raffle, index) =>
+                    <HostCard
+                        data={raffle}
+                        host={user}
+                        navigation={navigation}
+                    />
+                )}
+            </View>
+        )
+    }
+
+    // drawings pending approval
+    let pendingDrawings;
+    if (_pendingRaffles){
+        pendingDrawings = (
+            <View>
+            <Text style={[fonts.h1, { marginTop: '5%', marginLeft: '2%' }]}>Your Pending Drawings</Text>
+            {_pendingRaffles.map((raffle, index) =>
+                <HostCard
+                    data={raffle}
+                    host={user}
+                    navigation={navigation}
+                />
+            )}
+        </View>
         )
     }
 
@@ -59,7 +98,7 @@ export default function HostDashboard({ navigation }) {
                         <Text style={styles.statsItem__label}>TOTAL RAISED</Text>
                     </View>
                     <View style={styles.statsItem}>
-                        <Text style={styles.statsItem__value}>{user.rafflesPosted.length || 0}</Text>
+                        <Text style={styles.statsItem__value}>{_postedRaffles.length || 0}</Text>
                         <Text style={styles.statsItem__label}>HOSTED DRAWINGS</Text>
                     </View>
                     <View style={styles.statsItem}>
@@ -67,17 +106,9 @@ export default function HostDashboard({ navigation }) {
                         <Text style={styles.statsItem__label}>FOLLOWERS</Text>
                     </View>
                 </View>
+                {pendingDrawings}
+                {postedDrawings}
 
-                <View>
-                    <Text style={[fonts.h1, { marginTop: '5%', marginLeft: '2%' }]}>Your Drawings</Text>
-                    {raffles.map((raffle, index) =>
-                        <HostCard
-                            data={raffle}
-                            host={user}
-                            navigation={navigation}
-                        />
-                    )}
-                </View>
             </ScrollView>
             <BottomNav navigation={navigation} active={'Host'}></BottomNav>
         </View>

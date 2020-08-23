@@ -6,7 +6,7 @@ import { fonts } from '../../../settings/all_settings'
 function Top5Donors({ navigation, users}) {
     let donors = [];
     if (users[0] != null){
-        for (var i=0; i<5; i++){
+        for (var i=0; i<Math.min(5, users.length); i++){
             donors.push(
             <Image source={{uri:users[i].profilePicture}} style={styles.donor} />
             )

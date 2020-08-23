@@ -13,8 +13,9 @@ import { colors, fonts, utilities, dimensions } from '../../../settings/all_sett
 import { in_a_day, is_expired } from '../../../functions/convert_dates';
 import { top5_raffle } from '../../../functions/explore_functions';
 import { time_from_now } from '../../../functions/convert_dates';
-import {isIphoneX} from '../../../functions/user_functions'
-import TextLink from '../../01_Atoms/Buttons/TextLinks/TextLinks'
+import { isIphoneX } from '../../../functions/user_functions';
+import TextLink from '../../01_Atoms/Buttons/TextLinks/TextLinks';
+import { live_drawing_now } from '../../../functions/raffle_functions';
 
 function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, banner, feedType, prize, userType, otherUser }) {
     const ip = require('../../IP_ADDRESS.json');
@@ -65,9 +66,11 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
     }
 
     let buttonText = 'ENTER DRAWING'
-    for (var raffle of currUser.rafflesEntered.children){
-        if (raffle.raffleID == raffleid){
-            buttonText = 'YOU HAVE ' + raffle.chances + ' CHANCES' + ((raffle.size && raffle.size !== 'One Size') ? ' FOR SIZE ' + raffle.size : '')
+    if (Object.keys(currUser).includes('rafflesEntered')) {
+        for (var raffle of currUser.rafflesEntered.children){
+            if (raffle.raffleID == raffleid){
+                buttonText = 'YOU HAVE ' + raffle.chances + ' CHANCES'
+            }
         }
     }
     // set default values for card
@@ -86,27 +89,31 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
                     {(banner) ? <CardBanner title='DONATE TO WIN' color='lightGreen' /> : null}
                     <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid} />
                 </View>);
-            // if (donationGoal) {
-            //     pgBar =
-            //         <View style={{ marginTop: 15 }}>
-            //             <ProgressBar progress={230 / donationGoal} color={colors.primaryColor} raised={230} goal={donationGoal} width={contentWidth} />
-            //         </View>
-            // }
-            startData = (
-                <View>
-                    {expired ?
-                        <View>
-                            <Text style={[styles.startData_grey, fonts.p]}>DRAWING COMPLETED</Text>
-                            <Countdown unix_timestamp={date} />
-                        </View> :
-                        <View>
-                            <Text style={[styles.startData_grey, fonts.p]}>DRAWING STARTS</Text>
-                            <Countdown unix_timestamp={date} />
-                            <Text style={[styles.grey_text, fonts.p]}>OR WHEN DONATION GOAL IS MET</Text>
-                        </View>
-                    }
+
+            if (live_drawing_now(data)) {
+                startData = (
+                    <View>
+                        <Text style={[fonts.bold,{fontSize: 14}]}>LIVE DRAWING HAPPENING NOW</Text>
+                    </View>
+                )
+            }
+            else if (expired) {
+                startData = (
+                    <View>
+                        <Text style={[styles.startData_grey, fonts.p]}>DRAWING COMPLETED</Text>
+                        <Countdown unix_timestamp={date} />
+                    </View>
+                )
+            }
+            else{
+                startData = (
+                    <View>
+                    <Text style={[styles.startData_grey, fonts.p]}>DRAWING STARTS</Text>
+                    <Countdown unix_timestamp={date} />
+                    <Text style={[styles.grey_text, fonts.p]}>OR WHEN DONATION GOAL IS MET</Text>
                 </View>
-            );
+                )
+            }
             break;
         // enter to buy drawings
         case 'buy':
@@ -196,7 +203,7 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
                         }}>
                         {username}
                     </TouchableOpacity>
-                    {friendsEntered}
+                    {(enteredUsers && enteredUsers.length > 0) ? friendsEntered : null}
                     {startData}
                 </View>
                 {pgBar}

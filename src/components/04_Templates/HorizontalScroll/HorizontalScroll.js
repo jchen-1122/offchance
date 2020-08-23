@@ -14,16 +14,20 @@ export default function HorizontalScroll(props) {
                     <TouchableOpacity
                         style={{ marginBottom: '30%' }}
                         onPress={() => { props.navigation.navigate('SeeAll', { raffles: props.seeAllRaffles, title: props.title }) }}>
-                        <Text style={{ fontSize: 16 }}>See All</Text>
+                        <Text style={{ fontSize: 14 }}>See All</Text>
                     </TouchableOpacity>
                     : null}
             </View>
             <ScrollView
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
+                // contentContainerStyle={{flexDirection: 'row', justifyContent: 'flex-start'}}
                 scrollEventThrottle={200}
                 decelerationRate="normal">
-                {props.children}
+                    <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
+                    {props.children}
+                    </View>
+                
             </ScrollView>
 
         </View>

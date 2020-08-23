@@ -13,9 +13,9 @@ const styles = StyleSheet.create({
         width: cardSize,
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '5%', 
-        paddingBottom: '10%',  
-        marginHorizontal: Dimensions.get('window').width * 0.015,
+        padding: 10, 
+        // paddingBottom: '10%',  
+        marginHorizontal: 10,
     },
     RaffleCard__image: {
         height: imageSize,
