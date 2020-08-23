@@ -259,7 +259,6 @@ export default function Raffle({ navigation, route }) {
     for (let i in donors) {
         charities.push(<Image source={{ uri: donors[i] }} style={styles.charity__image}></Image>)
     }
-    console.log(charities)
 
     // for sliding sheet (payment)
     const [sheetOpen, setSheetOpen] = useState(false);
