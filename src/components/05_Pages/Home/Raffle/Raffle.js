@@ -233,6 +233,7 @@ export default function Raffle({ navigation, route }) {
     let images_strs; // string rep of images for carousel
     let sizes;
     let sizeTypes;
+    let donors;
     if (raffle != null) {
         name = raffle.name
         description = raffle.description
@@ -240,7 +241,10 @@ export default function Raffle({ navigation, route }) {
         images_strs = raffle.images
         sizes = raffle.sizes
         sizeTypes = raffle.sizeTypes
+        donors = raffle.charityImgs
     }
+
+    const tester = [require('../../../../../assets/images/naacp.png'), require('../../../../../assets/images/aclu.png')];
 
     // entering states
     const [_sizeType, setSizeType] = useState((sizeTypes.length === 0) ? "" : null)
@@ -251,7 +255,11 @@ export default function Raffle({ navigation, route }) {
     for (let i in images_strs) {
         images.push({ uri: images_strs[i] })
     }
-    const donors = [require('../../../../../assets/images/naacp.png'), require('../../../../../assets/images/aclu.png')]
+    let charities = [];
+    for (let i in donors) {
+        charities.push(<Image source={{ uri: donors[i] }} style={styles.charity__image}></Image>)
+    }
+    console.log(charities)
 
     // for sliding sheet (payment)
     const [sheetOpen, setSheetOpen] = useState(false);
@@ -484,7 +492,7 @@ export default function Raffle({ navigation, route }) {
                         </View>
                     }
 
-                    {(raffle.live && raffle.type == 0) ? // raffle should be donate to enter + live
+                    {(raffle.live && raffle.type == 1) ? // raffle should be donate to enter + live
                         <View>
                             <View style={{ zIndex: -1 }}>
                                 <Text style={{ marginRight: -10 }}>*We we will never show donation amounts for any user</Text>
@@ -493,8 +501,7 @@ export default function Raffle({ navigation, route }) {
                                 <Text style={[fonts.p, { textAlign: 'justify' }]}>Off Chance is a for-good company that hosts drawings for incredible products to raise money for charities and important causes that affect us all. All net proceeds (after hosting and platform fees) for this drawing will benefit the partners below:</Text>
                             </View>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: '5%' }}>
-                                <Image source={donors[0]} />
-                                <Image source={donors[1]} />
+                                {charities}
                             </View>
                         </View> : null
                     }
