@@ -84,7 +84,7 @@ export default function Social({ navigation }) {
     return (
         <View style={utilities.container}>
             <ScrollView contentContainerStyle={utilities.scrollview}>
-                <View style={utilities.flexCenter}>
+                <View style={[utilities.flexCenter, {justifyContent: "flex-start"}]}>
                     {banner}
                     {/* <View style={headerContainer}>
                     <Text style={[fonts.h1, styles.header]}>{header}</Text>
