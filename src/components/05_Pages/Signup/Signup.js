@@ -127,7 +127,7 @@ export default function Signup({ navigation }) {
 
   // validates email input
   const isValidEmail = () => {
-    return validator.isEmail(String(_email).toLowerCase());
+    return validator.isEmail(String(_email).toLowerCase().trim());
   }
   // validates phone input
   const isValidPhoneNumber = () => {
@@ -168,7 +168,7 @@ export default function Signup({ navigation }) {
       name: _name,
       username: _username,
       phoneNumber: _phoneNumber,
-      email: _email,
+      email: _email.trim(),
       instaHandle: _instaHandle,
       city: _city,
       state: jsonData[_us_state],
@@ -337,7 +337,7 @@ export default function Signup({ navigation }) {
               label="City"
               value={_city} 
               onChangeText={(text) => { setCity(text) }}
-              onSubmitEditing={() => passwordRef.current.focus()}
+              onSubmitEditing={() => (_oauth) ? referralRef.current.focus() : passwordRef.current.focus()}
               ref={cityRef}/>
             <Dropdown
               options={us_states}

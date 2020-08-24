@@ -282,7 +282,7 @@ export default function ({ navigation }) {
                             </View>
                             <Text style={[styles.label, { marginTop: '5%' }]}>Shirt Size</Text>
                             <SizeCarousel sizes={shirtSizes} default={_shirtSize} type='single' setSize={setShirtSize} />
-                            <Text style={[styles.label, { marginTop: '5%' }]}>Shirt Size</Text>
+                            <Text style={[styles.label, { marginTop: '5%' }]}>Shoe Size</Text>
                             <SizeCarousel sizes={shoeSizes} default={_shoeSize} type='single' setSize={setShoeSize} />
                         </View>
 

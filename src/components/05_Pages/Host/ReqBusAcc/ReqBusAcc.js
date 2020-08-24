@@ -246,7 +246,7 @@ export default function ReqBusAcc({ navigation }) {
                             onPress={() => setHostRaffleType(2)}
                             text="You are a business, retailer or reseller who wants to host an Enter to Buy drawing" />
                         <Text style={[fonts.h2, { marginTop: '5%' }]}>Personal Info</Text>
-                        <Text style={fonts.p}>* this info is used to verify identity and distribute funds once drawings are complete. We will never share this information with anyone else</Text>
+                        <Text style={fonts.p}>* This info is used to verify identity and distribute funds once drawings are complete. We will never share this information with anyone else</Text>
 
                         <Text style={[fonts.p, { marginTop: '5%' }]}>Date of Birth</Text>
                         <View style={{ flexDirection: 'row' }}>

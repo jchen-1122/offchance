@@ -114,7 +114,6 @@ function App() {
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
           <Stack.Screen name="SeeAll" component={SeeAll} options={({ route }) => ({ title: route.params.title })}/>
           <Stack.Screen name="YourFeed" component={YourFeed} options={{ headerShown: false }} />
-          {/* <Stack.Screen name="Explore" component={Explore} /> */}
           <Stack.Screen name="Raffle" component={Raffle} options={({ route }) => ({ title: route.params.name })}/>
           <Stack.Screen name="PlayGame" component={PlayGame} options={{ headerShown: false }}/>
           <Stack.Screen name="Game" component={Game} options={{ headerShown: false }}/>
@@ -134,11 +133,11 @@ function App() {
           <Stack.Screen name="EditProfile" component={EditProfile} options={{title: 'Edit Profile'}}/>
           <Stack.Screen name="Following" component={Following} />
           <Stack.Screen name="Followers" component={Followers} />
-          <Stack.Screen name="Top5List" component={Top5List} />
+          <Stack.Screen name="Top5List" component={Top5List} options={{title: 'Top 5'}}/>
           <Stack.Screen name="OtherUser" component={OtherUser} options={({ route }) => ({ title: route.params.user.name })} />
           <Stack.Screen name="GameController" component={GameController} options={{ headerShown: false }}/>
           <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
-          <Stack.Screen name="RaffleResult" component={RaffleResult} />
+          <Stack.Screen name="RaffleResult" component={RaffleResult} options={{title: 'Live Drawing'}}/>
           <Stack.Screen name="EnteredUsers" component={EnteredUsers} options={{ title: 'Entered' }}/>
           <Stack.Screen name="AskRaffleType" component={AskRaffleType} options={{ title: 'New Drawing' }}/>
           <Stack.Screen name="NewRaffle" component={NewRaffle} options={{ title: 'Submit Drawing' }}/>
@@ -149,8 +148,8 @@ function App() {
           <Stack.Screen name="AdminHomeHosts" component={AdminHomeHosts} options={{ headerShown: false, title: 'Hosts' }}/>
           <Stack.Screen name="AdminEditHost" component={AdminEditHost} options={({ route }) => ({ title: route.params.name })}/>
           <Stack.Screen name="Report" component={Report} />
-          <Stack.Screen name="Active" component={Active} />
-          <Stack.Screen name="ActiveLive" component={ActiveLive} />
+          <Stack.Screen name="Active" component={Active} options={{title: 'Active Drawings'}}/>
+          <Stack.Screen name="ActiveLive" component={ActiveLive} options={{title: 'Live Drawings'}}/>
         </Stack.Navigator>
         </SafeAreaView>
       </NavigationContainer>
