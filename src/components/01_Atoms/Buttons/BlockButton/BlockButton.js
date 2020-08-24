@@ -36,9 +36,6 @@ function BlockButton(props) {
                 buttonTitleStyle = [styles.buttonTitleStyle];
             }
             break;
-        case "confirm":
-            buttonStyle.push(styles.BlockButton_confirm);
-            break;
 
         // different social login buttons
         case "facebook":
@@ -62,16 +59,10 @@ function BlockButton(props) {
             buttonStyle.push(styles.BlockButton_small);
             buttonTitleStyle.push(styles.BlockButton__title_small)
             break;
-        case "shortSmall": // ex. buy chance buttons (second row)
-            buttonStyle.push(styles.BlockButton_smallShort);
-            buttonTitleStyle.push(styles.BlockButton__title_small)
-            break;
-        case "smallLongLeft": // ex. buy chance buttons (second row)
-            buttonStyle.push(styles.BlockButton_smallLongLeft);
-            buttonTitleStyle.push(styles.BlockButton__title_small)
-            break;
-        case "smallLongRight": // ex. buy chance buttons (second row)
-            buttonStyle.push(styles.BlockButton_smallLongRight);
+        
+        // for InfoFeed
+        case "InfoFeed":
+            buttonStyle.push(styles.BlockButton_InfoFeed)
             buttonTitleStyle.push(styles.BlockButton__title_small)
             break;
     }
@@ -79,6 +70,7 @@ function BlockButton(props) {
     // if button is disabled
     if (props.disabled) {
         buttonStyle.push(styles.BlockButton_disabled)
+        buttonTitleStyle.push(styles.BlockButton__title_disabled)
     }
 
     // if there's a banner on the button

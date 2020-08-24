@@ -558,7 +558,7 @@ export default function Raffle({ navigation, route }) {
                                 <View style={styles.pickSizeSlide}>
                                     <Text>PICK YOUR SIZE</Text>
                                     {raffle.sizeTypes.length > 0 ?
-                                        <SizeCarousel sizes={sizeTypes} type='single' setSize={setSizeType} /> : null}
+                                        <SizeCarousel sizes={sizeTypes} type='single' setSize={setSizeType} string /> : null}
                                     <SizeCarousel sizes={sizes} type='single' setSize={setSize} />
                                 </View> : null
                             }
@@ -567,7 +567,7 @@ export default function Raffle({ navigation, route }) {
                             <BuyOptions options={options} buyOption={buyOption} setBuyOption={setBuyOption} trigger={trigger} navigation={navigation} loggedin={Object.keys(user).includes('_id')} />
 
                             {/* sliding sheet */}
-                            <View >
+                            <View>
                                 <OverlaySheet
                                     title={(buyOption) ? "Purchase " + options[buyOption].chances + " chances" : "Purchase Chances"}
                                     type='default'

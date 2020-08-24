@@ -133,7 +133,7 @@ function App() {
           <Stack.Screen name="EditProfile" component={EditProfile} options={{title: 'Edit Profile'}}/>
           <Stack.Screen name="Following" component={Following} />
           <Stack.Screen name="Followers" component={Followers} />
-          <Stack.Screen name="Top5List" component={Top5List} options={{title: 'Top 5'}}/>
+          <Stack.Screen name="Top5List" component={Top5List} options={{title: 'Top 5 Donors'}}/>
           <Stack.Screen name="OtherUser" component={OtherUser} options={({ route }) => ({ title: route.params.user.name })} />
           <Stack.Screen name="GameController" component={GameController} options={{ headerShown: false }}/>
           <Stack.Screen name="LoadingScreen" component={LoadingScreen} />

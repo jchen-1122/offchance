@@ -13,6 +13,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 export default function Signup({ navigation }) {
   const data = require('../../IP_ADDRESS.json');
+  const [buttonText, setButtonText] = useState('SIGN UP FOR 5 FREE CHANCES')
 
   // array of states in the us
   const jsonData = require('./us_states.json')
@@ -90,7 +91,6 @@ export default function Signup({ navigation }) {
 
 
   const [state, setState] = useState({
-    businessAccount: false,
     futureDrawings: false,
     agreement: false,
     signedUp: false,
@@ -173,7 +173,6 @@ export default function Signup({ navigation }) {
       city: _city,
       state: jsonData[_us_state],
       password: _password,
-      isHost: state.businessAccount,
       profilePicture: (_proPic != null) ? _proPic : 'https://oc-profile-pictures.s3.us-east.cloud-object-storage.appdomain.cloud/default-avatar.png',
     }
     return JSON.stringify(data)
@@ -373,12 +372,12 @@ export default function Signup({ navigation }) {
           <View style={{ width: '90%' }}>
             <CheckBox
               selected={state.futureDrawings}
-              onPress={() => setState({ businessAccount: state.businessAccount, futureDrawings: !state.futureDrawings, agreement: state.agreement })}
+              onPress={() => setState({ futureDrawings: !state.futureDrawings, agreement: state.agreement })}
               text='Please keep me informed about future drawings'
             />
             <CheckBox
               selected={state.agreement}
-              onPress={() => setState({ businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: !state.agreement })}
+              onPress={() => setState({ futureDrawings: state.futureDrawings, agreement: !state.agreement })}
               text='I agree with terms of service'
             />
           </View>
@@ -390,12 +389,14 @@ export default function Signup({ navigation }) {
           </View>
 
           <BlockButton
-            title="SIGN UP FOR 5 FREE CHANCES"
+            title={buttonText}
             color="secondary"
+            disabled={buttonText == "SIGNING UP..."}
             onPress={async () => {
               let isError = await generateErrors()
-              setState({ businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true })
+              setState({ futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true })
               if (!isError) {
+                setButtonText("SIGNING UP...")
                 let postErrors = await checkValid()
                 if (!postErrors) {
                   sendsms()
@@ -406,10 +407,10 @@ export default function Signup({ navigation }) {
                   console.log('\nDATA.HOST_ITEM-------------')
                   console.log(JSON.parse(data).host_item)
                   navigation.navigate('PhoneVerify', { signup: data, mailing: state.futureDrawings, phone: _phoneNumber, email: _email })
+                  setButtonText("SIGN UP FOR 5 FREE CHANCES")
                 }
               }
             }} />
-          {state.signedUp && _errors.length == 0 ? <Text>Signing Up...</Text> : null}
         </View>
       </KeyboardAwareScrollView>
     </ScrollView>

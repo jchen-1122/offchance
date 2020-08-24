@@ -4,17 +4,25 @@ import {View} from 'react-native'
 
 export default function InfoFeed(props) {
     return (
-        <View style={{flexDirection: 'row'}}>
+        <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <BlockButton
             title="INFO"
             color={(props.info) ? "primary" : "secondary"}
-            size="smallLongLeft"
-            onPress={() => props.setInfo(true)}></BlockButton>
+            size="InfoFeed"
+            style={{
+                borderBottomRightRadius: 0,
+                borderTopRightRadius: 0,
+            }}
+            onPress={() => props.setInfo(true)}/>
             <BlockButton
             title="MY FEED"
             color={(!props.info) ? "primary" : "secondary"}
-            size="smallLongRight"
-            onPress={() => props.setInfo(false)}></BlockButton>
+            size="InfoFeed"
+            style={{
+                borderBottomLeftRadius: 0,
+                borderTopLeftRadius: 0,
+            }}
+            onPress={() => props.setInfo(false)}/>
         </View>
     )
 }

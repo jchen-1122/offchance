@@ -36,7 +36,7 @@ function OverlaySheet(props) {
   const [brand, setBrand] = useState(null)
 
   // Update 8/22 for weird overviewsheet
-  const [overlayStyle, setOverlayStyle] = useState(styles.overlay);
+  const [overlayStyle, setOverlayStyle] = useState([styles.overlay]);
 
 
   const data = require('../../IP_ADDRESS.json')
@@ -51,7 +51,7 @@ function OverlaySheet(props) {
       setWalletBalance(response.walletChances)
     }
     getLast4()
-  }, [])
+  }, [overlayStyle])
   const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet (1000 is at the bottom)
 
   useEffect(() => {
@@ -209,7 +209,7 @@ function OverlaySheet(props) {
   }
 
   // const [sheetOpen, setSheetOpen] = useState(true); // isHidden
-  
+
   const [visible, setVisible] = useState(false);
   const [sheetController, setSheetController] = useState(true);
   const [_walletBalance, setWalletBalance] = useState(0)
@@ -248,7 +248,7 @@ function OverlaySheet(props) {
   }
 
   const renderSwipeButton = () => (
-    <SwipeButton title="SWIPE TO CONFIRM" onSwipeFailure={()=>console.log('failed')}onSwipeSuccess={async () => {
+    <SwipeButton title="SWIPE TO CONFIRM" onSwipeFailure={() => console.log('failed')} onSwipeSuccess={async () => {
       //console.log('swiped')
       // if they've selected a size, sizetype, and payment method
       if (_method !== null && props.entertobuy) {
@@ -270,7 +270,7 @@ function OverlaySheet(props) {
         // if using a payment method
         else {
           //console.log(_method)
-          setOverlayStyle(styles.overlayPay);
+          // setOverlayStyle(styles.overlayPay);
           setStripe(false)
           // toggleOverlay();
         }
@@ -281,127 +281,88 @@ function OverlaySheet(props) {
     <View>
       <Overlay isVisible={visible}
         onBackdropPress={() => { toggleOverlay() }}
-        overlayStyle={overlayStyle}>
+        overlayStyle={styles.overlay}>
 
-        {stripe ? <View>
+        {stripe ?
+          <View>
+            {/* Title part with a close button */}
+            <View style={styles.slidingSheet__header}>
+              <TouchableOpacity onPress={() => { toggleOverlay() }}>
+                <Icon name='close' />
+              </TouchableOpacity>
+              <Text style={fonts.h1}>{props.title}</Text>
+              <View />
+            </View>
 
-          {/* Title part with a close button */}
-          <View style={styles.slidingSheet__header}>
-            <TouchableOpacity onPress={() => { toggleOverlay() }}>
-              <Icon name='close' />
-            </TouchableOpacity>
-            <Text style={fonts.h1}>{props.title}</Text>
-            <View />
-          </View>
+            <View style={styles.slidingSheet__save}>
+              {(props.sizeType === "notselected") ?
+                <Text style={{ color: 'red', }}> *Please select a size type </Text>
+                : <Text style={{ color: 'green' }}>  Size Type: {props.sizeType} </Text>}
 
-          <View style={styles.slidingSheet__save}>
-            {(props.sizeType === "notselected") ?
-              <Text style={{ color: 'red', }}> *Please select a size type </Text>
-              : <Text style={{ color: 'green' }}>  Size Type: {props.sizeType} </Text>}
+              {(props.size === "notselected") ?
+                <Text style={{ color: 'red' }}> *Please select a size </Text>
+                : <Text style={{ color: 'green' }}>  Size: {props.size} </Text>}
 
-            {(props.size === "notselected") ?
-              <Text style={{ color: 'red' }}> *Please select a size </Text>
-              : <Text style={{ color: 'green' }}>  Size: {props.size} </Text>}
+              <Text style={{ color: 'red' }}>{(_method === "Wallet Chances" && props.user.walletChances - props.chances < 0) ? "*You do not have enough chances in your wallet" : ""}</Text>
+            </View>
 
-            <Text style={{ color: 'red' }}>{(_method === "Wallet Chances" && props.user.walletChances - props.chances < 0) ? "*You do not have enough chances in your wallet" : ""}</Text>
-          </View>
-
-          {/* {(props.type === 2) ? null :
-            <View style={[styles.slidingSheet__content, { zIndex: 1}]}>
-              <Text style={styles.slidingSheet__content_text}>Purchase Amount</Text>
-              {Object.keys(props).includes('entertobuy') ? <Text style={styles.slidingSheet__content_text}>${props.amountDollar}</Text> : <DropDown
-                placeholder={_amount}
-                options={options2}
-                size='large'
-                arrowSize={18}
-                isVisible={false}
-                setValue={setAmount}
-              />}
-            </View>} */}
-          <View style={styles.slidingSheet__content}>
-            <Text style={styles.slidingSheet__content_text}>Payment Method</Text>
-            <PaymentButton
-              type="applePay"
-              onPress={() => setMethod('applepay')}
-              selected={_method == 'applepay'} />
-            <PaymentButton
-              type="paypal"
-              onPress={() => setMethod('Paypal')}
-              selected={_method == 'Paypal'} />
-            {(!props.wallet) ?
-              <BlockButton
-                color="light" title={_walletBalance + " Wallet Chances"}
-                type="payment"
-                selected={_method == "Wallet Chances"}
-                disabled={props.user.walletChances - props.chances < 0}
-                onPress={() => setMethod('Wallet Chances')}
-                style={{ marginVertical: 5 }}
-                icon={(<Icon name="wallet" type="material-community" color={colors.darkGreen} style={{ marginRight: 5 }} />)}
-              />
-              : null
-            }
-
-            {(!last4) ?
-              <BlockButton
-                color="secondary" title="+ Add Credit Card"
-                type="payment"
-                selected={_method == "+ Add Credit Card"}
-                style={{ marginVertical: 5 }}
-                onPress={() => setMethod('+ Add Credit Card')} />
-              :
-              // @ JOSHUA - PLS CHANGE WHAT TYPE OF CARD IT IS, TYPES ARE:
-              // amex, dinersclub, discover,jcb, maestro, mastercard, unionpay, visa
+            <View style={styles.slidingSheet__content}>
+              <Text style={styles.slidingSheet__content_text}>Payment Method</Text>
               <PaymentButton
-                type={brand}
-                last4={last4}
-                selected={_method == ('**** **** **** ' + last4)}
-                onPress={() => setMethod('**** **** **** ' + last4)} />
-            }
-          </View>
+                type="applePay"
+                onPress={() => setMethod('applepay')}
+                selected={_method == 'applepay'} />
+              <PaymentButton
+                type="paypal"
+                onPress={() => setMethod('Paypal')}
+                selected={_method == 'Paypal'} />
+              {(!props.wallet) ?
+                <BlockButton
+                  color="light" title={_walletBalance + " Wallet Chances"}
+                  type="payment"
+                  selected={_method == "Wallet Chances"}
+                  disabled={props.user.walletChances - props.chances < 0}
+                  onPress={() => setMethod('Wallet Chances')}
+                  style={{ marginVertical: 5 }}
+                  icon={(<Icon name="wallet" type="material-community" color={colors.darkGreen} style={{ marginRight: 5 }} />)}
+                />
+                : null
+              }
 
-          {(_method === '+ Add Credit Card') ?
-            <View style={[styles.slidingSheet__savepayment]}>
-              <CheckBox
-                selected={_save}
-                onPress={() => setSave(!_save)}
-                text='Save my payment information'
-              />
-            </View> : null}
+              {(!last4) ?
+                <BlockButton
+                  color="secondary" title="+ Add Credit Card"
+                  type="payment"
+                  selected={_method == "+ Add Credit Card"}
+                  style={{ marginVertical: 5 }}
+                  onPress={() => setMethod('+ Add Credit Card')} />
+                :
+                // @ JOSHUA - PLS CHANGE WHAT TYPE OF CARD IT IS, TYPES ARE:
+                // amex, dinersclub, discover,jcb, maestro, mastercard, unionpay, visa
+                <PaymentButton
+                  type={brand}
+                  last4={last4}
+                  selected={_method == ('**** **** **** ' + last4)}
+                  onPress={() => setMethod('**** **** **** ' + last4)} />
+              }
+            </View>
 
-          
-          <View style={{ marginLeft: 25}}>
-                {(_method !== null) ? renderSwipeButton() : null}
-          </View>
+            {(_method === '+ Add Credit Card') ?
+              <View style={[styles.slidingSheet__savepayment]}>
+                <CheckBox
+                  selected={_save}
+                  onPress={() => setSave(!_save)}
+                  text='Save my payment information'
+                />
+              </View> : null}
 
-            {/* <SwipeButton title="SWIPE TO CONFIRM" onSwipeSuccess={async() => {
-                  // if they've selected a size, sizetype, and payment method
-                  if (_method !== null && props.sizeType !== "notselected" && props.size !== "notselected") {
 
-                    // if using wallet chances
-                    if (_method === "Wallet Chances"){
-                      // if they have enough chances
-                      if (props.user.walletChances - props.chances > 0){
-                        let updatedUser = await enterUserinRaffle()
-                        props.setUser(updatedUser)
-                        await updateRaffle()
-                        toggleOverlay();
-                        props.navigation.navigate("Success", { fromRaffle: props.chances })
-                      }
-                    }
+            <View style={{ alignItems: 'center'}}>
+              {(_method !== null) ? renderSwipeButton() : null}
+            </View>
 
-                    // if using a payment method
-                    else {
-                      let updatedUser = await enterUserinRaffle()
-                      props.setUser(updatedUser)
-                      await updateRaffle()
-                      toggleOverlay();
-                      setStripe(false)
-                    }
-                  }
-                }} /> */}
-          
 
-        </View> : <Stripe raffleid={props.raffleid} user={props.user} setUser={props.setUser} navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet} entertobuy={Object.keys(props).includes('entertobuy') ? true : false}></Stripe>}
+          </View> : <Stripe raffleid={props.raffleid} user={props.user} setUser={props.setUser} navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet} entertobuy={Object.keys(props).includes('entertobuy') ? true : false}></Stripe>}
 
       </Overlay>
     </View>

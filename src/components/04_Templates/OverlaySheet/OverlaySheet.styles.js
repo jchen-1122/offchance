@@ -9,33 +9,30 @@ const styles = StyleSheet.create({
         borderRadius: 30, 
         paddingBottom: '8%',
         width: width * 0.9,
-        height: height * 0.65,
+        // height: 400,
         alignItems: 'center', 
-
     },
-    overlayPay: {
-        borderRadius: 30, 
-        paddingBottom: '8%',
-        width: width * 0.9,
-        height: height * 0.65,
+    // overlay_extend: {
+    //     height: 475,
+    //     backgroundColor: 'pink'
+    // },
 
-    },
+    // container: {
+    //   flex: 1,
+    // },
 
-    container: {
-      flex: 1,
-    },
-
-    slidingSheet: {
-        flex: 1,
-    },
+    // slidingSheet: {
+    //     flex: 1,
+    // },
 
     slidingSheet__header: {
-        flex: 1,
+        // flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
         marginTop: '3%',
         marginBottom: '1%',
+        marginHorizontal: '5%'
 
     },
 
@@ -44,13 +41,16 @@ const styles = StyleSheet.create({
         marginHorizontal: '5%',
         marginBottom: '7%',
         flexDirection: 'column',
-
+    },
+    slidingSheet__content_text: {
+        fontSize: 15,
+        color: 'rgba(52, 52, 52, .8)',
+        marginLeft: '5%'
     },
     slidingSheet__save: {
-        flex: 1,
-        marginHorizontal: '5%',
-        width: 300,
-        marginLeft: 40,
+        // flex: 1,
+        marginHorizontal: '8%',
+        marginTop: 15
     },
 
     slidingSheet__savepayment: {
@@ -60,23 +60,6 @@ const styles = StyleSheet.create({
         marginLeft: 40,
         marginTop: -30
     },
-
-    slidingSheet__content_text: {
-        zIndex: -1,
-        fontSize: 15,
-        color: 'rgba(52, 52, 52, .8)',
-
-    },
-
-    // button
-    button: {
-      zIndex: -1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginBottom: '-40%',
-
-    },
-
 })
 
 export default styles;
