@@ -9,7 +9,7 @@ import Login from './components/05_Pages/LoginProcess/Login/Login'
 import Signup from './components/05_Pages/Signup/Signup'
 import PhoneVerify from './components/05_Pages/Signup/PhoneVerify'
 import EnterEmail from './components/05_Pages/LoginProcess/EnterEmail/EnterEmail';
-import EnterCode from './components/04_Templates/EnterCode/EnterCode';
+import EnterCode from './components/05_Pages/LoginProcess/EnterCode/EnterCode';
 import ChangePassword from './components/05_Pages/LoginProcess/ChangePassword/ChangePassword';
 import Home from './components/05_Pages/Home/Home'
 import SeeAll from './components/05_Pages/Home/SeeAll/SeeAll';
@@ -22,7 +22,7 @@ import Social from './components/05_Pages/Social/Social'
 import EditProfile from './components/05_Pages/Account/EditProfile/EditProfile'
 import Following from './components/05_Pages/Account/Following/Following'
 import Followers from './components/05_Pages/Account/Followers/Followers'
-import Top5List from './components/02_Molecules/Top5List/Top5List'
+import Top5List from './components/05_Pages/Home/Top5List/Top5List'
 import YourFeed from './components/05_Pages/Home/YourFeed/YourFeed';
 import Likes from './components/05_Pages/Account/Likes/Likes'
 import OtherUser from './components/05_Pages/OtherUser/OtherUser'

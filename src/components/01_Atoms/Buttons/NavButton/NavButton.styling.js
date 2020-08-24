@@ -3,7 +3,6 @@ import {colors, dimensions} from "../../../../settings/all_settings.js";
 
 const styles = StyleSheet.create({
     NavButton:{
-        // backgroundColor: 'pink',
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -11,9 +10,18 @@ const styles = StyleSheet.create({
         borderBottomColor: colors.gray,
         borderBottomWidth: 1
     },
+
     NavButton__label:{
         fontSize: 16
+    },
+
+    NavButton__profilePicture: {
+        height: 25, 
+        width: 25, 
+        borderRadius: 25, 
+        marginRight: 15
     }
+
 })
 
 export {styles};

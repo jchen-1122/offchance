@@ -11,18 +11,19 @@ const Countdown = ({ unix_timestamp, type, propsStyle }) => {
         style.push(styles.search);
         break;
     }
+    
     // convert to date object
     var date = new Date(unix_timestamp * 1000);
 
     // calculate the time until date
     var diff = date.getTime() - Date.now()
-
     // if it's more than 24 hours from now
     if (!in_a_day(unix_timestamp)) {
       return <Text style={style}>{format_date(date)}</Text>
     }
+
+
     const [timeLeft, setTimeLeft] = useState(diff);
-    //console.log(unix_timestamp)
 
     useEffect(() => {
       // exit early when we reach 0
@@ -40,6 +41,8 @@ const Countdown = ({ unix_timestamp, type, propsStyle }) => {
       // when we update it
     }, [timeLeft]);
 
+
+    // format the timer
     let timeString = ''
     var hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24)
     if (hours > 0){

@@ -16,8 +16,6 @@ function EnteredUsersDisplay(props) {
     const [userIds, setuserIds] = useState([])
     var enteredUsers;
     
-    
-
     // sort entered users so the people you're following show up at the front
     const sortUsers = (users) => {
         if (!user_logged_in(user)) {

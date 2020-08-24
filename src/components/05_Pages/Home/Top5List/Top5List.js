@@ -1,6 +1,6 @@
 import React, {useContext} from 'react'
-import ListView from '../../04_Templates/ListView/ListView'
-import GlobalState from '../../globalState'
+import ListView from '../../../04_Templates/ListView/ListView'
+import GlobalState from '../../../globalState'
 import {ScrollView} from 'react-native'
 
 export default function Top5List({navigation, route}) {

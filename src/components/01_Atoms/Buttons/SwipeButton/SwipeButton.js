@@ -1,14 +1,9 @@
-// insta button + facebook button + login button
-
 import React from 'react';
-import { View,TouchableOpacity, Text } from 'react-native';
-import { styles } from "./SwipeButton.styling";
 import { Icon } from 'react-native-elements';
 import {colors} from '../../../../settings/all_settings';
 import SwipeButton from 'rn-swipe-button';
 
 function Swipebutton(props) {
-
     return (
         <SwipeButton
         title={props.title}

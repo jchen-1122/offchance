@@ -1,34 +1,25 @@
-// Green banner -> notifies a successful password change
-// Black banner -> notifies next drawing
-// Red banner -> notifies to log in
-
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {Text, TouchableOpacity} from 'react-native';
 import {styles} from "./Banner.styling";
-import { Icon } from 'react-native-elements';
 
 function Banner(props){
-    console.log(props.press)
     // determine what kind/color of banner it is
-    let icon; // for red banner icon
+    let icon;
     let bannerStyle;
     let absolute;
-    let obj;
+
     switch(props.color){
         case "green":
-            bannerStyle=styles.Banner__green;
-            absolute=styles.Banner__absolute;
+            bannerStyle=styles.Banner_green;
+            absolute=styles.Banner_absolute;
             break;
         case "black":
-            bannerStyle=styles.Banner__black;
+            bannerStyle=styles.Banner_black;
             break;
         case "red":
-            bannerStyle=styles.Banner__red;
-            // icon = <Icon name='file-alert-outline' type='material-community' color='white' size={props.size}/>
+            bannerStyle=styles.Banner_red;
             break;
     }
-
-    {/* TODO: modify position attribute of banner (red banner should be relative, others absolute) */}
 
     return (
         <TouchableOpacity style={[styles.Banner, bannerStyle, absolute]} onPress={()=>{if (props.press) props.navigation.navigate('Raffle', props.press)}}>

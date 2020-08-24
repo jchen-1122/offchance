@@ -1,10 +1,7 @@
-// insta button + facebook button + login button
-
 import React from 'react';
 import { View, TouchableOpacity, Text, Image } from 'react-native';
 import { styles } from "./BlockButton.styling";
 import { SocialIcon } from 'react-native-elements';
-import { colors } from '../../../../settings/all_settings';
 
 function BlockButton(props) {
     let icon;

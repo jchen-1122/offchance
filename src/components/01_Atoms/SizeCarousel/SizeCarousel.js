@@ -3,7 +3,6 @@ import { ScrollView, View, Text, TouchableHighlight, StyleSheet } from 'react-na
 import { colors } from '../../../settings/colors'
 import styles from './SizeCarousel.styling'
 
-
 export default function SizeCarousel(props) {
     var sizes = props.sizes
     var type = props.type
@@ -11,6 +10,7 @@ export default function SizeCarousel(props) {
     const [selectedValue, setSelectedValue] = useState(props.default || null)
     const [selectedValues, setSelectedValues] = useState([])
 
+    // select a single option in the carousel
     const selectSingle = (i) => {
         return (
             <TouchableHighlight onPress={() => {
@@ -24,10 +24,9 @@ export default function SizeCarousel(props) {
         )
     }
 
+    // select multiple options in the carousel
     function selectMultiple(i) {
-
         const [_green, setGreen] = useState(false)
-    
         return (
             <TouchableHighlight onPress={() => {
                 var temp = selectedValues
@@ -47,6 +46,7 @@ export default function SizeCarousel(props) {
             </TouchableHighlight>
         )
     }
+
     let display = [];
     if (sizes.length > 0) {
         for (var i = 0; i < sizes.length; i++) {
