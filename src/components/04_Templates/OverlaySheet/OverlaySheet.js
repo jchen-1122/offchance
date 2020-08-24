@@ -87,15 +87,20 @@ function OverlaySheet(props) {
       let oldamount = 0;
       let oldchances = 0;
       let tempCurr = []
+      let existed = false
       for (var i = 0; i < currEntered.length; i++) {
         //  && currEntered[i].sizeType === props.sizeType && currEntered[i].size === props.size (different sizes now count as the same entry)
         if (currEntered[i].raffleID === props.raffleid) {
           oldamount = currEntered[i].amountDonated
           oldchances = currEntered[i].chances
           tempCurr.push(makeEntetedRaffleSchemaJSON(oldamount, oldchances))
+          existed = true
         } else {
           tempCurr.push(currEntered[i])
         }
+      }
+      if (!existed) {
+        tempCurr.push(makeEntetedRaffleSchemaJSON(0, 0))
       }
       currEntered = { children: tempCurr }
     }
@@ -144,15 +149,20 @@ function OverlaySheet(props) {
       let oldamount = 0;
       let oldchances = 0;
       let tempCurr = []
+      let existedR = false
       for (var i = 0; i < currEntered.length; i++) {
         //  && currEntered[i].sizeType === props.sizeType && currEntered[i].size === props.size (different sizes now count as the same entry)
         if (currEntered[i].userID === props.user._id) {
           oldamount = currEntered[i].amountDonated
           oldchances = currEntered[i].chances
           tempCurr.push(makeRaffleJSON(oldamount, oldchances))
+          existedR = true
         } else {
           tempCurr.push(currEntered[i])
         }
+      }
+      if (!existedR) {
+        tempCurr.push(makeRaffleJSON(0, 0))
       }
       currEntered = { children: tempCurr }
     }
