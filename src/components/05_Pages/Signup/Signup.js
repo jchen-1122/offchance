@@ -20,13 +20,13 @@ export default function Signup({ navigation }) {
   for (var i in jsonData) us_states.push(i)
 
   const sendsms = async () => {
-    const response = await fetch('http://' + data.ipAddress + '/user/sendphone', {
+    const response = await fetch('https://verify-sample-2928-dev.twil.io/start-verify', {
       method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: makeJSON()
+      body: phoneJSON()
     })
   }
 
@@ -175,6 +175,14 @@ export default function Signup({ navigation }) {
       password: _password,
       isHost: state.businessAccount,
       profilePicture: (_proPic != null) ? _proPic : 'https://oc-profile-pictures.s3.us-east.cloud-object-storage.appdomain.cloud/default-avatar.png',
+    }
+    return JSON.stringify(data)
+  };
+
+  const phoneJSON = () => {
+    let data = {
+      to: '+1'+_phoneNumber,
+      channel: 'sms'
     }
     return JSON.stringify(data)
   };
