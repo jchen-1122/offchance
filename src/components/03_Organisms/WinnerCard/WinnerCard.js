@@ -25,7 +25,7 @@ function WinnerCard(props, ref) {
         return null;
     }
 
-    const colorMap = ["black", "gold", "silver", "blue"]
+    const colorMap = ["black", "gold", "silver"]
 
     // set styles based on the color of the card
     let gradient; // gradient for the background of the card
@@ -68,15 +68,6 @@ function WinnerCard(props, ref) {
             headerImage = "https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/winnercard-images/bronze.png"
             headerColor = "#44270A"
             hostNameColor = "#44270A"
-            break;
-        case "blue":
-            gradient = colors.whiteGradientBg
-            borderGradient = [colors.limeGreen, colors.limeGreen]
-            headerImage = "https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/winnercard-images/lime.png"
-            headerColor = colors.blue
-            hostNameColor = colors.blue
-            prizeTitleColor = colors.blue
-            winnerLabelColor = colors.blue
             break;
     }
 

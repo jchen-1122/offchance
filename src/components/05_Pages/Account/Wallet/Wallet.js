@@ -50,22 +50,6 @@ export default function Wallet({navigation}) {
         // console.log(sheetController); 101010
       }
 
-    const paymentTrigger = () => {
-        setPaymentController(!paymentController);
-
-        setContainerStyle( !paymentController ?
-          { // light on
-          flex: 1,
-          justifyContent: 'space-between',
-          backgroundColor: "rgba(0, 0, 0, 0.5)",
-        } : { // light off
-          flex: 1,
-          justifyContent: 'space-between',
-          backgroundColor: "rgba(255, 255, 255, 0.1)",
-          });
-
-      }
-
     return (
         <View style={containerStyle}>
           <View style={{height: '90%'}}>
