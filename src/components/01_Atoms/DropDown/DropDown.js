@@ -6,7 +6,7 @@ import { Icon } from 'react-native-elements';
 import styles from './Dropdown.styling'
 
 
-function DropDown(props) {
+function DropDown(props) { 
     const [selectedValue, setSelectedValue] = useState((props.options[0]).toString())
 
     // convert array of options to dropdown items

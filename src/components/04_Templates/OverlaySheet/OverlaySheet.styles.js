@@ -2,12 +2,25 @@ import {StyleSheet, Dimensions} from 'react-native';
 
 // sliding sheet size (height) can be changed in the < Animated.view style{height=...} />. (eg. subView in wallet.styling)
 
+const {height, width} = Dimensions.get('window');
+
 const styles = StyleSheet.create({
     overlay: {
         borderRadius: 30, 
-        maxHeight: Dimensions.get('window').height* 0.8, 
-        paddingBottom: '8%'
+        paddingBottom: '8%',
+        width: width * 0.9,
+        height: height * 0.65,
+        alignItems: 'center', 
+
     },
+    overlayPay: {
+        borderRadius: 30, 
+        paddingBottom: '8%',
+        width: width * 0.9,
+        height: height * 0.65,
+
+    },
+
     container: {
       flex: 1,
     },
@@ -36,7 +49,16 @@ const styles = StyleSheet.create({
     slidingSheet__save: {
         flex: 1,
         marginHorizontal: '5%',
-        width: 300
+        width: 300,
+        marginLeft: 40,
+    },
+
+    slidingSheet__savepayment: {
+        flex: 1,
+        marginHorizontal: '5%',
+        width: 300,
+        marginLeft: 40,
+        marginTop: -30
     },
 
     slidingSheet__content_text: {

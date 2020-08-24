@@ -17,11 +17,28 @@ import Stripe from '../../05_Pages/Account/Wallet/Stripe'
 import { setStatusBarTranslucent } from 'expo-status-bar';
 import { user_logged_in } from '../../../functions/user_functions';
 
+//create your forceUpdate hook
+function useForceUpdate() {
+  const [value, setValue] = useState(0); // integer state
+  return () => setValue(value => ++value); // update the state to force render
+}
 
 // Sliding Sheet update: Removed visible prop, since the sheet will be invisible after sliding off the screen.
 function OverlaySheet(props) {
+  const forceUpdate = useForceUpdate();
+
+  const [stripe, setStripe] = useState(true)
+  const [_method, setMethod] = useState(null)
+  const [_amount, setAmount] = useState('$5 = 10 chances')
+  const [_save, setSave] = useState(false)
+  const [_deleted, setDeleted] = useState(false)
   const [last4, setlast4] = useState(null)
   const [brand, setBrand] = useState(null)
+
+  // Update 8/22 for weird overviewsheet
+  const [overlayStyle, setOverlayStyle] = useState(styles.overlay);
+
+
   const data = require('../../IP_ADDRESS.json')
   useEffect(() => {
     async function getLast4() {
@@ -35,6 +52,7 @@ function OverlaySheet(props) {
     }
     getLast4()
   }, [])
+  const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet (1000 is at the bottom)
 
   useEffect(() => {
     if (props.amount) {
@@ -167,17 +185,23 @@ function OverlaySheet(props) {
     }
   }
 
+  const deleteCreditCard = async () => {
+    const data = require('../../IP_ADDRESS.json')
+    await fetch('http://' + data.ipAddress + '/user/edit/' + props.user._id, {
+      method: "PATCH",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ last4: null, paymentInfo: null })
+    })
+    setLast4(null)
+  }
 
   // const [sheetOpen, setSheetOpen] = useState(true); // isHidden
-  const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet (1000 is at the bottom)
+  
   const [visible, setVisible] = useState(false);
   const [sheetController, setSheetController] = useState(true);
-
-  const [stripe, setStripe] = useState(true)
-  const [_method, setMethod] = useState(null)
-  const [_amount, setAmount] = useState('$5 = 10 chances')
-  const [_save, setSave] = useState(false)
-
   const [_walletBalance, setWalletBalance] = useState(0)
 
   var toValue = 1000;
@@ -236,8 +260,9 @@ function OverlaySheet(props) {
         // if using a payment method
         else {
           //console.log(_method)
+          setOverlayStyle(styles.overlayPay);
           setStripe(false)
-          //toggleOverlay();
+          // toggleOverlay();
         }
       }
     }} />
@@ -246,9 +271,9 @@ function OverlaySheet(props) {
     <View>
       <Overlay isVisible={visible}
         onBackdropPress={() => { toggleOverlay() }}
-        overlayStyle={styles.overlay}>
+        overlayStyle={overlayStyle}>
 
-        {stripe ? <View >
+        {stripe ? <View>
 
           {/* Title part with a close button */}
           <View style={styles.slidingSheet__header}>
@@ -325,7 +350,7 @@ function OverlaySheet(props) {
           </View>
 
           {(_method === '+ Add Credit Card') ?
-            <View style={[styles.slidingSheet__save]}>
+            <View style={[styles.slidingSheet__savepayment]}>
               <CheckBox
                 selected={_save}
                 onPress={() => setSave(!_save)}
@@ -333,11 +358,10 @@ function OverlaySheet(props) {
               />
             </View> : null}
 
-          <View style={{ alignItems: 'center', width: '100%' }}>
-          <View style={{ alignItems: 'center', width: '100%' }}>
+          
+          <View style={{ marginLeft: 25}}>
                 {(_method !== null) ? renderSwipeButton() : null}
-
-              </View>
+          </View>
 
             {/* <SwipeButton title="SWIPE TO CONFIRM" onSwipeSuccess={async() => {
                   // if they've selected a size, sizetype, and payment method
@@ -365,7 +389,7 @@ function OverlaySheet(props) {
                     }
                   }
                 }} /> */}
-          </View>
+          
 
         </View> : <Stripe raffleid={props.raffleid} user={props.user} setUser={props.setUser} navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet} entertobuy={Object.keys(props).includes('entertobuy') ? true : false}></Stripe>}
 
