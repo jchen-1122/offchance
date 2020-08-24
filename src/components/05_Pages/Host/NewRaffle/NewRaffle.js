@@ -117,30 +117,30 @@ export default function NewRaffle({ navigation, route }) {
         return user_json
     }
 
-    const makeJSON = () => {
-        let data = {
-            type: _type,
-            hostedBy: user._id,
-            name: _name,
-            productPrice: _price,
-            valuedAt: _value,
-            numProducts: _numProducts,
-            description: _description,
-            donationGoal: _goal,
-            charities: (_charities.length > 0) ? _charities.split(',').map(item => item.trim()) : null,
-            productType: _productType,
-            drawingDuration: _drawingDuration,
-            radius: _drawingRadius === 'None' ? 25000 : _drawingRadius,
-            address: _address,
-            images: _productName,
-            sizeTypes: _sizeTypes,
-            sizes: _sizes,
-            startTime: (_startTime == null) ? null : new Date(_startTime).getTime() / 1000,
-            live: (_status == 'Live') ? true : (_status == 'Coming Soon') ? false : null,
-            approved: (admins.admins.includes(user.email)) ? true : false
-        }
-        return JSON.stringify(data)
-    };
+    // const makeJSON = () => {
+    //     let data = {
+    //         type: _type,
+    //         hostedBy: user._id,
+    //         name: _name,
+    //         productPrice: _price,
+    //         valuedAt: _value,
+    //         numProducts: _numProducts,
+    //         description: _description,
+    //         donationGoal: _goal,
+    //         charities: (_charities.length > 0) ? _charities.split(',').map(item => item.trim()) : null,
+    //         productType: _productType,
+    //         drawingDuration: _drawingDuration,
+    //         radius: _drawingRadius === 'None' ? 25000 : _drawingRadius,
+    //         address: _address,
+    //         images: _productName,
+    //         sizeTypes: _sizeTypes,
+    //         sizes: _sizes,
+    //         startTime: (_startTime == null) ? null : new Date(_startTime).getTime() / 1000,
+    //         live: (_status == 'Live') ? true : (_status == 'Coming Soon') ? false : null,
+    //         approved: (admins.admins.includes(user.email)) ? true : false
+    //     }
+    //     return JSON.stringify(data)
+    // };
 
     // image stuff-------------------------------------------------------------------------------------------------------
     async function getPermissionAsync() {

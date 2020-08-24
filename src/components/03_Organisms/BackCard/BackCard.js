@@ -8,7 +8,7 @@ import UsernameDisplay from '../../01_Atoms/UsernameDisplay/UsernameDisplay'
 function BackCard(props){
     const [show, setShow] = useState(false)
     var user = props.user
-    setTimeout(function() { setShow(true), setStrobe(!strobe) }, props.time);
+    setTimeout(function() { setShow(true) }, props.time);
     const [strobe, setStrobe] = useState(true)
     // useEffect(() => {
     //     setStrobe(!strobe)
@@ -37,7 +37,7 @@ function BackCard(props){
             props.setPrize(user["prize"])
         }}>
             <ImageBackground 
-              style={(props.user._id === props.currUser._id && show && strobe) ? styles.greenimgBackground : styles.imgBackground }
+              style={(props.user._id === props.currUser._id && show) ? styles.greenimgBackground : styles.imgBackground }
               source={cardsrc}>
                 {show && <View style={styles.circle_outline} >
                     <Image
