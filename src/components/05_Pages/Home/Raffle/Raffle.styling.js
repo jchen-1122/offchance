@@ -26,6 +26,12 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     marginBottom: '5%'
   },
+  charity__image: {
+    height: Dimensions.get('window').width*0.35,
+    width: Dimensions.get('window').width*0.35,
+    resizeMode: 'contain',
+    marginBottom: '5%'
+  },
   pickSize: {
     flex: 0,
     flexDirection:'row',

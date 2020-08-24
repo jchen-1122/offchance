@@ -84,7 +84,7 @@ export default function PhoneVerify({ navigation, route }) {
       }
 
     const verifysms = async () => {
-        const response = await fetch('http://'+data.ipAddress+'/user/verifyphone',{
+        const response = await fetch('https://verify-sample-2928-dev.twil.io/check-verify',{
           method: "POST",
           headers: {
             'Accept': 'application/json',
@@ -112,8 +112,9 @@ export default function PhoneVerify({ navigation, route }) {
     const phoneJSON = () => {
         let data = 
             {
-              phoneNumber: route.params.phone,
-              code: _code
+              to: '+1'+route.params.phone,
+              channel: "sms",
+              verification_code: _code
             }
         return JSON.stringify(data)
       };
@@ -134,7 +135,7 @@ label="Verification Code" onChangeText={(text) => {
                 color="primary"
                 onPress={async () => {
                     let coderes = await verifysms()
-                    if (coderes.done !== "correct code") {
+                    if (coderes.message !== "Verification success.") {
                         setErrors(<Text style={fonts.error}>Invalid Code</Text>)
                     }
                     else {
