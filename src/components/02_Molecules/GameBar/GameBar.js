@@ -1,8 +1,8 @@
 import React from 'react'
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text } from 'react-native'
 import styles from './GameBar.styling';
-import { Icon } from 'react-native-elements'
 
+// n==3 if theres 3 stats in the GameBar (with the timer)
 function GameBar({ tokensLeft, wins, time, n }) {
     return (
         <View style={styles.GameBar}>
