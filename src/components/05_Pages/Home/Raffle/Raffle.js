@@ -34,7 +34,7 @@ export default function Raffle({ navigation, route }) {
 
     // winner needs to be in the database when the results are calculated
     const [location, setLocation] = useState(null)
-    const [winner, setWinner] = useState(Object.keys(raffle).includes('winner') ? raffle.winner : raffle['host'])
+    const [winner, setWinner] = useState(null)
 
     // sliding sheet
     const [enableScroll, setEnableScroll] = useState(true);
@@ -69,6 +69,11 @@ export default function Raffle({ navigation, route }) {
             if (Object.keys(route.params).includes("radius")) {
                 setLocation(geolib.isPointWithinRadius({ latitude: latHost, longitude: longHost }, { latitude: latUser, longitude: longUser }, route.params.radius * 0.621371 * 1000))
             }
+            
+            if (route.params.winners.children.length !== 0) {
+                setWinner(await getUser(route.params.winners.children[0].userID))
+            }
+            console.log(winner)
         }
         setViews(raffle.totalViews)
         addView()
@@ -335,7 +340,7 @@ export default function Raffle({ navigation, route }) {
     if (raffle != null) {
         name = raffle.name
         description = raffle.description
-        expired = is_expired(raffle.startTime)
+        expired = is_expired(raffle.startTime + 1800)
         images_strs = raffle.images
         sizes = raffle.sizes
         sizeTypes = raffle.sizeTypes
@@ -448,8 +453,8 @@ export default function Raffle({ navigation, route }) {
                     {(!location && location != null && !expired) ? <Text style={[fonts.bold, fonts.error]}>THIS RAFFLE IS OUT OF YOUR LOCATION</Text> : null}
                     <Text>{chanceText}</Text>
                     <View style={{ marginVertical: 15 }}>
-                        {(expired && raffle.archived) ? <Text style={[fonts.bold, fonts.error]}>THIS DRAWING HAS EXPIRED</Text> : (expired && !raffle.archived) ? <Text style={[fonts.italic]}>LIVE DRAWING IN PROGRESS</Text> : <Text style={[fonts.italic]}>Drawing Starts:</Text>}
-                        {(expired) ? null : <CountDown unix_timestamp={raffle.startTime} />}
+                        {(expired && raffle.archived) ? <Text style={[fonts.bold, fonts.error]}>THIS DRAWING HAS EXPIRED</Text> : (raffle.archived) ? <Text style={[fonts.italic]}>LIVE DRAWING IN PROGRESS</Text> : <Text style={[fonts.italic]}>Drawing Starts:</Text>}
+                        {(expired && raffle.archived) ? null : <CountDown unix_timestamp={raffle.startTime} />}
                     </View>
 
                     <View style={{ marginRight: '-5%', marginBottom: 20 }}>
@@ -492,7 +497,7 @@ export default function Raffle({ navigation, route }) {
                     </View>
                     {/* !!!!!!!!!!!!! TODO: connect to db and format !!!!!!!!!!!!!!*/}
                     {/* winner of raffle if expired */}
-                    {(expired) ?
+                    {(expired && raffle.archived && winner) ?
                         <View style={[styles.highlightBackground, { paddingVertical: '3%', paddingRight: '5%' }]}>
                             <Text style={fonts.italic}>Won by:</Text>
                             <View style={styles.hostedby}>
