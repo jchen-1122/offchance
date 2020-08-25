@@ -112,9 +112,9 @@ function Top5Card(props) {
     
     return (
         <View style={utilities.exploreCard}>
-            <TouchableOpacity style={styles.touchable} onPress={() => props.navigation.navigate('OtherUser',{user: user})}>
-                <Image style={styles.image} source={{ uri: user.profilePicture }} />
-                <Text style={[fonts.h3, styles.name]}>@{user.username}</Text>
+            <TouchableOpacity style={styles.Top5Card__profile} onPress={() => props.navigation.navigate('OtherUser',{user: user})}>
+                <Image style={styles.Top5Card__profilePicture} source={{ uri: user.profilePicture }} />
+                <Text style={[fonts.h3, styles.Top5Card__username]}>@{user.username}</Text>
                 {/* {(user.city) ? <Text style={styles.city}>{user.city}</Text>:null} */}
             </TouchableOpacity>
             {

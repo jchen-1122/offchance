@@ -303,7 +303,7 @@ export default function RaffleResult({ navigation, route }) {
             </ScrollView>
 
             {/* Live Chat */}
-             <View style={{ position: 'absolute', bottom: '15%'}}>
+             <View style={{ marginBottom: 75}}>
                 {(localTime <= 0) ? <Social currUser={user}></Social> : null}
             </View>
 

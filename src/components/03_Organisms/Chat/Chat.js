@@ -86,11 +86,11 @@ export default class Social extends Component {
         );
         }}
       >
-      <View style={[styles.chatMessage, { width: Math.max(chatMessage.message.length * 11, (chatMessage.username.length + 2) * 13) }]}>
-        <Image source={{ uri: chatMessage.profilePicture }} style={styles.proPic}></Image>
+      <View style={[styles.Message, { width: Math.max(chatMessage.message.length * 11, (chatMessage.username.length + 2) * 13) }]}>
+        <Image source={{ uri: chatMessage.profilePicture }} style={styles.Message__profPic}></Image>
         <View style={{ marginLeft: Dimensions.get('screen').width * 0.01, marginRight: (chatMessage.message.length * 11 < Dimensions.get('screen').width * 0.82) ? 0 : Dimensions.get('screen').width * 0.13 }}>
-          <Text style={styles.usn}>@{chatMessage.username}</Text>
-          <Text style={styles.msg}>{chatMessage.message}</Text>
+          <Text style={styles.Message__username}>@{chatMessage.username}</Text>
+          <Text style={styles.Message__text}>{chatMessage.message}</Text>
         </View>
       </View>
       </TouchableOpacity>
@@ -102,7 +102,7 @@ export default class Social extends Component {
       <KeyboardAwareScrollView
         style={{ backgroundColor: 'transparent', }}
         // resetScrollToCoords={{ x: 0, y: 0 }}
-        scrollEnabled={false}
+        scrollEnabled={true}
       >
         <ScrollView
           contentInset={{top: Math.max((this.state.chatMessages.length - 4) * 65, 0), bottom: 0 }}
@@ -111,10 +111,10 @@ export default class Social extends Component {
           {this.state.chatOn ? chatMessages : null}
         </ScrollView>
 
-        <View style={styles.chatInput}>
+        <View style={styles.ChatInput}>
           {/* <TouchableOpacity onPress={() => this.setState({ keyboardPadding: true })}> */}
             {(!Object.keys(this.props.currUser).includes('bannedUntil') || Math.floor(Date.now() / 1000) > this.props.currUser.bannedUntil) ? <TextInput
-              style={styles.chatInput__Box}
+              style={styles.ChatInput__Box}
               placeholder={'Comment...'}
               // pointerEvents={this.state.keyboardPadding ? "auto" : "none"}
               autoCorrect={false}
@@ -127,9 +127,9 @@ export default class Social extends Component {
           {/* </TouchableOpacity> */}
 
           {this.state.chatOn ?
-            <Text style={styles.chatInput__hide} onPress={() => this.setState({ chatOn: !this.state.chatOn })}>HIDE</Text>
+            <Text style={styles.ChatInput__hide} onPress={() => this.setState({ chatOn: !this.state.chatOn })}>HIDE</Text>
             :
-            <Text style={styles.chatInput__hide} onPress={() => this.setState({ chatOn: !this.state.chatOn })}>SHOW</Text>
+            <Text style={styles.ChatInput__hide} onPress={() => this.setState({ chatOn: !this.state.chatOn })}>SHOW</Text>
           }
         </View>
       </KeyboardAwareScrollView>
