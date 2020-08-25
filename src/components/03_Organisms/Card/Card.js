@@ -67,12 +67,13 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
 
     let buttonText = 'ENTER DRAWING'
     if (Object.keys(currUser).includes('rafflesEntered')) {
-        for (var raffle of currUser.rafflesEntered.children){
-            if (raffle.raffleID == raffleid){
+        for (var raffle of currUser.rafflesEntered.children) {
+            if (raffle.raffleID == raffleid) {
                 buttonText = 'YOU HAVE ' + raffle.chances + ' CHANCES'
             }
         }
     }
+
     // set default values for card
     let startData = null;
     let like = null;
@@ -84,19 +85,22 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
     switch (type) {
         // default is the regular card as seen in 'Home (free drawing)' in Figma
         case 'default':
+            // has a like button and maybe a banner
             like = (
                 <View style={styles.Card__likeButton}>
                     {(banner) ? <CardBanner title='DONATE TO WIN' color='lightGreen' /> : null}
                     <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid} />
                 </View>);
 
+            // if live drawing happening now
             if (live_drawing_now(data)) {
                 startData = (
                     <View>
-                        <Text style={[fonts.bold,{fontSize: 14}]}>LIVE DRAWING HAPPENING NOW</Text>
+                        <Text style={[fonts.bold, { fontSize: 14 }]}>LIVE DRAWING HAPPENING NOW</Text>
                     </View>
                 )
             }
+            // if live drawing already happened
             else if (expired) {
                 startData = (
                     <View>
@@ -105,13 +109,14 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
                     </View>
                 )
             }
-            else{
+            // if live drawing hasnt happened yet
+            else {
                 startData = (
                     <View>
-                    <Text style={[styles.Card__startData, fonts.p]}>DRAWING STARTS</Text>
-                    <Countdown unix_timestamp={date} />
-                    <Text style={[styles.Card__startData, fonts.p, {marginTop: 0}]}>OR WHEN DONATION GOAL IS MET</Text>
-                </View>
+                        <Text style={[styles.Card__startData, fonts.p]}>DRAWING STARTS</Text>
+                        <Countdown unix_timestamp={date} />
+                        <Text style={[styles.Card__startData, fonts.p, { marginTop: 0 }]}>OR WHEN DONATION GOAL IS MET</Text>
+                    </View>
                 )
             }
             break;
@@ -123,7 +128,12 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
                     {(banner) ? <CardBanner title='ENTER TO BUY' color='darkGreen' icon='usd' /> : null}
                     <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid} />
                 </View>);
-            startData = (<View><Text style={[styles.Card__startData, fonts.p]}>{expired ? 'DRAWING COMPLETED' : 'DRAWING STARTS'}</Text><Countdown unix_timestamp={date} /></View>);
+            startData = (
+                <View>
+                    <Text style={[styles.Card__startData, fonts.p]}>{expired ? 'DRAWING COMPLETED' : 'DRAWING STARTS'}</Text>
+                    <Countdown unix_timestamp={date} />
+                </View>
+            );
             break;
 
         // your feed cards
@@ -131,6 +141,7 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
             var picture;
             var caption;
             let person;
+            // someone you're following has posted a drawing
             if (feedType == 'following' && host) {
                 picture =
                     <TouchableOpacity onPress={() => {
@@ -141,22 +152,26 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
                 person = <Text style={{ textDecorationLine: 'underline' }} onPress={() => navigation.navigate('OtherUser', { user: host })}>@{host.username}</Text>
                 caption = ' posted a drawing for '
             }
+            // someone you're mutually following won something / you won something
             else if (feedType == "win" && currUser) {
                 picture = (userType == 'other') ?
                     <Image style={styles.FeedCard__hostImage} source={{ uri: otherUser.profilePicture }} /> : <Image style={styles.FeedCard__hostImage} source={{ uri: currUser.profilePicture }} />
                 let user = (userType == 'other') ? otherUser.username : 'You'
 
+                // if they won the grand prize
                 if (prize == 0) {
                     caption = user + " won a "
                 }
+                // if they won chances (consolation prize)
                 else {
                     caption = user + " won chances for a drawing for "
                 }
             }
+            // different styles for iPhoneX
             var mult = isIphoneX() ? 0.4 : 0.48
             return (
                 <View style={{ maxHeight: Dimensions.get('window').height * mult }}>
-                    <ScrollView style={[styles.Card, { paddingTop: '5%'}]}>
+                    <ScrollView style={[styles.Card, { paddingTop: '5%' }]}>
                         <View style={styles.FeedCard}>
                             {picture}
                             <View>
@@ -164,15 +179,13 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
                                 <Text style={styles.FeedCard__timestamp}>{time_from_now(date, true)}</Text>
                             </View>
                         </View>
-                        <View style={{width: '100%', alignItems: 'center'}}>
-                        <TouchableOpacity onPress={() => navigation.navigate('Raffle', data)}>
-                            <Image style={styles.FeedCard__image} source={{ uri: imageURI }} />
-                        </TouchableOpacity>
+                        <View style={{ width: '100%', alignItems: 'center' }}>
+                            <TouchableOpacity onPress={() => navigation.navigate('Raffle', data)}>
+                                <Image style={styles.FeedCard__image} source={{ uri: imageURI }} />
+                            </TouchableOpacity>
                         </View>
-
                     </ScrollView>
                 </View>
-
             )
     }
 

@@ -19,13 +19,13 @@ const styles = StyleSheet.create({
        resizeMode: 'contain'
    },
 
-   Info: {
+   HostCard__info: {
        height: '90%',
        width: width*0.7,
        paddingHorizontal: '5%',
        justifyContent: 'space-around'
    },
-   Info__label: {
+   HostCard__info__label: {
        fontStyle: 'italic'
    }
 })

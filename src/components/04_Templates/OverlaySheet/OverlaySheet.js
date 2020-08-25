@@ -36,7 +36,7 @@ function OverlaySheet(props) {
   const [brand, setBrand] = useState(null)
 
   // Update 8/22 for weird overviewsheet
-  const [overlayStyle, setOverlayStyle] = useState([styles.overlay]);
+  const [overlayStyle, setOverlayStyle] = useState([styles.OverlaySheet]);
 
 
   const data = require('../../IP_ADDRESS.json')
@@ -52,7 +52,7 @@ function OverlaySheet(props) {
     }
     getLast4()
   }, [overlayStyle])
-  const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet (1000 is at the bottom)
+
 
   useEffect(() => {
     if (props.amount) {
@@ -213,6 +213,7 @@ function OverlaySheet(props) {
   const [visible, setVisible] = useState(false);
   const [sheetController, setSheetController] = useState(true);
   const [_walletBalance, setWalletBalance] = useState(0)
+  const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet (1000 is at the bottom)
 
   var toValue = 1000;
   const toggleSheet = () => {
@@ -228,7 +229,16 @@ function OverlaySheet(props) {
 
   };
 
+  if (props.sheet) {
+    toValue = 0;
+    toggleSheet();
+  } else {
+    null;
+  }
+
   const toggleOverlay = () => {
+    toValue = 1000;
+    toggleSheet();
     if (!visible) {
       // if not visible, turn visible, set sheetController = false
       setVisible(true);
@@ -270,23 +280,28 @@ function OverlaySheet(props) {
         // if using a payment method
         else {
           //console.log(_method)
-          // setOverlayStyle(styles.overlayPay);
+          // setOverlayStyle(styles.OverlaySheetPay);
           setStripe(false)
           // toggleOverlay();
         }
       }
     }} />
   )
+  let slidingStyle = [styles.OverlaySheet];
+  slidingStyle.push({ height: props.height });
   return (
     <View>
+            {/* <Animated.View
+        style={[styles.OverlaySheet,
+          { transform: [{ translateY: bounceValue }] }]}> */}
       <Overlay isVisible={visible}
         onBackdropPress={() => { toggleOverlay() }}
-        overlayStyle={styles.overlay}>
+        overlayStyle={styles.OverlaySheet}>
 
         {stripe ?
           <View>
             {/* Title part with a close button */}
-            <View style={styles.slidingSheet__header}>
+            <View style={styles.OverlaySheet__header}>
               <TouchableOpacity onPress={() => { toggleOverlay() }}>
                 <Icon name='close' />
               </TouchableOpacity>
@@ -294,7 +309,7 @@ function OverlaySheet(props) {
               <View />
             </View>
 
-            <View style={styles.slidingSheet__save}>
+            <View style={styles.OverlaySheet__save}>
               {(props.sizeType === "notselected") ?
                 <Text style={{ color: 'red', }}> *Please select a size type </Text>
                 : <Text style={{ color: 'green' }}>  Size Type: {props.sizeType} </Text>}
@@ -306,8 +321,8 @@ function OverlaySheet(props) {
               <Text style={{ color: 'red' }}>{(_method === "Wallet Chances" && props.user.walletChances - props.chances < 0) ? "*You do not have enough chances in your wallet" : ""}</Text>
             </View>
 
-            <View style={styles.slidingSheet__content}>
-              <Text style={styles.slidingSheet__content_text}>Payment Method</Text>
+            <View style={styles.OverlaySheet__content}>
+              <Text style={styles.OverlaySheet__content_text}>Payment Method</Text>
               <PaymentButton
                 type="applePay"
                 onPress={() => setMethod('applepay')}
@@ -348,7 +363,7 @@ function OverlaySheet(props) {
             </View>
 
             {(_method === '+ Add Credit Card') ?
-              <View style={[styles.slidingSheet__savepayment]}>
+              <View style={[styles.OverlaySheet__savepayment]}>
                 <CheckBox
                   selected={_save}
                   onPress={() => setSave(!_save)}
@@ -363,7 +378,7 @@ function OverlaySheet(props) {
 
 
           </View> : <Stripe raffleid={props.raffleid} user={props.user} setUser={props.setUser} navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet} entertobuy={Object.keys(props).includes('entertobuy') ? true : false}></Stripe>}
-
+{/* </Animated.View> */}
       </Overlay>
     </View>
   )

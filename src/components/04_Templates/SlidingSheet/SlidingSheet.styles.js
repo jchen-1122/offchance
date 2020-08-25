@@ -1,6 +1,6 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
-// sliding sheet size (height) can be changed in the < Animated.view style{height=...} />. (eg. subView in wallet.styling)
+// sliding sheet size (height) can be changed in the < Animated.view style{height=...} />. (eg. SlidingSheet in wallet.styling)
 
 const styles = StyleSheet.create({
     container: {
@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
       paddingBottom: 20,
     },
 
-    slidingSheet__header: {
+    SlidingSheet__header: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
@@ -17,19 +17,19 @@ const styles = StyleSheet.create({
 
     },
 
-    slidingSheet__content: {
+    SlidingSheet__content: {
         marginHorizontal: '10%',
         marginBottom: '7%',
         flexDirection: 'column',
     },
 
-    slidingSheet__content_text: {
+    SlidingSheet__content_text: {
         zIndex: -1,
         fontSize: 15,
         color: 'rgba(52, 52, 52, .8)',
 
     },
-    slidingSheet__save: {
+    SlidingSheet__save: {
         flex: 1,
         marginHorizontal: '5%',
         width: 300
@@ -37,9 +37,9 @@ const styles = StyleSheet.create({
 
 
     // Sliding Sheet Style
-    subView: {
+    SlidingSheet: {
        position: 'absolute',
-       bottom: '-100%',
+       bottom: '-45%',
        left: 0,
        right: 0,
        backgroundColor: "#FFFFFF",

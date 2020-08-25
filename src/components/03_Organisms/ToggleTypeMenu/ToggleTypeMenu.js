@@ -27,7 +27,7 @@ function ToggleTypeMenu(props) {
                     size={25} />
                 <Text
                     style={[styles.ToggleTypeMenu__label,
-                    activeItem == 'donate' ? styles.ToggleTypeMenu__labelActive : '']}>
+                    activeItem == 'donate' ? styles.ToggleTypeMenu__label_active : '']}>
                     DONATE TO ENTER DRAWINGS
                     </Text>
             </TouchableOpacity>
@@ -47,7 +47,7 @@ function ToggleTypeMenu(props) {
                     size={25} />
                 <Text
                     style={[styles.ToggleTypeMenu__label,
-                    activeItem == 'buy' ? styles.ToggleTypeMenu__labelActive : '']}>
+                    activeItem == 'buy' ? styles.ToggleTypeMenu__label_active : '']}>
                     ENTER TO BUY DRAWINGS
                     </Text>
             </TouchableOpacity>
@@ -67,7 +67,7 @@ function ToggleTypeMenu(props) {
                     size={25} />
                 <Text
                     style={[styles.ToggleTypeMenu__label,
-                    activeItem == 'all' ? styles.ToggleTypeMenu__labelActive : '']}>
+                    activeItem == 'all' ? styles.ToggleTypeMenu__label_active : '']}>
                     ALL DRAWINGS
                     </Text>
             </TouchableOpacity>

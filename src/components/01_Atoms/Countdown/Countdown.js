@@ -4,31 +4,25 @@ import {format_date, in_a_day} from '../../../functions/convert_dates';
 import styles from './Countdown.styling'
 
 const Countdown = ({ unix_timestamp, type, propsStyle }) => {
-    const style = [styles.primary, propsStyle];
+    const style = [styles.Countdown, propsStyle];
 
+    // different styles if its in search (SearchCard)
     switch (type){
       case 'search':
-        style.push(styles.search);
+        style.push(styles.Countdown_search);
         break;
     }
     
-    // convert to date object
-    var date = new Date(unix_timestamp * 1000);
-
-    // calculate the time until date
-    var diff = date.getTime() - Date.now()
-    // if it's more than 24 hours from now
+    // format the date nicely when its > 24 hours away
+    var date = new Date(unix_timestamp * 1000); // convert to date object
+    var diff = date.getTime() - Date.now() // calculate the time until date
     if (!in_a_day(unix_timestamp)) {
       return <Text style={style}>{format_date(date)}</Text>
     }
 
-
+    // format it ias a timer/countdown if < 24 hours away
     const [timeLeft, setTimeLeft] = useState(diff);
-
     useEffect(() => {
-      // exit early when we reach 0
-      // if (timeLeft <= 0) return;
-
       // save intervalId to clear the interval when the
       // component re-renders
       const intervalId = setInterval(() => {
@@ -37,12 +31,10 @@ const Countdown = ({ unix_timestamp, type, propsStyle }) => {
 
       // clear interval on re-render to avoid memory leaks
       return () => clearInterval(intervalId);
-      // add timeLeft as a dependency to re-rerun the effect
-      // when we update it
     }, [timeLeft]);
 
 
-    // format the timer
+    // format the timer nicely as a string
     let timeString = ''
     var hours = Math.floor((timeLeft / (1000 * 60 * 60)) % 24)
     if (hours > 0){

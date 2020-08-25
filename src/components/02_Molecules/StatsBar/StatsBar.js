@@ -50,22 +50,22 @@ export default function(props) {
             }
         }
         // console.log(res)
-        props.navigation.navigate('SeeAll', { raffles: res, title: 'Entered Drawings' })
+        props.navigation.navigate('SeeAll', { raffles: res, StatsBar__item__title: 'Entered Drawings' })
     }
 
     return (
     <View style={styles.StatsBar}>
         <TouchableOpacity style={styles.StatsBar__item} onPress={() => handleFollowers()}>
-            <Text style={styles.number}>{props.followers.length}</Text>
-            <Text style={styles.title}>followers</Text>
+            <Text style={styles.StatsBar__item__number}>{props.followers.length}</Text>
+            <Text style={styles.StatsBar__item__title}>followers</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.StatsBar__item} onPress={() => handleFollowing()}>
-            <Text style={styles.number}>{props.following.length}</Text>
-            <Text style={styles.title}>following</Text>
+            <Text style={styles.StatsBar__item__number}>{props.following.length}</Text>
+            <Text style={styles.StatsBar__item__title}>following</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.StatsBar__item} onPress={() => handleEntered()}>
-            <Text style={styles.number}>{props.enteredRaffles.length}</Text>
-            <Text style={styles.title}>entered</Text>
+            <Text style={styles.StatsBar__item__number}>{props.enteredRaffles.length}</Text>
+            <Text style={styles.StatsBar__item__title}>entered</Text>
         </TouchableOpacity>
     </View>
     )

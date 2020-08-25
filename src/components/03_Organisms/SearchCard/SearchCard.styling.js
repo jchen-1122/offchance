@@ -8,7 +8,7 @@ const { width, height } = Dimensions.get('window');
 
 const styles = StyleSheet.create({
 
-    FlatCard: {
+    SearchCard: {
         height: height * 0.32,
         backgroundColor: 'white',
         alignItems: 'center',
@@ -16,22 +16,21 @@ const styles = StyleSheet.create({
         borderRadius: borderRadius,
     },
 
-    FlatCard__image: {
+    SearchCard__image: {
         height: height * 0.17,
         width: width * 0.4,
         margin: spacing,
         resizeMode: 'contain',
         marginTop: -height * 0.03,
-
     },
 
-    FlatCard__startData: {
+    SearchCard__startData: {
         width: width * 0.6,
         fontSize: width * 0.025,
         color: '#989898',
     },
 
-    FlatCard__likeButton: {
+    SearchCard__likeButton: {
         flexDirection:'row',
         justifyContent: 'flex-end',
         paddingVertical: '3%',

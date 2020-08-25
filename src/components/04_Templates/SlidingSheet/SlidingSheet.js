@@ -39,7 +39,7 @@ function SlidingSheet(props) {
   }, [])
   const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet (1000 is at the bottom)
 
-  let slidingStyle = [styles.subView];
+  let slidingStyle = [styles.SlidingSheet];
   slidingStyle.push({ height: props.height });
 
   const deleteCreditCard = async () => {
@@ -99,17 +99,17 @@ function SlidingSheet(props) {
 
         <View style={styles.container}>
           {stripe ?
-            <View style={styles.slidingSheet}>
+            <View style={styles.SlidingSheet}>
               {/* Title part with a close button */}
-              <View style={styles.slidingSheet__header}>
+              <View style={styles.SlidingSheet__header}>
                 <TouchableOpacity onPress={() => closeSlidingSheet()}>
                   <Icon name='close' />
                 </TouchableOpacity>
                 <Text style={fonts.h1}>{props.title}</Text>
                 <View />
               </View>
-              <View style={[styles.slidingSheet__content, { zIndex: 2 }]}>
-                <Text style={styles.slidingSheet__content_text}>RELOAD AMOUNT</Text>
+              <View style={[styles.SlidingSheet__content, { zIndex: 2 }]}>
+                <Text style={styles.SlidingSheet__content_text}>RELOAD AMOUNT</Text>
                 <DropDown
                   placeholder={'PICK A RELOAD AMOUNT'}
                   options={['$5 = 10 chances', '$10 = 40 chances', '$20 = 50 chances', '$50 = 150 chances', '$100 = 400 chances', '$250 = 1100 chances']}
@@ -119,8 +119,8 @@ function SlidingSheet(props) {
                 />
               </View>
 
-              <View style={[styles.slidingSheet__content, { zIndex: 1 }]}>
-                <Text style={styles.slidingSheet__content_text}>PAYMENT METHOD</Text>
+              <View style={[styles.SlidingSheet__content, { zIndex: 1 }]}>
+                <Text style={styles.SlidingSheet__content_text}>PAYMENT METHOD</Text>
                 <View style={{ width: '100%', alignItems: 'center' }}>
                   <PaymentButton
                     type="applePay"
@@ -171,7 +171,7 @@ function SlidingSheet(props) {
 
               {/* not rendering for some reason */}
               {/* {(_method === '+ Add Credit Card') ?
-              <View style={[styles.slidingSheet__save]}>
+              <View style={[styles.SlidingSheet__save]}>
                 <CheckBox
                   selected={_save}
                   onPress={() => setSave(!_save)}

@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
         color: colors.gray,
         marginLeft: '3%'
     },
-    ToggleTypeMenu__labelActive: {
+    ToggleTypeMenu__label_active: {
         color: 'white',
     }
 })

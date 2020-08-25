@@ -1,19 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {Text, Image, View, TouchableOpacity, ImageBackground } from 'react-native';
 import styles from './BackCard.styling';
-import {fonts, utilities} from '../../../settings/all_settings'
-import UsernameDisplay from '../../01_Atoms/UsernameDisplay/UsernameDisplay'
 
-// for small, unclickable cards like in Latest Winners
 function BackCard(props){
     const [show, setShow] = useState(false)
     var user = props.user
     setTimeout(function() { setShow(true) }, props.time);
-    const [strobe, setStrobe] = useState(true)
-    // useEffect(() => {
-    //     setStrobe(!strobe)
-    // }, [])
 
+    // determine what picture to use for BackCard
     var userpic = { uri: user.profilePicture }
     let cardsrc = null
     switch (user["prize"]) {
@@ -37,11 +31,11 @@ function BackCard(props){
             props.setPrize(user["prize"])
         }}>
             <ImageBackground 
-              style={(props.user._id === props.currUser._id && show) ? styles.greenimgBackground : styles.imgBackground }
+              style={(props.user._id === props.currUser._id && show) ? styles.BackCard__imgBg_green : styles.BackCard__imgBg }
               source={cardsrc}>
-                {show && <View style={styles.circle_outline} >
+                {show && <View style={styles.BackCard__circleOutline} >
                     <Image
-                        style={styles.circle_pic}
+                        style={styles.BackCard__circlePic}
                         source={userpic}
                     />
                 </View>}

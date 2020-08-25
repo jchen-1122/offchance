@@ -4,10 +4,10 @@ import {isIphoneX} from '../../../functions/user_functions';
 
 let profilePicSize = Dimensions.get('window').width*0.15
 let hostPicSize = Dimensions.get('window').width*0.1
-
+let productPicSize = 150
 
 const styles = StyleSheet.create({
-    overlay: {
+    WinnerCard: {
         width: Dimensions.get('window').width*0.8,
         height: isIphoneX() ? 510 : 460,
         alignItems: 'center',
@@ -16,28 +16,31 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
     },
 
-    header: {
+    // header
+    WinnerCard__header: {
         height: '15%',
         width: '100%',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
     },
-    header__image: {
+    WinnerCard__header__image: {
         height: '90%',
         width: '90%',
         resizeMode: 'contain'
     },
 
+    // product image
     WinnerCard__image: {
-        height: 150,
-        width: 150,
+        height: productPicSize,
+        width: productPicSize,
         resizeMode: 'contain',
-        borderRadius: 150,
+        borderRadius: productPicSize,
         backgroundColor: 'white',
         marginVertical: isIphoneX() ? 10 : 5,
     },
 
+    // prize
     WinnerCard__prizeTitle: {
         fontSize: 22,
         letterSpacing: 4,
@@ -55,41 +58,44 @@ const styles = StyleSheet.create({
         paddingRight: 5
     },
 
-    winnerPic: {
+    // winner display
+    WinnerCard__winnerPic: {
         height: profilePicSize,
         width: profilePicSize,
         borderRadius: profilePicSize,
         marginRight: '3%'
     },
-    winnerLabel: {
+    WinnerCard__winnerLabel: {
         fontSize: 10
     },
-    winnerName: {
+    WinnerCard__winnerName: {
         fontSize: 16
     },
 
-    footer: {
+    WinnerCard__footer: {
         height: '12%',
         backgroundColor: 'white',
         flexDirection: 'row',
         alignItems: 'center',
     },
 
-    hostPic: {
+    // hhost display
+    WinnerCard__hostPic: {
         height: hostPicSize,
         width: hostPicSize,
         borderRadius: hostPicSize,
         marginRight: '1%'
     },
-    hostLabel: {
+    WinnerCard__hostLabel: {
         fontSize: 10,
         color: colors.darkGray
     },
-    hostName: {
+    WinnerCard__hostName: {
         fontSize: 12
     },
 
-    charity: {
+    // charity box
+    WinnerCard__charity: {
         height: 28,
         width: 28,
         resizeMode: 'contain',

@@ -14,11 +14,11 @@ const styles = StyleSheet.create({
     },
 
     // values in item
-    number: {
+    StatsBar__item__number: {
         fontSize: 22,
         fontWeight: '800'
     },
-    title: {
+    StatsBar__item__title: {
         fontSize: 18,
         fontWeight: '500'
     },

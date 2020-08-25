@@ -115,10 +115,10 @@ function HostedBy({ navigation, data, backColor, currUser, setUser }) {
   }
   
   return (
-    <View style={[styles.hostedby, { backgroundColor: backColor }]}>
+    <View style={[styles.HostedBy, { backgroundColor: backColor }]}>
       <TouchableOpacity onPress={() => navigation.navigate('OtherUser',{user: data})}>
-        <View style={styles.hostedby__profile}>
-          <Image source={{ uri: profPic }} style={styles.hostedby__image}></Image>
+        <View style={styles.HostedBy__profile}>
+          <Image source={{ uri: profPic }} style={styles.HostedBy__image}></Image>
           <Text style={fonts.link}>{'@' + username}</Text>
         </View>
       </TouchableOpacity>

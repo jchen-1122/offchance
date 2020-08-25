@@ -5,7 +5,7 @@ let cardWidth = Dimensions.get('window').width * (1/9)
 let cardHeight = Dimensions.get('window').height * (1/10)
 
 const styles = StyleSheet.create({
-    imgBackground: {
+    BackCard__imgBg: {
         width: cardWidth,
         height: cardHeight,
         alignItems: 'center',
@@ -18,10 +18,9 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 0.58,
         shadowRadius: 16.00,
-
         elevation: 24,
     },
-    greenimgBackground: {
+    BackCard__imgBg_green: {
         width: cardWidth,
         height: cardHeight,
         alignItems: 'center',
@@ -34,10 +33,10 @@ const styles = StyleSheet.create({
         },
         shadowOpacity: 1,
         shadowRadius: 16.00,
-
         elevation: 24,
     },
-    circle_outline: {
+    
+    BackCard__circleOutline: {
         width: cardWidth*0.5,
         height: cardWidth*0.5,
         borderRadius: 19,
@@ -45,7 +44,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center'
     },
-    circle_pic: {
+    BackCard__circlePic: {
         width: cardWidth*0.5,
         height: cardWidth*0.5,
         borderRadius: 15,
