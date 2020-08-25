@@ -100,7 +100,7 @@ function Profile({ navigation }) {
         sizeType = user.sizeType
         shoeSize = user.shoeSize
         shirtSize = user.shirtSize
-        referralCode = Object.keys(user).includes('last4') ? user.username + user.last4 : ''
+        referralCode = Object.keys(user).includes('referralCode') ? user.referralCode : ''
         walletChances = user.walletChances || 0
     }
 

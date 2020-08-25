@@ -145,7 +145,7 @@ function Search({navigation}) {
             {/* TODO: for raffle, bigger avatar, adjust margin, add like button; for users, add follow button */}
             {displayUser ?
               <ScrollView>
-                <ListView users={sortUsers(filteredUsers)} navigation={navigation} currUser={user} setUser={setUser}/>
+                <ListView users={sortUsers(filteredUsers.slice(0,10))} navigation={navigation} currUser={user} setUser={setUser}/>
 
               </ScrollView>
                     :
@@ -154,7 +154,7 @@ function Search({navigation}) {
 
                       {/* https://stackoverflow.com/questions/34689970/flex-react-native-how-to-have-content-break-to-next-line-with-flex-when-conte */}
                       <View style={{flexDirection:'row', alignItems: 'flex-start', flexWrap: 'wrap'}}>
-                      {filteredRaffles.map((raffle, index) =>
+                      {filteredRaffles.slice(0,10).map((raffle, index) =>
 
                           <FlatCard
                               data={raffle}
