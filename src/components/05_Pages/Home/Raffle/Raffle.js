@@ -38,7 +38,7 @@ export default function Raffle({ navigation, route }) {
 
     // sliding sheet
     const [enableScroll, setEnableScroll] = useState(true);
-    const [containerStyle, setContainerStyle] = useState(styles.container);
+    const [containerStyle, setContainerStyle] = useState(styles.Raffle);
     const [sheetController, setSheetController] = useState(false); // 0 - close, 1 - open. TODO: GLOBAL STATE
 
     const ip = require('../../../IP_ADDRESS.json');
@@ -355,7 +355,7 @@ export default function Raffle({ navigation, route }) {
     }
     let charities = [];
     for (let i in donors) {
-        charities.push(<Image source={{ uri: donors[i] }} style={styles.charity__image}></Image>)
+        charities.push(<Image source={{ uri: donors[i] }} style={styles.Raffle__image_charity}></Image>)
     }
 
     // for sliding sheet (payment)
@@ -444,7 +444,7 @@ export default function Raffle({ navigation, route }) {
                 {/* raffle title */}
                 <Text style={[fonts.h1, { marginLeft: '8%' }]}>{name}</Text>
 
-                <View style={styles.content}>
+                <View style={{paddingHorizontal: '8%'}}>
                     {(!location && location != null && !expired) ? <Text style={[fonts.bold, fonts.error]}>THIS RAFFLE IS OUT OF YOUR LOCATION</Text> : null}
                     <Text>{chanceText}</Text>
                     <View style={{ marginVertical: 15 }}>
@@ -454,18 +454,13 @@ export default function Raffle({ navigation, route }) {
 
                     <View style={{ marginRight: '-5%', marginBottom: 20 }}>
                         <Text style={fonts.italic}>Hosted by:</Text>
-                        <View style={styles.hostedby}>
-                            <TouchableOpacity
-                                onPress={() => {
-                                    user._id === raffle.host._id ?
-                                        navigation.navigate('Profile') :
-                                        navigation.navigate('OtherUser', { user: raffle.host })
-                                }}>
-                                <View style={styles.hostedby__profile}>
-                                    <Image source={{ uri: raffle.host.profilePicture }} style={styles.hostedby__image}></Image>
-                                    <Text style={fonts.link}>{'@' + raffle.host.username}</Text>
-                                </View>
-                            </TouchableOpacity>
+                        <View style={styles.Raffle__host}>
+                            <HostedBy
+                                navigation={navigation}
+                                data={raffle.host}
+                                currUser={user}
+                                follow={false}
+                                />
                             {/* remove follow button if host is user self*/}
                             {typeof user._id === 'undefined' ? null : user._id === raffle.host._id ? null : user.following.includes(raffle.host._id) ?
                                 <BlockButton color="secondary" size="small" title='FOLLOWING'
@@ -493,12 +488,12 @@ export default function Raffle({ navigation, route }) {
                     {/* !!!!!!!!!!!!! TODO: connect to db and format !!!!!!!!!!!!!!*/}
                     {/* winner of raffle if expired */}
                     {(expired) ?
-                        <View style={[styles.highlightBackground, { paddingVertical: '3%', paddingRight: '5%' }]}>
+                        <View style={[styles.Raffle__highlight, { paddingVertical: '3%', paddingRight: '5%' }]}>
                             <Text style={fonts.italic}>Won by:</Text>
-                            <View style={styles.hostedby}>
+                            <View style={styles.Raffle__host}>
                                 <TouchableOpacity onPress={() => navigation.navigate('OtherUser', { user: winner })}>
-                                    <View style={styles.hostedby__profile}>
-                                        <Image source={{ uri: winner.profilePicture }} style={styles.hostedby__image}></Image>
+                                    <View style={styles.Raffle__host__profile}>
+                                        <Image source={{ uri: winner.profilePicture }} style={styles.Raffle__host__image}></Image>
                                         <Text style={fonts.link}>{'@' + winner.username}</Text>
                                     </View>
                                 </TouchableOpacity>
@@ -555,7 +550,7 @@ export default function Raffle({ navigation, route }) {
                             }
 
                             {(raffle.sizes.length > 0 && raffle.sizes[0] !== 'One Size') ? // if there's more than just one size
-                                <View style={styles.pickSizeSlide}>
+                                <View style={{marginVertical: 25}}>
                                     <Text>PICK YOUR SIZE</Text>
                                     {raffle.sizeTypes.length > 0 ?
                                         <SizeCarousel sizes={sizeTypes} type='single' setSize={setSizeType} string /> : null}
@@ -596,7 +591,7 @@ export default function Raffle({ navigation, route }) {
                             <View style={{ zIndex: -1 }}>
                                 <Text style={{ marginRight: -10 }}>*We we will never show donation amounts for any user</Text>
                             </View>
-                            <View style={[styles.highlightBackground, { paddingVertical: '5%', marginVertical: '5%' }]}>
+                            <View style={[styles.Raffle__highlight, { paddingVertical: '5%', marginVertical: '5%' }]}>
                                 <Text style={[fonts.p, { textAlign: 'justify' }]}>Off Chance is a for-good company that hosts drawings for incredible products to raise money for charities and important causes that affect us all. All net proceeds (after hosting and platform fees) for this drawing will benefit the partners below:</Text>
                             </View>
                             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginVertical: '5%' }}>
@@ -607,7 +602,7 @@ export default function Raffle({ navigation, route }) {
                     <Text style={[fonts.p, { marginBottom: 20 }]}>*All prizes are guaranteed to be 100% authentic and deadstock. You will be notified via email once donation goal is met and drawing starts.</Text>
                 </View>
 
-                <View style={[styles.content, { flex: 0, alignItems: 'center', zIndex: -1 }]}>
+                <View style={{ paddingHorizontal: '8%',flex: 0, alignItems: 'center', zIndex: -1 }}>
                     <BlockButton
                         title="LIVE DRAWING EXP"
                         color="primary"

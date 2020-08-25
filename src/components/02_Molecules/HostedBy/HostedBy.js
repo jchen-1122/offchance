@@ -5,7 +5,7 @@ import styles from './HostedBy.styling';
 import { utilities, fonts } from '../../../settings/all_settings';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-function HostedBy({ navigation, data, backColor, currUser, setUser }) {
+function HostedBy({ navigation, data, backColor, currUser, setUser, follow }) {
   const ip = require('../../IP_ADDRESS.json')
   // get username and prof pic info from db
   let username;
@@ -123,7 +123,7 @@ function HostedBy({ navigation, data, backColor, currUser, setUser }) {
         </View>
       </TouchableOpacity>
 
-      {<BlockButton
+      {(follow == false) ? null : <BlockButton
         title={'Follow'}
         color="primary"
         size="small" />}

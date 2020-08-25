@@ -47,7 +47,7 @@ export default function RaffleResult({ navigation, route }) {
     //let dummy_user = get_user("Chelly")
 
     // entertobuy thing
-    const [containerStyle, setContainerStyle] = useState(styles.container);
+    const [containerStyle, setContainerStyle] = useState(styles.RaffleResult);
     const [sheetController, setSheetController] = useState(false); // 0 - close, 1 - open. TODO: GLOBAL STATE
 
     const trigger = () => {
@@ -200,9 +200,9 @@ export default function RaffleResult({ navigation, route }) {
             scrollEnabled={false}
             contentContainerStyle={{ height: Dimensions.get('window').height, justifyContent: 'space-between' }}>
             <ScrollView >
-                <View style={[styles.container, ]}>
+                <View style={[styles.RaffleResult, ]}>
                     {/* Card Display */}
-                    <View style={[styles.cardGrid, ]}>
+                    <View style={[styles.RaffleResult__grid, ]}>
                         {display}
                     </View>
 
