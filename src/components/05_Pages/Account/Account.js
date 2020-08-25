@@ -5,10 +5,7 @@ import {utilities, fonts, colors} from '../../../settings/all_settings';
 import NavButton from '../../01_Atoms/Buttons/NavButton/NavButton';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton';
 import BottomNav from '../../02_Molecules/BottomNav/BottomNav'
-import { COLOR } from 'react-native-material-ui';
-import { color } from 'react-native-reanimated';
 import GlobalState from '../../globalState';
-import { styles } from './Account.styling'
 
 export default function Account({navigation}) {
     const {user, setUser} = useContext(GlobalState)

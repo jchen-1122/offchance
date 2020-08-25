@@ -42,7 +42,6 @@ import Stripe from './components/05_Pages/Account/Wallet/Stripe'
 import Success from './components/05_Pages/Account/Wallet/Success'
 import HowItWorks from './components/05_Pages/Account/HowItWorks/HowItWorks';
 import FAQ from './components/05_Pages/Account/FAQ/FAQ';
-import MyDrawings from './components/05_Pages/Account/MyDrawings/MyDrawings';
 import NotLogin from './components/05_Pages/Account/NotLogin/NotLogin';
 
 // Host pages import
@@ -128,7 +127,6 @@ function App() {
           <Stack.Screen name="Success" component={Success} />
           <Stack.Screen name="HowItWorks" component={HowItWorks} options={{ title: 'How It Works' }}/>
           <Stack.Screen name="FAQ" component={FAQ} />
-          <Stack.Screen name="MyDrawings" component={MyDrawings} options={{ title: 'My Drawings' }}/>
           <Stack.Screen name="NotLogin" component={NotLogin} options={{ title: '' }}/>
           <Stack.Screen name="EditProfile" component={EditProfile} options={{title: 'Edit Profile'}}/>
           <Stack.Screen name="Following" component={Following} />
