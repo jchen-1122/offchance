@@ -16,8 +16,6 @@ function EnteredUsersDisplay(props) {
     const [userIds, setuserIds] = useState([])
     var enteredUsers;
     
-    
-
     // sort entered users so the people you're following show up at the front
     const sortUsers = (users) => {
         if (!user_logged_in(user)) {
@@ -107,9 +105,20 @@ function EnteredUsersDisplay(props) {
         <TouchableOpacity onPress={async () => {
             const userObjs = await getUserObj(userIds)
             props.navigation.navigate('EnteredUsers', {userObjs: userObjs})}}>
-            <View style={styles.container}>
-                {image1 != '' ? <Image style={[styles.image,(props.enteredUsers.length > 1) ? styles.image_overlapped:{ height: 20, width: 20, marginRight: 5 }]} source={{ uri: image1 }} /> : null}
-                {image2 != '' ? <Image style={[styles.image, { marginRight: 5 }]} source={{ uri: image2 }} /> : null}
+            <View style={styles.EnteredUsersDisplay}>
+                {image1 != '' ? 
+                    <Image 
+                        source={{ uri: image1 }} 
+                        style={[styles.EnteredUsersDisplay__image,
+                                (props.enteredUsers.length > 1) ? 
+                                    styles.EnteredUsersDisplay__image_overlapped: // style if more than one person entered
+                                    styles.EnteredUsersDisplay__image_single]} // style if only one person entered
+                    /> : null}
+                {image2 != '' ? 
+                    <Image 
+                        source={{ uri: image2 }} 
+                        style={[styles.EnteredUsersDisplay__image, { marginRight: 5 }]} 
+                    /> : null}
                 <Text style={fonts.p}>{countMsg}</Text>
             </View>
         </TouchableOpacity>

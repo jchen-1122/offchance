@@ -3,9 +3,11 @@ import {colors} from '../../../../settings/all_settings';
 
 const styles = StyleSheet.create({
    content: {
-       marginLeft: '8%',
-       marginRight: '8%',
-       alignItems: 'center'
+       marginLeft: '5%',
+       marginRight: '5%',
+       alignItems: 'center',
+       justifyContent: 'center',
+       height: '100%',
    },
    subView: {
     position: "absolute",

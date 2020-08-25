@@ -12,7 +12,7 @@ export default function AskRaffleType({ navigation }) {
     return (
         <View style={utilities.container}>
             <View style={styles.content}>
-                <Text style={[fonts.h1, { marginTop: windowHeight * .2, textAlign: "center", fontSize: 23 }]}>What kind of drawing would you like to host?</Text>
+                <Text style={[fonts.h1, { textAlign: "center", fontSize: 22 }]}>What kind of drawing would you like to host?</Text>
                 <BlockButton
                     title="DONATE TO ENTER"
                     color="primary"
@@ -22,7 +22,13 @@ export default function AskRaffleType({ navigation }) {
                     }} />
                 <View style={styles.description}>
                     <Icon name="currency-usd" type="material-community" style={styles.description__symbol} color={colors.darkGreen} />
-                    <Text style={[styles.description__text, { marginBottom: 10 }]}>Host a drawing to raise money for a charity or cause</Text>
+                    <Text style={[styles.description__text]}>Host a drawing to raise money for a charity or cause</Text>
+                </View>
+                <View style={styles.description}>
+                    <Icon name="percent" type="material-community" style={styles.description__symbol} color={colors.darkGreen} />
+                    <Text style={[styles.description__text]}>
+                        Charity partners receive All Net Proceeds after payment processing and hosting fees (20%)
+                    </Text>
                 </View>
 
                 <BlockButton
@@ -33,14 +39,14 @@ export default function AskRaffleType({ navigation }) {
                 <View style={styles.description}>
                     <Icon name="account-multiple" type="material-community" style={styles.description__symbol} color={colors.darkGreen} />
                     <Text style={styles.description__text}>
-                        Host a drawing with a buy now price for winner selected by random drawing, $2 or 3 chances entry per person
-                </Text>
+                        Host a drawing to sell 1 or many products via a random selection process
+                    </Text>
                 </View>
                 <View style={styles.description}>
                     <Icon name="percent" type="material-community" style={styles.description__symbol} color={colors.darkGreen} />
                     <Text style={[styles.description__text]}>
-                        Charity partners receive All Net Proceeds - 3.5% cc processing fee + $0 Platform fee
-                </Text>
+                    $0 platform fee's and revenue share on entries
+                    </Text>
                 </View>
             </View>
             <BottomNav navigation={navigation} active={'Home'}></BottomNav>

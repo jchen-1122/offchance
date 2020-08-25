@@ -28,11 +28,11 @@ function LatestWinnerCard(props) {
         raffle['winner'] = winner
         return (
             <View style={utilities.exploreCard}>
-                <TouchableOpacity style={styles.touchable} onPress={() => {
+                <TouchableOpacity style={styles.LatestWinnerCard__raffle} onPress={() => {
                     props.navigation.navigate('Raffle', raffle)
                 }}>
-                    <Image style={styles.raffleImage} source={{ uri: raffle.images[0] }} />
-                    <Text style={[styles.raffleName]}>{raffle.name}</Text>
+                    <Image style={styles.LatestWinnerCard__raffleImage} source={{ uri: raffle.images[0] }} />
+                    <Text style={[styles.LatestWinnerCard__raffleName]}>{raffle.name}</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={() => {

@@ -5,7 +5,7 @@ import styles from './HostedBy.styling';
 import { utilities, fonts } from '../../../settings/all_settings';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
-function HostedBy({ navigation, data, backColor, currUser, setUser }) {
+function HostedBy({ navigation, data, backColor, currUser, setUser, follow }) {
   const ip = require('../../IP_ADDRESS.json')
   // get username and prof pic info from db
   let username;
@@ -115,15 +115,15 @@ function HostedBy({ navigation, data, backColor, currUser, setUser }) {
   }
   
   return (
-    <View style={[styles.hostedby, { backgroundColor: backColor }]}>
+    <View style={[styles.HostedBy, { backgroundColor: backColor }]}>
       <TouchableOpacity onPress={() => navigation.navigate('OtherUser',{user: data})}>
-        <View style={styles.hostedby__profile}>
-          <Image source={{ uri: profPic }} style={styles.hostedby__image}></Image>
+        <View style={styles.HostedBy__profile}>
+          <Image source={{ uri: profPic }} style={styles.HostedBy__image}></Image>
           <Text style={fonts.link}>{'@' + username}</Text>
         </View>
       </TouchableOpacity>
 
-      {<BlockButton
+      {(follow == false) ? null : <BlockButton
         title={'Follow'}
         color="primary"
         size="small" />}

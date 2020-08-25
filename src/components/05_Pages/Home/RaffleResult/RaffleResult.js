@@ -17,7 +17,6 @@ import ConfettiCannon from 'react-native-confetti-cannon';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import ViewShot from "react-native-view-shot";
 import * as Sharing from 'expo-sharing';
-// import CameraRoll from "@react-native-community/cameraroll";
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import OverlaySheet from '../../../04_Templates/OverlaySheet/OverlaySheet'
@@ -48,7 +47,7 @@ export default function RaffleResult({ navigation, route }) {
     //let dummy_user = get_user("Chelly")
 
     // entertobuy thing
-    const [containerStyle, setContainerStyle] = useState(styles.container);
+    const [containerStyle, setContainerStyle] = useState(styles.RaffleResult);
     const [sheetController, setSheetController] = useState(false); // 0 - close, 1 - open. TODO: GLOBAL STATE
 
     const trigger = () => {
@@ -157,16 +156,6 @@ export default function RaffleResult({ navigation, route }) {
     }, [winnerObjs])
 
     React.useEffect(() => {
-        async function getPermissionAsync() {
-            if (Constants.platform.ios) {
-                const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-                if (status !== 'granted') {
-                    alert('Sorry, we need camera roll permissions to make this work!');
-                }
-            }
-        }
-        getPermissionAsync()
-
         let CardArray = []
         let count = 0
         winners.forEach((element, index) => {
@@ -196,8 +185,6 @@ export default function RaffleResult({ navigation, route }) {
         setWinnerTime(winners.length + Math.max(localTime, 0))
     }, [winners])
 
-    const [selectedImage, setSelectedImage] = useState(null);
-
     // for sharing on social media
     let openShareDialogAsync = async (image) => {
         if (!(await Sharing.isAvailableAsync())) {
@@ -207,22 +194,15 @@ export default function RaffleResult({ navigation, route }) {
         await Sharing.shareAsync(image);
     };
 
-    // doesnt work rn - save the WinnerCard as an image
-    // async function savePicture(tag) {
-    //     if (Platform.OS === "android" && !(await hasAndroidPermission())) {
-    //         return;
-    //     }
-    //     CameraRoll.save(tag);
-    // };
     return (
         <KeyboardAwareScrollView
             resetScrollToCoords={{ x: 0, y: 0 }}
             scrollEnabled={false}
             contentContainerStyle={{ height: Dimensions.get('window').height, justifyContent: 'space-between' }}>
             <ScrollView >
-                <View style={[styles.container, ]}>
+                <View style={[styles.RaffleResult, ]}>
                     {/* Card Display */}
-                    <View style={[styles.cardGrid, ]}>
+                    <View style={[styles.RaffleResult__grid, ]}>
                         {display}
                     </View>
 
@@ -323,7 +303,7 @@ export default function RaffleResult({ navigation, route }) {
             </ScrollView>
 
             {/* Live Chat */}
-             <View style={{ marginBottom: '0%', flex: 3}}>
+             <View style={{ marginBottom: 75}}>
                 {(localTime <= 0) ? <Social currUser={user}></Social> : null}
             </View>
 

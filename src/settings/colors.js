@@ -19,8 +19,6 @@ var colors = {
     gold2: '#F9F4AF',
     silver1: '#595959',
     silver2: '#F1F1F1',
-    bronze1: '#8A501A',
-    bronze2: '#FFD6C9',
 
     // arrays for gradients
     get goldGradient(){
@@ -34,12 +32,6 @@ var colors = {
     },
     get silverGradientBg(){
         return ["#9E9E9E", "#EDEDED", "#9E9E9E"]
-    },
-    get bronzeGradient(){
-        return [this.bronze1, this.bronze2]
-    },
-    get bronzeGradientBg(){
-        return [this.bronze1, this.bronze2, this.bronze1]
     },
     get whiteGradientBg(){
         return ['#D9D8D8', 'white', '#D9D8D8']

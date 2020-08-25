@@ -3,18 +3,23 @@ import {StyleSheet, Dimensions} from 'react-native';
 let imageSize = 14;
 
 const styles = StyleSheet.create({
-    container: {
+    EnteredUsersDisplay: {
         flex: 0,
         flexDirection: 'row',
         alignItems: 'center'
     },
-    image: {
+    EnteredUsersDisplay__image: {
         height: imageSize,
         width: imageSize,
         borderRadius: imageSize
     },
-    image_overlapped: {
+    EnteredUsersDisplay__image_overlapped: {
         marginRight: -8,
+    },
+    EnteredUsersDisplay__image_single: { 
+        height: 20, 
+        width: 20, 
+        marginRight: 5 
     }
 })
 

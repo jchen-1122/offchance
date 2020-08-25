@@ -5,78 +5,47 @@ import {StyleSheet, Dimensions} from 'react-native';
 const {height, width} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
-    overlay: {
-        borderRadius: 30, 
-        paddingBottom: '8%',
-        width: width * 0.9,
-        height: height * 0.65,
+    OverlaySheet: {
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30, 
+        paddingVertical: '8%',
+        // width: width * 0.9,
         alignItems: 'center', 
-
-    },
-    overlayPay: {
-        borderRadius: 30, 
-        paddingBottom: '8%',
-        width: width * 0.9,
-        height: height * 0.65,
-
+        position: 'absolute',
+        bottom: 0,
     },
 
-    container: {
-      flex: 1,
-    },
-
-    slidingSheet: {
-        flex: 1,
-    },
-
-    slidingSheet__header: {
-        flex: 1,
+    OverlaySheet__header: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
         marginTop: '3%',
         marginBottom: '1%',
-
+        marginHorizontal: '5%'
     },
 
-    slidingSheet__content: {
-        // flex: 1,
+    OverlaySheet__content: {
         marginHorizontal: '5%',
         marginBottom: '7%',
         flexDirection: 'column',
-
     },
-    slidingSheet__save: {
-        flex: 1,
-        marginHorizontal: '5%',
-        width: 300,
-        marginLeft: 40,
+    OverlaySheet__content_text: {
+        fontSize: 15,
+        color: 'rgba(52, 52, 52, .8)',
+        marginLeft: '5%'
+    },
+    OverlaySheet__save: {
+        marginHorizontal: '8%',
+        marginTop: 15
     },
 
-    slidingSheet__savepayment: {
+    OverlaySheet__savepayment: {
         flex: 1,
         marginHorizontal: '5%',
         width: 300,
         marginLeft: 40,
         marginTop: -30
     },
-
-    slidingSheet__content_text: {
-        zIndex: -1,
-        fontSize: 15,
-        color: 'rgba(52, 52, 52, .8)',
-
-    },
-
-    // button
-    button: {
-      zIndex: -1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginBottom: '-40%',
-
-    },
-
 })
 
 export default styles;

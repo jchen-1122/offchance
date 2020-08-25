@@ -7,7 +7,7 @@ import SearchInput, { createFilter } from 'react-native-search-filter';
 import { styles } from './Search.styling'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
 import Card from '../../03_Organisms/Card/Card';
-import FlatCard from '../../03_Organisms/FlatCard/FlatCard';
+import SearchCard from '../../03_Organisms/SearchCard/SearchCard';
 import UsernameDisplay from '../../01_Atoms/UsernameDisplay/UsernameDisplay';
 import GlobalState from '../../globalState';
 // import {user_logged_in} from '../../../functions/user_functions';
@@ -150,7 +150,7 @@ function Search({navigation}) {
                       <View style={{flexDirection:'row', alignItems: 'flex-start', flexWrap: 'wrap'}}>
                       {filteredRaffles.map((raffle, index) =>
 
-                          <FlatCard
+                          <SearchCard
                               data={raffle}
                               key={index}
                               navigation={navigation}

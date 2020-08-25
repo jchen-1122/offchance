@@ -1,12 +1,11 @@
 import { StyleSheet } from 'react-native';
 import {colors} from "../../../settings/all_settings";
 
-
 const styles = StyleSheet.create({
-    TopNav: {
+    TopNav__item: {
         backgroundColor: 'white'
     },
-    active: {
+    TopNav__item_active: {
         borderBottomColor: 'black',
         borderBottomWidth: 3,
     }

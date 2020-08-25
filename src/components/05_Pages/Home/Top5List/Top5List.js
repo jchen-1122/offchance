@@ -1,6 +1,6 @@
 import React, {useContext} from 'react'
-import ListView from '../../04_Templates/ListView/ListView'
-import GlobalState from '../../globalState'
+import ListView from '../../../04_Templates/ListView/ListView'
+import GlobalState from '../../../globalState'
 import {ScrollView} from 'react-native'
 
 export default function Top5List({navigation, route}) {
@@ -9,7 +9,7 @@ export default function Top5List({navigation, route}) {
     //console.log(users)
     return (
         <ScrollView>
-            <ListView users={users} title="Top 5 Donors" navigation={navigation} currUser={user} setUser={setUser}></ListView>
+            <ListView users={users} navigation={navigation} currUser={user} setUser={setUser}></ListView>
         </ScrollView>
     )
 }

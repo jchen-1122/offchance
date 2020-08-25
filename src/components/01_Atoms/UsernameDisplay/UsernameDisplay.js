@@ -20,18 +20,18 @@ function UsernameDisplay(props){
             profilePicStyle = styles.profilePic_small;
             usernameStyle = fonts.p;
             displayText = 'Hosted by ' + displayText;
-            containerStyle = styles.container_hostedBy;
+            // containerStyle = styles.container_hostedBy;
             break;
         case 'latestWinner':
             profilePicStyle = styles.profilePic_small;
             usernameStyle = styles.username_small;
-            containerStyle = styles.container_hostedBy;
+            // containerStyle = styles.container_hostedBy;
             break;
         case 'search':
             profilePicStyle = styles.profilePic_search;
             usernameStyle = styles.username_search;
             displayText = 'Hosted by ' +displayText;
-            containerStyle = styles.container_hostedBy;
+            // containerStyle = styles.container_hostedBy;
             break;
         case 'game':
             containerStyle = styles.container_game;

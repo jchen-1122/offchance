@@ -69,7 +69,7 @@ export default function HostDashboard({ navigation }) {
 
     // drawings pending approval
     let pendingDrawings;
-    if (_pendingRaffles){
+    if (_pendingRaffles.length > 0){
         pendingDrawings = (
             <View>
             <Text style={[fonts.h1, { marginTop: '5%', marginLeft: '2%' }]}>Your Pending Drawings</Text>

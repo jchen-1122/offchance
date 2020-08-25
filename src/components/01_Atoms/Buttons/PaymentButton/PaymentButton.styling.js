@@ -14,6 +14,7 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         marginRight: 5
     },
+    // different sizes
     PaymentButton__logo_medium: {
         height: 30,
         width: 30

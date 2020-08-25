@@ -67,12 +67,13 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
 
     let buttonText = 'ENTER DRAWING'
     if (Object.keys(currUser).includes('rafflesEntered')) {
-        for (var raffle of currUser.rafflesEntered.children){
-            if (raffle.raffleID == raffleid){
+        for (var raffle of currUser.rafflesEntered.children) {
+            if (raffle.raffleID == raffleid) {
                 buttonText = 'YOU HAVE ' + raffle.chances + ' CHANCES'
             }
         }
     }
+
     // set default values for card
     let startData = null;
     let like = null;
@@ -80,103 +81,111 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
     let button = <BlockButton title={buttonText} color="secondary" onPress={() => navigation.navigate('Raffle', data)} />;
     let friendsEntered = <EnteredUsersDisplay enteredUsers={enteredUsers} navigation={navigation} />
 
-    // CHECK WHAT TYPE OF CARD--------------------------------------------------------------
+    // CHECK WHAT TYPE OF CARD--------------------------------------------------------------------------------------------
     switch (type) {
         // default is the regular card as seen in 'Home (free drawing)' in Figma
         case 'default':
+            // has a like button and maybe a banner
             like = (
-                <View style={styles.likeButton}>
+                <View style={styles.Card__likeButton}>
                     {(banner) ? <CardBanner title='DONATE TO WIN' color='lightGreen' /> : null}
                     <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid} />
                 </View>);
 
+            // if live drawing happening now
             if (live_drawing_now(data)) {
                 startData = (
                     <View>
-                        <Text style={[fonts.bold,{fontSize: 14}]}>LIVE DRAWING HAPPENING NOW</Text>
+                        <Text style={[fonts.bold, { fontSize: 14 }]}>LIVE DRAWING HAPPENING NOW</Text>
                     </View>
                 )
             }
+            // if live drawing already happened
             else if (expired) {
                 startData = (
                     <View>
-                        <Text style={[styles.startData_grey, fonts.p]}>DRAWING COMPLETED</Text>
+                        <Text style={[styles.Card__startData, fonts.p]}>DRAWING COMPLETED</Text>
                         <Countdown unix_timestamp={date} />
                     </View>
                 )
             }
-            else{
+            // if live drawing hasnt happened yet
+            else {
                 startData = (
                     <View>
-                    <Text style={[styles.startData_grey, fonts.p]}>DRAWING STARTS</Text>
-                    <Countdown unix_timestamp={date} />
-                    <Text style={[styles.grey_text, fonts.p]}>OR WHEN DONATION GOAL IS MET</Text>
-                </View>
+                        <Text style={[styles.Card__startData, fonts.p]}>DRAWING STARTS</Text>
+                        <Countdown unix_timestamp={date} />
+                        <Text style={[styles.Card__startData, fonts.p, { marginTop: 0 }]}>OR WHEN DONATION GOAL IS MET</Text>
+                    </View>
                 )
             }
             break;
+
         // enter to buy drawings
         case 'buy':
             like = (
-                <View style={styles.likeButton}>
+                <View style={styles.Card__likeButton}>
                     {(banner) ? <CardBanner title='ENTER TO BUY' color='darkGreen' icon='usd' /> : null}
                     <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid} />
                 </View>);
-            startData = (<View><Text style={[styles.startData_grey, fonts.p]}>{expired ? 'DRAWING COMPLETED' : 'DRAWING STARTS'}</Text><Countdown unix_timestamp={date} /></View>);
+            startData = (
+                <View>
+                    <Text style={[styles.Card__startData, fonts.p]}>{expired ? 'DRAWING COMPLETED' : 'DRAWING STARTS'}</Text>
+                    <Countdown unix_timestamp={date} />
+                </View>
+            );
             break;
-        // for upcoming 4 raffles
-        // case 'upcoming':
-        //     like = <View style={styles.upcoming_placeholder} />
-        //     friendsEntered = null;
-        //     button = <TouchableOpacity style={styles.upcoming_notifyMe} onPress={() => navigation.navigate('Raffle')}><Text>NOTIFY ME</Text></TouchableOpacity>;
-        //     startData = <View><Text style={[styles.startData_grey, fonts.p]} >DRAWING STARTS</Text><Countdown unix_timestamp={date} /></View>;
-        //     break;
-        // for simplified cards in your feed
+
+        // your feed cards
         case 'feed':
             var picture;
             var caption;
             let person;
+            // someone you're following has posted a drawing
             if (feedType == 'following' && host) {
                 picture =
                     <TouchableOpacity onPress={() => {
                         navigation.navigate('OtherUser', { user: host })
                     }}>
-                        <Image style={styles.notif_host} source={{ uri: host.profilePicture }} />
+                        <Image style={styles.FeedCard__hostImage} source={{ uri: host.profilePicture }} />
                     </TouchableOpacity>
                 person = <Text style={{ textDecorationLine: 'underline' }} onPress={() => navigation.navigate('OtherUser', { user: host })}>@{host.username}</Text>
                 caption = ' posted a drawing for '
             }
+            // someone you're mutually following won something / you won something
             else if (feedType == "win" && currUser) {
                 picture = (userType == 'other') ?
-                    <Image style={styles.notif_host} source={{ uri: otherUser.profilePicture }} /> : <Image style={styles.notif_host} source={{ uri: currUser.profilePicture }} />
+                    <Image style={styles.FeedCard__hostImage} source={{ uri: otherUser.profilePicture }} /> : <Image style={styles.FeedCard__hostImage} source={{ uri: currUser.profilePicture }} />
                 let user = (userType == 'other') ? otherUser.username : 'You'
 
+                // if they won the grand prize
                 if (prize == 0) {
                     caption = user + " won a "
                 }
+                // if they won chances (consolation prize)
                 else {
                     caption = user + " won chances for a drawing for "
                 }
             }
+            // different styles for iPhoneX
             var mult = isIphoneX() ? 0.4 : 0.48
             return (
                 <View style={{ maxHeight: Dimensions.get('window').height * mult }}>
-                    <ScrollView style={[styles.card, { paddingTop: '5%' }]}>
-                        <View style={styles.notif}>
+                    <ScrollView style={[styles.Card, { paddingTop: '5%' }]}>
+                        <View style={styles.FeedCard}>
                             {picture}
                             <View>
-
                                 <Text>{person}{caption}<Text style={{ fontWeight: 'bold' }}>{title}</Text></Text>
-                                <Text style={styles.notif_grey}>{time_from_now(date, true)}</Text>
+                                <Text style={styles.FeedCard__timestamp}>{time_from_now(date, true)}</Text>
                             </View>
                         </View>
-                        <TouchableOpacity onPress={() => navigation.navigate('Raffle', data)}>
-
-                            <Image style={styles.notif_pic} source={{ uri: imageURI }} />
-                        </TouchableOpacity>
+                        <View style={{ width: '100%', alignItems: 'center' }}>
+                            <TouchableOpacity onPress={() => navigation.navigate('Raffle', data)}>
+                                <Image style={styles.FeedCard__image} source={{ uri: imageURI }} />
+                            </TouchableOpacity>
+                        </View>
                     </ScrollView>
                 </View>
-
             )
     }
 
@@ -188,13 +197,12 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
     }
 
     return (
-        <View style={[styles.card]}>
+        <View style={[styles.Card]}>
             {like}
-            <View style={styles.itemDesc}>
-
+            <View style={utilities.flexCenter}>
                 <View style={{ flex: 1, width: contentWidth }}>
                     <TouchableOpacity style={{ alignItems: 'center', width: '100%', marginBottom: '3%' }} onPress={() => navigation.navigate('Raffle', data)}>
-                        <Image style={styles.image} source={{ uri: imageURI }} />
+                        <Image style={styles.Card__image} source={{ uri: imageURI }} />
                         <Text style={[fonts.h1, { textAlign: 'center' }]}>{title}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity

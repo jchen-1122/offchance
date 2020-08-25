@@ -5,37 +5,21 @@ let borderRadius = 10; // border radius for card
 let spacing = 10; // for margin and padding
 
 const styles = StyleSheet.create({
-    container: {
+    RaffleResult: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
         direction: 'inherit',
         flexWrap: 'wrap',
     },
-    card: {
-        width: Dimensions.get('window').width * 0.13,
-        height: Dimensions.get('window').height * 0.13,
-        alignItems: 'center',
-        justifyContent: 'center',
-        margin: spacing,
-    },
 
-    cardGrid: {
+    RaffleResult__grid: {
         marginTop: '5%',
         width: '100%', 
         flexDirection: 'row', 
         flexWrap: 'wrap', 
         alignItems: 'center', 
         justifyContent: 'center'
-    },
-
-    overlay: {
-        width: Dimensions.get('window').width * 0.6,
-        height: Dimensions.get('window').height * 0.6,
-        alignItems: 'center',
-        justifyContent: 'center',
-        margin: spacing,
-        backgroundColor: 'black'
     },
 
     // overlay for timer

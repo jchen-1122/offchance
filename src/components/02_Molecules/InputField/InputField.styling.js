@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
         padding: 5,
         paddingLeft: 0
     },
+    
     // if input is a textArea (multiple lines)
     InputField__box_textArea: {
         height: 75
@@ -35,14 +36,6 @@ const styles = StyleSheet.create({
     InputField__box_Green: {
         borderBottomColor: colors.limeGreen
     }
-
-    // InputField__label: {
-    //     fontSize: 16,
-    //     marginBottom: 5,
-    //     fontWeight: '500', 
-    //     color: colors.gray
-    // }
-
 })
 
 export {styles};

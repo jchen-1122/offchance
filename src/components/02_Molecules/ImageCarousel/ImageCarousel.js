@@ -53,9 +53,6 @@ function ImageCarousel({images}) {
                   borderRadius: 5,
                   marginHorizontal: -2
               }}
-              inactiveDotStyle={{
-                  // @chelly if you think it's necessary, define styles for inactive dots here
-              }}
               inactiveDotOpacity={0.4}
               inactiveDotScale={0.6}
             />

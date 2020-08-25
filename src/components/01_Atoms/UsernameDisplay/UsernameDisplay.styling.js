@@ -51,12 +51,6 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
     },
-    container_hostedBy: {
-        // marginRight: 'auto',
-        flex: 0,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
     container_game: {
         justifyContent: 'center',
         alignItems: 'center',

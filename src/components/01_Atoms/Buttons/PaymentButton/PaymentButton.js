@@ -1,5 +1,3 @@
-// insta button + facebook button + login button
-
 import React from 'react';
 import { View, TouchableOpacity, Text, Image } from 'react-native';
 import { styles } from "./PaymentButton.styling";

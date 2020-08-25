@@ -125,7 +125,7 @@ function ListView(props) {
     for (let user in props.users) {
         // console.log('User is: ', props.users[user]._id);
         usernameList.push(
-            <View style={styles.ListViewRow}>
+            <View style={styles.ListView__row}>
                 <TouchableOpacity
                     onPress={() => {
                         currUser._id === props.users[user]._id ?
