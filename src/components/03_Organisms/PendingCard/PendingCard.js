@@ -4,6 +4,7 @@ import { utilities, fonts, colors } from '../../../settings/all_settings';
 import GlobalState from '../../globalState'
 import { styles } from './PendingCard.styling'
 import { getTimer } from '../../../functions/convert_dates'
+import Countdown from '../../01_Atoms/Countdown/Countdown';
 
 export default function PendingCard(props) {
     var raffle = props.data
@@ -51,7 +52,7 @@ export default function PendingCard(props) {
                         <Text style={{ fontWeight: 'bold' }}>{raffle.name}</Text>
                         {(raffle.approved) ? <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.HostCard__info__label}>{'Start Time: '}</Text>
-                            <Text>{(new Date(raffle.startTime * 1000)).toDateString().substring(4)}</Text>
+                            <Text>{raffle.startTime ? (new Date(raffle.startTime * 1000)).toDateString().substring(4) : 'Not Set'}</Text>
                         </View> : null}
                         {(raffle.approved) ? <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.HostCard__info__label}>{'Likes: '}</Text>

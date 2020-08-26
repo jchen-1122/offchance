@@ -4,6 +4,7 @@ import { utilities, fonts, colors } from '../../../settings/all_settings';
 import GlobalState from '../../globalState'
 import { styles } from './HostCard.styling'
 import { getTimer } from '../../../functions/convert_dates'
+import Countdown from '../../01_Atoms/Countdown/Countdown'
 
 export default function HostCard(props) {
     var raffle = props.data

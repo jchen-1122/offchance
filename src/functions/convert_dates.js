@@ -1,16 +1,16 @@
 const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 var moment = require('moment');
+var momentDurationFormatSetup = require("moment-duration-format");
 
 export function unix_to_date(unix_timestamp) {
     return (in_a_day(unix_timestamp) ? getTimer(unix_timestamp, true) : format_date(date))
 }
 
 export function getTimer(unix_timestamp, showSeconds) {
-    var now = moment (new Date())
+    var now = moment()
     var startTime = moment(unix_timestamp * 1000)
-    var timeLeft = moment(startTime.diff(now))
-    var formatted = showSeconds? timeLeft.format('DD[d ]HH[h ]mm[m ]ss[s]') : timeLeft.format('DD[d ]HH[h ]mm[m ]')
-    return formatted
+    var duration = moment.duration(startTime.diff(now))
+    return (duration.format("d[d] h[h] m[m]"))
 }
 
 export function in_a_day(unix_timestamp) {
