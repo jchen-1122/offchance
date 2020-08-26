@@ -153,7 +153,7 @@ function SearchCard({ navigation, data, viewType, currUserG, setUserG, inLikesPa
                 <View style={styles.SearchCard}>
                     <Image style={styles.SearchCard__image} source={{ uri: imageURI }} />
                     <View style={{ width: '100%', paddingHorizontal: '7%', }}>
-                        <Text style={[fonts.h1, { fontSize: height * 0.018, paddingHorizontal: '4%' }]}>{title}</Text>
+                        <Text style={[fonts.h3, { fontSize: 14,paddingHorizontal: '4%' }]}>{title}</Text>
                         <TouchableOpacity
                             style={{ marginVertical: '2%' }}
                             onPress={() => {
