@@ -7,11 +7,9 @@ import { utilities, fonts, colors } from '../../../../settings/all_settings';
 import styles from './AskRaffleType.styling';
 
 export default function AskRaffleType({ navigation }) {
-    const windowWidth = Dimensions.get('window').width;
-    const windowHeight = Dimensions.get('window').height;
     return (
         <View style={utilities.container}>
-            <View style={styles.content}>
+            <View style={styles.AskRaffle}>
                 <Text style={[fonts.h1, { textAlign: "center", fontSize: 22 }]}>What kind of drawing would you like to host?</Text>
                 <BlockButton
                     title="DONATE TO ENTER"
