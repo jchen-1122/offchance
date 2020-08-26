@@ -323,10 +323,10 @@ function OverlaySheet(props) {
 
             <View style={styles.OverlaySheet__content}>
               <Text style={styles.OverlaySheet__content_text}>Payment Method</Text>
-              <PaymentButton
+              {/* <PaymentButton
                 type="applePay"
                 onPress={() => setMethod('applepay')}
-                selected={_method == 'applepay'} />
+                selected={_method == 'applepay'} /> */}
               <PaymentButton
                 type="paypal"
                 onPress={() => setMethod('Paypal')}

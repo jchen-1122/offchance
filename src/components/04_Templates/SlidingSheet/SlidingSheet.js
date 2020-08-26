@@ -122,10 +122,10 @@ function SlidingSheet(props) {
               <View style={[styles.SlidingSheet__content, { zIndex: 1 }]}>
                 <Text style={styles.SlidingSheet__content_text}>PAYMENT METHOD</Text>
                 <View style={{ width: '100%', alignItems: 'center' }}>
-                  <PaymentButton
+                  {/* <PaymentButton
                     type="applePay"
                     onPress={() => setMethod('applepay')}
-                    selected={_method == 'applepay'} />
+                    selected={_method == 'applepay'} /> */}
                   <PaymentButton
                     type="paypal"
                     onPress={() => setMethod('Paypal')}
