@@ -1,3 +1,4 @@
+  
 import { StyleSheet, Dimensions } from 'react-native'
 import {colors, dimensions} from '../../../settings/all_settings';
 
@@ -9,7 +10,7 @@ const { width, height } = Dimensions.get('window');
 const styles = StyleSheet.create({
 
     SearchCard: {
-        height: height * 0.32,
+        height: height * 0.3,
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
@@ -17,11 +18,11 @@ const styles = StyleSheet.create({
     },
 
     SearchCard__image: {
-        height: height * 0.17,
+        height: height * 0.12,
         width: width * 0.4,
         margin: spacing,
         resizeMode: 'contain',
-        marginTop: -height * 0.03,
+        marginTop: -height * 0.05,
     },
 
     SearchCard__startData: {

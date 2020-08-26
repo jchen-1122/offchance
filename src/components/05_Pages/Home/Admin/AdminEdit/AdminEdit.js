@@ -49,6 +49,11 @@ export default function AdminEdit({ navigation, route }) {
     // sup matt, this is the reason you're sending throught the request body
     const [_reason, setReason] = useState('')
 
+    let images = [];
+    for (let i in route.params.images) {
+        images.push({ uri: route.params.images[i] })
+    }
+
     // for going to the next text input
     const priceRef = useRef()
     const valueRef = useRef()
@@ -158,6 +163,19 @@ export default function AdminEdit({ navigation, route }) {
         return json
     }
 
+    const sendSMS = async (msg) => {
+        const response = await fetch('https://verify-sample-2928-dev.twil.io/host', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: SMSJson(msg)
+        })
+        const json = await response.text()
+        return json
+    }
+
     // checks conditions on when to send the notification
     const sendLiveNotif = async (justApproved) => {
         // console.log('approved', route.params.approved)
@@ -178,6 +196,7 @@ export default function AdminEdit({ navigation, route }) {
         if (!route.params.approved && justApproved){
             console.log('followers', route.params.host.followers)
             console.log('host', route.params.host.username)
+            sendSMS('OffChance: Your raffle for ' + _name + ' has been approved!')
             return await postMessage(await makeJSONpush(
                 await getPushTokens(route.params.host.followers),
                 "A host you're following has posted a drawing!",
@@ -199,6 +218,16 @@ export default function AdminEdit({ navigation, route }) {
             host: _raffle.host
             // raffle: _raffle
         }
+        return JSON.stringify(data)
+    }
+
+    const SMSJson = (msg) => {
+        console.log('+1' + route.params.host.phoneNumber)
+        let data = {
+            to: '+1' + route.params.host.phoneNumber,
+            message: msg
+        }
+        console.log(JSON.stringify(data))
         return JSON.stringify(data)
     }
 
@@ -336,11 +365,9 @@ export default function AdminEdit({ navigation, route }) {
                             <BlockButton color="secondary" title="CHOOSE" size="small" />
                         </View>
 
-                        <View style={{alignItems: 'center'}}>
-                            {route.params.images.length > 1 ? <ImageCarousel images={route.params.images}></ImageCarousel> :
+                        {route.params.images.length > 1 ? <ImageCarousel images={images}></ImageCarousel> :
                                 <Image source={{ uri: route.params.images[0] }}
                                     style={{ height: Dimensions.get('window').height * 0.3, width: Dimensions.get('window').width, resizeMode: 'contain', marginBottom: '5%' }}></Image>}
-                        </View>
                         <View style={{ width: '100%', marginVertical: 10 }}>
                             <Text style={styles.InputField__label}>Status*</Text>
                             <View style={{ flexDirection: 'row' }}>

@@ -4,6 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { fonts, utilities, dimensions } from '../../../settings/all_settings';
 import InputField from '../../02_Molecules/InputField/InputField';
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
+import TextLink from '../../01_Atoms/Buttons/TextLinks/TextLinks';
 import { ImageZoomProps } from 'react-native-image-pan-zoom';
 
 export default function PhoneVerify({ navigation, route }) {
@@ -11,6 +12,23 @@ export default function PhoneVerify({ navigation, route }) {
 
     const [_errors, setErrors] = useState([])
     const [_code, setCode] = useState(null)
+    const [_timeLeft, setTimeLeft] = useState(0);
+
+    useEffect(() => {
+      // exit early when we reach 0
+      if (!_timeLeft) return;
+  
+      // save intervalId to clear the interval when the
+      // component re-renders
+      const intervalId = setInterval(() => {
+        setTimeLeft(_timeLeft - 1);
+      }, 1000);
+  
+      // clear interval on re-render to avoid memory leaks
+      return () => clearInterval(intervalId);
+      // add timeLeft as a dependency to re-rerun the effect
+      // when we update it
+    }, [_timeLeft]);
 
     const styles = StyleSheet.create({
         header: {
@@ -81,6 +99,17 @@ export default function PhoneVerify({ navigation, route }) {
         const json = await response.json()
         console.log(json)
         return json
+      }
+
+    const sendsms = async () => {
+        const response = await fetch('https://verify-sample-2928-dev.twil.io/start-verify', {
+          method: "POST",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: phoneJSON()
+        })
       }
 
     const verifysms = async () => {
@@ -163,6 +192,16 @@ label="Verification Code" onChangeText={(text) => {
                     }
                 }}
             />
+            {(_timeLeft === 0) ? <View style={{flexDirection: 'row'}}>
+              <Text style={fonts.p}>Don't see a code?</Text>
+              <TextLink
+                title="Send it again."
+                style={fonts.link}
+                onPress={() => {
+                  setTimeLeft(30)
+                  sendsms()
+                }}/>
+            </View> : <Text style={fonts.p}>Try again in {_timeLeft}</Text>}
         </View>
         </ScrollView>
     );

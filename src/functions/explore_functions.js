@@ -114,7 +114,7 @@ export async function top5_global() {
 // returns most recent 4 drawings
 export async function getLatestRaffles() {
     var now_unix = new Date().getTime() / 1000 // now in unix time stamp
-    let response = await fetch('http://' + ip.ipAddress + '/raffle/query?dir=desc')
+    let response = await fetch('http://' + ip.ipAddress + '/raffle/query?query=approved&val=true')
     response = await response.json()
     response = response.filter((raffle) => { return raffle.startTime < now_unix }) // filter recent ones
     response = response.sort((a, b) => (a.startTime < b.startTime) ? 1 : -1) // sort by start time (recent first)

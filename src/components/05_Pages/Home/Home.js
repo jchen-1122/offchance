@@ -50,8 +50,16 @@ function Home({ navigation }) {
       setTop5Donors(await top5_global())
       setLatestWinners(await getLatestWinners())
       setLatestRaffles(await getLatestRaffles())
-      let response = await fetch('http://' + data.ipAddress + '/raffle/query?query=archived&val=false')
+      let response = await fetch('http://' + data.ipAddress + '/raffle/query?query=approved&val=true')
       response = await response.json()
+      // archived = false
+      let temp = []
+      for (var i = 0; i < response.length; i++) {
+        if (response[i].archived === false) {
+          temp.push(response[i])
+        }
+      }
+      response = temp
       setDonateRaffles(response.filter((raffle) => { return raffle.type == 1 }))
       setBuyRaffles(response.filter((raffle) => { return raffle.type == 2 }))
       setUpcomingRaffles(response.filter((raffle) => { return raffle.live == false }))
@@ -151,7 +159,7 @@ function Home({ navigation }) {
 
           <HorizontalScroll title="Trending" theme="light" seeAllRaffles={trendingRaffles} navigation={navigation} toggle={true}>
 
-            {trendingRaffles.map((raffle, index) =>
+            {trendingRaffles.slice(0, 10).map((raffle, index) =>
               <RaffleCard raffle={raffle} navigation={navigation} />
             )}
           </HorizontalScroll>
@@ -162,26 +170,26 @@ function Home({ navigation }) {
           </HorizontalScroll>
 
           <HorizontalScroll title="Donate to Enter Raffles" theme="light" seeAllRaffles={donateRaffles} navigation={navigation}>
-            {donateRaffles.map((raffle, index) =>
+            {donateRaffles.slice(0,10).map((raffle, index) =>
               <RaffleCard raffle={raffle} navigation={navigation} />
             )}
           </HorizontalScroll>
 
           <HorizontalScroll title="Latest Winners" theme="dark">
-            {latestWinners.map((winner, index) =>
+            {latestWinners.slice(0,10).map((winner, index) =>
               <LatestWinnerCard raffle={latestRaffles[index]} winner={winner} navigation={navigation} />
             )}
           </HorizontalScroll>
 
           <HorizontalScroll title="Enter To Buy Raffles" theme="light" seeAllRaffles={buyRaffles} navigation={navigation}>
-            {buyRaffles.map((raffle, index) =>
+            {buyRaffles.slice(0, 10).map((raffle, index) =>
               <RaffleCard raffle={raffle} navigation={navigation} />
             )}
           </HorizontalScroll>
 
           <View style={{ marginTop: '-10%' }}>
             <HorizontalScroll title="Coming Soon" theme="light" seeAllRaffles={upcomingRaffles} navigation={navigation} toggle={true}>
-              {upcomingRaffles.map((raffle, index) =>
+              {upcomingRaffles.slice(0, 10).map((raffle, index) =>
                 <RaffleCard raffle={raffle} navigation={navigation} />
               )}
             </HorizontalScroll>

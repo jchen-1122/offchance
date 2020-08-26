@@ -125,6 +125,31 @@ function LikeButton(props) {
         )
     }
 
+    // const setLike = async () => {
+    //     const ip = require('../../../IP_ADDRESS.json')
+    //     const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + currUser._id, {
+    //         method: "PATCH",
+    //         headers: {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: makeAddJSON()
+    //     })
+    //     const json = await response.json()
+    //     return json
+    // }
+
+    // const makeAddJSON = () => {
+    //     let prevLikes = currUser.likedRaffles
+    //     if (!prevLikes.includes(raffle)) {
+    //         prevLikes.push(raffle)
+    //     }
+    //     let data = {
+    //         likedRaffles: prevLikes
+    //     }
+    //     return JSON.stringify(data)
+    // }
+
     return (
         <TouchableOpacity style={[styles.LikeButton, props.style]}
             onPress={async () => {

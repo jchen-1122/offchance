@@ -23,6 +23,17 @@ function SearchCard({ navigation, data, viewType, currUserG, setUserG, inLikesPa
 
     const { width, height } = Dimensions.get('window');
 
+    function array_move(arr, old_index, new_index) {
+        if (new_index >= arr.length) {
+            var k = new_index - arr.length + 1;
+            while (k--) {
+                arr.push(undefined);
+            }
+        }
+        arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+        return arr; // for testing
+    };
+
     React.useEffect(() => {
         async function getHost() {
             let response = await fetch('http://' + ip.ipAddress + '/user/id/' + data.hostedBy)
@@ -98,6 +109,41 @@ function SearchCard({ navigation, data, viewType, currUserG, setUserG, inLikesPa
             break;
     }
 
+    const setRecent = async () => {
+        const ip = require('../../IP_ADDRESS.json')
+        const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + currUser._id, {
+            method: "PATCH",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: makeAddJSON()
+        })
+        const json = await response.json()
+        return json
+    }
+
+    const makeAddJSON = () => {
+        let viewedRaffles = currUser.recentRaffles
+        // console.log('recent raffle ids: ', viewedRaffles);
+        if (!viewedRaffles.includes(raffleid)) {
+            viewedRaffles.push(raffleid)
+        } else {
+            // console.log('before moving', viewedRaffles);
+            viewedRaffles = array_move(viewedRaffles, viewedRaffles.indexOf(raffleid), 0)
+            // console.log('after moving', viewedRaffles);
+        }
+        let data = {
+            recentRaffles: viewedRaffles
+        }
+        return JSON.stringify(data)
+    }
+
+    
+    
+    // returns [2, 1, 3]
+    // console.log(array_move([1, 2, 3], 0, 1)); 
+
     return (
         <View style={{ borderWidth: 2, width: contentWidth, borderColor: 'rgba(0, 0, 0, 0.05)' }}>
             <View style={styles.SearchCard__likeButton}>
@@ -107,7 +153,7 @@ function SearchCard({ navigation, data, viewType, currUserG, setUserG, inLikesPa
                 <View style={styles.SearchCard}>
                     <Image style={styles.SearchCard__image} source={{ uri: imageURI }} />
                     <View style={{ width: '100%', paddingHorizontal: '7%', }}>
-                        <Text style={[fonts.h1, { fontSize: height * 0.018, paddingHorizontal: '4%' }]}>{title}</Text>
+                        <Text style={[fonts.h3, { fontSize: 14,paddingHorizontal: '4%' }]}>{title}</Text>
                         <TouchableOpacity
                             style={{ marginVertical: '2%' }}
                             onPress={() => {
