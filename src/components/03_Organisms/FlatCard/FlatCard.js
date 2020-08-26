@@ -23,6 +23,17 @@ function FlatCard({ navigation, data, viewType, currUserG, setUserG, inLikesPage
 
     const { width, height } = Dimensions.get('window');
 
+    function array_move(arr, old_index, new_index) {
+        if (new_index >= arr.length) {
+            var k = new_index - arr.length + 1;
+            while (k--) {
+                arr.push(undefined);
+            }
+        }
+        arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+        return arr; // for testing
+    };
+
     React.useEffect(() => {
         async function getHost() {
             let response = await fetch('http://' + ip.ipAddress + '/user/id/' + data.hostedBy)
@@ -98,6 +109,41 @@ function FlatCard({ navigation, data, viewType, currUserG, setUserG, inLikesPage
             break;
     }
 
+    const setRecent = async () => {
+        const ip = require('../../IP_ADDRESS.json')
+        const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + currUser._id, {
+            method: "PATCH",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: makeAddJSON()
+        })
+        const json = await response.json()
+        return json
+    }
+
+    const makeAddJSON = () => {
+        let viewedRaffles = currUser.recentRaffles
+        // console.log('recent raffle ids: ', viewedRaffles);
+        if (!viewedRaffles.includes(raffleid)) {
+            viewedRaffles.push(raffleid)
+        } else {
+            // console.log('before moving', viewedRaffles);
+            viewedRaffles = array_move(viewedRaffles, viewedRaffles.indexOf(raffleid), 0)
+            // console.log('after moving', viewedRaffles);
+        }
+        let data = {
+            recentRaffles: viewedRaffles
+        }
+        return JSON.stringify(data)
+    }
+
+    
+    
+    // returns [2, 1, 3]
+    // console.log(array_move([1, 2, 3], 0, 1)); 
+
     return (
         <View style={{ borderWidth: 2, width: contentWidth, borderColor: 'rgba(0, 0, 0, 0.05)' }}
         >
@@ -123,8 +169,10 @@ function FlatCard({ navigation, data, viewType, currUserG, setUserG, inLikesPage
                 <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid} style={{ margin: 0 }} />
             </View>
             <TouchableOpacity
-                onPress={() => navigation.navigate('Raffle', data)}>
-
+                onPress={async () => {
+                    await setRecent();
+                    navigation.navigate('Raffle', data);
+                }}>
 
                 <View style={styles.FlatCard}>
                     <Image style={styles.FlatCard__image} source={{ uri: imageURI }} onPress={() => {

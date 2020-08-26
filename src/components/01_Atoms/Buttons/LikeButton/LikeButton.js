@@ -22,20 +22,6 @@ function LikeButton(props) {
         return response
     }
 
-    const setLike = async () => {
-        const ip = require('../../../IP_ADDRESS.json')
-        const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + currUser._id, {
-            method: "PATCH",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: makeAddJSON()
-        })
-        const json = await response.json()
-        return json
-    }
-
     const setUnlike = async () => {
         const ip = require('../../../IP_ADDRESS.json')
         const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + currUser._id, {
@@ -48,17 +34,6 @@ function LikeButton(props) {
         })
         const json = await response.json()
         return json
-    }
-
-    const makeAddJSON = () => {
-        let prevLikes = currUser.likedRaffles
-        if (!prevLikes.includes(raffle)) {
-            prevLikes.push(raffle)
-        }
-        let data = {
-            likedRaffles: prevLikes
-        }
-        return JSON.stringify(data)
     }
 
     const makeDeleteJSON = () => {
@@ -120,6 +95,31 @@ function LikeButton(props) {
                 <Icon name='heart-outline' type='material-community' />
             </TouchableOpacity>
         )
+    }
+
+    const setLike = async () => {
+        const ip = require('../../../IP_ADDRESS.json')
+        const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + currUser._id, {
+            method: "PATCH",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: makeAddJSON()
+        })
+        const json = await response.json()
+        return json
+    }
+
+    const makeAddJSON = () => {
+        let prevLikes = currUser.likedRaffles
+        if (!prevLikes.includes(raffle)) {
+            prevLikes.push(raffle)
+        }
+        let data = {
+            likedRaffles: prevLikes
+        }
+        return JSON.stringify(data)
     }
 
     return (
