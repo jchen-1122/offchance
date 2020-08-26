@@ -24,7 +24,7 @@ export default function Social({ navigation }) {
             let response = await fetch('http://' + data.ipAddress + '/raffle/all')
             response = await response.json()
             // filter ones that are happening today and haven't passed
-            response = response.filter((raffle) => { return (in_a_day(raffle.startTime) && !raffle.archived) })
+            response = response.filter((raffle) => { return (in_a_day(raffle.startTime)) })
             response.sort((a, b) => (a.startTime < b.startTime) ? 1 : -1)
 
             setRaffles(response)

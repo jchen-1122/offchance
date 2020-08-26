@@ -89,7 +89,7 @@ function Search({navigation}) {
     React.useEffect(() => {
 
         async function getRaffle() {
-          let response = await fetch('http://'+data.ipAddress+'/raffle/all')
+          let response = await fetch('http://'+data.ipAddress+'/raffle/query?query=approved&val=true')
           response = await response.json()
           setRaffles(response);
         }
@@ -111,7 +111,9 @@ function Search({navigation}) {
           } 
         }
         for (let i = 0; i < recentLimit; i++) {
-          getRecentRaffle(user.recentRaffles[user.recentRaffles.length-1-i]);
+          if (Object.keys(user).includes('recentRaffles')) {
+            getRecentRaffle(user.recentRaffles[user.recentRaffles.length-1-i]);
+          }
         }
 
         // console.log("recent raffles: ", recentRaffles);

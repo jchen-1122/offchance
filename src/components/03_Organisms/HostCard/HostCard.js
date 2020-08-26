@@ -7,7 +7,6 @@ import { getTimer } from '../../../functions/convert_dates'
 
 export default function HostCard(props) {
     var raffle = props.data
-
     if (raffle) {
         raffle['host'] = props.host
         return (
