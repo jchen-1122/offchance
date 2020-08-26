@@ -258,10 +258,11 @@ function OverlaySheet(props) {
   }
 
   const renderSwipeButton = () => (
-    <SwipeButton title="SWIPE TO CONFIRM" onSwipeFailure={() => console.log('failed')} onSwipeSuccess={async () => {
+    <SwipeButton title="SWIPE TO CONFIRM" onSwipeSuccess={async () => {
       //console.log('swiped')
       // if they've selected a size, sizetype, and payment method
       if (_method !== null && props.entertobuy) {
+        console.log('YOOOO')
         setStripe(false)
       } else if (_method !== null && props.sizeType !== "notselected" && props.size !== "notselected") {
         let updatedUser = await enterUserinRaffle()
@@ -282,7 +283,7 @@ function OverlaySheet(props) {
           //console.log(_method)
           // setOverlayStyle(styles.OverlaySheetPay);
           setStripe(false)
-          // toggleOverlay();
+          //toggleOverlay();
         }
       }
     }} />
@@ -323,10 +324,10 @@ function OverlaySheet(props) {
 
             <View style={styles.OverlaySheet__content}>
               <Text style={styles.OverlaySheet__content_text}>Payment Method</Text>
-              <PaymentButton
+              {/* <PaymentButton
                 type="applePay"
                 onPress={() => setMethod('applepay')}
-                selected={_method == 'applepay'} />
+                selected={_method == 'applepay'} /> */}
               <PaymentButton
                 type="paypal"
                 onPress={() => setMethod('Paypal')}
