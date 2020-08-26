@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { View, ScrollView, Text, Image, Button, Dimensions, Share, Clipboard, Alert } from 'react-native'
 import { Icon } from 'react-native-elements';
-import { colors, fonts, utilities } from '../../../../settings/all_settings';
+import { colors, fonts, utilities, global } from '../../../../settings/all_settings';
 import InfoFeed from '../../../02_Molecules/InfoFeed/InfoFeed'
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
 import Card from '../../../03_Organisms/Card/Card'
@@ -209,7 +209,7 @@ function Profile({ navigation }) {
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-end', zIndex: 1 }}>
                     <View style={{ zIndex: -1, backgroundColor: 'transparent' }}>
                         {/* Profile pic*/}
-                        <Image source={{ uri: profilePic }} style={[styles.Profile__picture]}></Image>
+                        <Image source={{ uri: profilePic }} style={global.Profile__picture}></Image>
                     </View>
                     {/* Green Checkmark*/}
                     {user.isHost ?
@@ -223,9 +223,9 @@ function Profile({ navigation }) {
                     {/* </View> */}
                 </View>
 
-                <Text style={styles.Profile__name}>{name}</Text>
+                <Text style={global.Profile__name}>{name}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
-                    <Text style={styles.Profile__username}>@{username}</Text>
+                    <Text style={global.Profile__username}>@{username}</Text>
                 </View>
 
                 <StatsBar currUser={user} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>

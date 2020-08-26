@@ -1,15 +1,10 @@
 import React, { useState, useContext } from 'react';
-import { Text, View, Dimensions, ScrollView, BackHandler, Alert } from 'react-native'
-import { colors, fonts, utilities } from '../../../settings/all_settings';
+import { View, ScrollView, BackHandler, Alert } from 'react-native'
+import { utilities } from '../../../settings/all_settings';
 import BottomNav from '../../02_Molecules/BottomNav/BottomNav';
 import TopNav from '../../02_Molecules/TopNav/TopNav';
-import Card from '../../03_Organisms/Card/Card';
-import ToggleType from '../../01_Atoms/Buttons/ToggleType/ToggleType';
-import ToggleTypeMenu from '../../03_Organisms/ToggleTypeMenu/ToggleTypeMenu'
-import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
 import Banner from '../../01_Atoms/Banner/Banner'
 import GlobalState from '../../globalState';
-import { user_logged_in } from '../../../functions/user_functions';
 import { top5_global, getLatestRaffles, getLatestWinners, sortTrending } from '../../../functions/explore_functions';
 import HorizontalScroll from '../../04_Templates/HorizontalScroll/HorizontalScroll';
 import Top5Card from '../../03_Organisms/HorizontalCards/Top5Card/Top5Card';

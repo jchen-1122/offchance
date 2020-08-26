@@ -1,6 +1,5 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
-var borderRadius_ExploreCard = 10
 const utilities = StyleSheet.create({
     flexCenter: {
         flex: 1,

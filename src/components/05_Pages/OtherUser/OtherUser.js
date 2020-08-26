@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { View, ScrollView, Text, Image, } from 'react-native'
 import { Icon } from 'react-native-elements'
-import { colors, fonts, utilities } from '../../../settings/all_settings'
+import { colors, global, utilities } from '../../../settings/all_settings'
 import StatsBar from '../../02_Molecules/StatsBar/StatsBar'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
 import { styles } from './OtherUser.styling'
@@ -191,10 +191,10 @@ export default function OtherUser({ navigation, route }) {
     return (
         <View style={utilities.container}>
             <ScrollView>
-                <Image source={{ uri: otherUser.profilePicture }} style={styles.profilePic}></Image>
-                <Text style={styles.header_name}>{otherUser.name}</Text>
+                <Image source={{ uri: otherUser.profilePicture }} style={global.Profile__picture}></Image>
+                <Text style={global.Profile__name}>{otherUser.name}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
-                    <Text style={styles.header_username}>@{otherUser.username}</Text>
+                    <Text style={global.Profile__username}>@{otherUser.username}</Text>
                     {otherUser.isHost ? <Icon name={'check-circle'}
                         type='octicons'
                         color={colors.primaryColor}

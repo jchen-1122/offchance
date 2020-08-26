@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
 
     },
     switch__item: {
-        backgroundColor: 'pink',
         height: 40,
         width: Dimensions.get('window').width * 0.5,
         alignItems: 'center',
@@ -17,8 +16,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(0, 0, 0, 0.05)',
         paddingBottom: 10,
         marginBottom: 10,
-
-
     },
     switch__item_active: {
         borderBottomWidth: 3,
