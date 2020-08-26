@@ -163,6 +163,19 @@ export default function AdminEdit({ navigation, route }) {
         return json
     }
 
+    const sendSMS = async (msg) => {
+        const response = await fetch('https://verify-sample-2928-dev.twil.io/host', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: SMSJson(msg)
+        })
+        const json = await response.text()
+        return json
+    }
+
     // checks conditions on when to send the notification
     const sendLiveNotif = async (justApproved) => {
         // console.log('approved', route.params.approved)
@@ -183,6 +196,7 @@ export default function AdminEdit({ navigation, route }) {
         if (!route.params.approved && justApproved){
             console.log('followers', route.params.host.followers)
             console.log('host', route.params.host.username)
+            sendSMS('OffChance: Your raffle for ' + _name + ' has been approved!')
             return await postMessage(await makeJSONpush(
                 await getPushTokens(route.params.host.followers),
                 "A host you're following has posted a drawing!",
@@ -204,6 +218,16 @@ export default function AdminEdit({ navigation, route }) {
             host: _raffle.host
             // raffle: _raffle
         }
+        return JSON.stringify(data)
+    }
+
+    const SMSJson = (msg) => {
+        console.log('+1' + route.params.host.phoneNumber)
+        let data = {
+            to: '+1' + route.params.host.phoneNumber,
+            message: msg
+        }
+        console.log(JSON.stringify(data))
         return JSON.stringify(data)
     }
 
