@@ -21,9 +21,13 @@ function Search({navigation}) {
     const {user, setUser} = useContext(GlobalState)
     const [raffles, setRaffles] = useState([]);
     const [users, setUsers] = useState([]);
+    const [recentRaffles, setRecentRaffles] = useState([]);
+    const [recentUsers, setRecentUsers] = useState([]);
     const [displayUser, setDisplayUser] = useState(false);
+    const [recent, setRecent] = useState(user.recentRaffles.length > 0);
 
     const { width, height } = Dimensions.get('window');
+    const recentLimit = 10;
 
     // for toggling types of cards (0=all, 1=donate, 2=buy)
     const [viewType, setViewType ] = useState(0)
@@ -53,14 +57,40 @@ function Search({navigation}) {
         return entered
     }
 
+    const updateRecent = (term) => {
+      setSearchTerm(term); 
+      // console.log(user.recentRaffles);
+      // console.log("searchTerm: ", term);
+      if (term === '') {
+        setRecent(true);
+        async function getRecentRaffle(_id) {
+          let response = await fetch('http://'+data.ipAddress+'/raffle/id/'+_id)
+          response = await response.json()          
+          let identical = false                      
+          // console.log("response: ", response);
+          for (let i = 0; i < recentRaffles.length; i++) {
+            if (recentRaffles[i]._id == response._id) {
+              identical = true;
+            }
+          }
+          if (!identical) {
+            recentRaffles.unshift(response);
+          }   
+        }
+        for (let i = 0; i < recentLimit; i++) {
+          getRecentRaffle(user.recentRaffles[user.recentRaffles.length-1-i]);
+        }
+      } else {
+        setRecent(false);
+      }
+    }
+
     // Get all raffles & users from db
     React.useEffect(() => {
+
         async function getRaffle() {
           let response = await fetch('http://'+data.ipAddress+'/raffle/all')
           response = await response.json()
-          // filter raffles based on what type they want to see (donate, buy, all)
-          response = (viewType == 1) ? response.filter((raffle)=>{return raffle.type==1}) : response
-          response = (viewType == 2) ? response.filter((raffle)=>{return raffle.type==2}) : response
           setRaffles(response);
         }
         getRaffle()
@@ -71,6 +101,27 @@ function Search({navigation}) {
           setUsers(response);
         }
         getUser()
+
+        async function getRecentRaffle(_id) {
+          let response = await fetch('http://'+data.ipAddress+'/raffle/id/'+_id)
+          response = await response.json()
+          // console.log("response: ", response);
+          if (!recentRaffles.includes(response)) {
+            recentRaffles.unshift(response);
+          } 
+        }
+        for (let i = 0; i < recentLimit; i++) {
+          getRecentRaffle(user.recentRaffles[user.recentRaffles.length-1-i]);
+        }
+
+        // console.log("recent raffles: ", recentRaffles);
+
+        async function getRecentUser() {
+          let response = await fetch('http://' + data.ipAddress + '/user/query');
+          response = await response.json()
+          setRecentUsers(response);
+        }
+        getRecentUser()
 
         // BACKHANDLING FOR ANDROID BOTTOM NAV
         const backAction = () => {
@@ -111,6 +162,11 @@ function Search({navigation}) {
       setSearchTerm('');
     };
 
+    // const recentViewed = user.recentRaffles;
+    // console.log('recent raffles: ', recentViewed)
+    // console.log('our recent: ', recentRaffles)
+    // console.log('filtered raffles: ', filteredRaffles[0])
+
     // ------------------------------------------------------------------------------------
 
     {/* TODO: Add a like button at the top right corner on raffle */}
@@ -122,7 +178,7 @@ function Search({navigation}) {
               // lightTheme={true}
               showCancel={true}
               placeholder="Search"
-              onChangeText={(term) => { setSearchTerm(term) }}
+              onChangeText={(term) => {  updateRecent(term); }}
               value={searchTerm}
 
               containerStyle={{backgroundColor: 'rgba(0, 0, 0, 0.05)', padding: 12, }}
@@ -144,31 +200,38 @@ function Search({navigation}) {
 
             {/* TODO: for raffle, bigger avatar, adjust margin, add like button; for users, add follow button */}
             {displayUser ?
+              // User Search
               <ScrollView>
-                <ListView users={sortUsers(filteredUsers.slice(0,10))} navigation={navigation} currUser={user} setUser={setUser}/>
-
+                <ListView users={sortUsers(filteredUsers.slice(0, 10))} navigation={navigation} currUser={user} setUser={setUser}/>
               </ScrollView>
                     :
-
-                  <ScrollView>
-
-                      {/* https://stackoverflow.com/questions/34689970/flex-react-native-how-to-have-content-break-to-next-line-with-flex-when-conte */}
-                      <View style={{flexDirection:'row', alignItems: 'flex-start', flexWrap: 'wrap'}}>
-                      {filteredRaffles.slice(0,10).map((raffle, index) =>
-
-                          <SearchCard
-                              data={raffle}
-                              key={index}
-                              navigation={navigation}
-                              currUserG={user}
-                              setUserG={setUser}
-                          />
-
-                      )}
-
-                    </View>
-                  </ScrollView> }
-
+              
+              <ScrollView>
+                  {/* https://stackoverflow.com/questions/34689970/flex-react-native-how-to-have-content-break-to-next-line-with-flex-when-conte */}
+                  <View style={{flexDirection:'row', alignItems: 'flex-start', flexWrap: 'wrap'}}>
+                  { recent ? 
+                  recentRaffles.slice(0, 10).map((raffle, index) =>
+                      <SearchCard
+                          data={raffle}
+                          key={index}
+                          navigation={navigation}
+                          currUserG={user}
+                          setUserG={setUser}
+                      />) 
+                      : 
+                  filteredRaffles.slice(0, 10).map((raffle, index) => 
+                      <SearchCard
+                      data={raffle}
+                      key={index}
+                      navigation={navigation}
+                      currUserG={user}
+                      setUserG={setUser}
+                      />) 
+                  }
+                </View>
+              </ScrollView>
+            }
+          
           <BottomNav navigation={navigation} active={'Search'}></BottomNav>
         </View>
     )

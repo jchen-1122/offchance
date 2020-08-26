@@ -137,26 +137,6 @@ export default function ({ navigation }) {
         return json
     }
 
-    // validates email input
-    const isValidEmail = () => {
-        return validator.isEmail(String(_email).toLowerCase());
-    }
-
-    // check for any errors in input, returns array of errors
-    const generateErrors = () => {
-        let errors = []
-        // if not a valid email
-        if (!isValidEmail()) {
-            errors.push(<Text style={fonts.error}>Email is not valid</Text>)
-        }
-        setErrors(errors)
-        if (errors.length > 0) {
-            return true
-        } else {
-            return false
-        }
-    }
-
     // makes a json object with all the input fields
     const makeJSON = () => {
         let newdata = {
@@ -181,6 +161,26 @@ export default function ({ navigation }) {
         if (_newimg == null) return JSON.stringify(data)
         return JSON.stringify(newdata)
     };
+
+    // validates email input
+    const isValidEmail = () => {
+        return validator.isEmail(String(_email).toLowerCase());
+    }
+
+    // check for any errors in input, returns array of errors
+    const generateErrors = () => {
+        let errors = []
+        // if not a valid email
+        if (!isValidEmail()) {
+            errors.push(<Text style={fonts.error}>Email is not valid</Text>)
+        }
+        setErrors(errors)
+        if (errors.length > 0) {
+            return true
+        } else {
+            return false
+        }
+    }
 
     React.useLayoutEffect(() => {
         navigation.setOptions({

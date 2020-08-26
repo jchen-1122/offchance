@@ -1,3 +1,4 @@
+  
 import { StyleSheet, Dimensions } from 'react-native'
 import {colors, dimensions} from '../../../settings/all_settings';
 
