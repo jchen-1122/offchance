@@ -19,7 +19,7 @@ export default function HostCard(props) {
                         <Text style={{ fontWeight: 'bold' }}>{raffle.name}</Text>
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.HostCard__info__label}>Time Left:</Text>
-                            <Text>{getTimer(raffle.startTime, false)}</Text>
+                            <Text>{raffle.startTime ? getTimer(raffle.startTime, false) : ' Not Set'}</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.HostCard__info__label}>Amount Raised:</Text>
