@@ -14,8 +14,16 @@ function LikeButton(props) {
 
     // gets the raffle object
     async function getRaffle(id) {
-        let response = await fetch('http://' + ip.ipAddress + '/raffle/id/' + id)
+        let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/id', {
+            method: "POST",
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id : id})
+        })
         response = await response.json()
+        response.raffle
         return response
     }
 
@@ -23,15 +31,16 @@ function LikeButton(props) {
     // adds raffle to user.likedRaffles
     const setLike = async () => {
         const ip = require('../../../IP_ADDRESS.json')
-        const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + currUser._id, {
-            method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: makeAddJSON()
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.user
         return json
     }
     // creates body for user patch request (add)
@@ -43,21 +52,23 @@ function LikeButton(props) {
         let data = {
             likedRaffles: prevLikes
         }
+        data["id"] = currUser._id
         return JSON.stringify(data)
     }
 
     // removes raffle in user.likedRaffles
     const setUnlike = async () => {
         const ip = require('../../../IP_ADDRESS.json')
-        const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + currUser._id, {
-            method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: makeDeleteJSON()
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.user
         return json
     }
     // creates body for user patch request (delete)
@@ -71,6 +82,7 @@ function LikeButton(props) {
         let data = {
             likedRaffles: prevLikes
         }
+        data["id"] = currUser._id
         return JSON.stringify(data)
     }
 
@@ -78,15 +90,16 @@ function LikeButton(props) {
     // RAFFLE PATCH--------------------------------------------------------------------------------
     // for editing raffle.amountLiked field
     const editLikes = async (body) => {
-        const response = await fetch('http://' + ip.ipAddress + '/raffle/edit/' + raffle, {
-            method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(body)
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.raffle
         return json
 
     }
@@ -97,7 +110,7 @@ function LikeButton(props) {
         var likes = raf.amountLiked
         var users = raf.likedUsers || []
         users.push(currUser._id)
-        editLikes({ amountLiked: likes + 1, likedUsers: users})
+        editLikes({ amountLiked: likes + 1, likedUsers: users, id : raffle})
     }
 
     // decrement number of amountLiked
@@ -106,7 +119,7 @@ function LikeButton(props) {
         var likes = raf.amountLiked
         var users = raf.likedUsers || []
         users.splice(users.indexOf(currUser._id),1)
-        editLikes({ amountLiked: likes - 1, likedUsers: users })
+        editLikes({ amountLiked: likes - 1, likedUsers: users, id : raffle })
     }
 
     // can't like a raffle thats in the likes page
@@ -124,31 +137,6 @@ function LikeButton(props) {
             </TouchableOpacity>
         )
     }
-
-    // const setLike = async () => {
-    //     const ip = require('../../../IP_ADDRESS.json')
-    //     const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + currUser._id, {
-    //         method: "PATCH",
-    //         headers: {
-    //             'Accept': 'application/json',
-    //             'Content-Type': 'application/json'
-    //         },
-    //         body: makeAddJSON()
-    //     })
-    //     const json = await response.json()
-    //     return json
-    // }
-
-    // const makeAddJSON = () => {
-    //     let prevLikes = currUser.likedRaffles
-    //     if (!prevLikes.includes(raffle)) {
-    //         prevLikes.push(raffle)
-    //     }
-    //     let data = {
-    //         likedRaffles: prevLikes
-    //     }
-    //     return JSON.stringify(data)
-    // }
 
     return (
         <TouchableOpacity style={[styles.LikeButton, props.style]}

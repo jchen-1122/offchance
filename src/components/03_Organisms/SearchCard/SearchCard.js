@@ -36,8 +36,16 @@ function SearchCard({ navigation, data, viewType, currUserG, setUserG, inLikesPa
 
     React.useEffect(() => {
         async function getHost() {
-            let response = await fetch('http://' + ip.ipAddress + '/user/id/' + data.hostedBy)
+            let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id : data.hostedBy})
+            })
             response = await response.json()
+            response = response.user
             setHost(response)
         }
         getHost()
@@ -109,22 +117,22 @@ function SearchCard({ navigation, data, viewType, currUserG, setUserG, inLikesPa
             break;
     }
 
-    const setRecent = async () => {
-        const ip = require('../../IP_ADDRESS.json')
-        const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + currUser._id, {
-            method: "PATCH",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: makeAddJSON()
-        })
-        const json = await response.json()
-        return json
-    }
+    // const setRecent = async () => {
+    //     const ip = require('../../IP_ADDRESS.json')
+    //     const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + currUser._id, {
+    //         method: "PATCH",
+    //         headers: {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: makeAddJSON()
+    //     })
+    //     const json = await response.json()
+    //     return json
+    // }
 
     const makeAddJSON = () => {
-        let viewedRaffles = currUser.recentRaffles
+        let viewedRaffles = currUser.recentRaffles || []
         // console.log('recent raffle ids: ', viewedRaffles);
         if (!viewedRaffles.includes(raffleid)) {
             viewedRaffles.push(raffleid)

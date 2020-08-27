@@ -17,18 +17,19 @@ function Top5Card(props) {
         if (currUser.following.includes(user._id)) {
             return
         }
-        const response = await fetch('http://'+data.ipAddress+'/user/edit/'+currUser._id,{
-          method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit',{
+          method: "POST",
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
           body: makeAddJSON(user)
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.user
         // followed user "follower" count also increases
-        const response2 = await fetch('http://'+data.ipAddress+'/user/edit/'+user._id,{
-          method: "PATCH",
+        const response2 = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit',{
+          method: "POST",
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -42,18 +43,19 @@ function Top5Card(props) {
         if (!currUser.following.includes(user._id)) {
             return
         }
-        const response = await fetch('http://'+data.ipAddress+'/user/edit/'+currUser._id,{
-          method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit',{
+          method: "POST",
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
           body: makeDeleteJSON(user)
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.user
         // followed user "follower" count also decreases
-        const response2 = await fetch('http://'+data.ipAddress+'/user/edit/'+user._id,{
-          method: "PATCH",
+        const response2 = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit',{
+          method: "POST",
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -69,6 +71,7 @@ function Top5Card(props) {
         let data = {
             following: prevFollowing
         }
+        data["id"] = currUser._id
         return JSON.stringify(data)
     }
 
@@ -81,6 +84,7 @@ function Top5Card(props) {
         let data = {
             followers: prevFollowing
         }
+        data["id"] = user._id
         return JSON.stringify(data)
     }
 
@@ -94,6 +98,7 @@ function Top5Card(props) {
         let data = {
             following: prevFollowing
         }
+        data["id"] = currUser._id
         return JSON.stringify(data)
     }
 
@@ -107,6 +112,7 @@ function Top5Card(props) {
         let data = {
             followers: prevFollowing
         }
+        data["id"] = user._id
         return JSON.stringify(data)
     }
     

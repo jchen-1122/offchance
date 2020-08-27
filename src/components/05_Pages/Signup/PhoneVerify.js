@@ -40,7 +40,7 @@ export default function PhoneVerify({ navigation, route }) {
 
       // posts user to database
     const postUser = async () => {
-        const response = await fetch('http://' + data.ipAddress + '/user/signup/', {
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/signup', {
         method: "POST",
         headers: {
             'Accept': 'application/json',
@@ -48,36 +48,45 @@ export default function PhoneVerify({ navigation, route }) {
         },
         body: route.params.signup
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.data
         //console.log(json)
         // add referral code
         if (route.params.refUser === undefined) {
           return json
         } else {
           // add 5 to signing up user
-          console.log('http://' + data.ipAddress + '/user/edit/' + json._id)
-          const first = await fetch('http://' + data.ipAddress + '/user/edit/' + json._id, {
-          method: "PATCH",
+          // console.log('http://' + data.ipAddress + '/user/edit/' + json._id)
+          const first = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+          method: "POST",
           headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify({"walletChances": 5})
+          body: JSON.stringify({"walletChances": 5, id: json._id})
           })
           
 
           // get refUser
-          const second = await fetch('http://' + data.ipAddress + '/user/id/' + route.params.refUser)
+          let second = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+              method: "POST",
+              headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({id : route.params.refUser})
+          })
           const secondJson = await second.json()
+          secondJson = secondJson.user
           let prevWalletChances = secondJson.walletChances
 
-          const third = await fetch('http://' + data.ipAddress + '/user/edit/' + route.params.refUser, {
-          method: "PATCH",
+          const third = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+          method: "POST",
           headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify({"walletChances": 5 + prevWalletChances})
+          body: JSON.stringify({"walletChances": 5 + prevWalletChances, id: route.params.refUser})
           })
         }
         return json

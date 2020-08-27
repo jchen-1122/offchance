@@ -9,7 +9,7 @@ export function stripeCheckoutRedirectHTML(name, amount) {
   // Called everytime the URL starts to load in the webview
   useEffect(() => {
     async function onLoadStart() {
-      let response = await fetch('http://' + data.ipAddress + '/user/oneTimeNoSave', {
+      let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/oneTimeNoSave', {
         method: "POST",
         headers: {
           'Accept': 'application/json',
@@ -32,7 +32,7 @@ export function stripeCheckoutRedirectHTML(name, amount) {
           var stripe = Stripe('pk_test_51HCrjPEO217KAnwYZO41o5PPaB821HBne0B2G3y0qH3anU0YWDWcDlaAobQeBlYo49MTOGa8TLGcnK0G3tWsp3Xa00oGSO0iqF');
           stripe.redirectToCheckout({
             sessionId: '${sessionId}'
-          }).then(function (result) {
+          }).then(function (result) { 
             console.log(result)
           });
         })();

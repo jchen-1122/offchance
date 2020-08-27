@@ -13,8 +13,16 @@ function YourFeed({ navigation }) {
 
     React.useEffect(() => {
         async function getRaffle() {
-            let response = await fetch('http://' + data.ipAddress + '/raffle/query?query=archived&val=false')
+            let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/query', {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({query: "archived", val: false})
+            })
             response = await response.json()
+            response = response.raffles
             // filter out the raffles that are hosted by people you follow
             var followingRaffles = []
             for (var raffle of response){

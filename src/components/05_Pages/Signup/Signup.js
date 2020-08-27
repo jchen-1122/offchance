@@ -34,49 +34,57 @@ export default function Signup({ navigation }) {
   const checkValid = async () => {
     let errors = []
     let rUser = null
-    const email = await fetch('http://' + data.ipAddress + '/user/query?query=email&val=' + _email, {
-      method: "GET",
+    const email = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/query', {
+      method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({query: "email", val: _email})
     })
-    const emailjson = await email.json()
+    let emailjson = await email.json()
+    emailjson = emailjson.users
     if (emailjson.length !== 0) {
       errors.push(<Text style={fonts.error}>Email is taken. Please try again.</Text>)
     }
-    const usr = await fetch('http://' + data.ipAddress + '/user/query?query=username&val=' + _username, {
-      method: "GET",
+    const usr = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/query', {
+      method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({query: "username", val: _username})
     })
-    const usrjson = await usr.json()
+    let usrjson = await usr.json()
+    usrjson = usrjson.users
     if (usrjson.length !== 0) {
       errors.push(<Text style={fonts.error}>Username is taken. Please try again.</Text>)
     }
-    const phone = await fetch('http://' + data.ipAddress + '/user/query?query=phoneNumber&val=' + _phoneNumber, {
-      method: "GET",
+    const phone = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/query', {
+      method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({query: "phoneNumber", val: _phoneNumber})
     })
-    const phonejson = await phone.json()
+    let phonejson = await phone.json()
+    phonejson = phonejson.users
     if (phonejson.length !== 0) {
       errors.push(<Text style={fonts.error}>Phone number already registered.</Text>)
     }
 
     if (_ref.length !== 0) {
-      const refcode = await fetch('http://' + data.ipAddress + '/user/query?query=referralCode&val=' + _ref.toUpperCase(), {
-        method: "GET",
+      const refcode = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/query', {
+        method: "POST",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify({query: "referralCode", val: _ref.toUpperCase()})
       })
-      const refjson = await refcode.json()
+      let refjson = await refcode.json()
+      refjson = refjson.users
       if (refjson.length === 0) {
         errors.push(<Text style={fonts.error}>Referral code does not exist</Text>)
       } else {
@@ -188,12 +196,13 @@ export default function Signup({ navigation }) {
 
   const getRefUser = async () => {
     if (_ref.length !== 0) {
-      const refcode = await fetch('http://' + data.ipAddress + '/user/query?query=referralCode&val=' + _ref.toUpperCase(), {
-        method: "GET",
+      const refcode = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/query', {
+        method: "POST",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify({query: "referralCode", val: _ref.toUpperCase()})
       })
       const refjson = await refcode.json()
       if (refjson.length === 0) {

@@ -9,8 +9,16 @@ export function top5_raffle(users) {
 
     // gets actual user object based on their ID
     const getUser = async (userID) => {
-        let response = await fetch('http://' + ip.ipAddress + '/user/id/' + userID)
+        let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id : userID})
+        })
         response = await response.json()
+        response = response.user
         return response
     }
 
@@ -45,8 +53,9 @@ function isThisWeek(time) {
 
 // get all the raffles with donations this week
 async function getRecentRaffles() {
-    let response = await fetch('http://' + ip.ipAddress + '/raffle/all')
+    let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/all')
     response = await response.json()
+    response = response.all
     response = response.filter((raffle) => { return isThisWeek(raffle.lastDonatedTo) }) // filter recent ones
     return response
 }
@@ -60,8 +69,8 @@ async function getDonorObjs(top5_IDs) {
     data = JSON.stringify(data)
 
     // make API call with multiple IDs
-    const donorRes = await fetch('http://' + ip.ipAddress + '/user/ids/', {
-        method: "PATCH",
+    const donorRes = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/ids', {
+        method: "POST",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -69,6 +78,7 @@ async function getDonorObjs(top5_IDs) {
         body: data
     })
     let res = await donorRes.json()
+    res = res.results
     res = sortUsers(top5_IDs, res)
     return res
 }
@@ -114,8 +124,16 @@ export async function top5_global() {
 // returns most recent 4 drawings
 export async function getLatestRaffles() {
     var now_unix = new Date().getTime() / 1000 // now in unix time stamp
-    let response = await fetch('http://' + ip.ipAddress + '/raffle/query?query=approved&val=true')
+    let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/query', {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({query: "approved", val: true})
+    })
     response = await response.json()
+    response = response.raffles
     response = response.filter((raffle) => { return raffle.startTime < now_unix }) // filter recent ones
     response = response.sort((a, b) => (a.startTime < b.startTime) ? 1 : -1) // sort by start time (recent first)
     response = response.slice(0, 4) // get most recent 4 drawings
@@ -131,8 +149,8 @@ async function getWinnerObjs(latestWinnersIDs) {
     data = JSON.stringify(data)
     // console.log(latestWinnersIDs)
     // make API call with multiple IDs
-    const winnerRes = await fetch('http://' + ip.ipAddress + '/user/ids/', {
-        method: "PATCH",
+    const winnerRes = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/ids', {
+        method: "POST",
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -140,6 +158,7 @@ async function getWinnerObjs(latestWinnersIDs) {
         body: data
     })
     let res = await winnerRes.json() // top 5 sorting is lost
+    res = res.results
     // console.log(res.length)
     res = sortUsers(latestWinnersIDs, res)
     return res
@@ -161,14 +180,30 @@ export async function getLatestWinners() {
 }
 
 export async function getPendingRaffles() {
-    let response = await fetch('http://' + ip.ipAddress + '/raffle/query?query=approved&val=false')
+    let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/query', {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({query: "approved", val: false})
+    })
     response = await response.json()
+    response = response.raffles
     return response
 }
 
 export async function getPendingUsers() {
-    let response = await fetch('http://' + ip.ipAddress + '/user/query?query=isHost&val=false')
+    let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/query', {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({query: "isHost", val: false})
+    })
     response = await response.json()
+    response = response.users
     let res = []
     for (var i = 0; i < response.length; i++) {
         
@@ -187,8 +222,16 @@ export async function getPendingUsers() {
 }
 
 export async function getReportedUsers() {
-    let response = await fetch('http://' + ip.ipAddress + '/user/query')
+    let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/query', {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({})
+    })
     response = await response.json()
+    response = response.users
     let reported = []
     for (var i = 0; i < response.length; i++) {
         if (response[i].reports.length > 0) {
@@ -200,8 +243,16 @@ export async function getReportedUsers() {
 
 // get coming soon
 export async function getComingSoon() {
-    let response = await fetch('http://' + ip.ipAddress + '/raffle/query?query=approved&val=true')
+    let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/query', {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({query: "approved", val: true})
+    })
     response = await response.json()
+    response = response.raffles
     let res = []
     for (var i = 0; i < response.length; i++) {
         if (!response[i].live) {
@@ -213,8 +264,16 @@ export async function getComingSoon() {
 
 // get live raffles
 export async function getLive() {
-    let response = await fetch('http://' + ip.ipAddress + '/raffle/query?query=approved&val=true')
+    let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/query', {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({query: "approved", val: true})
+    })
     response = await response.json()
+    response = response.raffles
     let res = []
     for (var i = 0; i < response.length; i++) {
         if (response[i].live) {

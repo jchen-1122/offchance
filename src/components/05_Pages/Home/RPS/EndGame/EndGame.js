@@ -12,8 +12,16 @@ function EndGame(props) {
     useEffect(() => {
         async function bonus() {
             const ip = require('../../../../IP_ADDRESS.json')
-            let olduser = await fetch('http://' + ip.ipAddress + '/user/id/' + user._id)
+            let olduser = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id : user._id})
+            })
             olduser = await olduser.json()
+            olduser = olduser.user
             let newEntered = []
             for (var i = 0; i < olduser.rafflesEntered.children.length; i++) {
                 if (props.raffleid === olduser.rafflesEntered.children[i].raffleID) {
@@ -21,17 +29,25 @@ function EndGame(props) {
                 } 
                 newEntered.push(olduser.rafflesEntered.children[i])
             }
-            let updatedUser = await fetch('http://' + ip.ipAddress + '/user/edit/' + user._id, {
-                method: "PATCH",
+            let updatedUser = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+                method: "POST",
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ rafflesEntered: {children: newEntered} })
+                body: JSON.stringify({ rafflesEntered: {children: newEntered}, id: user._id })
             })
             // raffle update chances
-            let oldraffle = await fetch('http://' + ip.ipAddress + '/raffle/id/' + props.raffleid)
+            let oldraffle = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/id', {
+                method: "POST",
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id : props.raffleid})
+            })
             oldraffle = await oldraffle.json()
+            oldraffle = oldraffle.raffle
             let newEnteredR = []
             for (var i = 0; i < oldraffle.users.children.length; i++) {
                 if (user._id === oldraffle.users.children[i].userID) {
@@ -39,13 +55,13 @@ function EndGame(props) {
                 } 
                 newEnteredR.push( oldraffle.users.children[i])
             }
-            let updatedRaffle = await fetch('http://' + ip.ipAddress + '/raffle/edit/' + props.raffleid, {
-                method: "PATCH",
+            let updatedRaffle = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/edit', {
+                method: "POST",
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ users: {children: newEnteredR} })
+                body: JSON.stringify({ users: {children: newEnteredR}, id : props.raffleid })
             })
         }
         bonus()

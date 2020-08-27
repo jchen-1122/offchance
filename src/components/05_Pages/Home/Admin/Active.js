@@ -47,8 +47,16 @@ function Home({ navigation }) {
 
   async function getHostObj(hostid) {
     try {
-      let host = await fetch('http://' + data.ipAddress + '/user/id/' + hostid)
+      let host = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+          method: "POST",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({id : hostid})
+      })
       host = await host.json()
+      host = host.user
       return host
     } catch (e) {
       return {}

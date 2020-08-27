@@ -44,8 +44,16 @@ function EnteredUsersDisplay(props) {
     React.useEffect(() => {
         // gets prof picture and username from db given certain use id
         const getUserInfo = async (userID, field) => {
-            let response = await fetch('http://' + ip.ipAddress + '/user/id/' + userID)
+            let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id : userID})
+            })
             response = await response.json()
+            response = response.user
             if (field == 'profPic') {
                 return response.profilePicture
             }
@@ -90,8 +98,16 @@ function EnteredUsersDisplay(props) {
     const getUserObj = async (ids) => {
         let res = []
         for (var i = 0; i < ids.length; i++) {
-            let response = await fetch('http://'+ip.ipAddress+'/user/id/'+ids[i])
+            let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id : ids[i]})
+            })
             response = await response.json()
+            response = response.user
             res.push(response)
         }
         return res

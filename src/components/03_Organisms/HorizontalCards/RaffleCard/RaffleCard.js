@@ -27,20 +27,21 @@ function RaffleCard(props) {
     // set raffle as recent viewed raffle
     const setRecent = async () => {
         const ip = require('../../../IP_ADDRESS.json')
-        const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + user._id, {
-            method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: makeAddJSON()
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.user
         return json
     }
 
     const makeAddJSON = () => {
-        let viewedRaffles = user.recentRaffles
+        let viewedRaffles = user.recentRaffles || []
         // console.log('recent raffle ids: ', viewedRaffles);
         if (!viewedRaffles.includes(raffle)) {
             viewedRaffles.push(raffle)
@@ -52,14 +53,23 @@ function RaffleCard(props) {
         let data = {
             recentRaffles: viewedRaffles
         }
+        data["id"] = user._id
         return JSON.stringify(data)
     }
 
 
     useEffect(() => {
         async function getHost() {
-            let response = await fetch('http://' + ip.ipAddress + '/user/id/' + props.raffle.hostedBy)
+            let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id : props.raffle.hostedBy})
+            })
             response = await response.json()
+            response = response.user
             setHost(response)
         }
         if (raffle) {

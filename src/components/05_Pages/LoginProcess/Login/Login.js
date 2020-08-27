@@ -20,16 +20,16 @@ export default function Login({ navigation, route }) {
 
   const data = require('../../../IP_ADDRESS.json');
   const loginUser = async () => {
-    const response = await fetch('http://' + data.ipAddress + '/user/login', {
+    const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/login', {
       method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: makeJSON()
+      body: makeJSON()  
     })
     const json = await response.json()
-    return json
+    return json.user
   }
 
   // states for each input value

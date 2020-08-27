@@ -19,8 +19,16 @@ export default function OtherUser({ navigation, route }) {
 
     React.useEffect(() => {
         async function getRaffle() {
-            let response = await fetch('http://' + ip.ipAddress + '/raffle/query?query=hostedBy&val=' + otherUser._id)
+            let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/query', {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({query: "hostedBy", val: otherUser._id})
+            })
             response = await response.json()
+            response = response.raffles
             setHostedRaffles(response)
         }
         // if they're a host, get their posted raffles
@@ -35,8 +43,16 @@ export default function OtherUser({ navigation, route }) {
             if (otherUser.rafflesWon) {
                 if (otherUser.rafflesWon.children.length > 0) {
                     for (var raf of otherUser.rafflesWon.children) {
-                        let response = await fetch('http://' + ip.ipAddress + '/raffle/id/' + raf.raffleID)
+                        let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/id', {
+                            method: "POST",
+                            headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({id : raf.raffleID})
+                        })
                         response = await response.json()
+                        response = response.raffle
                         wonRaffles.push({raffle: response, prize: raf.reward})
                     }
                 }
@@ -51,19 +67,20 @@ export default function OtherUser({ navigation, route }) {
         if (user.following.includes(otherUser._id)) {
             return
         }
-        const response = await fetch('http://' + data.ipAddress + '/user/edit/' + user._id, {
-            method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: makeAddJSON()
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.user
 
         // followed user "follower" count also increases
-        const response2 = await fetch('http://' + data.ipAddress + '/user/edit/' + otherUser._id, {
-            method: "PATCH",
+        const response2 = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -78,19 +95,19 @@ export default function OtherUser({ navigation, route }) {
         if (!user.following.includes(otherUser._id)) {
             return
         }
-        const response = await fetch('http://' + data.ipAddress + '/user/edit/' + user._id, {
-            method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: makeDeleteJSON()
         })
-        const json = await response.json()
-
+        let json = await response.json()
+        json = json.user
         // followed user "follower" count also decreases
-        const response2 = await fetch('http://' + data.ipAddress + '/user/edit/' + otherUser._id, {
-            method: "PATCH",
+        const response2 = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -107,6 +124,7 @@ export default function OtherUser({ navigation, route }) {
         let data = {
             following: prevFollowing
         }
+        data["id"] = user._id
         return JSON.stringify(data)
     }
 
@@ -120,6 +138,7 @@ export default function OtherUser({ navigation, route }) {
         let data = {
             followers: prevFollowing
         }
+        data["id"] = otherUser._id
         return JSON.stringify(data)
     }
 
@@ -134,6 +153,7 @@ export default function OtherUser({ navigation, route }) {
         let data = {
             following: prevFollowing
         }
+        data["id"] = user._id
         return JSON.stringify(data)
     }
 
@@ -148,6 +168,7 @@ export default function OtherUser({ navigation, route }) {
         let data = {
             followers: prevFollowing
         }
+        data["id"] = otherUser._id
         return JSON.stringify(data)
     }
 

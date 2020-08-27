@@ -42,8 +42,16 @@ function OverlaySheet(props) {
   const data = require('../../IP_ADDRESS.json')
   useEffect(() => {
     async function getLast4() {
-      let response = await fetch('http://' + data.ipAddress + '/user/id/' + props.user._id)
+      let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+          method: "POST",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({id : props.user._id})
+      })
       response = await response.json()
+      response = response.user
       if (Object.keys(response).includes('last4')) {
         setlast4(response.last4)
         setBrand(response.brand)
@@ -62,16 +70,16 @@ function OverlaySheet(props) {
 
   async function subtractWallet() {
     // console.log('HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH')
-    const response = await fetch('http://' + data.ipAddress + '/user/edit/' + props.user._id, {
-      method: "PATCH",
+    const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+      method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ walletChances: _walletBalance - props.chances })
+      body: JSON.stringify({ walletChances: _walletBalance - props.chances, id : props.user._id })
     })
-    const json = await response.json()
-
+    let json = await response.json()
+    json = json.user
     return json
   }
 
@@ -109,15 +117,16 @@ function OverlaySheet(props) {
     if (_method === "Wallet Chances") {
       walletFinal = _walletBalance - props.chances
     }
-    let enteredRaffle = await fetch('http://' + data.ipAddress + '/user/edit/' + props.user._id, {
-      method: "PATCH",
+    let enteredRaffle = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+      method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ rafflesEntered: currEntered, walletChances: walletFinal })
+      body: JSON.stringify({ rafflesEntered: currEntered, walletChances: walletFinal, id : props.user._id })
     })
     enteredRaffle = await enteredRaffle.json()
+    enteredRaffle = enteredRaffle.user
     return enteredRaffle
   }
 
@@ -137,9 +146,16 @@ function OverlaySheet(props) {
   async function updateRaffle() {
 
     // get raffle object
-    let raffle = await fetch('http://' + data.ipAddress + '/raffle/id/' + props.raffleid)
+    let raffle = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/id', {
+        method: "POST",
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id : props.raffleid})
+    })
     raffle = await raffle.json()
-
+    raffle = raffle.raffle
     // update users
     let currEntered;
     if (!Object.keys(raffle).includes('users') || raffle.users.children.length === 0) {
@@ -174,13 +190,13 @@ function OverlaySheet(props) {
     // update lastDonatedTo
     let timeNow = Math.floor(Date.now() / 1000)
 
-    let updatedRaffle = await fetch('http://' + data.ipAddress + '/raffle/edit/' + props.raffleid, {
-      method: "PATCH",
+    let updatedRaffle = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/edit', {
+      method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ users: currEntered, amountRaised: amountRaised, lastDonatedTo: timeNow })
+      body: JSON.stringify({ id: props.raffleid, users: currEntered, amountRaised: amountRaised, lastDonatedTo: timeNow })
     })
   }
 
@@ -197,13 +213,13 @@ function OverlaySheet(props) {
 
   const deleteCreditCard = async () => {
     const data = require('../../IP_ADDRESS.json')
-    await fetch('http://' + data.ipAddress + '/user/edit/' + props.user._id, {
-      method: "PATCH",
+    await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+      method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ last4: null, paymentInfo: null })
+      body: JSON.stringify({ last4: null, paymentInfo: null, id : props.user._id })
     })
     setLast4(null)
   }

@@ -137,15 +137,16 @@ export default function ReqBusAcc({ navigation }) {
 
     // patch request
     const editUser = async () => {
-        const response = await fetch('http://' + data.ipAddress + '/user/edit/' + user._id, {
-            method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: makeJSON()
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.user
         return json
     }
 
@@ -159,6 +160,7 @@ export default function ReqBusAcc({ navigation }) {
             host_raffleType: _hostRaffleType,
             host_license: 'https://oc-drivers-license.s3.us-east.cloud-object-storage.appdomain.cloud/' + _licenseURL
         }
+        data["id"] = user._id
         return JSON.stringify(data)
     };
 

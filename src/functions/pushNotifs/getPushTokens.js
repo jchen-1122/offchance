@@ -18,7 +18,15 @@ export async function getPushTokens(userIDs){
 }
 
 const getUser = async (userID) => {
-    let response = await fetch('http://' + ip.ipAddress + '/user/id/' + userID)
+    let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id : userID})
+    })
     response = await response.json()
+    response = response.user
     return response
 }

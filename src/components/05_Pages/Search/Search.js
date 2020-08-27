@@ -89,15 +89,24 @@ function Search({navigation}) {
     React.useEffect(() => {
 
         async function getRaffle() {
-          let response = await fetch('http://'+data.ipAddress+'/raffle/all')
+          let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/all')
           response = await response.json()
+          response = response.all
           setRaffles(response);
         }
         getRaffle()
 
         async function getUser() {
-          let response = await fetch('http://' + data.ipAddress + '/user/query');
+          let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/query', {
+            method: "POST",
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+          })
           response = await response.json()
+          response = response.users
           setUsers(response);
         }
         getUser()

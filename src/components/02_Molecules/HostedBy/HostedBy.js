@@ -20,18 +20,19 @@ function HostedBy({ navigation, data, backColor, currUser, setUser, follow }) {
     if (currUser.following.includes(data._id)) {
         return
     }
-    const response = await fetch('http://'+ip.ipAddress+'/user/edit/'+currUser._id,{
-      method: "PATCH",
+    const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit',{
+      method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },  
       body: makeAddJSON()
     })
-    const json = await response.json()
+    let json = await response.json()
+    json = json.user
     // followed user "follower" count also increases
-    const response2 = await fetch('http://'+ip.ipAddress+'/user/edit/'+data._id,{
-      method: "PATCH",
+    const response2 = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit',{
+      method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -46,18 +47,20 @@ function HostedBy({ navigation, data, backColor, currUser, setUser, follow }) {
       if (!currUser.following.includes(data._id)) {
           return
       }
-      const response = await fetch('http://'+ip.ipAddress+'/user/edit/'+currUser._id,{
-        method: "PATCH",
+
+      const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit',{
+        method: "POST",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },  
         body: makeDeleteJSON()
       })
-      const json = await response.json()
+      let json = await response.json()
+      json = json.user
       // followed user "follower" count also decreases
-      const response2 = await fetch('http://'+data.ipAddress+'/user/edit/'+data._id,{
-        method: "PATCH",
+      const response2 = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit',{
+        method: "POST",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -73,6 +76,7 @@ function HostedBy({ navigation, data, backColor, currUser, setUser, follow }) {
       let res = {
           following: prevFollowing
       }
+      res["id"] = currUser._id
       return JSON.stringify(res)
   }
 
@@ -85,6 +89,7 @@ function HostedBy({ navigation, data, backColor, currUser, setUser, follow }) {
       let res = {
           followers: prevFollowing
       }
+      res["id"] = data._id
       return JSON.stringify(res)
   }
 
@@ -98,6 +103,7 @@ function HostedBy({ navigation, data, backColor, currUser, setUser, follow }) {
       let res = {
           following: prevFollowing
       }
+      res["id"] = currUser._id
       return JSON.stringify(res)
   }
 
@@ -111,6 +117,7 @@ function HostedBy({ navigation, data, backColor, currUser, setUser, follow }) {
       let res = {
           followers: prevFollowing
       }
+      res["id"] = data._id
       return JSON.stringify(res)
   }
   

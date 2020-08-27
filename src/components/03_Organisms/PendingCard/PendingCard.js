@@ -32,8 +32,16 @@ export default function PendingCard(props) {
         }
         setCharity(charityS.substring())
         async function getHost() {
-            let response = await fetch('http://' + ip.ipAddress + '/user/id/' + raffle.hostedBy)
+            let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id : raffle.hostedBy})
+            })
             response = await response.json()
+            response = response.user
             setHost(response)
         }
         if (raffle) {

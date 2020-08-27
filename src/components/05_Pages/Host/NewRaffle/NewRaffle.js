@@ -90,7 +90,7 @@ export default function NewRaffle({ navigation, route }) {
     const data = require('../../../IP_ADDRESS.json');
     const postRaffle = async () => {
         // create a new raffle in the database
-        const raffle_response = await fetch('http://' + data.ipAddress + '/raffle/new', {
+        const raffle_response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/new', {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -98,19 +98,21 @@ export default function NewRaffle({ navigation, route }) {
             },
             body: makeJSON()
         })
-        const raffle_json = await raffle_response.json()
+        let raffle_json = await raffle_response.json()
+        raffle_json = raffle_json.data
 
         // post raffle id to the user's rafflesPosted
         var postedRaffles = user.rafflesPosted
         postedRaffles.push(raffle_json._id)
-        const user_response = await fetch('http://' + data.ipAddress + '/user/edit/' + user._id, {
-            method: "PATCH",
+        const user_response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                rafflesPosted: postedRaffles
+                rafflesPosted: postedRaffles,
+                id: user._id
             })
         })
         const user_json = await user_response.json()

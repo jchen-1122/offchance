@@ -43,26 +43,28 @@ export default function Report({ navigation, route }) {
     // banned until the year 2069 lol
     async function banFromLiveChat(user, howlong) {
         if (howlong === 0) {
-            const response = await fetch('http://' + data.ipAddress + '/user/edit/' + user._id, {
-            method: "PATCH",
+            const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({reports: []})
+            body: JSON.stringify({reports: [], id: user._id})
             })
-            const json = await response.json()
+            let json = await response.json()
+            json = json.user
             return json
         } else {
-            const response = await fetch('http://' + data.ipAddress + '/user/edit/' + user._id, {
-            method: "PATCH",
+            const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({bannedUntil: (howlong === 1) ? Math.floor(Date.now() / 1000) + 86400 : 3155587200, reports: []})
+            body: JSON.stringify({id: user._id, bannedUntil: (howlong === 1) ? Math.floor(Date.now() / 1000) + 86400 : 3155587200, reports: []})
             })
-            const json = await response.json()
+            let json = await response.json()
+            json = json.user
             return json
         }
     }

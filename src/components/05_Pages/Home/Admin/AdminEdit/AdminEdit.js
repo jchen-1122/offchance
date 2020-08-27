@@ -82,45 +82,56 @@ export default function AdminEdit({ navigation, route }) {
     // METHOD FOR POSTING RAFFLE
     const data = require('../../../../IP_ADDRESS.json');
     const editRaffle = async () => {
-        const response = await fetch('http://' + data.ipAddress + '/raffle/edit/' + route.params._id, {
-            method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: makeJSON()
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.raffle
         setRaffle(json)
         return json
     }
 
     const deleteRaffle = async () => {
         // delete from user rafflesPosted
-        let user = await fetch('http://' + data.ipAddress + '/user/id/' + route.params.hostedBy)
+        let user = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id : route.params.hostedBy})
+        })
         user = await user.json()
+        user = user.user
         let res = []
         for (var i = 0; i < user.rafflesPosted.length; i++) {
             if (route.params._id !== user.rafflesPosted[i]) {
                 res.push(user.rafflesPosted[i])
             }
         }
-        const updatedUser = await fetch('http://' + data.ipAddress + '/user/edit/' + route.params.hostedBy, {
-            method: "PATCH",
+        const updatedUser = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit' , {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({rafflesPosted: res})
+            body: JSON.stringify({rafflesPosted: res, id: route.params.hostedBy})
         })
-        const response = await fetch('http://' + data.ipAddress + '/raffle/del/' + route.params._id, {
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/delete', {
             method: "DELETE",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
+            body: JSON.stringify({id : route.params._id})
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.raffle
         return json
     }
 
@@ -142,6 +153,7 @@ export default function AdminEdit({ navigation, route }) {
             startTime: (_status !== 'Live') ? null : _startTime,
             live: (_status == 'Live') ? true : (_status == 'Coming Soon') ? false : null
         }
+        data["id"] = route.params._id
         return JSON.stringify(data)
     };
 

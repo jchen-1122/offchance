@@ -12,7 +12,7 @@ export function stripeSavedPayment(amount) {
   useEffect(() => {
     async function onLoadStart() {
         //console.log('here')
-        let response = await fetch('http://' + data.ipAddress + '/user/autopay', {
+        let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/autopay', {
             method: "POST",
             headers: {
               'Accept': 'application/json',

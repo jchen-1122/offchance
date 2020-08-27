@@ -28,17 +28,16 @@ export default function ChangePassword({ navigation, route }) {
   }
 
   const changePW = async () => {
-    console.log('http://'+ipaddr.ipAddress+'/user/edit/' + userid)
-    const response = await fetch('http://'+ipaddr.ipAddress+'/user/edit/' + userid,{
-      method: "PATCH",
+    const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit',{
+      method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },  
       body: makeJSON()
     })
-    const json = await response.json()
-    console.log(json)
+    let json = await response.json()
+    json = json.user
     return json
   }
 
@@ -46,6 +45,7 @@ export default function ChangePassword({ navigation, route }) {
     let data = {
       password: _password
     }
+    data["id"] = userid
     return JSON.stringify(data)
   }
 

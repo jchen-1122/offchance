@@ -22,19 +22,28 @@ export default class Social extends Component {
 
   async reportUser(id, reason, message) {
     const ip = require('../../IP_ADDRESS.json')
-    let user = await fetch('http://' + ip.ipAddress + '/user/id/' + id)
+    let user = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id : id})
+    })
     user = await user.json()
+    user = user.user
     const oldReported = (Object.keys(user).includes('reports')) ? user.reports : []
     oldReported.push(reason + ": " + message)
-    const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + id, {
-          method: "PATCH",
+    const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+          method: "POST",
           headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
           },
-          body: JSON.stringify({reports: oldReported})
+          body: JSON.stringify({reports: oldReported, id: id})
       })
       const json = await response.json()
+      json = json.user
       return json
   }
 

@@ -124,16 +124,16 @@ export default function ({ navigation }) {
     };
 
     const editUser = async () => {
-        const response = await fetch('http://' + data.ipAddress + '/user/edit/' + user._id, {
-            method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: makeJSON()
         })
-        const json = await response.json()
-
+        let json = await response.json()
+        json = json.user
         return json
     }
 
@@ -147,7 +147,8 @@ export default function ({ navigation }) {
             shoeSize: _shoeSize,
             shirtSize: _shirtSize,
             sizeType: _sizeType,
-            profilePicture: "https://oc-profile-pictures.s3.us-east.cloud-object-storage.appdomain.cloud/" + _imgname
+            profilePicture: "https://oc-profile-pictures.s3.us-east.cloud-object-storage.appdomain.cloud/" + _imgname,
+            id: user._id
         }
         let data = {
             name: _name,
@@ -157,6 +158,7 @@ export default function ({ navigation }) {
             shoeSize: _shoeSize,
             shirtSize: _shirtSize,
             sizeType: _sizeType,
+            id: user._id
         }
         if (_newimg == null) return JSON.stringify(data)
         return JSON.stringify(newdata)

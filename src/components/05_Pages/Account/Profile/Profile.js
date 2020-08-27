@@ -24,8 +24,16 @@ function Profile({ navigation }) {
             if (user.rafflesWon) {
                 if (user.rafflesWon.children.length > 0) {
                     for (var raf of user.rafflesWon.children) {
-                        let response = await fetch('http://' + ip.ipAddress + '/raffle/id/' + raf.raffleID)
+                        let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/id', {
+                            method: "POST",
+                            headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({id : raf.raffleID})
+                        })
                         response = await response.json()
+                        response = response.raffle
                         wonRaffles.push({ raffle: response, prize: raf.reward })
                     }
                 }

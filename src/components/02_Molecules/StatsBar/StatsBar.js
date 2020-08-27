@@ -12,8 +12,16 @@ export default function(props) {
         const data = require('../../IP_ADDRESS.json')
         let res = []
         for (var i = 0; i < users.length; i++) {
-            let response = await fetch('http://'+data.ipAddress+'/user/id/'+users[i])
+            let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id : users[i]})
+            })
             response = await response.json()
+            response = response.user
             res.push(response)
         }
         return res
@@ -42,8 +50,16 @@ export default function(props) {
         //console.log(props.enteredRaffles)
         for (var raffle of props.enteredRaffles) {
             try {
-                let response = await fetch('http://'+data.ipAddress+'/raffle/id/'+raffle.raffleID)
+                let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/id', {
+                    method: "POST",
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({id : raffle.raffleID})
+                })
                 response = await response.json()
+                response = response.raffle
                 res.push(response)
             } catch (e) {
                 continue

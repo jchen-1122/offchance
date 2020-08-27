@@ -170,8 +170,16 @@ export default function Raffle({ navigation, route }) {
     // }, [])
 
     async function getRaffle(id) {
-        let response = await fetch('http://' + ip.ipAddress + '/raffle/id/' + id)
+        let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/id', {
+            method: "POST",
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id : id})
+        })
         response = await response.json()
+        response = response.raffle
         return response
     }
 
@@ -182,23 +190,31 @@ export default function Raffle({ navigation, route }) {
     }
 
     async function getUser(id) {
-        let response = await fetch('http://' + ip.ipAddress + '/user/id/' + id)
-        response = await response.json()
-        return response
-    }
-
-    async function postWinners(winners) {
-        let response = await fetch('http://' + ip.ipAddress + '/raffle/edit/' + raffle._id, {
-            method: "PATCH",
+        let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: makeJSON(winners)
+            body: JSON.stringify({id : id})
         })
-        const json = await response.json()
-        return json
+        response = await response.json()
+        response = response.user
+        return response
     }
+
+    // async function postWinners(winners) {
+    //     let response = await fetch('http://' + ip.ipAddress + '/raffle/edit/' + raffle._id, {
+    //         method: "PATCH",
+    //         headers: {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: makeJSON(winners)
+    //     })
+    //     const json = await response.json()
+    //     return json
+    // }
 
     const makeJSON = (winners) => {
         let res = {
@@ -214,18 +230,19 @@ export default function Raffle({ navigation, route }) {
         if (user.following.includes(host._id)) {
             return
         }
-        const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + user._id, {
-            method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: makeAddJSON(host)
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.user
         // followed user "follower" count also increases
-        const response2 = await fetch('http://' + ip.ipAddress + '/user/edit/' + host._id, {
-            method: "PATCH",
+        const response2 = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -239,18 +256,19 @@ export default function Raffle({ navigation, route }) {
         if (!user.following.includes(host._id)) {
             return
         }
-        const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + user._id, {
-            method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: makeDeleteJSON(host)
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.user
         // followed user "follower" count also decreases
-        const response2 = await fetch('http://' + ip.ipAddress + '/user/edit/' + host._id, {
-            method: "PATCH",
+        const response2 = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -266,6 +284,7 @@ export default function Raffle({ navigation, route }) {
         let res = {
             following: prevFollowing
         }
+        res["id"] = user._id
         return JSON.stringify(res)
     }
 
@@ -278,6 +297,7 @@ export default function Raffle({ navigation, route }) {
         let res = {
             followers: prevFollowing
         }
+        res["id"] = host._id
         return JSON.stringify(res)
     }
 
@@ -291,6 +311,7 @@ export default function Raffle({ navigation, route }) {
         let res = {
             following: prevFollowing
         }
+        res["id"] = user._id
         return JSON.stringify(res)
     }
 
@@ -304,6 +325,7 @@ export default function Raffle({ navigation, route }) {
         let res = {
             followers: prevFollowing
         }
+        res["id"] = host._id
         return JSON.stringify(res)
     }
     // end of stuff for follow button-------------------------------------------------------------------
@@ -436,7 +458,7 @@ export default function Raffle({ navigation, route }) {
                                 follow={false}
                                 />
                             {/* remove follow button if host is user self*/}
-                            {typeof user._id === 'undefined' ? null : user._id === raffle.host._id ? null : user.following.includes(raffle.host._id) ?
+                            {typeof user._id === 'undefined' && raffle !== 'undefined' ? null : user._id === raffle.host._id ? null : user.following.includes(raffle.host._id) ?
                                 <BlockButton color="secondary" size="small" title='FOLLOWING'
                                     onPress={async () => {
                                         if (enabled) {

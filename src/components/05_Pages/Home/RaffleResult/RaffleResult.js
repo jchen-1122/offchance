@@ -111,14 +111,29 @@ export default function RaffleResult({ navigation, route }) {
 
     React.useEffect(() => {
         async function getRaffle(id) {
-            let response = await fetch('http://' + ip.ipAddress + '/raffle/id/' + id)
+            let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/id', {
+                method: "POST",
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id : id})
+            })
             response = await response.json()
+            response = response.raffle
             setRaffle(response)
             setEnteredUsers(response.users.children)
             setWinnerObjs(response.winners.children)
-
-            let hostResp = await fetch('http://' + ip.ipAddress + '/user/id/' + response.hostedBy)
+            let hostResp = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id : response.hostedBy})
+            })
             hostResp = await hostResp.json()
+            hostResp = hostResp.user
             setHost(hostResp)
         }
         getRaffle(route.params.raffle._id)
@@ -127,8 +142,8 @@ export default function RaffleResult({ navigation, route }) {
 
     React.useEffect(() => {
         async function winnerData() {
-            const winnerRes = await fetch('http://' + ip.ipAddress + '/user/ids/', {
-                method: "PATCH",
+            const winnerRes = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/ids', {
+                method: "POST",
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -136,6 +151,7 @@ export default function RaffleResult({ navigation, route }) {
                 body: winnerJSON()
             })
             var matt = await winnerRes.json()
+            matt = matt.results
             matt.forEach(element => {
                 const found = winnerObjs.find(e => e.userID == element._id);
                 element["prize"] = found.reward

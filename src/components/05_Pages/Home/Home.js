@@ -45,8 +45,16 @@ function Home({ navigation }) {
       setTop5Donors(await top5_global())
       setLatestWinners(await getLatestWinners())
       setLatestRaffles(await getLatestRaffles())
-      let response = await fetch('http://' + data.ipAddress + '/raffle/query?query=approved&val=true')
+      let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/query', {
+          method: "POST",
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({query: "approved", val: true})
+      })
       response = await response.json()
+      response = response.raffles
       // archived = false
       let temp = []
       for (var i = 0; i < response.length; i++) {
@@ -70,17 +78,19 @@ function Home({ navigation }) {
 
     // if user doesn't have push notifications configured
     const addToken = async () => {
-      const response = await fetch('http://' + data.ipAddress + '/user/edit/' + user._id, {
-        method: "PATCH",
+      const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+        method: "POST",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          token: await registerForPushNotifications()
+          token: await registerForPushNotifications(),
+          id: user._id
         })
       })
-      const json = await response.json()
+      let json = await response.json()
+      json = json.user
       return json
     }
     if (user.token && user.token !== token) {
@@ -106,8 +116,16 @@ function Home({ navigation }) {
     }
     );
     async function getRaffleByID(id) {
-      let response = await fetch('http://' + data.ipAddress + '/raffle/id/' + id)
+      let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/id', {
+          method: "POST",
+          headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({id : id})
+      })
       response = await response.json()
+      response = response.raffle
       return response
     }
     // BACKHANDLING FOR ANDROID BOTTOM NAV

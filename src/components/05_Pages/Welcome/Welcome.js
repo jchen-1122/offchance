@@ -11,8 +11,16 @@ export default function HomeScreen({ navigation }) {
   const data = require('../../IP_ADDRESS.json');
   const {user, setUser} = useContext(GlobalState)
   const getUser = async (id) => {
-    const response = await fetch('http://'+data.ipAddress+'/user/id/' + id)
-    const json = await response.json()
+    let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id : id})
+    })
+    let json = await response.json()
+    json = json.user
     return json
   }
 

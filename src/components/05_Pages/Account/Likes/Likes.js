@@ -24,8 +24,16 @@ function Likes({ navigation }) {
     }, [])
 
     async function getRaffle(id) {
-        let response = await fetch('http://' + ip.ipAddress + '/raffle/id/' + id)
+        let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/id', {
+            method: "POST",
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id : id})
+        })
         response = await response.json()
+        response = response.raffle
         return response
     }
     return (

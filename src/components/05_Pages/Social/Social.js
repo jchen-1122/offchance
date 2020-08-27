@@ -21,8 +21,9 @@ export default function Social({ navigation }) {
         }
 
         async function getRaffles() {
-            let response = await fetch('http://' + data.ipAddress + '/raffle/all')
+            let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/all')
             response = await response.json()
+            response = response.all
             // filter raffles that are happening today and aren't archived
             response = response.filter((raffle) => { return (in_a_day(raffle.startTime) && !raffle.archived) })
             response.sort((a, b) => (a.startTime < b.startTime) ? 1 : -1) // ones happening sooner sort to the front

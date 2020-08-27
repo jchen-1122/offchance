@@ -15,12 +15,20 @@ export default function Success({navigation, route}) {
     useEffect(() => {
         // save customer id into user object
         async function updateCC() {
-            let userResponse = await fetch('http://' + ip.ipAddress + '/user/id/' + user._id)
+            let userResponse = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id : user._id})
+            })
             userResponse = await userResponse.json()
+            userResponse = userResponse.user || {}
             if (Object.keys(userResponse).includes('paymentInfo') && (Object.keys(route.params).includes('save'))) {
-                console.log('PUTTING IN DB')
+                // console.log('PUTTING IN DB')
                 // add last 4
-                let last4CC = await fetch('http://' + ip.ipAddress + '/user/getLast4', {
+                let last4CC = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/last4', {
                     method: "POST",
                     headers: {
                         'Accept': 'application/json',
@@ -31,13 +39,13 @@ export default function Success({navigation, route}) {
                 last4CC = await last4CC.json()
                 let last4 = last4CC.last4
                 let brand = last4CC.brand
-                let updatedUser = await fetch('http://' + ip.ipAddress + '/user/edit/' + user._id, {
-                    method: "PATCH",
+                let updatedUser = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+                    method: "POST",
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ last4: last4, brand: brand })
+                    body: JSON.stringify({ last4: last4, brand: brand, id: user._id })
                 })
                 //setUser(updatedUser)
             }
@@ -50,8 +58,16 @@ export default function Success({navigation, route}) {
 
     const getOpponent = async () => {
         var opponentID = userIDs[Math.floor(Math.random() * userIDs.length)]
-        const response = await fetch('http://' + ip.ipAddress + '/user/id/' + opponentID)
-        const json = await response.json()
+        let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id : opponentID})
+        })
+        let json = await response.json()
+        json = json.user
         return json
     }
 

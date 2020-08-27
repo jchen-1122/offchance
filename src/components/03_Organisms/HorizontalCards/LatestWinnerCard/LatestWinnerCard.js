@@ -14,9 +14,18 @@ function LatestWinnerCard(props) {
 
     useEffect(() => {
         async function getHost() {
-            let response = await fetch('http://' + ip.ipAddress + '/user/id/' + props.raffle.hostedBy)
-            response = await response.json()
-            setHost(response)
+            let user = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id : props.raffle.hostedBy})
+            })
+            user = await user.json()
+            user = user.user
+            console.log(user)
+            setHost(user)
         }
         if (raffle) {
             getHost()

@@ -30,8 +30,16 @@ function SlidingSheet(props) {
   useEffect(() => {
     async function updated4() {
       const ip = require('../../IP_ADDRESS.json')
-      let response = await fetch('http://' + ip.ipAddress + '/user/id/' + props.user._id)
+      let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+          method: "POST",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({id : props.user._id})
+      })
       response = await response.json()
+      response = response.user
       setLast4(response.last4)
       setBrand(response.brand)
     }
@@ -44,13 +52,13 @@ function SlidingSheet(props) {
 
   const deleteCreditCard = async () => {
     const data = require('../../IP_ADDRESS.json')
-    await fetch('http://' + data.ipAddress + '/user/edit/' + props.user._id, {
-      method: "PATCH",
+    await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+      method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ last4: null, paymentInfo: null })
+      body: JSON.stringify({ last4: null, paymentInfo: null, id : props.user._id })
     })
     setLast4(null)
   }

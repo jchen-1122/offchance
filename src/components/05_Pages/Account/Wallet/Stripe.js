@@ -41,15 +41,16 @@ const PurchaseProduct = (props) => {
   let ip = require('../../../IP_ADDRESS.json')
   async function loadChances() {
       const finalChances = props.user.walletChances + chances
-      const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + props.user._id, {
-            method: "PATCH",
+      const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({walletChances: finalChances})
+            body: JSON.stringify({walletChances: finalChances, id: props.user._id })
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.user
         return json
   }
  

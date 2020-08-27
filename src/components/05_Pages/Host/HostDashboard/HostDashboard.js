@@ -22,8 +22,16 @@ export default function HostDashboard({ navigation }) {
             if (user.isHost) {
                 if (user.rafflesPosted.length > 0) {
                     for (var raffleID of user.rafflesPosted) {
-                        let response = await fetch('http://' + ip.ipAddress + '/raffle/id/' + raffleID)
+                        let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/id', {
+                            method: "POST",
+                            headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({id : raffleID})
+                        })
                         response = await response.json()
+                        response = response.raffle
                         hostedRaffles.push(response)
                         total += (response.amountRaised || 0)
                     }
