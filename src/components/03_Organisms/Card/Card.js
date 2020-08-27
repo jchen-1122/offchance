@@ -96,12 +96,12 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
             if (live_drawing_now(data)) {
                 startData = (
                     <View>
-                        <Text style={[fonts.bold, { fontSize: 14 }]}>LIVE DRAWING HAPPENING NOW</Text>
+                        <Text style={[fonts.bold, { fontSize: 14, marginTop: 10, color: 'red' }]}>LIVE DRAWING HAPPENING NOW</Text>
                     </View>
                 )
             }
             // if live drawing already happened
-            else if (expired) {
+            else if (date && expired) {
                 startData = (
                     <View>
                         <Text style={[styles.Card__startData, fonts.p]}>DRAWING COMPLETED</Text>
@@ -111,13 +111,13 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
             }
             // if live drawing hasnt happened yet
             else {
-                startData = (
+                startData = date ? (
                     <View>
                         <Text style={[styles.Card__startData, fonts.p]}>DRAWING STARTS</Text>
                         <Countdown unix_timestamp={date} />
                         <Text style={[styles.Card__startData, fonts.p, { marginTop: 0 }]}>OR WHEN DONATION GOAL IS MET</Text>
                     </View>
-                )
+                ):null
             }
             break;
 

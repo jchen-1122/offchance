@@ -2,7 +2,7 @@ import React, { useState, useContext, useRef } from 'react';
 import { View, Text, Alert, Keyboard, Button, Image, Dimensions} from 'react-native';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import InputField from '../../../02_Molecules/InputField/InputField';
-import { fonts, utilities } from '../../../../settings/all_settings';
+import { fonts, utilities, global } from '../../../../settings/all_settings';
 import { ScrollView } from 'react-native-gesture-handler';
 import validator from 'validator'
 import GlobalState from '../../../globalState';
@@ -367,14 +367,14 @@ export default function NewRaffle({ navigation, route }) {
         adminContent = (
             <View style={{ width: '90%' }}>
                 <View style={{ width: '100%', marginTop: 15 }}>
-                    <Text style={styles.InputField__label}>Drawing Time*</Text>
+                    <Text style={global.label}>Drawing Time*</Text>
                     <View style={{ width: '105%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Text style={styles.InputField__label}>{_startTime == null ? "Pick A Start Date" : format_date(_startTime)}</Text>
+                        <Text style={global.label}>{_startTime == null ? "Pick A Start Date" : format_date(_startTime)}</Text>
                         <BlockButton color="secondary" size="small" title={'CHOOSE'} onPress={showDatePicker} />
                     </View>
                 </View>
                 <View style={{ width: '100%', marginVertical: 10 }}>
-                    <Text style={styles.InputField__label}>Status*</Text>
+                    <Text style={global.label}>Status*</Text>
                     <View style={{ flexDirection: 'row' }}>
                         {['Live', 'Coming Soon'].map((status, index) =>
                             <Checkbox
@@ -464,7 +464,7 @@ export default function NewRaffle({ navigation, route }) {
                         }
                         {(_type == 1) ?
                             <View style={styles.buttonContainer}>
-                                <Text style={[styles.InputField__label]}>Charity Partner Logos*</Text>
+                                <Text style={[global.label]}>Charity Partner Logos*</Text>
                                 <BlockButton color="secondary" title={_charityImg.length < 2 ? "CHOOSE" : "MAX 2"} size="small" onPress={async () => {
                                     if (_charityImg.length < 2) _pickImage(true)
                                 }} />
@@ -484,12 +484,12 @@ export default function NewRaffle({ navigation, route }) {
                             textArea />
 
                         <View style={[styles.dropdownContainer, { zIndex: 2 }]}>
-                            <Text style={styles.InputField__label}>Drawing Duration (Days)*</Text>
+                            <Text style={global.label}>Drawing Duration (Days)*</Text>
                             <Dropdown options={['1', '3', '5', '7', '14', '21', '30']} placeholder={"Days"} setValue={setDrawingDuration} />
                         </View>
 
                         <View style={[styles.dropdownContainer, { zIndex: 1 }]}>
-                            <Text style={styles.InputField__label}>Drawing Radius* (mi)</Text>
+                            <Text style={global.label}>Drawing Radius* (mi)</Text>
                             <Dropdown options={['None', '1', '5', '10', '20', '50', '100', '200', '1000']} placeholder="Miles" setValue={setDrawingRadius} />
                         </View>
                         <InputField
@@ -499,7 +499,7 @@ export default function NewRaffle({ navigation, route }) {
                             onChangeText={(text) => { setAddress(text) }} />
 
                         <View style={{ width: '100%', marginLeft: '10%', marginVertical: 15 }}>
-                            <Text style={styles.InputField__label}>Type of Product*</Text>
+                            <Text style={global.label}>Type of Product*</Text>
                             {productTypes.map((type, index) =>
                                 <Checkbox
                                     text={type.charAt(0).toUpperCase() + type.slice(1)}
@@ -522,11 +522,11 @@ export default function NewRaffle({ navigation, route }) {
                         {_productType == 'sneaker' ?
                             <View style={{ marginHorizontal: '5%' }}>
                                 <View style={styles.sizeCarouselContainer}>
-                                    <Text style={[styles.InputField__label, { marginBottom: -10 }]}>Available Sizes Types*</Text>
+                                    <Text style={[global.label, { marginBottom: -10 }]}>Available Sizes Types*</Text>
                                     <SizeCarousel sizes={sizeTypes} type='multiple' default={1} setSize={setSizeTypes} string/>
                                 </View>
                                 <View style={styles.sizeCarouselContainer}>
-                                    <Text style={[styles.InputField__label, { marginTop: 10, marginBottom: -10 }]}>Available Sizes*</Text>
+                                    <Text style={[global.label, { marginTop: 10, marginBottom: -10 }]}>Available Sizes*</Text>
                                     <SizeCarousel sizes={shoeSizes} type='multiple' default={1} setSize={setSizes} />
                                 </View>
                             </View>
@@ -534,18 +534,18 @@ export default function NewRaffle({ navigation, route }) {
                         {_productType == 'clothing' ?
                             <View style={{ marginHorizontal: '5%' }}>
                                 <View style={styles.sizeCarouselContainer}>
-                                    <Text style={[styles.InputField__label, { marginBottom: -10 }]}>Available Sizes Types*</Text>
+                                    <Text style={[global.label, { marginBottom: -10 }]}>Available Sizes Types*</Text>
                                     <SizeCarousel sizes={sizeTypes} type='multiple' default={1} setSize={setSizeTypes} string/>
                                 </View>
                                 <View style={styles.sizeCarouselContainer}>
-                                    <Text style={[styles.InputField__label, { marginTop: 10, marginBottom: -10 }]}>Available Sizes*</Text>
+                                    <Text style={[global.label, { marginTop: 10, marginBottom: -10 }]}>Available Sizes*</Text>
                                     <SizeCarousel sizes={shirtSizes} type='multiple' default={1} setSize={setSizes} />
                                 </View>
                             </View>
                             : null}
 
                         <View style={styles.buttonContainer}>
-                            <Text style={[styles.InputField__label]}>Product Pictures*</Text>
+                            <Text style={[global.label]}>Product Pictures*</Text>
                             <BlockButton color="secondary" title={_productImg.length < 4 ? "CHOOSE" : "MAX 4"} size="small" onPress={async () => {
                                 if (_productImg.length < 4) _pickImage(false)
                             }} />

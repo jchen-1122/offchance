@@ -3,12 +3,6 @@ import {colors} from '../../../../settings/all_settings';
 
 
 const styles = StyleSheet.create({
-    InputField__label: {
-        fontSize: 14,
-        fontWeight: '500', 
-        color: '#888888'
-    },
-
     buttonContainer: {
         width: '95%', 
         marginLeft: '5%', 

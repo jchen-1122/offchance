@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
     // Sliding Sheet Style
     SlidingSheet: {
        position: 'absolute',
-       bottom: '-45%',
+       bottom: '-48%',
        left: 0,
        right: 0,
        backgroundColor: "#FFFFFF",

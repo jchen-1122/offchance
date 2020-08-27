@@ -6,7 +6,6 @@ import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
 import ProgressBar from '../../../02_Molecules/ProgressBar/ProgressBar'
 import HostedBy from '../../../02_Molecules/HostedBy/HostedBy'
 import Top5Donors from '../../../02_Molecules/Top5Donors/Top5Donors'
-import DropDown from '../../../01_Atoms/DropDown/DropDown'
 import ImageCarousel from '../../../02_Molecules/ImageCarousel/ImageCarousel'
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import BuyOptions from '../../../02_Molecules/BuyOptions/BuyOptions'
@@ -14,19 +13,17 @@ import CountDown from '../../../01_Atoms/Countdown/Countdown'
 import SlidingSheet from '../../../04_Templates/SlidingSheet/SlidingSheet';
 import OverlaySheet from '../../../04_Templates/OverlaySheet/OverlaySheet';
 import SizeCarousel from '../../../01_Atoms/SizeCarousel/SizeCarousel'
-import { unix_to_date, is_expired } from '../../../../functions/convert_dates';
+import { is_expired } from '../../../../functions/convert_dates';
 import { top5_raffle } from '../../../../functions/explore_functions';
 import GlobalState from '../../../globalState';
 import * as geolib from 'geolib';
-import { set } from 'react-native-reanimated';
 import LikeButton from '../../../01_Atoms/Buttons/LikeButton/LikeButton'
 
 export default function Raffle({ navigation, route }) {
     const { user, setUser } = useContext(GlobalState)
     const mapAPI = 'pk.eyJ1IjoiamNoZW4xMTIyIiwiYSI6ImNrMjZ4dXM0cDF4cnozY21sYnBwYjdzaTAifQ.ItVivcBhnM1Lz9GP5B0PSQ'
     var raffle = route.params
-    const [views, setViews] = useState(null)
-    const [boughtChances, setBoughtChances] = useState(0)
+
     // get host of raffle from db
     const [top5, setTop5] = useState([])
     const [enabled, setEnabled] = useState(true)
@@ -45,7 +42,6 @@ export default function Raffle({ navigation, route }) {
     React.useEffect(() => {
         async function getCurrentRaffle() {
             route.params = await getRaffle(route.params._id)
-            // addView()
             route.params['host'] = await getUser(route.params.hostedBy)
             route.params['top5'] = route.params.users.children.sort((a, b) => b.amountDonated - a.amountDonated).slice(0, 5)
             let temp = []
@@ -56,9 +52,7 @@ export default function Raffle({ navigation, route }) {
             setTop5(temp)
             // geocode raffle address not host address (still need to change)
             let coordsUser = await getCoords(user.shippingAddress)
-            // let coordsHost = await getCoords(route.params['host'].shippingAddress)
             let coordsHost = Object.keys(route.params).includes("address") ? await getCoords(route.params.address) : coordsUser
-            //console.log(coordsHost)
 
             let longUser = coordsUser.features[0].geometry.coordinates[0]
             let latUser = coordsUser.features[0].geometry.coordinates[1]
@@ -73,10 +67,7 @@ export default function Raffle({ navigation, route }) {
             if (route.params.winners.children.length !== 0) {
                 setWinner(await getUser(route.params.winners.children[0].userID))
             }
-            console.log(winner)
         }
-        setViews(raffle.totalViews)
-        addView()
         getCurrentRaffle()
     }, [])
 
@@ -218,6 +209,7 @@ export default function Raffle({ navigation, route }) {
         return JSON.stringify(res)
     }
 
+    // stuff for follow button-----------------------------------------------------------------------
     const addFollower = async (host) => {
         if (user.following.includes(host._id)) {
             return
@@ -314,21 +306,8 @@ export default function Raffle({ navigation, route }) {
         }
         return JSON.stringify(res)
     }
+    // end of stuff for follow button-------------------------------------------------------------------
 
-    // increment total number of views for the raffle
-    const addView = async () => {
-        //console.log(views)
-        // const response = await fetch('http://' + data.ipAddress + '/raffle/edit/' + user._id, {
-        //     method: "PATCH",
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: makeJSON()
-        // })
-        // const json = await response.json()
-        // return json
-    }
     // get fields of raffle from db
     let name;
     let description;
@@ -340,14 +319,13 @@ export default function Raffle({ navigation, route }) {
     if (raffle != null) {
         name = raffle.name
         description = raffle.description
+        console.log('is_expired',is_expired(raffle.startTime + 1800))
         expired = is_expired(raffle.startTime + 1800)
         images_strs = raffle.images
         sizes = raffle.sizes
         sizeTypes = raffle.sizeTypes
         donors = raffle.charityImgs
     }
-
-    const tester = [require('../../../../../assets/images/naacp.png'), require('../../../../../assets/images/aclu.png')];
 
     // entering states
     const [_sizeType, setSizeType] = useState((sizeTypes.length === 0) ? "" : null)
@@ -407,10 +385,10 @@ export default function Raffle({ navigation, route }) {
         }
     }
 
+    // for overlay sheet
     const trigger = () => {
         setSheetController(!sheetController);
         setEnableScroll(!enableScroll);
-
         setContainerStyle(!sheetController ?
             { // light on
                 flex: 1,
@@ -423,16 +401,7 @@ export default function Raffle({ navigation, route }) {
             });
     }
 
-    var opponents = require('../RPS/opponent_ids.json')
-    var userIDs = opponents.userIDs
-
-    const getOpponent = async () => {
-        var opponentID = userIDs[Math.floor(Math.random() * userIDs.length)]
-        const response = await fetch('http://' + ip.ipAddress + '/user/id/' + opponentID)
-        const json = await response.json()
-        return json
-    }
-
+    // tells user how many chances they have in the raffle
     let chanceText = 'ENTER DRAWING'
     if (Object.keys(user).includes('rafflesEntered')) {
         for (var raf of user.rafflesEntered.children) {
@@ -490,7 +459,6 @@ export default function Raffle({ navigation, route }) {
                                 />}
                         </View>
                     </View>
-                    {/* !!!!!!!!!!!!! TODO: connect to db and format !!!!!!!!!!!!!!*/}
                     {/* winner of raffle if expired */}
                     {(expired && raffle.archived && winner) ?
                         <View style={[styles.highlightBackground, { paddingVertical: '3%', paddingRight: '5%' }]}>
@@ -563,7 +531,6 @@ export default function Raffle({ navigation, route }) {
                                 </View> : null
                             }
 
-
                             <BuyOptions options={options} buyOption={buyOption} setBuyOption={setBuyOption} trigger={trigger} navigation={navigation} loggedin={Object.keys(user).includes('_id')} />
 
                             {/* sliding sheet */}
@@ -612,17 +579,8 @@ export default function Raffle({ navigation, route }) {
                         title="LIVE DRAWING EXP"
                         color="primary"
                         onPress={() => {
-                            // navigation.navigate('RaffleResult', {raffle: route.params})
                             navigation.navigate('RaffleResult', { raffle: raffle })
-                        }}
-                        //expired
-                        disabled={false} />
-
-                    {/* <BlockButton
-                        title="ENTER DRAWING"
-                        color="highlight"
-                        onPress={() => toggleSheet()}
-                        disabled={expired} /> */}
+                        }}/>
                 </View>
             </ScrollView>
             <BottomNav navigation={navigation} active={'Home'}></BottomNav>

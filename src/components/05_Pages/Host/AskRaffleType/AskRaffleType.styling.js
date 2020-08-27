@@ -13,8 +13,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: '90%',
     backgroundColor: '#DCDCDC',
-    paddingVertical: 10,
-    paddingHorizontal: 10,
+    padding: 10
   },
   description__text: {
     width: '90%',
