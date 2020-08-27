@@ -36,7 +36,7 @@ function OverlaySheet(props) {
   const [brand, setBrand] = useState(null)
 
   // Update 8/22 for weird overviewsheet
-  const [overlayStyle, setOverlayStyle] = useState([styles.OverlaySheet]);
+  const [overlayStyle, setOverlayStyle] = useState(styles.OverlaySheet);
 
 
   const data = require('../../IP_ADDRESS.json')
@@ -281,15 +281,14 @@ function OverlaySheet(props) {
         // if using a payment method
         else {
           //console.log(_method)
-          // setOverlayStyle(styles.OverlaySheetPay);
+          setOverlayStyle(styles.OverlaySheetPay);
           setStripe(false)
           //toggleOverlay();
         }
       }
     }} />
   )
-  let slidingStyle = [styles.OverlaySheet];
-  slidingStyle.push({ height: props.height });
+
   return (
     <View>
             {/* <Animated.View
@@ -297,7 +296,7 @@ function OverlaySheet(props) {
           { transform: [{ translateY: bounceValue }] }]}> */}
       <Overlay isVisible={visible}
         onBackdropPress={() => { toggleOverlay() }}
-        overlayStyle={styles.OverlaySheet}>
+        overlayStyle={overlayStyle}>
 
         {stripe ?
           <View>

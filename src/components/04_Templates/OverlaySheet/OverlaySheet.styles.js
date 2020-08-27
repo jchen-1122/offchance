@@ -9,10 +9,22 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 30,
         borderTopRightRadius: 30, 
         paddingVertical: '8%',
-        // width: width * 0.9,
+        width: width,
+        // height: height * 0.55,
         alignItems: 'center', 
         position: 'absolute',
         bottom: 0,
+    },
+
+    OverlaySheetPay: {
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30, 
+        paddingVertical: '8%',
+        width: width,
+        height: height * 0.8,
+        // alignItems: 'center', 
+        position: 'absolute',
+        bottom: height * -0.07,
     },
 
     OverlaySheet__header: {
