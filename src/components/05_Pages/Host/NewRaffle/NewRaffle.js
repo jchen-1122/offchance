@@ -1,8 +1,8 @@
 import React, { useState, useContext, useRef } from 'react';
-import { View, Text, Alert, Keyboard, Button, Image } from 'react-native';
+import { View, Text, Alert, Keyboard, Button, Image, Dimensions} from 'react-native';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import InputField from '../../../02_Molecules/InputField/InputField';
-import { fonts, utilities } from '../../../../settings/all_settings';
+import { fonts, utilities, global } from '../../../../settings/all_settings';
 import { ScrollView } from 'react-native-gesture-handler';
 import validator from 'validator'
 import GlobalState from '../../../globalState';
@@ -23,15 +23,22 @@ import AssetUtils from 'expo-asset-utils';
 import * as Abuffer from 'base64-arraybuffer';
 
 export default function NewRaffle({ navigation, route }) {
+    const [buttonTitle, setButtonTitle] = useState('Submit')
+    const admins = require('../../../05_Pages/Home/Admin/admin_emails.json') // list of admin emails
+    const productTypes = ['sneaker', 'clothing', 'collectibles', 'art']
+    const { user, setUser } = useContext(GlobalState)
     var _type = route.params.type
+
+
+    //size stuff-------------------------------------------------------------------------------------
+    var sizeTypes = ['Men', 'Women', "Unisex"]
     var shirtSizes = ['S', 'M', 'L', 'XL']
     var shoeSizes = [];
     for (var i = 4; i <= 14; i += 0.5) {
         shoeSizes.push(i.toString())
     }
 
-    const [buttonTitle, setButtonTitle] = useState('Submit')
-    // states for each input value
+    // states for each input value-------------------------------------------------------------------
     const [_name, setName] = useState(null)
     const [_price, setPrice] = useState(null)
     const [_value, setValue] = useState(null)
@@ -51,11 +58,12 @@ export default function NewRaffle({ navigation, route }) {
     const [_productImg, setProductImg] = useState([])
     const [_productprevImg, setProductPrevImg] = useState([])
     const [_productName, setProductName] = useState([])
+    const [_errors, setErrors] = useState([])
     // only for admin
     const [_startTime, setStartTime] = useState(null)
     const [_status, setStatus] = useState(null)
 
-    // for going to the next text input
+    // for going to the next text input--------------------------------------------------------------
     const priceRef = useRef()
     const valueRef = useRef()
     const goalRef = useRef()
@@ -63,7 +71,7 @@ export default function NewRaffle({ navigation, route }) {
     const descriptionRef = useRef()
     const numProductsRef = useRef()
 
-    // stuff for date picker (start time)
+    // stuff for date picker (start time)------------------------------------------------------------
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const showDatePicker = () => {
         setDatePickerVisibility(true);
@@ -76,16 +84,13 @@ export default function NewRaffle({ navigation, route }) {
         hideDatePicker();
     };
 
-    const admins = require('../../../05_Pages/Home/Admin/admin_emails.json')
-    const productTypes = ['sneaker', 'clothing', 'collectibles', 'art']
-    const { user, setUser } = useContext(GlobalState)
-    //console.log(typeof user._id)
 
-    // METHOD FOR POSTING RAFFLE
+    // METHOD FOR POSTING RAFFLE---------------------------------------------------------------------
     const AWS = require('aws-sdk');
     const data = require('../../../IP_ADDRESS.json');
     const postRaffle = async () => {
-        const response = await fetch('http://' + data.ipAddress + '/raffle/new', {
+        // create a new raffle in the database
+        const raffle_response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/new', {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
@@ -93,11 +98,53 @@ export default function NewRaffle({ navigation, route }) {
             },
             body: makeJSON()
         })
-        const json = await response.json()
-        //console.log(json)
-        return json
+        let raffle_json = await raffle_response.json()
+        raffle_json = raffle_json.data
+
+        // post raffle id to the user's rafflesPosted
+        var postedRaffles = user.rafflesPosted
+        postedRaffles.push(raffle_json._id)
+        const user_response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                rafflesPosted: postedRaffles,
+                id: user._id
+            })
+        })
+        const user_json = await user_response.json()
+        return user_json
     }
 
+    // const makeJSON = () => {
+    //     let data = {
+    //         type: _type,
+    //         hostedBy: user._id,
+    //         name: _name,
+    //         productPrice: _price,
+    //         valuedAt: _value,
+    //         numProducts: _numProducts,
+    //         description: _description,
+    //         donationGoal: _goal,
+    //         charities: (_charities.length > 0) ? _charities.split(',').map(item => item.trim()) : null,
+    //         productType: _productType,
+    //         drawingDuration: _drawingDuration,
+    //         radius: _drawingRadius === 'None' ? 25000 : _drawingRadius,
+    //         address: _address,
+    //         images: _productName,
+    //         sizeTypes: _sizeTypes,
+    //         sizes: _sizes,
+    //         startTime: (_startTime == null) ? null : new Date(_startTime).getTime() / 1000,
+    //         live: (_status == 'Live') ? true : (_status == 'Coming Soon') ? false : null,
+    //         approved: (admins.admins.includes(user.email)) ? true : false
+    //     }
+    //     return JSON.stringify(data)
+    // };
+
+    // image stuff-------------------------------------------------------------------------------------------------------
     async function getPermissionAsync() {
         if (Constants.platform.ios) {
             const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -138,11 +185,10 @@ export default function NewRaffle({ navigation, route }) {
                         setProductPrevImg(_productImg.map((prodimg) =>
                             <Image source={{ uri: prodimg }} style={{ width: 100, height: 100 }} />))
                     }
-                    //setImgname(_username + Math.round((new Date()).getTime() / 1000) + '.jpeg')
                 }
-
-                //console.log(result);
             } catch (E) {
+
+                //E
                 console.log(E);
             }
         }
@@ -157,7 +203,7 @@ export default function NewRaffle({ navigation, route }) {
 
     const cosClient = new AWS.S3();
 
-    const _multiUpload = () => {
+    const _multiUpload = async() => {
         console.log(user.username)
         let imgname = user.username + Math.round((new Date()).getTime() / 1000)
         _charityImg.map((charimg, index) => {
@@ -195,35 +241,63 @@ export default function NewRaffle({ navigation, route }) {
             })
     };
 
-    //   // states for each input value
-    //   const [_email, setEmail] = useState(null)
-    //   const [_password, setPassword] = useState(null)
-    //   const [_errors, setErrors] = useState([])
-
-    //   // validates email input
-    //   const isValidEmail = () => {
-    //     return validator.isEmail(String(_email).toLowerCase());
-    //   }
-
-    //   // check for any errors in input, returns array of errors
-    //   const generateErrors = () => {
-    //     let errors = []
-    //     // if not a valid email
-    //     if (!isValidEmail()) {
-    //       errors.push(<Text style={fonts.error}>Email is not valid</Text>)
-    //       setErrors(errors)
-    //       return true
-    //     } else {
-    //       setErrors([])
-    //       return false
-    //     }
-
-    //   }
+    // ERROR HANDLING: check for any errors in input, returns array of errors-----------------------------------------------------
+    const generateErrors = () => {
+        let errors = []
+        switch (_type) {
+            case 1:
+                if (!_value) {
+                    errors.push(<Text style={fonts.error}>Please Fill In Product Value</Text>)
+                }
+                if (_charities.length == 0) {
+                    errors.push(<Text style={fonts.error}>Please List Charities To Donate To</Text>)
+                }
+                // CHECK CHARITY IMAGES, Currently we are not doing anything with the images..
+                if (_charityImg.length == 0) {
+                    errors.push(<Text style={fonts.error}>Please Provide Charity Logos/Images</Text>)
+                }
+                break;
+            case 2:
+                if (!_price) {
+                    errors.push(<Text style={fonts.error}>Please Fill In Purchase Price</Text>)
+                }
+                if (!_numProducts) {
+                    errors.push(<Text style={fonts.error}>Please Input Amount of Products</Text>)
+                }
+                break;
+        }
+        if (!_name) {
+            errors.push(<Text style={fonts.error}>Please Fill in Product Name</Text>)
+        }
+        if (!_description) {
+            errors.push(<Text style={fonts.error}>Please Provide a Description</Text>)
+        }
+        if (!_drawingDuration) {
+            errors.push(<Text style={fonts.error}>Please Specify Drawing Duration</Text>)
+        }
+        if (!_drawingRadius) {
+            errors.push(<Text style={fonts.error}>Please Specify Drawing Radius</Text>)
+        }
+        if (_drawingRadius != null && _drawingRadius != 'None' && !_address) {
+            errors.push(<Text style={fonts.error}>Please Fill In Address</Text>)
+        }
+        if ((_productType == 'sneaker' || _productType == 'clothing') && !_sizes) {
+            errors.push(<Text style={fonts.error}>Please Input Product Sizes</Text>)
+        }
+        if (_productImg.length == 0) {
+            errors.push(<Text style={fonts.error}>Please Upload Images</Text>)
+        }
+        // if not a valid email
+        setErrors(errors)
+        if (errors.length == 0) {
+            return false
+        }
+        return true
+    }
 
     // makes a json object with all the input fields
     const makeJSON = () => {
         let data = {
-            images: ["https://oc-mobile-images.s3.us-east.cloud-object-storage.appdomain.cloud/oc-logo.png"], //hardcoded for demo
             type: _type,
             hostedBy: user._id,
             name: _name,
@@ -240,9 +314,13 @@ export default function NewRaffle({ navigation, route }) {
             images: _productName,
             sizeTypes: _sizeTypes,
             sizes: _sizes,
-            startTime: _startTime,
-            live: (_status == 'Live') ? true: (_status == 'Coming Soon') ? false : null
+            charityImgs: _charityName,
+            startTime: new Date(_startTime).getTime() / 1000,
+            live: (_status == 'Live') ? true: (_status == 'Coming Soon') ? false : null,
+            approved: (admins.admins.includes(user.email)) ? true : false
         }
+        console.log('status',_status)
+        console.log('live',data.live)
         return JSON.stringify(data)
     };
     React.useLayoutEffect(() => {
@@ -254,37 +332,51 @@ export default function NewRaffle({ navigation, route }) {
             ),
             headerRight: () => (
                 <Button title={buttonTitle}
+                    disabled={buttonTitle == 'Submitting'}
                     onPress={() => {
-                        setButtonTitle('Submitting')
-                        _multiUpload()
-                        postRaffle()
-                        Alert.alert(
-                            "Success!",
-                            "Your drawing has been submitted for approval. You will get notified if it gets approved.",
-                            [
-                                { text: "OK", onPress: () => console.log("OK Pressed") }
-                            ],
-                            { cancelable: false }
-                        );
-                        navigation.navigate('HostDashboard')
+                        if (!generateErrors()) {
+                            setButtonTitle('Submitting')
+                            _multiUpload()
+                            postRaffle()
+                            Alert.alert(
+                                "Success!",
+                                "Your drawing has been submitted for approval. You will get notified if it gets approved.",
+                                [
+                                    { text: "OK", onPress: () => console.log("OK Pressed") }
+                                ],
+                                { cancelable: false }
+                            );
+                            navigation.navigate('HostDashboard')
+                        } else {
+                            Alert.alert(
+                                "Error",
+                                "Please fill in all required fields.",
+                                [
+                                    { text: "OK", onPress: () => console.log("OK Pressed") }
+                                ],
+                                { cancelable: false }
+                            );
+                        }
                     }} />
             ),
         });
     }, [_type, _name, _price, _value, _numProducts, _description, _goal, _charities, _productType, _drawingDuration, _drawingRadius, _address, _sizeTypes, _sizes, buttonTitle]);
 
+
+    // MARKUP=========================================================================================================================
     let adminContent;
     if (admins.admins.includes(user.email)) {
         adminContent = (
-            <View style={{width: '90%'}}>
+            <View style={{ width: '90%' }}>
                 <View style={{ width: '100%', marginTop: 15 }}>
-                    <Text style={styles.InputField__label}>Drawing Time*</Text>
+                    <Text style={global.label}>Drawing Time*</Text>
                     <View style={{ width: '105%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Text style={styles.InputField__label}>{_startTime == null ? "Pick A Start Date" : format_date(_startTime)}</Text>
+                        <Text style={global.label}>{_startTime == null ? "Pick A Start Date" : format_date(_startTime)}</Text>
                         <BlockButton color="secondary" size="small" title={'CHOOSE'} onPress={showDatePicker} />
                     </View>
                 </View>
                 <View style={{ width: '100%', marginVertical: 10 }}>
-                    <Text style={styles.InputField__label}>Status*</Text>
+                    <Text style={global.label}>Status*</Text>
                     <View style={{ flexDirection: 'row' }}>
                         {['Live', 'Coming Soon'].map((status, index) =>
                             <Checkbox
@@ -307,15 +399,13 @@ export default function NewRaffle({ navigation, route }) {
         )
     }
     return (
-
         <View style={utilities.container}>
-
             <ScrollView>
                 <KeyboardAwareScrollView
                     style={{ backgroundColor: 'transparent' }}
                     resetScrollToCoords={{ x: 0, y: 0 }}
                 >
-                    <View style={[utilities.flexCenter, { marginBottom: 25 }]}>
+                    <View style={{ alignItems: 'center' }}>
                         <InputField
                             label="Name of Product"
                             autoCapitalize="words"
@@ -326,7 +416,7 @@ export default function NewRaffle({ navigation, route }) {
                         {(_type == 2) ?
                             <InputField
                                 label="Buy It Now Price"
-                                keyboardType="number-pad"
+                                keyboardType="decimal-pad"
                                 value={_price}
                                 onChangeText={(text) => { setPrice(text) }}
                                 returnKeyType='done'
@@ -335,7 +425,7 @@ export default function NewRaffle({ navigation, route }) {
                                 required /> :
                             <InputField
                                 label="Prize Value"
-                                keyboardType="number-pad"
+                                keyboardType="decimal-pad"
                                 value={_value}
                                 onChangeText={(text) => { setValue(text) }}
                                 returnKeyType='done'
@@ -357,7 +447,7 @@ export default function NewRaffle({ navigation, route }) {
                         {(_type == 1) ?
                             <InputField
                                 label="Donation Goal ($)"
-                                keyboardType="number-pad"
+                                keyboardType="decimal-pad"
                                 value={_goal}
                                 onChangeText={(text) => { setGoal(text) }}
                                 returnKeyType='done'
@@ -375,10 +465,10 @@ export default function NewRaffle({ navigation, route }) {
                                 required /> : null
                         }
                         {(_type == 1) ?
-                            <View style={{ width: '95%', marginLeft: '5%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Text style={[styles.InputField__label]}>Charity Partner Logos*</Text>
-                                <BlockButton color="secondary" title={_charityImg.length < 4 ? "CHOOSE" : "MAX 4"} size="small" onPress={async () => {
-                                    if (_charityImg.length < 4) _pickImage(true)
+                            <View style={styles.buttonContainer}>
+                                <Text style={[global.label]}>Charity Partner Logos*</Text>
+                                <BlockButton color="secondary" title={_charityImg.length < 2 ? "CHOOSE" : "MAX 2"} size="small" onPress={async () => {
+                                    if (_charityImg.length < 2) _pickImage(true)
                                 }} />
                             </View> : null
                         }
@@ -395,35 +485,23 @@ export default function NewRaffle({ navigation, route }) {
                             required
                             textArea />
 
-                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 2 }}>
-                            <Text style={styles.InputField__label}>Drawing Duration (Days)*</Text>
-                            <Dropdown options={[1, 3, 5, 7, 14, 21, 30]} placeholder="Days" setValue={setDrawingDuration} />
+                        <View style={[styles.dropdownContainer, { zIndex: 2 }]}>
+                            <Text style={global.label}>Drawing Duration (Days)*</Text>
+                            <Dropdown options={['1', '3', '5', '7', '14', '21', '30']} placeholder={"Days"} setValue={setDrawingDuration} />
                         </View>
 
-                        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 1 }}>
-                            <Text style={styles.InputField__label}>Drawing Radius* (mi)</Text>
-                            <Dropdown options={['None', 1, 5, 10, 20, 50, 100, 200, 1000]} placeholder="Miles" setValue={setDrawingRadius} />
+                        <View style={[styles.dropdownContainer, { zIndex: 1 }]}>
+                            <Text style={global.label}>Drawing Radius* (mi)</Text>
+                            <Dropdown options={['None', '1', '5', '10', '20', '50', '100', '200', '1000']} placeholder="Miles" setValue={setDrawingRadius} />
                         </View>
                         <InputField
                             label={'Store Address' + ((_drawingRadius && _drawingRadius != 'None') ? '*' : '')}
                             autoCapitalize="words"
                             value={_address}
                             onChangeText={(text) => { setAddress(text) }} />
-                        {/* WE NEED THIS FOR ADMIN */}
-                        {/* <View style={{ width: '100%', marginLeft: '10%', marginVertical: 15 }}>
-                        <Text style={styles.InputField__label}>Drawing Time<Text style={{ color: 'red' }}>*</Text></Text>
-                        <BlockButton color="secondary" size="short" title={_startTime == null ? "Pick A Start Date" : format_date(_startTime)} onPress={showDatePicker} />
-                    </View>
-                    <DateTimePickerModal
-                        isVisible={isDatePickerVisible}
-                        mode="datetime"
-                        headerTextIOS="Pick a start date"
-                        onConfirm={handleConfirm}
-                        onCancel={hideDatePicker}
-                    /> */}
 
                         <View style={{ width: '100%', marginLeft: '10%', marginVertical: 15 }}>
-                            <Text style={styles.InputField__label}>Type of Product*</Text>
+                            <Text style={global.label}>Type of Product*</Text>
                             {productTypes.map((type, index) =>
                                 <Checkbox
                                     text={type.charAt(0).toUpperCase() + type.slice(1)}
@@ -444,41 +522,41 @@ export default function NewRaffle({ navigation, route }) {
                         </View>
 
                         {_productType == 'sneaker' ?
-                            <View style={{ height: 75, marginLeft: '5%' }}>
-                                <Text style={[styles.InputField__label]}>Available Sizes*</Text>
-                                <SizeCarousel sizes={shoeSizes} type='multiple' default={1} setSize={setSizes} />
+                            <View style={{ marginHorizontal: '5%' }}>
+                                <View style={styles.sizeCarouselContainer}>
+                                    <Text style={[global.label, { marginBottom: -10 }]}>Available Sizes Types*</Text>
+                                    <SizeCarousel sizes={sizeTypes} type='multiple' default={1} setSize={setSizeTypes} string/>
+                                </View>
+                                <View style={styles.sizeCarouselContainer}>
+                                    <Text style={[global.label, { marginTop: 10, marginBottom: -10 }]}>Available Sizes*</Text>
+                                    <SizeCarousel sizes={shoeSizes} type='multiple' default={1} setSize={setSizes} />
+                                </View>
                             </View>
                             : null}
                         {_productType == 'clothing' ?
-                            <View style={{ height: 75, marginLeft: '5%', width: '95%' }}>
-                                <Text style={[styles.InputField__label]}>Available Sizes*</Text>
-                                <SizeCarousel sizes={shirtSizes} type='multiple' default={1} setSize={setSizes} />
+                            <View style={{ marginHorizontal: '5%' }}>
+                                <View style={styles.sizeCarouselContainer}>
+                                    <Text style={[global.label, { marginBottom: -10 }]}>Available Sizes Types*</Text>
+                                    <SizeCarousel sizes={sizeTypes} type='multiple' default={1} setSize={setSizeTypes} string/>
+                                </View>
+                                <View style={styles.sizeCarouselContainer}>
+                                    <Text style={[global.label, { marginTop: 10, marginBottom: -10 }]}>Available Sizes*</Text>
+                                    <SizeCarousel sizes={shirtSizes} type='multiple' default={1} setSize={setSizes} />
+                                </View>
                             </View>
                             : null}
-                        <View style={{ width: '95%', marginLeft: '5%', marginVertical: '5%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <Text style={[styles.InputField__label]}>Product Pictures*</Text>
-                            <BlockButton color="secondary" title="CHOOSE" size="small" onPress={async () => {
+
+                        <View style={styles.buttonContainer}>
+                            <Text style={[global.label]}>Product Pictures*</Text>
+                            <BlockButton color="secondary" title={_productImg.length < 4 ? "CHOOSE" : "MAX 4"} size="small" onPress={async () => {
                                 if (_productImg.length < 4) _pickImage(false)
                             }} />
                         </View>
-                        <View style={{ flex: 1, flexDirection: 'row' }}>
+                        <View style={{ flexDirection: 'row' }}>
                             {_productprevImg}
                         </View>
                         {adminContent}
-
-                        {/* <BlockButton color="secondary" title="CHOOSE" size="small" onPress={async () => _multiUpload()}/> */}
-                        {/* <BlockButton title="SUBMIT FOR APPROVAL" color="primary" onPress={() => {
-                            postRaffle()
-                            Alert.alert(
-                                "Success!",
-                                "Your drawing has been submitted for approval. You will get notified if it gets approved.",
-                                [
-                                    { text: "OK", onPress: () => console.log("OK Pressed") }
-                                ],
-                                { cancelable: false }
-                            );
-                            navigation.navigate('HostDashboard')
-                        }} /> */}
+                        {_errors}
                     </View>
                 </KeyboardAwareScrollView>
             </ScrollView>

@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from 'react-native'
 import {colors} from '../../../settings/colors'
 
 const styles = StyleSheet.create({
-    button: {
+    Size: {
         marginRight: 20, 
         width: 35, 
         height: 35, 
@@ -10,16 +10,22 @@ const styles = StyleSheet.create({
         borderWidth: 1, 
         borderColor: '#888888', 
     },
-    white_button: {
+    Size_transparent: {
         backgroundColor: 'transparent'
     },
-    green_button: {
+    Size_green: {
         backgroundColor: colors.lightGreen
     },
-    buttonText: { 
+    
+    Size__text: { 
         textAlign: 'center', 
         marginTop: 7, 
         color: '#888888' 
+    },
+    // if the Size has a string, ex. 'Men', 'Women', 'Unisex'
+    Size__text_string: {
+        fontSize: 8,
+        marginTop: 10
     }
 })
 

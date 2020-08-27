@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Text, View, Image, Dimensions } from 'react-native'
 
-import styles from './FlatCard.styling';
+import styles from './SearchCard.styling';
 
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler';
 import ProgressBar from '../../02_Molecules/ProgressBar/ProgressBar';
@@ -15,7 +15,7 @@ import { colors, fonts, utilities, dimensions } from '../../../settings/all_sett
 import { in_a_day, is_expired } from '../../../functions/convert_dates';
 import { top5_raffle } from '../../../functions/explore_functions';
 
-function FlatCard({ navigation, data, viewType, currUserG, setUserG, inLikesPage }) {
+function SearchCard({ navigation, data, viewType, currUserG, setUserG, inLikesPage }) {
     const ip = require('../../IP_ADDRESS.json');
     const [host, setHost] = useState(null)
     const currUser = currUserG
@@ -23,10 +23,29 @@ function FlatCard({ navigation, data, viewType, currUserG, setUserG, inLikesPage
 
     const { width, height } = Dimensions.get('window');
 
+    function array_move(arr, old_index, new_index) {
+        if (new_index >= arr.length) {
+            var k = new_index - arr.length + 1;
+            while (k--) {
+                arr.push(undefined);
+            }
+        }
+        arr.splice(new_index, 0, arr.splice(old_index, 1)[0]);
+        return arr; // for testing
+    };
+
     React.useEffect(() => {
         async function getHost() {
-            let response = await fetch('http://' + ip.ipAddress + '/user/id/' + data.hostedBy)
+            let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({id : data.hostedBy})
+            })
             response = await response.json()
+            response = response.user
             setHost(response)
         }
         getHost()
@@ -85,11 +104,11 @@ function FlatCard({ navigation, data, viewType, currUserG, setUserG, inLikesPage
                 <View>
                     {expired ?
                         <View>
-                            <Text style={styles.startData_grey}>DRAWING STARTED</Text>
+                            <Text style={styles.SearchCard__startData}>DRAWING STARTED</Text>
                             <Countdown unix_timestamp={date} type='search' />
                         </View> :
                         <View>
-                            <Text style={styles.startData_grey}>DRAWING STARTS</Text>
+                            <Text style={styles.SearchCard__startData}>DRAWING STARTS</Text>
                             <Countdown unix_timestamp={date} type='search' />
                         </View>
                     }
@@ -98,40 +117,51 @@ function FlatCard({ navigation, data, viewType, currUserG, setUserG, inLikesPage
             break;
     }
 
+    // const setRecent = async () => {
+    //     const ip = require('../../IP_ADDRESS.json')
+    //     const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + currUser._id, {
+    //         method: "PATCH",
+    //         headers: {
+    //             'Accept': 'application/json',
+    //             'Content-Type': 'application/json'
+    //         },
+    //         body: makeAddJSON()
+    //     })
+    //     const json = await response.json()
+    //     return json
+    // }
+
+    const makeAddJSON = () => {
+        let viewedRaffles = currUser.recentRaffles || []
+        // console.log('recent raffle ids: ', viewedRaffles);
+        if (!viewedRaffles.includes(raffleid)) {
+            viewedRaffles.push(raffleid)
+        } else {
+            // console.log('before moving', viewedRaffles);
+            viewedRaffles = array_move(viewedRaffles, viewedRaffles.indexOf(raffleid), 0)
+            // console.log('after moving', viewedRaffles);
+        }
+        let data = {
+            recentRaffles: viewedRaffles
+        }
+        return JSON.stringify(data)
+    }
+
+    
+    
+    // returns [2, 1, 3]
+    // console.log(array_move([1, 2, 3], 0, 1)); 
+
     return (
-        <View style={{ borderWidth: 2, width: contentWidth, borderColor: 'rgba(0, 0, 0, 0.05)' }}
-        >
-
-            {/* <TouchableOpacity
-                onPress={() => navigation.navigate('Raffle', data)}>
-
-                    <View style={styles.FlatCard}>
-                        <Image style={styles.FlatCard__image} source={{ uri: imageURI }} onPress={() => {
-                        }} />
-
-                        <View style={{ width: contentWidth, alignItems: 'center' }}>
-                            <Text style={[fonts.h1, {marginLeft:10, marginRight:10, textAlign: 'center', fontSize: height * 0.018,}]}>{title}</Text>
-                            <TouchableOpacity
-                                style={{marginTop: height * 0.01, }}
-                                onPress={() => {
-                                    navigation.navigate('OtherUser', { user: host })
-                                }}>
-                                {username}
-                            </TouchableOpacity>
-                        </View> */}
-            <View style={styles.likeButton}>
+        <View style={{ borderWidth: 2, width: contentWidth, borderColor: 'rgba(0, 0, 0, 0.05)' }}>
+            <View style={styles.SearchCard__likeButton}>
                 <LikeButton navigation={navigation} inLikesPage={inLikesPage} currUser={currUser} setUser={setUser} raffle={raffleid} style={{ margin: 0 }} />
             </View>
-            <TouchableOpacity
-                onPress={() => navigation.navigate('Raffle', data)}>
-
-
-                <View style={styles.FlatCard}>
-                    <Image style={styles.FlatCard__image} source={{ uri: imageURI }} onPress={() => {
-                    }} />
-
+            <TouchableOpacity onPress={() => navigation.navigate('Raffle', data)}>
+                <View style={styles.SearchCard}>
+                    <Image style={styles.SearchCard__image} source={{ uri: imageURI }} />
                     <View style={{ width: '100%', paddingHorizontal: '7%', }}>
-                        <Text style={[fonts.h1, { fontSize: height * 0.018, paddingHorizontal: '4%' }]}>{title}</Text>
+                        <Text style={[fonts.h3, { fontSize: 14,paddingHorizontal: '4%' }]}>{title}</Text>
                         <TouchableOpacity
                             style={{ marginVertical: '2%' }}
                             onPress={() => {
@@ -142,16 +172,11 @@ function FlatCard({ navigation, data, viewType, currUserG, setUserG, inLikesPage
                         <View style={{ paddingHorizontal: '4%' }}>
                             {startData}
                         </View>
-
                     </View>
-
                 </View>
-
-
             </TouchableOpacity>
-
         </View>
     )
 }
 
-export default FlatCard;
+export default SearchCard;

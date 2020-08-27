@@ -7,7 +7,7 @@ import SearchInput, { createFilter } from 'react-native-search-filter';
 import { styles } from './Search.styling'
 import BlockButton from '../../01_Atoms/Buttons/BlockButton/BlockButton'
 import Card from '../../03_Organisms/Card/Card';
-import FlatCard from '../../03_Organisms/FlatCard/FlatCard';
+import SearchCard from '../../03_Organisms/SearchCard/SearchCard';
 import ListView from '../../04_Templates/ListView/ListView';
 import UsernameDisplay from '../../01_Atoms/UsernameDisplay/UsernameDisplay';
 import GlobalState from '../../globalState';
@@ -21,10 +21,13 @@ function Search({navigation}) {
     const {user, setUser} = useContext(GlobalState)
     const [raffles, setRaffles] = useState([]);
     const [users, setUsers] = useState([]);
+    // const [recentRaffles, setRecentRaffles] = useState([]);
+    // const [recentUsers, setRecentUsers] = useState([]);
     const [displayUser, setDisplayUser] = useState(false);
-    const [buttonStyle, setButtonStyle] = useState(false);
+    // const [recent, setRecent] = useState(user.recentRaffles.length > 0);
 
     const { width, height } = Dimensions.get('window');
+    // const recentLimit = 10;
 
     // for toggling types of cards (0=all, 1=donate, 2=buy)
     const [viewType, setViewType ] = useState(0)
@@ -54,21 +57,56 @@ function Search({navigation}) {
         return entered
     }
 
+    // const updateRecent = (term) => {
+      
+    //   // console.log(user.recentRaffles);
+    //   // console.log("searchTerm: ", term);
+    //   if (term === '') {
+    //     setRecent(true);
+    //     async function getRecentRaffle(_id) {
+    //       let response = await fetch('http://'+data.ipAddress+'/raffle/id/'+_id)
+    //       response = await response.json()          
+    //       let identical = false                      
+    //       // console.log("response: ", response);
+    //       for (let i = 0; i < recentRaffles.length; i++) {
+    //         if (recentRaffles[i]._id == response._id) {
+    //           identical = true;
+    //         }
+    //       }
+    //       if (!identical) {
+    //         recentRaffles.unshift(response);
+    //       }   
+    //     }
+    //     for (let i = 0; i < recentLimit; i++) {
+    //       getRecentRaffle(user.recentRaffles[user.recentRaffles.length-1-i]);
+    //     }
+    //   } else {
+    //     setRecent(false);
+    //   }
+    // }
+
     // Get all raffles & users from db
     React.useEffect(() => {
+
         async function getRaffle() {
-          let response = await fetch('http://'+data.ipAddress+'/raffle/all')
+          let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/all')
           response = await response.json()
-          // filter raffles based on what type they want to see (donate, buy, all)
-          response = (viewType == 1) ? response.filter((raffle)=>{return raffle.type==1}) : response
-          response = (viewType == 2) ? response.filter((raffle)=>{return raffle.type==2}) : response
+          response = response.all
           setRaffles(response);
         }
         getRaffle()
 
         async function getUser() {
-          let response = await fetch('http://' + data.ipAddress + '/user/query');
+          let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/query', {
+            method: "POST",
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({})
+          })
           response = await response.json()
+          response = response.users
           setUsers(response);
         }
         getUser()
@@ -106,13 +144,16 @@ function Search({navigation}) {
     const changeData = (obj) => {
       if (obj==='switch') {
         setDisplayUser(false)
-        setButtonStyle(false)
       } else {
         setDisplayUser(true)
-        setButtonStyle(true)
       }
       setSearchTerm('');
     };
+
+    // const recentViewed = user.recentRaffles;
+    // console.log('recent raffles: ', recentViewed)
+    // console.log('our recent: ', recentRaffles)
+    // console.log('filtered raffles: ', filteredRaffles[0])
 
     // ------------------------------------------------------------------------------------
 
@@ -125,7 +166,7 @@ function Search({navigation}) {
               // lightTheme={true}
               showCancel={true}
               placeholder="Search"
-              onChangeText={(term) => { setSearchTerm(term) }}
+              onChangeText={(term) => {  setSearchTerm(term);  }}
               value={searchTerm}
 
               containerStyle={{backgroundColor: 'rgba(0, 0, 0, 0.05)', padding: 12, }}
@@ -134,50 +175,40 @@ function Search({navigation}) {
             />
 
             <View style={styles.switch}>
-              <View style={ buttonStyle ? styles.childView_1 : styles.childView_2 }>
-                <Button
-                title="Drawings"
-                color='grey'
-                onPress={() => changeData('switch')}/>
-              </View>
+                <TouchableOpacity style={[styles.switch__item,(!displayUser) ? styles.switch__item_active : null]} onPress={() => changeData('switch')}>
+                  <Text>DRAWINGS</Text>
+                </TouchableOpacity>
 
-              <View style={ buttonStyle ? styles.childView_2 : styles.childView_1 }>
-                <Button
-                title="People"
-                color='grey'
-                onPress={() => changeData('user')}/>
-              </View>
+                <TouchableOpacity style={[styles.switch__item,(displayUser) ? styles.switch__item_active : null]} onPress={() => changeData('user')}>
+                  <Text>PEOPLE</Text>
+                </TouchableOpacity>
             </View>
 
             <Text style={{fontSize: 18, padding: height*0.02, marginTop: -10, fontWeight: '700'}}> { searchTerm === '' ? 'Recent' : 'Results' } </Text>
 
             {/* TODO: for raffle, bigger avatar, adjust margin, add like button; for users, add follow button */}
             {displayUser ?
+              // User Search
               <ScrollView>
-                <ListView users={sortUsers(filteredUsers)} navigation={navigation} currUser={user} setUser={setUser}/>
-
+                <ListView users={sortUsers(filteredUsers.slice(0, 10))} navigation={navigation} currUser={user} setUser={setUser}/>
               </ScrollView>
                     :
-
-                  <ScrollView>
-
-                      {/* https://stackoverflow.com/questions/34689970/flex-react-native-how-to-have-content-break-to-next-line-with-flex-when-conte */}
-                      <View style={{flexDirection:'row', alignItems: 'flex-start', flexWrap: 'wrap'}}>
-                      {filteredRaffles.map((raffle, index) =>
-
-                          <FlatCard
-                              data={raffle}
-                              key={index}
-                              navigation={navigation}
-                              currUserG={user}
-                              setUserG={setUser}
-                          />
-
-                      )}
-
-                    </View>
-                  </ScrollView> }
-
+              
+              <ScrollView>
+                  {/* https://stackoverflow.com/questions/34689970/flex-react-native-how-to-have-content-break-to-next-line-with-flex-when-conte */}
+                  <View style={{flexDirection:'row', alignItems: 'flex-start', flexWrap: 'wrap'}}>
+                      {filteredRaffles.slice(0, 10).map((raffle, index) => 
+                      <SearchCard
+                      data={raffle}
+                      key={index}
+                      navigation={navigation}
+                      currUserG={user}
+                      setUserG={setUser}
+                      />)}
+                </View>
+              </ScrollView>
+            }
+          
           <BottomNav navigation={navigation} active={'Search'}></BottomNav>
         </View>
     )

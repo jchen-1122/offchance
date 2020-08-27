@@ -4,7 +4,7 @@ import {fonts} from "../../../settings/all_settings.js";
 let smallSize = 20;
 let normalSize = 40;
 let largeSize = 60;
-let searchSize = Dimensions.get('window').height * 0.025;
+let searchSize = 16;
 
 const styles = StyleSheet.create({
     profilePic: {
@@ -47,12 +47,6 @@ const styles = StyleSheet.create({
     },
 
     container: {
-        flex: 0,
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    container_hostedBy: {
-        // marginRight: 'auto',
         flex: 0,
         flexDirection: 'row',
         alignItems: 'center',

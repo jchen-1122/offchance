@@ -3,9 +3,11 @@ import {dimensions} from '../../../settings/all_settings.js';
 
 var borderRadius = 10;
 var imageDimensions = 175;
+var hostImageDimensions = 40;
 
 const styles = StyleSheet.create({
-    card: {
+    // regular card styles
+    Card: {
         backgroundColor: 'white',
         width: Dimensions.get('window').width * 0.85,
         borderRadius: borderRadius,
@@ -13,70 +15,43 @@ const styles = StyleSheet.create({
         margin: 15,
         paddingBottom: 15,
     },
-    likeButton: {
+    Card__likeButton: {
         width: Dimensions.get('window').width * 0.8,
         flexDirection:'row',
         justifyContent: 'flex-end'
     },
-    itemDesc: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    image: {
+    Card__image: {
         height: imageDimensions,
         width: imageDimensions, 
         resizeMode:'contain'
     },
-    startData_grey: {
+    Card__startData: {
         fontSize: 14,
         color: '#989898',
         marginTop: 15
     },
-    grey_text: {
-        fontSize: 14,
-        color: '#989898'
-    },
-    freeDraw_date: {
-        fontWeight: 'bold'
-    },
-    upcoming_placeholder: {
-        width: Dimensions.get('window').width * 0.8,
-        marginTop: 20,
-    },
-    upcoming_notifyMe: {
-        width: Dimensions.get('window').width * 0.8,
-        height: 60, 
-        backgroundColor: '#C4C4C4',
-        marginTop: 20,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    notif_host: {
-        height: 40,
-        width: 40,
-        borderRadius: 40,
-        marginHorizontal: Dimensions.get('window').width * 0.05
-    },
-    notif: {
+
+    // feed card styles
+    FeedCard: {
         width: Dimensions.get('window').width * 0.6,
         flex: 0,
         flexDirection: 'row',
-        alignItems: 'flex-start',    },
-    notif_grey: {
-        color: '#C4C4C4'
+        alignItems: 'flex-start',    
     },
-    notif_pic: {
+    FeedCard__image: {
         width: Dimensions.get('window').width * 0.7,
         height: Dimensions.get('window').height * 0.25,
-        marginLeft: Dimensions.get('window').width * 0.05,
         resizeMode: 'contain',
         marginVertical: '2%'
     },
-    friends: {
-        width: Dimensions.get('window').width * 0.6,
-        marginTop: 15,
-        marginBottom: 5
+    FeedCard__hostImage: {
+        height: hostImageDimensions,
+        width: hostImageDimensions,
+        borderRadius: hostImageDimensions,
+        marginHorizontal: Dimensions.get('window').width * 0.05
+    },
+    FeedCard__timestamp: {
+        color: '#C4C4C4'
     }
 })
 

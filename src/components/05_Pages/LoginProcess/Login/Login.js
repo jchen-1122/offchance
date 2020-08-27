@@ -16,19 +16,20 @@ import * as Facebook from 'expo-facebook';
 
 export default function Login({ navigation, route }) {
   const { user, setUser } = useContext(GlobalState)
+  const [buttonText, setButtonText] = useState('LOG IN')
 
   const data = require('../../../IP_ADDRESS.json');
   const loginUser = async () => {
-    const response = await fetch('http://' + data.ipAddress + '/user/login', {
+    const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/login', {
       method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: makeJSON()
+      body: makeJSON()  
     })
     const json = await response.json()
-    return json
+    return json.user
   }
 
   // states for each input value
@@ -36,8 +37,8 @@ export default function Login({ navigation, route }) {
   const [_password, setPassword] = useState(null)
   const [_errors, setErrors] = useState([])
 
-    // for going to the next text input
-    const passwordRef = useRef()
+  // for going to the next text input
+  const passwordRef = useRef()
 
   // validates email input
   const isValidEmail = () => {
@@ -81,7 +82,7 @@ export default function Login({ navigation, route }) {
           <BlockButton
             color="facebook"
             title="Facebook"
-            style={{margin: 0, marginRight: 7.5}}
+            style={{ margin: 0, marginRight: 7.5 }}
             onPress={async () => {
               try {
                 await Facebook.initializeAsync(2031545587174254);
@@ -92,7 +93,7 @@ export default function Login({ navigation, route }) {
                   permissions,
                   declinedPermissions,
                 } = await Facebook.logInWithReadPermissionsAsync({
-                  
+
                 });
                 if (type === 'success') {
                   // Get the user's name using Facebook's Graph API
@@ -109,11 +110,11 @@ export default function Login({ navigation, route }) {
                 alert(`Facebook Login Error: ${message}`);
               }
             }}
-            />
-        <BlockButton
+          />
+          <BlockButton
             color="google"
             title="Google"
-            style={{margin: 0, marginLeft: 7.5}}
+            style={{ margin: 0, marginLeft: 7.5 }}
             onPress={async () => {
               try {
                 const result = await Google.logInAsync({
@@ -121,7 +122,7 @@ export default function Login({ navigation, route }) {
                   iosClientId: '566995907890-nu7o5miq123rdqgks1v7bv2fph8ef94g.apps.googleusercontent.com',
                   scopes: ['profile', 'email'],
                 });
-            
+
                 if (result.type === 'success') {
                   setEmail(result.user.email)
                   setPassword(result.user.id)
@@ -132,65 +133,67 @@ export default function Login({ navigation, route }) {
                 return { error: true };
               }
             }}
-            />
+          />
         </View>
 
         <View style={{ marginVertical: '2.5%', alignItems: 'center' }}>
           <Divider />
         </View>
 
-      <InputField label="Email" 
-      value={_email}
-      textContentType="emailAddress"
-      keyboardType="email-address"
-      onChangeText={(text) => {setEmail(text)}}
-      onSubmitEditing={() => passwordRef.current.focus()}
-      />
+        <InputField label="Email"
+          value={_email}
+          textContentType="emailAddress"
+          keyboardType="email-address"
+          onChangeText={(text) => { setEmail(text) }}
+          onSubmitEditing={() => passwordRef.current.focus()}
+        />
 
-      <InputField label="Password" 
-      value={_password}
-      password 
-      onChangeText={(text) => {setPassword(text)}}
-      onSubmitEditing={() => Keyboard.dismiss()}
-      returnKeyType='done'
-      ref={passwordRef}/>
-      {/* DONE: Links to Forgot Password (no forgot password currently, button is not functional) */}
-      {/* Added redirect to EnterEmail */}
-      <View style={[utilities.flexEndX, {width: '80%'}]}>
-        <TextLink
-          title="Forgot Password?"
-          style={fonts.link}
-          onPress={() => navigation.navigate('EnterEmail')}/>
-      </View>
+        <InputField label="Password"
+          value={_password}
+          password
+          onChangeText={(text) => { setPassword(text) }}
+          onSubmitEditing={() => Keyboard.dismiss()}
+          returnKeyType='done'
+          ref={passwordRef} />
+        {/* DONE: Links to Forgot Password (no forgot password currently, button is not functional) */}
+        {/* Added redirect to EnterEmail */}
+        <View style={[utilities.flexEndX, { width: '80%' }]}>
+          <TextLink
+            title="Forgot Password?"
+            style={fonts.link}
+            onPress={() => navigation.navigate('EnterEmail')} />
+        </View>
 
-        {/* if some input field is invalid, a red error message will pop up */}
+        <View style={{width: '100%', marginLeft: '10%'}}>
         {_errors}
+        </View>
+        {/* if some input field is invalid, a red error message will pop up */}
 
         {/* TODO: Links to Home (no home page currently, button is not functional) */}
         <BlockButton
-          title="LOG IN"
+          title={buttonText}
           color="secondary"
+          disabled={buttonText == "LOGGING IN..."}
           onPress={async () => {
             if (!generateErrors()) {
               const userObj = await loginUser()
-              if (userObj.error == null) {
+              if (userObj && userObj.error == null) {
+                setButtonText("LOGGING IN...")
                 setUser(userObj)
                 await AsyncStorage.setItem('user', userObj._id)
                 if (userObj.email === 'admin@admin.com') {
-                  console.log(userObj)
+                  // console.log(userObj)
                   navigation.navigate('AdminHome')
+                  setButtonText("LOG IN")
                 } else {
                   navigation.navigate('Home')
+                  setButtonText("LOG IN")
                 }
-                {/* TODO: Comment out for the sake of convenience. At the end of the day modify plz.
-                 {/* https://stackoverflow.com/questions/42831685/disable-back-button-in-react-navigation}
-              navigation.reset({
-                index: 0,
-                // routes: [{ name: 'HowItWorks' }],
-                actions: [navigation.navigate('HowItWorks', {fromLogin: true})]}) */}
-              } else {
+              }
+               else {
                 let errors = []
                 errors.push(<Text style={fonts.error}>Password is not valid</Text>)
+                console.log(errors)
                 setErrors(errors)
               }
             }

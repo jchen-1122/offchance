@@ -1,13 +1,11 @@
 import { StyleSheet, Dimensions } from 'react-native'
 
-const { width, height } = Dimensions.get('window');
-
 const styles = StyleSheet.create({
-  primary: {
+  Countdown: {
     fontWeight: 'bold',
   },
 
-  search: {
+  Countdown_search: {
     fontSize: 12,
     fontWeight: 'normal'
   }

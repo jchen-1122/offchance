@@ -124,18 +124,45 @@ export default function ({ navigation }) {
     };
 
     const editUser = async () => {
-        const response = await fetch('http://' + data.ipAddress + '/user/edit/' + user._id, {
-            method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: makeJSON()
         })
-        const json = await response.json()
-
+        let json = await response.json()
+        json = json.user
         return json
     }
+
+    // makes a json object with all the input fields
+    const makeJSON = () => {
+        let newdata = {
+            name: _name,
+            username: _username,
+            email: _email,
+            shippingAddress: _address,
+            shoeSize: _shoeSize,
+            shirtSize: _shirtSize,
+            sizeType: _sizeType,
+            profilePicture: "https://oc-profile-pictures.s3.us-east.cloud-object-storage.appdomain.cloud/" + _imgname,
+            id: user._id
+        }
+        let data = {
+            name: _name,
+            username: _username,
+            email: _email,
+            shippingAddress: _address,
+            shoeSize: _shoeSize,
+            shirtSize: _shirtSize,
+            sizeType: _sizeType,
+            id: user._id
+        }
+        if (_newimg == null) return JSON.stringify(data)
+        return JSON.stringify(newdata)
+    };
 
     // validates email input
     const isValidEmail = () => {
@@ -156,31 +183,6 @@ export default function ({ navigation }) {
             return false
         }
     }
-
-    // makes a json object with all the input fields
-    const makeJSON = () => {
-        let newdata = {
-            name: _name,
-            username: _username,
-            email: _email,
-            shippingAddress: _address,
-            shoeSize: _shoeSize,
-            shirtSize: _shirtSize,
-            sizeType: _sizeType,
-            profilePicture: "https://oc-profile-pictures.s3.us-east.cloud-object-storage.appdomain.cloud/" + _imgname
-        }
-        let data = {
-            name: _name,
-            username: _username,
-            email: _email,
-            shippingAddress: _address,
-            shoeSize: _shoeSize,
-            shirtSize: _shirtSize,
-            sizeType: _sizeType,
-        }
-        if (_newimg == null) return JSON.stringify(data)
-        return JSON.stringify(newdata)
-    };
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
@@ -234,9 +236,9 @@ export default function ({ navigation }) {
                     <TouchableOpacity onPress={() => {
                         _pickImage()
                     }}>
-                        <Image source={(_newimg == null) ? { uri: user.profilePicture } : { uri: _newimg }} style={styles.profilePic}></Image>
+                        <Image source={(_newimg == null) ? { uri: user.profilePicture } : { uri: _newimg }} style={styles.EditProfile__picture}></Image>
                     </TouchableOpacity>
-                    <View style={styles.inputs}>
+                    <View style={{alignItems: 'center'}}>
                         <InputField
                             label="Name"
                             autoCapitalize="words"
@@ -269,7 +271,7 @@ export default function ({ navigation }) {
                             returnKeyType='done'
                             ref={addressRef} />
 
-                        <View style={{ marginVertical: '5%' }}>
+                        <View style={{ marginVertical: '5%', width: '90%' }}>
                             <Text style={styles.label}>Size Type</Text>
                             <View style={{ flexDirection: 'row' }}>
                                 {['male', 'female', 'both'].map((type, index) =>
@@ -281,54 +283,19 @@ export default function ({ navigation }) {
                                 )}
                             </View>
                             <Text style={[styles.label, { marginTop: '5%' }]}>Shirt Size</Text>
+                            <View style={{height: 75}}>
                             <SizeCarousel sizes={shirtSizes} default={_shirtSize} type='single' setSize={setShirtSize} />
-                            <Text style={[styles.label, { marginTop: '5%' }]}>Shirt Size</Text>
+
+                            </View>
+                            <Text style={[styles.label, { marginTop: '5%' }]}>Shoe Size</Text>
+                            <View style={{height: 75}}>
+
                             <SizeCarousel sizes={shoeSizes} default={_shoeSize} type='single' setSize={setShoeSize} />
+                            </View>
                         </View>
 
                     </View>
                     {_errors}
-
-                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                        <View >
-                            <BlockButton
-                                title="CANCEL"
-                                color="secondary"
-                                size="short"
-                                onPress={() => { navigation.navigate("Profile") }}></BlockButton>
-                        </View>
-
-                        <View >
-                            <BlockButton
-                                title="SAVE"
-                                color="secondary"
-                                size="short"
-                                onPress={async () => {
-                                    if (!generateErrors()) {
-                                        if (_newimg != null) await _uploadImage()
-                                        const userObj = await editUser()
-                                        if (userObj.keyValue == null) {
-                                            _delImage(user.profilePicture)
-                                            setUser(userObj)
-                                            navigation.navigate('Profile')
-                                        } else {
-                                            let errors = []
-                                            let errMsg = ""
-                                            if (userObj.keyValue.username) {
-                                                errMsg = "Username is taken. Please try again."
-                                            } else if (userObj.keyValue.email) {
-                                                errMsg = "Email is taken."
-                                            }
-                                            errors.push(<Text style={fonts.error}>{errMsg}</Text>)
-                                            setErrors(errors)
-                                        }
-                                        errors.push(<Text style={fonts.error}>{errMsg}</Text>)
-                                        setErrors(errors)
-                                    }
-                                }
-                            }></BlockButton>
-                        </View>
-                    </View>
                 </View>
             </KeyboardAwareScrollView>
         </ScrollView>

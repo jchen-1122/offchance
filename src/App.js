@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar} from "react-native";
+import { StatusBar, SafeAreaView} from "react-native";
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as Notifications from 'expo-notifications';
+import { useFonts } from 'expo-font';
 import Welcome from './components/05_Pages/Welcome/Welcome'
 import Login from './components/05_Pages/LoginProcess/Login/Login'
 import Signup from './components/05_Pages/Signup/Signup'
 import PhoneVerify from './components/05_Pages/Signup/PhoneVerify'
 import EnterEmail from './components/05_Pages/LoginProcess/EnterEmail/EnterEmail';
-import EnterCode from './components/04_Templates/EnterCode/EnterCode';
+import EnterCode from './components/05_Pages/LoginProcess/EnterCode/EnterCode';
 import ChangePassword from './components/05_Pages/LoginProcess/ChangePassword/ChangePassword';
 import Home from './components/05_Pages/Home/Home'
 import SeeAll from './components/05_Pages/Home/SeeAll/SeeAll';
@@ -21,7 +22,7 @@ import Social from './components/05_Pages/Social/Social'
 import EditProfile from './components/05_Pages/Account/EditProfile/EditProfile'
 import Following from './components/05_Pages/Account/Following/Following'
 import Followers from './components/05_Pages/Account/Followers/Followers'
-import Top5List from './components/02_Molecules/Top5List/Top5List'
+import Top5List from './components/05_Pages/Home/Top5List/Top5List'
 import YourFeed from './components/05_Pages/Home/YourFeed/YourFeed';
 import Likes from './components/05_Pages/Account/Likes/Likes'
 import OtherUser from './components/05_Pages/OtherUser/OtherUser'
@@ -41,7 +42,6 @@ import Stripe from './components/05_Pages/Account/Wallet/Stripe'
 import Success from './components/05_Pages/Account/Wallet/Success'
 import HowItWorks from './components/05_Pages/Account/HowItWorks/HowItWorks';
 import FAQ from './components/05_Pages/Account/FAQ/FAQ';
-import MyDrawings from './components/05_Pages/Account/MyDrawings/MyDrawings';
 import NotLogin from './components/05_Pages/Account/NotLogin/NotLogin';
 
 // Host pages import
@@ -56,6 +56,8 @@ import AdminHomeHosts from './components/05_Pages/Home/Admin/AdminHomeHosts'
 import AdminEdit from './components/05_Pages/Home/Admin/AdminEdit/AdminEdit'
 import AdminEditHost from './components/05_Pages/Home/Admin/AdminEditHost/AdminEditHost'
 import Report from './components/05_Pages/Home/Admin/Report/Report'
+import Active from './components/05_Pages/Home/Admin/Active'
+import ActiveLive from './components/05_Pages/Home/Admin/ActiveLive'
 
 import io from 'socket.io-client'
 const Stack = createStackNavigator();
@@ -74,21 +76,33 @@ function App() {
       }),
     });
 
-    // Notifications.addNotificationResponseReceivedListener(console.log('YUH'));
+        // load fonts for the cards
+        const [loaded, error] = useFonts({
+          'Roboto_medium': require('../assets/fonts/Roboto_medium.ttf')
+      });
+      if (!loaded) {
+          return null;
+      }
 
-    // Notifications.addNotificationResponseReceivedListener((response) => Stack.navigator.navigate(response.notification.request.content.data.body.page));
-
+      
   return (
     <GlobalState.Provider value={{ user, setUser, socket }}>
       <NavigationContainer>
-        <StatusBar backgroundColor="white" barStyle="light-content"/>
+        <StatusBar backgroundColor="black" barStyle="light-content"/>
+        <SafeAreaView style={{ flex: 0, backgroundColor: 'black' }} />
+        <SafeAreaView style={{ flex: 1, backgroundColor: 'black' }} >
+
         <Stack.Navigator initialRouteName="Welcome"
           screenOptions={{
             headerStyle: {
               backgroundColor: 'black',
             },
+            headerTitleStyle: {
+              textAlign: 'center'
+            },
             headerTintColor: '#fff',
-          }}>
+          }
+          }>
           <Stack.Screen name=" " component={Welcome} options={{ headerShown: false }} />
           <Stack.Screen name="Signup" component={Signup} options={{ title: 'Sign Up' }} />
           <Stack.Screen name="PhoneVerify" component={PhoneVerify} options={{ title: 'Verify Account' }} />
@@ -99,7 +113,6 @@ function App() {
           <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
           <Stack.Screen name="SeeAll" component={SeeAll} options={({ route }) => ({ title: route.params.title })}/>
           <Stack.Screen name="YourFeed" component={YourFeed} options={{ headerShown: false }} />
-          {/* <Stack.Screen name="Explore" component={Explore} /> */}
           <Stack.Screen name="Raffle" component={Raffle} options={({ route }) => ({ title: route.params.name })}/>
           <Stack.Screen name="PlayGame" component={PlayGame} options={{ headerShown: false }}/>
           <Stack.Screen name="Game" component={Game} options={{ headerShown: false }}/>
@@ -114,16 +127,15 @@ function App() {
           <Stack.Screen name="Success" component={Success} />
           <Stack.Screen name="HowItWorks" component={HowItWorks} options={{ title: 'How It Works' }}/>
           <Stack.Screen name="FAQ" component={FAQ} />
-          <Stack.Screen name="MyDrawings" component={MyDrawings} options={{ title: 'My Drawings' }}/>
           <Stack.Screen name="NotLogin" component={NotLogin} options={{ title: '' }}/>
           <Stack.Screen name="EditProfile" component={EditProfile} options={{title: 'Edit Profile'}}/>
           <Stack.Screen name="Following" component={Following} />
           <Stack.Screen name="Followers" component={Followers} />
-          <Stack.Screen name="Top5List" component={Top5List} />
+          <Stack.Screen name="Top5List" component={Top5List} options={{title: 'Top 5 Donors'}}/>
           <Stack.Screen name="OtherUser" component={OtherUser} options={({ route }) => ({ title: route.params.user.name })} />
           <Stack.Screen name="GameController" component={GameController} options={{ headerShown: false }}/>
           <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
-          <Stack.Screen name="RaffleResult" component={RaffleResult} />
+          <Stack.Screen name="RaffleResult" component={RaffleResult} options={{title: 'Live Drawing'}}/>
           <Stack.Screen name="EnteredUsers" component={EnteredUsers} options={{ title: 'Entered' }}/>
           <Stack.Screen name="AskRaffleType" component={AskRaffleType} options={{ title: 'New Drawing' }}/>
           <Stack.Screen name="NewRaffle" component={NewRaffle} options={{ title: 'Submit Drawing' }}/>
@@ -134,7 +146,10 @@ function App() {
           <Stack.Screen name="AdminHomeHosts" component={AdminHomeHosts} options={{ headerShown: false, title: 'Hosts' }}/>
           <Stack.Screen name="AdminEditHost" component={AdminEditHost} options={({ route }) => ({ title: route.params.name })}/>
           <Stack.Screen name="Report" component={Report} />
+          <Stack.Screen name="Active" component={Active} options={{title: 'Active Drawings'}}/>
+          <Stack.Screen name="ActiveLive" component={ActiveLive} options={{title: 'Live Drawings'}}/>
         </Stack.Navigator>
+        </SafeAreaView>
       </NavigationContainer>
     </GlobalState.Provider>
   );

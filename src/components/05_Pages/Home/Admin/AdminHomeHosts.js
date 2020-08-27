@@ -49,7 +49,7 @@ function Home({ navigation }) {
       <ScrollView>
         <TopNav navigation={navigation} active='Hosts' admin={true} />
         <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-end' }}>
-          <Button title={'Refresh'} onPress={() => setRefresh(!refresh)} />
+          <Button title={'Hosts Pending Approval'} onPress={() => setRefresh(!refresh)} />
         </View>
         <View>
           {pendingHosts.map((user, index) =>

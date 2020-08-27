@@ -5,16 +5,15 @@ import styles from './HorizontalScroll.styling'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function HorizontalScroll(props) {
-    //console.log(props.toggle)
     return (
         <View style={(props.theme == "dark") ? styles.HorizontalScroll_dark : styles.HorizontalScroll_light}>
-            <View style={styles.titleHeader}>
-                <Text style={[fonts.h1, styles.title, (props.theme == "dark") ? styles.title_dark : styles.title_light]}>{props.title}</Text>
+            <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
+                <Text style={[fonts.h1, styles.HorizontalScroll__title, (props.theme == "dark") ? styles.HorizontalScroll__title_dark : styles.HorizontalScroll__title_light]}>{props.title}</Text>
                 {props.seeAllRaffles ?
                     <TouchableOpacity
                         style={{ marginBottom: '30%' }}
                         onPress={() => { props.navigation.navigate('SeeAll', { raffles: props.seeAllRaffles, title: props.title }) }}>
-                        <Text style={{ fontSize: 16 }}>See All</Text>
+                        <Text style={{ fontSize: 14 }}>See All</Text>
                     </TouchableOpacity>
                     : null}
             </View>
@@ -23,9 +22,10 @@ export default function HorizontalScroll(props) {
                 showsHorizontalScrollIndicator={false}
                 scrollEventThrottle={200}
                 decelerationRate="normal">
-                {props.children}
+                    <View style={{flexDirection: 'row', justifyContent: 'flex-start'}}>
+                        {props.children}
+                    </View>
             </ScrollView>
-
         </View>
     );
 }

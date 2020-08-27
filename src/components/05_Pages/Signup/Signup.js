@@ -13,69 +13,78 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 export default function Signup({ navigation }) {
   const data = require('../../IP_ADDRESS.json');
+  const [buttonText, setButtonText] = useState('SIGN UP FOR 5 FREE CHANCES')
 
   // array of states in the us
-  const jsonData = require('../../../functions/us_states.json')
+  const jsonData = require('./us_states.json')
   var us_states = []
   for (var i in jsonData) us_states.push(i)
 
   const sendsms = async () => {
-    const response = await fetch('http://' + data.ipAddress + '/user/sendphone', {
+    const response = await fetch('https://verify-sample-2928-dev.twil.io/start-verify', {
       method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: makeJSON()
+      body: phoneJSON()
     })
   }
 
   const checkValid = async () => {
     let errors = []
     let rUser = null
-    const email = await fetch('http://' + data.ipAddress + '/user/query?query=email&val=' + _email, {
-      method: "GET",
+    const email = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/query', {
+      method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({query: "email", val: _email})
     })
-    const emailjson = await email.json()
+    let emailjson = await email.json()
+    emailjson = emailjson.users
     if (emailjson.length !== 0) {
       errors.push(<Text style={fonts.error}>Email is taken. Please try again.</Text>)
     }
-    const usr = await fetch('http://' + data.ipAddress + '/user/query?query=username&val=' + _username, {
-      method: "GET",
+    const usr = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/query', {
+      method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({query: "username", val: _username})
     })
-    const usrjson = await usr.json()
+    let usrjson = await usr.json()
+    usrjson = usrjson.users
     if (usrjson.length !== 0) {
       errors.push(<Text style={fonts.error}>Username is taken. Please try again.</Text>)
     }
-    const phone = await fetch('http://' + data.ipAddress + '/user/query?query=phoneNumber&val=' + _phoneNumber, {
-      method: "GET",
+    const phone = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/query', {
+      method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
-      }
+      },
+      body: JSON.stringify({query: "phoneNumber", val: _phoneNumber})
     })
-    const phonejson = await phone.json()
+    let phonejson = await phone.json()
+    phonejson = phonejson.users
     if (phonejson.length !== 0) {
       errors.push(<Text style={fonts.error}>Phone number already registered.</Text>)
     }
 
     if (_ref.length !== 0) {
-      const refcode = await fetch('http://' + data.ipAddress + '/user/query?query=referralCode&val=' + _ref.toUpperCase(), {
-        method: "GET",
+      const refcode = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/query', {
+        method: "POST",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify({query: "referralCode", val: _ref.toUpperCase()})
       })
-      const refjson = await refcode.json()
+      let refjson = await refcode.json()
+      refjson = refjson.users
       if (refjson.length === 0) {
         errors.push(<Text style={fonts.error}>Referral code does not exist</Text>)
       } else {
@@ -90,7 +99,6 @@ export default function Signup({ navigation }) {
 
 
   const [state, setState] = useState({
-    businessAccount: false,
     futureDrawings: false,
     agreement: false,
     signedUp: false,
@@ -127,7 +135,7 @@ export default function Signup({ navigation }) {
 
   // validates email input
   const isValidEmail = () => {
-    return validator.isEmail(String(_email).toLowerCase());
+    return validator.isEmail(String(_email).toLowerCase().trim());
   }
   // validates phone input
   const isValidPhoneNumber = () => {
@@ -168,25 +176,33 @@ export default function Signup({ navigation }) {
       name: _name,
       username: _username,
       phoneNumber: _phoneNumber,
-      email: _email,
+      email: _email.trim(),
       instaHandle: _instaHandle,
       city: _city,
       state: jsonData[_us_state],
       password: _password,
-      isHost: state.businessAccount,
       profilePicture: (_proPic != null) ? _proPic : 'https://oc-profile-pictures.s3.us-east.cloud-object-storage.appdomain.cloud/default-avatar.png',
+    }
+    return JSON.stringify(data)
+  };
+
+  const phoneJSON = () => {
+    let data = {
+      to: '+1'+_phoneNumber,
+      channel: 'sms'
     }
     return JSON.stringify(data)
   };
 
   const getRefUser = async () => {
     if (_ref.length !== 0) {
-      const refcode = await fetch('http://' + data.ipAddress + '/user/query?query=referralCode&val=' + _ref.toUpperCase(), {
-        method: "GET",
+      const refcode = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/query', {
+        method: "POST",
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify({query: "referralCode", val: _ref.toUpperCase()})
       })
       const refjson = await refcode.json()
       if (refjson.length === 0) {
@@ -329,7 +345,7 @@ export default function Signup({ navigation }) {
               label="City"
               value={_city} 
               onChangeText={(text) => { setCity(text) }}
-              onSubmitEditing={() => passwordRef.current.focus()}
+              onSubmitEditing={() => (_oauth) ? referralRef.current.focus() : passwordRef.current.focus()}
               ref={cityRef}/>
             <Dropdown
               options={us_states}
@@ -365,12 +381,12 @@ export default function Signup({ navigation }) {
           <View style={{ width: '90%' }}>
             <CheckBox
               selected={state.futureDrawings}
-              onPress={() => setState({ businessAccount: state.businessAccount, futureDrawings: !state.futureDrawings, agreement: state.agreement })}
+              onPress={() => setState({ futureDrawings: !state.futureDrawings, agreement: state.agreement })}
               text='Please keep me informed about future drawings'
             />
             <CheckBox
               selected={state.agreement}
-              onPress={() => setState({ businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: !state.agreement })}
+              onPress={() => setState({ futureDrawings: state.futureDrawings, agreement: !state.agreement })}
               text='I agree with terms of service'
             />
           </View>
@@ -382,12 +398,14 @@ export default function Signup({ navigation }) {
           </View>
 
           <BlockButton
-            title="SIGN UP FOR 5 FREE CHANCES"
+            title={buttonText}
             color="secondary"
+            disabled={buttonText == "SIGNING UP..."}
             onPress={async () => {
               let isError = await generateErrors()
-              setState({ businessAccount: state.businessAccount, futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true })
+              setState({ futureDrawings: state.futureDrawings, agreement: state.agreement, signedUp: true })
               if (!isError) {
+                setButtonText("SIGNING UP...")
                 let postErrors = await checkValid()
                 if (!postErrors) {
                   sendsms()
@@ -398,10 +416,10 @@ export default function Signup({ navigation }) {
                   console.log('\nDATA.HOST_ITEM-------------')
                   console.log(JSON.parse(data).host_item)
                   navigation.navigate('PhoneVerify', { signup: data, mailing: state.futureDrawings, phone: _phoneNumber, email: _email })
+                  setButtonText("SIGN UP FOR 5 FREE CHANCES")
                 }
               }
             }} />
-          {state.signedUp && _errors.length == 0 ? <Text>Signing Up...</Text> : null}
         </View>
       </KeyboardAwareScrollView>
     </ScrollView>

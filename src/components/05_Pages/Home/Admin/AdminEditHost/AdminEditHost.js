@@ -3,40 +3,43 @@ import {Text, Image, View, Alert, TouchableOpacity} from 'react-native'
 import { colors, fonts, utilities } from '../../../../../settings/all_settings';
 import BlockButton from '../../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import SwipeButton from '../../../../01_Atoms/Buttons/SwipeButton/SwipeButton'
+import { ScrollView } from 'react-native-gesture-handler';
 import styles from './AdminEditHost.styling';
 import UsernameDisplay from '../../../../01_Atoms/UsernameDisplay/UsernameDisplay'
 
 export default function AdminEditHost({navigation, route}) {
     const data = require('../../../../IP_ADDRESS.json')
     async function approveUser() {
-        const response = await fetch('http://' + data.ipAddress + '/user/edit/' + route.params._id, {
-            method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({isHost: true})
+            body: JSON.stringify({isHost: true, id: route.params._id})
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.user
         return json
     }
 
     // deletes all info user inputted when they requested a business account
     async function rejectUser() {
-        const response = await fetch('http://' + data.ipAddress + '/user/edit/' + route.params._id, {
-            method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({host_item: '', host_charity: '', host_details: '', host_birthday: null, host_raffleType: null})
+            body: JSON.stringify({id: route.params._id, host_item: '', host_charity: '', host_details: '', host_birthday: null, host_raffleType: null})
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.user
         return json
     }
 
     return (
-        <View style={{alignItems: 'center'}}>
+        <ScrollView contentContainerStyle={{alignItems: 'center'}}>
             <UsernameDisplay username={route.params.username} profPic={{uri: route.params.profilePicture}} size="large"/>
 
         <View style={{width: '90%'}}>
@@ -50,6 +53,11 @@ export default function AdminEditHost({navigation, route}) {
             <Text style={styles.host_text}>{(new Date(route.params.host_birthday * 1000)).toDateString().substring(4)}</Text>
             <Text style={styles.host_description}>Drivers License Photo</Text>
             {/* MATT PLEASE DO THIS TY */}
+            <Image source={{uri: route.params.host_license}} style={styles.host_license}></Image>
+            <Text style={styles.host_description}>Phone Number</Text>
+            <Text style={styles.host_text}>{route.params.phoneNumber}</Text>
+            <Text style={styles.host_description}>Email</Text>
+            <Text style={styles.host_text}>{route.params.email}</Text>
         </View>
 
         <View style={{alignItems: 'center'}}>
@@ -83,9 +91,9 @@ export default function AdminEditHost({navigation, route}) {
             }
 
             }>
-                <Text style={styles.host_description}>Delete Request (Permanent)</Text>
+                <Text style={[styles.host_description, styles.bottom_margin]}>Delete Request (Permanent)</Text>
             </TouchableOpacity>
         </View>
-        </View>
+        </ScrollView>
     )
 }

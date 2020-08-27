@@ -9,7 +9,7 @@ import { utilities, fonts, colors } from '../../../settings/all_settings';
 // https://www.npmjs.com/package/react-native-dropdown-picker
 import DropDown from '../../../components/01_Atoms/DropDown/DropDown';
 import BlockButton from '../../../components/01_Atoms/Buttons/BlockButton/BlockButton';
-
+import PaymentButton from '../../../components/01_Atoms/Buttons/PaymentButton/PaymentButton';
 import styles from './OverlaySheet.styles';
 // https://github.com/alinz/react-native-dropdown
 // import {option, select} from 'react-native-dropdown'
@@ -17,22 +17,50 @@ import Stripe from '../../05_Pages/Account/Wallet/Stripe'
 import { setStatusBarTranslucent } from 'expo-status-bar';
 import { user_logged_in } from '../../../functions/user_functions';
 
+//create your forceUpdate hook
+function useForceUpdate() {
+  const [value, setValue] = useState(0); // integer state
+  return () => setValue(value => ++value); // update the state to force render
+}
 
 // Sliding Sheet update: Removed visible prop, since the sheet will be invisible after sliding off the screen.
 function OverlaySheet(props) {
+  const forceUpdate = useForceUpdate();
+
+  const [stripe, setStripe] = useState(true)
+  const [_method, setMethod] = useState(null)
+  const [_amount, setAmount] = useState('$5 = 10 chances')
+  const [_save, setSave] = useState(false)
+  const [_deleted, setDeleted] = useState(false)
   const [last4, setlast4] = useState(null)
+  const [brand, setBrand] = useState(null)
+
+  // Update 8/22 for weird overviewsheet
+  const [overlayStyle, setOverlayStyle] = useState(styles.OverlaySheet);
+
+
   const data = require('../../IP_ADDRESS.json')
   useEffect(() => {
     async function getLast4() {
-      let response = await fetch('http://' + data.ipAddress + '/user/id/' + props.user._id)
+      let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+          method: "POST",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({id : props.user._id})
+      })
       response = await response.json()
+      response = response.user
       if (Object.keys(response).includes('last4')) {
         setlast4(response.last4)
+        setBrand(response.brand)
       }
       setWalletBalance(response.walletChances)
     }
     getLast4()
-  }, [])
+  }, [overlayStyle])
+
 
   useEffect(() => {
     if (props.amount) {
@@ -42,16 +70,16 @@ function OverlaySheet(props) {
 
   async function subtractWallet() {
     // console.log('HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH')
-    const response = await fetch('http://' + data.ipAddress + '/user/edit/' + props.user._id, {
-      method: "PATCH",
+    const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+      method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ walletChances: _walletBalance - props.chances })
+      body: JSON.stringify({ walletChances: _walletBalance - props.chances, id : props.user._id })
     })
-    const json = await response.json()
-
+    let json = await response.json()
+    json = json.user
     return json
   }
 
@@ -66,30 +94,39 @@ function OverlaySheet(props) {
       currEntered = props.user.rafflesEntered.children
       let oldamount = 0;
       let oldchances = 0;
+      let tempCurr = []
+      let existed = false
       for (var i = 0; i < currEntered.length; i++) {
-        if (currEntered[i].raffleID === props.raffleid && currEntered[i].sizeType === props.sizeType && currEntered[i].size === props.size) {
+        //  && currEntered[i].sizeType === props.sizeType && currEntered[i].size === props.size (different sizes now count as the same entry)
+        if (currEntered[i].raffleID === props.raffleid) {
           oldamount = currEntered[i].amountDonated
           oldchances = currEntered[i].chances
-          currEntered.splice(i, 1)
+          tempCurr.push(makeEntetedRaffleSchemaJSON(oldamount, oldchances))
+          existed = true
+        } else {
+          tempCurr.push(currEntered[i])
         }
       }
-      currEntered.push(makeEntetedRaffleSchemaJSON(oldamount, oldchances))
-      currEntered = { children: currEntered }
+      if (!existed) {
+        tempCurr.push(makeEntetedRaffleSchemaJSON(0, 0))
+      }
+      currEntered = { children: tempCurr }
     }
 
     let walletFinal = _walletBalance
     if (_method === "Wallet Chances") {
       walletFinal = _walletBalance - props.chances
     }
-    let enteredRaffle = await fetch('http://' + data.ipAddress + '/user/edit/' + props.user._id, {
-      method: "PATCH",
+    let enteredRaffle = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+      method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ rafflesEntered: currEntered, walletChances: walletFinal })
+      body: JSON.stringify({ rafflesEntered: currEntered, walletChances: walletFinal, id : props.user._id })
     })
     enteredRaffle = await enteredRaffle.json()
+    enteredRaffle = enteredRaffle.user
     return enteredRaffle
   }
 
@@ -109,9 +146,16 @@ function OverlaySheet(props) {
   async function updateRaffle() {
 
     // get raffle object
-    let raffle = await fetch('http://' + data.ipAddress + '/raffle/id/' + props.raffleid)
+    let raffle = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/id', {
+        method: "POST",
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({id : props.raffleid})
+    })
     raffle = await raffle.json()
-
+    raffle = raffle.raffle
     // update users
     let currEntered;
     if (!Object.keys(raffle).includes('users') || raffle.users.children.length === 0) {
@@ -120,15 +164,23 @@ function OverlaySheet(props) {
       currEntered = raffle.users.children
       let oldamount = 0;
       let oldchances = 0;
+      let tempCurr = []
+      let existedR = false
       for (var i = 0; i < currEntered.length; i++) {
-        if (currEntered[i].userID === props.user._id && currEntered[i].sizeType === props.sizeType && currEntered[i].size === props.size) {
+        //  && currEntered[i].sizeType === props.sizeType && currEntered[i].size === props.size (different sizes now count as the same entry)
+        if (currEntered[i].userID === props.user._id) {
           oldamount = currEntered[i].amountDonated
           oldchances = currEntered[i].chances
-          currEntered.splice(i, 1)
+          tempCurr.push(makeRaffleJSON(oldamount, oldchances))
+          existedR = true
+        } else {
+          tempCurr.push(currEntered[i])
         }
       }
-      currEntered.push(makeRaffleJSON(oldamount, oldchances))
-      currEntered = { children: currEntered }
+      if (!existedR) {
+        tempCurr.push(makeRaffleJSON(0, 0))
+      }
+      currEntered = { children: tempCurr }
     }
     // update amountRaised
     let amountRaised = raffle.amountRaised
@@ -138,13 +190,13 @@ function OverlaySheet(props) {
     // update lastDonatedTo
     let timeNow = Math.floor(Date.now() / 1000)
 
-    let updatedRaffle = await fetch('http://' + data.ipAddress + '/raffle/edit/' + props.raffleid, {
-      method: "PATCH",
+    let updatedRaffle = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/edit', {
+      method: "POST",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ users: currEntered, amountRaised: amountRaised, lastDonatedTo: timeNow })
+      body: JSON.stringify({ id: props.raffleid, users: currEntered, amountRaised: amountRaised, lastDonatedTo: timeNow })
     })
   }
 
@@ -159,38 +211,25 @@ function OverlaySheet(props) {
     }
   }
 
+  const deleteCreditCard = async () => {
+    const data = require('../../IP_ADDRESS.json')
+    await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ last4: null, paymentInfo: null, id : props.user._id })
+    })
+    setLast4(null)
+  }
 
-  const [value, onChangeText] = React.useState('');
-  const [selectedValue, setSelectedValue] = useState("**** **** **** 1234");
   // const [sheetOpen, setSheetOpen] = useState(true); // isHidden
-  const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet (1000 is at the bottom)
+
   const [visible, setVisible] = useState(false);
   const [sheetController, setSheetController] = useState(true);
-
-  let options1 = []
-  if (last4 !== null) {
-    options1.push('**** **** **** ' + last4)
-    options1.push('Paypal')
-    if (!props.wallet) {
-      options1.push('Wallet Chances')
-    }
-  } else {
-    options1.push('+ Add Credit Card')
-    options1.push('Paypal')
-    if (!props.wallet) {
-      options1.push('Wallet Chances')
-    }
-  }
-  let options2 = ['$5 = 10 chances', '$10 = 40 chances', '$20 = 50 chances', '$50 = 150 chances', '$100 = 400 chances', '$250 = 1100 chances']
-
-
-  const [stripe, setStripe] = useState(true)
-  const [_method, setMethod] = useState(null)
-  const [_amount, setAmount] = useState('$5 = 10 chances')
-  const [_save, setSave] = useState(false)
-  const [_buttonText, setButtonText] = useState("CONFIRM PAYMENT")
-  const [_buttonColor, setButtonColor] = useState("confirm")
   const [_walletBalance, setWalletBalance] = useState(0)
+  const [bounceValue, setBounceValue] = useState(new Animated.Value(1000)); // initial position of sheet (1000 is at the bottom)
 
   var toValue = 1000;
   const toggleSheet = () => {
@@ -206,7 +245,16 @@ function OverlaySheet(props) {
 
   };
 
+  if (props.sheet) {
+    toValue = 0;
+    toggleSheet();
+  } else {
+    null;
+  }
+
   const toggleOverlay = () => {
+    toValue = 1000;
+    toggleSheet();
     if (!visible) {
       // if not visible, turn visible, set sheetController = false
       setVisible(true);
@@ -219,132 +267,134 @@ function OverlaySheet(props) {
     }
   }
 
-
   if (props.sheet && sheetController) {
     toggleOverlay();
   } else {
     null;
   }
 
-  // close this sliding sheet
-  const closeSlidingSheet = () => {
-    toValue = 1000;
-    toggleSheet();
-    props.trigger();
-  }
+  const renderSwipeButton = () => (
+    <SwipeButton title="SWIPE TO CONFIRM" onSwipeSuccess={async () => {
+      //console.log('swiped')
+      // if they've selected a size, sizetype, and payment method
+      if (_method !== null && props.entertobuy) {
+        console.log('YOOOO')
+        setStripe(false)
+      } else if (_method !== null && props.sizeType !== "notselected" && props.size !== "notselected") {
+        let updatedUser = await enterUserinRaffle()
+        props.setUser(updatedUser)
+        await updateRaffle()
+        // if using wallet chances
+        if (_method === "Wallet Chances") {
 
-  // // summon payment page
-  // const payMe = () => {
-  //   closeSlidingSheet();
-  //   props.paymentTrigger();
-  // }
+          // if they have enough chances  
+          if (props.user.walletChances - props.chances > 0) {
+            toggleOverlay();
+            props.navigation.navigate("Success", { fromRaffle: props.chances, raffleid: props.raffleid })
+          }
+        }
 
-  // console.log('AMOUNT DOLLAR: ', props.amountDollar); // 5, 10, 20, 50, 100, 250
-
-  // console.log(props.sheet); 101010
-  // TODO: Add a dropdown/button for stripe and apple pay
-
-  // console.log('size type: ', props.sizeType);
+        // if using a payment method
+        else {
+          //console.log(_method)
+          setOverlayStyle(styles.OverlaySheetPay);
+          setStripe(false)
+          //toggleOverlay();
+        }
+      }
+    }} />
+  )
 
   return (
     <View>
+            {/* <Animated.View
+        style={[styles.OverlaySheet,
+          { transform: [{ translateY: bounceValue }] }]}> */}
       <Overlay isVisible={visible}
         onBackdropPress={() => { toggleOverlay() }}
-        overlayStyle={styles.overlay}>
+        overlayStyle={overlayStyle}>
 
-        {stripe ? <View >
-
-          {/* Title part with a close button */}
-          <View style={styles.slidingSheet__header}>
-            <TouchableOpacity onPress={() => { toggleOverlay() }}>
-              <Icon name='close' />
-            </TouchableOpacity>
-            <Text style={fonts.h1}>{props.title}</Text>
-            <View />
-          </View>
-
-          <View style={styles.slidingSheet__save}>
-            {(props.sizeType === "notselected") ?
-              <Text style={{ color: 'red', }}> *Please select a size type </Text>
-              : <Text style={{ color: 'green' }}>  Size Type: {props.sizeType} </Text>}
-
-            {(props.size === "notselected") ?
-              <Text style={{ color: 'red' }}> *Please select a size </Text>
-              : <Text style={{ color: 'green' }}>  Size: {props.size} </Text>}
-
-            <Text style={{ color: 'red' }}>{(_method === "Wallet Chances" && props.user.walletChances - props.chances < 0) ? "*You do not have enough chances in your wallet" : ""}</Text>
-          </View>
-
-          <View style={[styles.slidingSheet__content, { zIndex: 2 }]}>
-            <Text style={styles.slidingSheet__content_text}>Payment Method</Text>
-            <DropDown
-              placeholder={"PICK A PAYMENT METHOD"}
-              options={options1}
-              size='large'
-              arrowSize={18}
-              isVisible={false}
-              setValue={setMethod}
-            />
-          </View>
-
-          {(_method === "Wallet Chances") ?
-            <View style={styles.slidingSheet__save}>
-              <Text style={[styles.slidingSheet__content__text]}>{"Current " + props.content[0]}</Text>
-              <Text style={{ marginTop: 5 }}>{_walletBalance}</Text>
+        {stripe ?
+          <View>
+            {/* Title part with a close button */}
+            <View style={styles.OverlaySheet__header}>
+              <TouchableOpacity onPress={() => { toggleOverlay() }}>
+                <Icon name='close' />
+              </TouchableOpacity>
+              <Text style={fonts.h1}>{props.title}</Text>
+              <View />
             </View>
-            :
-            <View style={[styles.slidingSheet__content, { zIndex: 1 }]}>
-              <Text style={styles.slidingSheet__content_text}>Purchase Amount</Text>
-              <DropDown
-                placeholder={_amount}
-                options={options2}
-                size='large'
-                arrowSize={18}
-                isVisible={false}
-                setValue={setAmount}
-              />
-            </View>}
 
-          {(_method === '+ Add Credit Card') ?
-            <View style={[styles.slidingSheet__save]}>
-              <CheckBox
-                selected={_save}
-                onPress={() => setSave(!_save)}
-                text='Save my payment information'
-              />
-            </View> : null}
+            <View style={styles.OverlaySheet__save}>
+              {(props.sizeType === "notselected") ?
+                <Text style={{ color: 'red', }}> *Please select a size type </Text>
+                : <Text style={{ color: 'green' }}>  Size Type: {props.sizeType} </Text>}
 
-            <View style={{ alignItems: 'center', width: '100%' }}>
-                <SwipeButton title="SWIPE TO CONFIRM" onSwipeSuccess={async() => {
-                  // if they've selected a size, sizetype, and payment method
-                  if (_method !== null && props.sizeType !== "notselected" && props.size !== "notselected") {
+              {(props.size === "notselected") ?
+                <Text style={{ color: 'red' }}> *Please select a size </Text>
+                : <Text style={{ color: 'green' }}>  Size: {props.size} </Text>}
 
-                    // if using wallet chances
-                    if (_method === "Wallet Chances"){
-                      // if they have enough chances
-                      if (props.user.walletChances - props.chances > 0){
-                        let updatedUser = await enterUserinRaffle()
-                        props.setUser(updatedUser)
-                        await updateRaffle()
-                        toggleOverlay();
-                        props.navigation.navigate("Success", { fromRaffle: props.chances })
-                      }
-                    }
+              <Text style={{ color: 'red' }}>{(_method === "Wallet Chances" && props.user.walletChances - props.chances < 0) ? "*You do not have enough chances in your wallet" : ""}</Text>
+            </View>
 
-                    // if using a payment method
-                    else {
-                      let updatedUser = await enterUserinRaffle()
-                      props.setUser(updatedUser)
-                      await updateRaffle()
-                      toggleOverlay();
-                      setStripe(false)
-                    }
-                  }
-                }} />
-              </View>
+            <View style={styles.OverlaySheet__content}>
+              <Text style={styles.OverlaySheet__content_text}>Payment Method</Text>
+              {/* <PaymentButton
+                type="applePay"
+                onPress={() => setMethod('applepay')}
+                selected={_method == 'applepay'} /> */}
+              <PaymentButton
+                type="paypal"
+                onPress={() => setMethod('Paypal')}
+                selected={_method == 'Paypal'} />
+              {(!props.wallet) ?
+                <BlockButton
+                  color="light" title={_walletBalance + " Wallet Chances"}
+                  type="payment"
+                  selected={_method == "Wallet Chances"}
+                  disabled={props.user.walletChances - props.chances < 0}
+                  onPress={() => setMethod('Wallet Chances')}
+                  style={{ marginVertical: 5 }}
+                  icon={(<Icon name="wallet" type="material-community" color={colors.darkGreen} style={{ marginRight: 5 }} />)}
+                />
+                : null
+              }
 
-        </View> : <Stripe user={props.user} setUser={props.setUser} navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet}></Stripe>}
+              {(!last4) ?
+                <BlockButton
+                  color="secondary" title="+ Add Credit Card"
+                  type="payment"
+                  selected={_method == "+ Add Credit Card"}
+                  style={{ marginVertical: 5 }}
+                  onPress={() => setMethod('+ Add Credit Card')} />
+                :
+                // @ JOSHUA - PLS CHANGE WHAT TYPE OF CARD IT IS, TYPES ARE:
+                // amex, dinersclub, discover,jcb, maestro, mastercard, unionpay, visa
+                <PaymentButton
+                  type={brand}
+                  last4={last4}
+                  selected={_method == ('**** **** **** ' + last4)}
+                  onPress={() => setMethod('**** **** **** ' + last4)} />
+              }
+            </View>
 
+            {(_method === '+ Add Credit Card') ?
+              <View style={[styles.OverlaySheet__savepayment]}>
+                <CheckBox
+                  selected={_save}
+                  onPress={() => setSave(!_save)}
+                  text='Save my payment information'
+                />
+              </View> : null}
+
+
+            <View style={{ alignItems: 'center'}}>
+              {(_method !== null) ? renderSwipeButton() : null}
+            </View>
+
+
+          </View> : <Stripe raffleid={props.raffleid} user={props.user} setUser={props.setUser} navigation={props.navigation} method={_method} amount={_amount} save={_save} wallet={props.wallet} entertobuy={Object.keys(props).includes('entertobuy') ? true : false}></Stripe>}
+{/* </Animated.View> */}
       </Overlay>
     </View>
   )

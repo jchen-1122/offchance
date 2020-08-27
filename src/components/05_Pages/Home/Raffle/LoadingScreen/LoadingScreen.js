@@ -1,6 +1,6 @@
 import React, {useEffect, useContext, useState} from 'react'
 import {Text, View} from 'react-native'
-import Social from '../../../../05_Pages/Social/Social'
+import Social from '../../../../03_Organisms/Chat/Chat'
 import GlobalState from '../../../../globalState'
 
 export default function LoadingScreen({navigation, route}) {

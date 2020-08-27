@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import { View, ScrollView, Text, Image, Button, Dimensions, Share, Clipboard, Alert } from 'react-native'
 import { Icon } from 'react-native-elements';
-import { colors, fonts, utilities } from '../../../../settings/all_settings';
+import { colors, fonts, utilities, global } from '../../../../settings/all_settings';
 import InfoFeed from '../../../02_Molecules/InfoFeed/InfoFeed'
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
 import Card from '../../../03_Organisms/Card/Card'
@@ -24,8 +24,16 @@ function Profile({ navigation }) {
             if (user.rafflesWon) {
                 if (user.rafflesWon.children.length > 0) {
                     for (var raf of user.rafflesWon.children) {
-                        let response = await fetch('http://' + ip.ipAddress + '/raffle/id/' + raf.raffleID)
+                        let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/id', {
+                            method: "POST",
+                            headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({id : raf.raffleID})
+                        })
                         response = await response.json()
+                        response = response.raffle
                         wonRaffles.push({ raffle: response, prize: raf.reward })
                     }
                 }
@@ -95,12 +103,12 @@ function Profile({ navigation }) {
         email = user.email
         followers = user.followers
         following = user.following
-        enteredRaffles = user.rafflesEntered.children || null
+        enteredRaffles = Object.keys(user).includes('rafflesEntered') ? user.rafflesEntered.children : []
         address = user.shippingAddress
         sizeType = user.sizeType
         shoeSize = user.shoeSize
         shirtSize = user.shirtSize
-        referralCode = Object.keys(user).includes('last4') ? user.username + user.last4 : ''
+        referralCode = Object.keys(user).includes('referralCode') ? user.referralCode : ''
         walletChances = user.walletChances || 0
     }
 
@@ -143,43 +151,34 @@ function Profile({ navigation }) {
     if (info) {
         content = (
             <View style={{ alignItems: 'flex-start', marginLeft: Dimensions.get('window').width * 0.08 }}>
-                <Text style={styles.descriptor}>Name</Text>
-                <Text style={styles.description}>{name}</Text>
+                <Text style={styles.Profile__item__label}>Name</Text>
+                <Text style={styles.Profile__item__value}>{name}</Text>
 
-                <Text style={styles.descriptor}>Email</Text>
-                <Text style={styles.description}>{email}</Text>
-
-                <Text style={styles.descriptor}>Wallet Chances</Text>
-                <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-                        <Text style={styles.description}>{walletChances}</Text>
-                            <TouchableOpacity onPress={() => navigation.navigate('Wallet')} style={{marginLeft: '15%'}}>
-                                <Icon name="wallet" type="material-community" />
-                            </TouchableOpacity>
-
-                    </View>
+                <Text style={styles.Profile__item__label}>Email</Text>
+                <Text style={styles.Profile__item__value}>{email}</Text>
 
                 <View>
-                    <Text style={styles.descriptor}>Shipping Address</Text>
-                    <Text style={styles.description}>{address}</Text>
+                    <Text style={styles.Profile__item__label}>Shipping Address</Text>
+                    <Text style={styles.Profile__item__value}>{address}</Text>
 
                     <View style={{ flexDirection: 'row', width: Dimensions.get('window').width * 0.83, justifyContent: 'space-between' }}>
                         <View>
-                            <Text style={styles.descriptor}>Size Type</Text>
-                            <Text style={styles.description}>{(sizeType) ? sizeType.charAt(0).toUpperCase() + sizeType.slice(1) : ''}</Text>
+                            <Text style={styles.Profile__item__label}>Size Type</Text>
+                            <Text style={styles.Profile__item__value}>{(sizeType) ? sizeType.charAt(0).toUpperCase() + sizeType.slice(1) : ''}</Text>
                         </View>
                         <View>
-                            <Text style={styles.descriptor}>Shoe Size</Text>
-                            <Text style={styles.description}>{shoeSize}</Text>
+                            <Text style={styles.Profile__item__label}>Shoe Size</Text>
+                            <Text style={styles.Profile__item__value}>{shoeSize}</Text>
                         </View>
                         <View>
-                            <Text style={styles.descriptor}>Shirt Size</Text>
-                            <Text style={styles.description}>{shirtSize}</Text>
+                            <Text style={styles.Profile__item__label}>Shirt Size</Text>
+                            <Text style={styles.Profile__item__value}>{shirtSize}</Text>
                         </View>
                     </View>
 
-                    <Text style={styles.descriptor}>Referral Code</Text>
+                    <Text style={styles.Profile__item__label}>Referral Code</Text>
                     <View style={{ flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-                        <Text style={styles.description}>{referralCode}</Text>
+                        <Text style={styles.Profile__item__value}>{referralCode}</Text>
                         <View style={{ flexDirection: 'row', width: '25%', justifyContent: 'space-between' }}>
                             <TouchableOpacity onPress={copyToClipboard}>
                                 <Icon name="clipboard" type="material-community" />
@@ -218,9 +217,8 @@ function Profile({ navigation }) {
                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'flex-end', zIndex: 1 }}>
                     <View style={{ zIndex: -1, backgroundColor: 'transparent' }}>
                         {/* Profile pic*/}
-                        <Image source={{ uri: profilePic }} style={[styles.profilePic]}></Image>
+                        <Image source={{ uri: profilePic }} style={global.Profile__picture}></Image>
                     </View>
-                    {/* <View style={{ zIndex: 1 }}> */}
                     {/* Green Checkmark*/}
                     {user.isHost ?
                         <View style={{ zIndex: 50, position: 'absolute', right: Dimensions.get('window').width * 0.35 }}>
@@ -233,22 +231,32 @@ function Profile({ navigation }) {
                     {/* </View> */}
                 </View>
 
-                <Text style={styles.header_name}>{name}</Text>
+                <Text style={global.Profile__name}>{name}</Text>
                 <View style={{ flexDirection: 'row', justifyContent: 'center', }}>
-                    <Text style={styles.header_username}>@{username}</Text>
+                    <Text style={global.Profile__username}>@{username}</Text>
                 </View>
 
                 <StatsBar currUser={user} followers={followers} following={following} enteredRaffles={enteredRaffles} navigation={navigation}></StatsBar>
 
-                <View style={styles.toggleBar}>
+                <View style={{alignItems: 'center', marginTop: 20}}>
+                    {/* wallet chances */}
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: -20, width: '90%' }}>
+                        <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                            <Text style={styles.Profile__item__label}>Wallet Chances: </Text>
+                            <Text style={styles.Profile__item__value}>{walletChances}</Text>
+                        </View>
+
+                        <TouchableOpacity onPress={() => navigation.navigate('Wallet')}>
+                            <Icon name="wallet" type="material-community" />
+                        </TouchableOpacity>
+                    </View>
+
                     <InfoFeed info={info} setInfo={setInfo}></InfoFeed>
                 </View>
-                        <View>
-                            {content}
-                        </View>
                 <View>
                     {content}
                 </View>
+
             </ScrollView>
 
             <BottomNav navigation={navigation} active={'Account'}></BottomNav>

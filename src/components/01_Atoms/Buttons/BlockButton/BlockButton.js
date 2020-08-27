@@ -1,17 +1,12 @@
-// insta button + facebook button + login button
-
 import React from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text, Image } from 'react-native';
 import { styles } from "./BlockButton.styling";
 import { SocialIcon } from 'react-native-elements';
 
 function BlockButton(props) {
-
-    let icon; // for fb and insta
+    let icon;
     let buttonStyle = [styles.BlockButton];
     let buttonTitleStyle = [styles.BlockButton__title_primary];
-    let selectedButtonStyle;
-    let selectedButtonTitleStyle;
 
     // determine what kind/color of button it is
     switch (props.color) {
@@ -21,8 +16,7 @@ function BlockButton(props) {
         case "secondary":
             buttonStyle.push(styles.BlockButton_secondary);
             buttonTitleStyle = [styles.BlockButton__title_secondary];
-            // if selected in BuyOptions
-            if (props.selected){
+            if (props.selected) {
                 buttonStyle.push(styles.BlockButton_secondarySelected);
                 buttonTitleStyle = [styles.BlockButton__title_tertiary];
             }
@@ -34,12 +28,13 @@ function BlockButton(props) {
         case "light":
             buttonStyle.push(styles.BlockButton_light);
             buttonTitleStyle = [styles.BlockButton__title_secondary];
-             // if selected in BuyOptions
-            if (props.selected){
+            if (props.selected) {
                 buttonStyle.push(styles.BlockButton_primary);
                 buttonTitleStyle = [styles.buttonTitleStyle];
             }
             break;
+
+        // different social login buttons
         case "facebook":
             buttonStyle.push(styles.BlockButton_facebook);
             buttonTitleStyle = [styles.BlockButton__title_tertiary];
@@ -49,13 +44,6 @@ function BlockButton(props) {
             buttonStyle.push(styles.BlockButton_google);
             buttonTitleStyle = [styles.BlockButton__title_google];
             icon = <SocialIcon type='google' raised={false} iconStyle={styles.google_icon} style={styles.iconBg} iconSize={30} />
-            break;
-        case "logOut":
-            buttonStyle.push(styles.BlockButton_logOut);
-            buttonTitleStyle = [styles.BlockButton__title_logOut];
-            break;
-        case "confirm":
-            buttonStyle.push(styles.BlockButton_confirm);
             break;
     }
 
@@ -68,16 +56,10 @@ function BlockButton(props) {
             buttonStyle.push(styles.BlockButton_small);
             buttonTitleStyle.push(styles.BlockButton__title_small)
             break;
-        case "shortSmall": // ex. buy chance buttons (second row)
-            buttonStyle.push(styles.BlockButton_smallShort);
-            buttonTitleStyle.push(styles.BlockButton__title_small)
-            break;
-        case "smallLongLeft": // ex. buy chance buttons (second row)
-            buttonStyle.push(styles.BlockButton_smallLongLeft);
-            buttonTitleStyle.push(styles.BlockButton__title_small)
-            break;
-        case "smallLongRight": // ex. buy chance buttons (second row)
-            buttonStyle.push(styles.BlockButton_smallLongRight);
+        
+        // for InfoFeed
+        case "InfoFeed":
+            buttonStyle.push(styles.BlockButton_InfoFeed)
             buttonTitleStyle.push(styles.BlockButton__title_small)
             break;
     }
@@ -85,6 +67,7 @@ function BlockButton(props) {
     // if button is disabled
     if (props.disabled) {
         buttonStyle.push(styles.BlockButton_disabled)
+        buttonTitleStyle.push(styles.BlockButton__title_disabled)
     }
 
     // if there's a banner on the button
@@ -98,9 +81,9 @@ function BlockButton(props) {
     }
 
     return (
-        <TouchableOpacity style={[buttonStyle, props.style]} onPress={props.onPress} disabled={props.disabled}>
-            {icon}
-            <Text style={[buttonTitleStyle, (props.title == "FOLLOWING" && props.size == 'small') ? { fontSize: 11 } : null]}>{props.title}</Text>
+        <TouchableOpacity style={[buttonStyle, props.style]} onPress={props.onPress} disabled={props.disabled} onLongPress={props.onLongPress}>
+            {props.icon || icon}
+            <Text style={[buttonTitleStyle, props.titleStyle, (props.title == "FOLLOWING" && props.size == 'small') ? { fontSize: 11 } : null]}>{props.title}</Text>
             {banner}
         </TouchableOpacity>
     )

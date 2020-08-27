@@ -7,7 +7,7 @@ var buttonWidth = '90%';
 var borderRadius = 5;
 
 const styles = StyleSheet.create({
-    // default styling for all blockbuttons
+    // default styling for all blockbuttons--------------------------------------------------
     BlockButton: {
         height: buttonHeight,
         width: buttonWidth,
@@ -18,15 +18,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        zIndex: 0
+        zIndex: 0,
     },
 
-    // if button is disabled
+    // if button is disabled-----------------------------------------------------------------
     BlockButton_disabled : {
-        backgroundColor: colors.gray
+        borderWidth: 0,
+        backgroundColor: 'gray'
+    },
+    BlockButton__title_disabled: {
+        color: 'white'
     },
 
-    // different colors for button background
+    // different colors for button background------------------------------------------------
     BlockButton_primary:{
         backgroundColor: colors.primaryColor
     },
@@ -54,14 +58,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'white',
         width: '43%',
     },
-    BlockButton_logOut:{
-        backgroundColor: 'red'
-    },
-    BlockButton_confirm:{
-        backgroundColor: "#FCD843"
-    },
 
-    // different colors for button text
+    // different colors for button text-------------------------------------------------------
     BlockButton__title: {
         fontSize: 16
     },
@@ -82,14 +80,8 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
 
-    BlockButton__title_transparent: {
-        fontSize: 22,
-        color: 'black',
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start',
-    },
 
-    // different sizes for the button
+    // different sizes for the button--------------------------------------------------------
     BlockButton_short: {
         width: 150
     },
@@ -97,39 +89,26 @@ const styles = StyleSheet.create({
         width: 80,
         height: 25
     },
-    BlockButton_smallShort: {
-        width: 80,
-        marginRight: -5
-    },
-    BlockButton_smallLongLeft: {
+    BlockButton_InfoFeed: {
         width: 170,
         height: 33,
-        marginRight: -15,
-        borderBottomRightRadius: 0,
-        borderTopRightRadius: 0
-    },
-    BlockButton_smallLongRight: {
-        width: 170,
-        height: 33,
-        borderBottomLeftRadius: 0,
-        borderTopLeftRadius: 0
+        marginHorizontal: 0  
     },
 
-    // styles for icon in the button
+    // styles for icon in the button---------------------------------------------------------
     facebook_icon:{
         color: 'white'
     },
     google_icon:{
         color: 'black'
     },
-
     iconBg:{
         backgroundColor: 'transparent',
         height: 30,
         width: 30
     },
 
-    // styles for banner on BlockButton
+    // styles for banner on BlockButton--------------------------------------------------------
     BlockButton__banner: {
         backgroundColor: 'black',
         paddingHorizontal: 8,
@@ -142,7 +121,8 @@ const styles = StyleSheet.create({
     BlockButton__bannerTitle: {
         fontSize: 8,
         color: 'white'
-    }
+    },
+
 })
 
 export {styles};

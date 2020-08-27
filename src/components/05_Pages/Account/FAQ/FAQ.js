@@ -2,15 +2,9 @@ import React, {useState} from 'react'
 import { View, ScrollView, Text, Image } from 'react-native'
 import BottomNav from '../../../02_Molecules/BottomNav/BottomNav'
 import {utilities, fonts, colors} from '../../../../settings/all_settings';
-import { set } from 'react-native-reanimated';
-import { get_user } from '../../../fake_users/stub-users';
-
-import { Collapse, CollapseHeader, CollapseBody } from "accordion-collapse-react-native";
-import { Thumbnail, List, ListItem, Separator } from 'native-base';
 import TextCollapser from '../../../01_Atoms/Buttons/TextCollapser/TextCollapser';
 
 export default function FAQ({navigation}) {
-
     return (
         <View style={utilities.container}>
             <ScrollView>

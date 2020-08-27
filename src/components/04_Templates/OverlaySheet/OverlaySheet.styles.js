@@ -2,62 +2,62 @@ import {StyleSheet, Dimensions} from 'react-native';
 
 // sliding sheet size (height) can be changed in the < Animated.view style{height=...} />. (eg. subView in wallet.styling)
 
+const {height, width} = Dimensions.get('window');
+
 const styles = StyleSheet.create({
-    overlay: {
-        borderRadius: 30, 
-        maxHeight: Dimensions.get('window').height* 0.6, 
-        justifyContent: 'space-between',
-        paddingBottom: '8%'
-    },
-    container: {
-      flex: 0.75,
-    },
-
-    slidingSheet: {
-        flex: 0.75,
+    OverlaySheet: {
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30, 
+        paddingVertical: '8%',
+        width: width,
+        // height: height * 0.55,
+        alignItems: 'center', 
+        position: 'absolute',
+        bottom: 0,
     },
 
-    slidingSheet__header: {
-        flex: 1,
+    OverlaySheetPay: {
+        borderTopLeftRadius: 30,
+        borderTopRightRadius: 30, 
+        paddingVertical: '8%',
+        width: width,
+        height: height * 0.8,
+        // alignItems: 'center', 
+        position: 'absolute',
+        bottom: height * -0.07,
+    },
+
+    OverlaySheet__header: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
         marginTop: '3%',
         marginBottom: '1%',
-
+        marginHorizontal: '5%'
     },
 
-    slidingSheet__content: {
-        flex: 1,
-        marginLeft: '5%',
-        marginRight: '5%',
+    OverlaySheet__content: {
+        marginHorizontal: '5%',
         marginBottom: '7%',
         flexDirection: 'column',
-
     },
-
-    slidingSheet__save: {
-        flex: 1,
-        marginLeft: '3%',
-        flexDirection: 'column',
-    },
-
-    slidingSheet__content_text: {
-        zIndex: -1,
+    OverlaySheet__content_text: {
         fontSize: 15,
         color: 'rgba(52, 52, 52, .8)',
-
+        marginLeft: '5%'
+    },
+    OverlaySheet__save: {
+        marginHorizontal: '8%',
+        marginTop: 15
     },
 
-    // button
-    button: {
-      zIndex: -1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      marginBottom: '-40%',
-
+    OverlaySheet__savepayment: {
+        flex: 1,
+        marginHorizontal: '5%',
+        width: 300,
+        marginLeft: 40,
+        marginTop: -30
     },
-
 })
 
 export default styles;

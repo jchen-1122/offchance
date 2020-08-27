@@ -13,23 +13,26 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    Banner__absolute: {
+    Banner_absolute: {
         position: "absolute",
         top: 0
     },
+
     Banner__title: {
         fontSize: 16,
         color: 'white',
     },
-    Banner__green: {
-        backgroundColor: '#1D9100',
+
+    // different colors
+    Banner_green: {
+        backgroundColor: colors.green,
         height: greenHeight,
     },
-    Banner__black: {
+    Banner_black: {
         backgroundColor: 'black',
         height: blackHeight
     },
-    Banner__red: {
+    Banner_red: {
         backgroundColor: 'red',
         height: redHeight,
     }

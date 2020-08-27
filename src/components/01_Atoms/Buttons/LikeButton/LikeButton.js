@@ -1,10 +1,7 @@
-// Like button with Heart icon
-
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { styles } from "./LikeButton.styling";
 import { Icon } from 'react-native-elements';
-import Tooltip from '../../../02_Molecules/Tooltip/Tooltip';
 
 function LikeButton(props) {
     const ip = require('../../../IP_ADDRESS.json')
@@ -15,41 +12,38 @@ function LikeButton(props) {
     const inLikesPage = (props.inLikesPage != null) ? props.inLikesPage : false
     const [color, setColor] = useState((typeof currUser._id === 'undefined' ? true : currUser.likedRaffles.includes(raffle)))
 
-    // gets number of likes (raffle.amountLiked)
+    // gets the raffle object
     async function getRaffle(id) {
-        let response = await fetch('http://' + ip.ipAddress + '/raffle/id/' + id)
+        let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/id', {
+            method: "POST",
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({id : id})
+        })
         response = await response.json()
+        response.raffle
         return response
     }
 
+    // USER PATCH--------------------------------------------------------------------------------
+    // adds raffle to user.likedRaffles
     const setLike = async () => {
         const ip = require('../../../IP_ADDRESS.json')
-        const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + currUser._id, {
-            method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: makeAddJSON()
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.user
         return json
     }
-
-    const setUnlike = async () => {
-        const ip = require('../../../IP_ADDRESS.json')
-        const response = await fetch('http://' + ip.ipAddress + '/user/edit/' + currUser._id, {
-            method: "PATCH",
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: makeDeleteJSON()
-        })
-        const json = await response.json()
-        return json
-    }
-
+    // creates body for user patch request (add)
     const makeAddJSON = () => {
         let prevLikes = currUser.likedRaffles
         if (!prevLikes.includes(raffle)) {
@@ -58,9 +52,26 @@ function LikeButton(props) {
         let data = {
             likedRaffles: prevLikes
         }
+        data["id"] = currUser._id
         return JSON.stringify(data)
     }
 
+    // removes raffle in user.likedRaffles
+    const setUnlike = async () => {
+        const ip = require('../../../IP_ADDRESS.json')
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: makeDeleteJSON()
+        })
+        let json = await response.json()
+        json = json.user
+        return json
+    }
+    // creates body for user patch request (delete)
     const makeDeleteJSON = () => {
         let prevLikes = currUser.likedRaffles
         for (var i = prevLikes.length - 1; i >= 0; i--) {
@@ -71,32 +82,35 @@ function LikeButton(props) {
         let data = {
             likedRaffles: prevLikes
         }
+        data["id"] = currUser._id
         return JSON.stringify(data)
     }
 
-    // for editing amountLiked field
+
+    // RAFFLE PATCH--------------------------------------------------------------------------------
+    // for editing raffle.amountLiked field
     const editLikes = async (body) => {
-        const response = await fetch('http://' + ip.ipAddress + '/raffle/edit/' + raffle, {
-            method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/edit', {
+            method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(body)
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.raffle
         return json
 
     }
 
     // increment number of amountLiked
     const incLikes = async () => {
-        console.log(currUser._id)
         var raf = await getRaffle(raffle)
         var likes = raf.amountLiked
         var users = raf.likedUsers || []
         users.push(currUser._id)
-        editLikes({ amountLiked: likes + 1, likedUsers: users})
+        editLikes({ amountLiked: likes + 1, likedUsers: users, id : raffle})
     }
 
     // decrement number of amountLiked
@@ -105,12 +119,14 @@ function LikeButton(props) {
         var likes = raf.amountLiked
         var users = raf.likedUsers || []
         users.splice(users.indexOf(currUser._id),1)
-        editLikes({ amountLiked: likes - 1, likedUsers: users })
+        editLikes({ amountLiked: likes - 1, likedUsers: users, id : raffle })
     }
 
+    // can't like a raffle thats in the likes page
     if (inLikesPage) {
         return null
     }
+    // if they're not logged in, it will prompt them
     if (typeof currUser._id === 'undefined' || inLikesPage) {
         return (
             <TouchableOpacity style={styles.LikeButton}
@@ -136,7 +152,7 @@ function LikeButton(props) {
                 setUser(currUser)
             }}>
             {color ? <Icon name='heart' type='material-community' color={'red'} /> :
-                <Icon name='heart-outline' type='material-community' />}
+                <Icon name='heart-outline' type='material-community' color={props.color}/>}
         </TouchableOpacity>
     )
 }

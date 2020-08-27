@@ -1,20 +1,20 @@
 import {StyleSheet, Dimensions} from 'react-native';
 
 const styles = StyleSheet.create({
-    header_name: {
+    Profile__name: {
         fontSize: 25,
         textAlign: 'center',
         fontWeight: '700',
         marginTop: 15
     },
-    header_username: {
+    Profile__username: {
         fontSize: 20,
         textAlign: 'center',
         fontWeight: '300',
         marginTop: 5,
         marginBottom: 20
     },
-    profilePic: {
+    Profile__picture: {
         width: 120,
         height: 120,
         borderRadius: 120 / 2,
@@ -23,21 +23,15 @@ const styles = StyleSheet.create({
         zIndex: -1,
 
     },
-    toggleBar: {
-        alignItems: 'center',
-        marginTop: 20
-    },
-    descriptor: {
+
+    Profile__item__label: {
         fontWeight: '800',
         fontSize: 15
     },
-    description: {
+    Profile__item__value: {
         fontWeight: '300',
         fontSize: 17,
         marginBottom: 25
-    },
-    payment: {
-        marginLeft: -15
     }
 
 })

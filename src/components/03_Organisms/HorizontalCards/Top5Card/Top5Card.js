@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Text, Image, View, TouchableOpacity } from 'react-native';
 import styles from './Top5Card.styling';
 import BlockButton from '../../../01_Atoms/Buttons/BlockButton/BlockButton'
-import { utilities, fonts } from '../../../../settings/all_settings'
+import { global, fonts } from '../../../../settings/all_settings'
 import { set } from 'react-native-reanimated';
 
 // for small, unclickable cards like in Latest Winners
@@ -17,18 +17,19 @@ function Top5Card(props) {
         if (currUser.following.includes(user._id)) {
             return
         }
-        const response = await fetch('http://'+data.ipAddress+'/user/edit/'+currUser._id,{
-          method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit',{
+          method: "POST",
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
           body: makeAddJSON(user)
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.user
         // followed user "follower" count also increases
-        const response2 = await fetch('http://'+data.ipAddress+'/user/edit/'+user._id,{
-          method: "PATCH",
+        const response2 = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit',{
+          method: "POST",
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -42,18 +43,19 @@ function Top5Card(props) {
         if (!currUser.following.includes(user._id)) {
             return
         }
-        const response = await fetch('http://'+data.ipAddress+'/user/edit/'+currUser._id,{
-          method: "PATCH",
+        const response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit',{
+          method: "POST",
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
           body: makeDeleteJSON(user)
         })
-        const json = await response.json()
+        let json = await response.json()
+        json = json.user
         // followed user "follower" count also decreases
-        const response2 = await fetch('http://'+data.ipAddress+'/user/edit/'+user._id,{
-          method: "PATCH",
+        const response2 = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit',{
+          method: "POST",
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
@@ -69,6 +71,7 @@ function Top5Card(props) {
         let data = {
             following: prevFollowing
         }
+        data["id"] = currUser._id
         return JSON.stringify(data)
     }
 
@@ -81,6 +84,7 @@ function Top5Card(props) {
         let data = {
             followers: prevFollowing
         }
+        data["id"] = user._id
         return JSON.stringify(data)
     }
 
@@ -94,6 +98,7 @@ function Top5Card(props) {
         let data = {
             following: prevFollowing
         }
+        data["id"] = currUser._id
         return JSON.stringify(data)
     }
 
@@ -107,16 +112,21 @@ function Top5Card(props) {
         let data = {
             followers: prevFollowing
         }
+        data["id"] = user._id
         return JSON.stringify(data)
     }
     
     return (
-        <View style={utilities.exploreCard}>
-            <TouchableOpacity style={styles.touchable} onPress={() => props.navigation.navigate('OtherUser',{user: user})}>
-                <Image style={styles.image} source={{ uri: user.profilePicture }} />
-                <Text style={[fonts.h3, styles.name]}>@{user.username}</Text>
+        <View style={global.exploreCard}>
+            <TouchableOpacity style={styles.Top5Card__profile} onPress={() => props.navigation.navigate('OtherUser',{user: user})}>
+                <Image style={styles.Top5Card__profilePicture} source={{ uri: user.profilePicture }} />
+                <Text style={[fonts.h3, styles.Top5Card__username]}>@{user.username}</Text>
+                {/* {(user.city) ? <Text style={styles.city}>{user.city}</Text>:null} */}
             </TouchableOpacity>
-            {!Object.keys(currUser).includes('following') ? null : currUser.following.includes(user._id)  ? 
+            {
+                (currUser._id == user._id) ?
+                <View style={{height: 25, marginVertical: 15}}/>:
+                !Object.keys(currUser).includes('following') ? null : currUser.following.includes(user._id)  ? 
                 <BlockButton color="tertiary" size="small" title='FOLLOWING'
                 onPress={async () => {
                     if (enabled) {
@@ -136,7 +146,9 @@ function Top5Card(props) {
                         setEnabled(true)
                     }
                 }}
-                />}
+                />
+            }
+
         </View>
     )
 }

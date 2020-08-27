@@ -1,9 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { Text, View, Dimensions, ScrollView, BackHandler, Alert, Button } from 'react-native'
+import { Icon } from 'react-native-elements';
 // import {fonts} from '../../../settings/fonts';
 import { colors, fonts, utilities } from '../../../../settings/all_settings';
 import BottomNav from '../../../02_Molecules/BottomNav/BottomNav';
 import TopNav from '../../../02_Molecules/TopNav/TopNav';
+import Search from '../../Search/Search'
 import GlobalState from '../../../globalState';
 import { getPendingRaffles } from '../../../../functions/explore_functions';
 import PendingCard from '../../../03_Organisms/PendingCard/PendingCard'
@@ -20,12 +22,6 @@ function Home({ navigation }) {
   React.useEffect(() => {
     async function getRaffle() {
       setPendingRaffles(await getPendingRaffles())
-      h = {}
-      for (var i = 0; i < pendingRaffles.length; i++) {
-        h[pendingRaffles[i]._id] = await getHostObj(pendingRaffles[i].hostedBy)
-        //console.log(h[pendingRaffles[i]._id])
-      }
-      //setHosts(h)
     }
     getRaffle()
 
@@ -51,8 +47,16 @@ function Home({ navigation }) {
 
   async function getHostObj(hostid) {
     try {
-      let host = await fetch('http://' + data.ipAddress + '/user/id/' + hostid)
+      let host = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/id', {
+          method: "POST",
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({id : hostid})
+      })
       host = await host.json()
+      host = host.user
       return host
     } catch (e) {
       return {}
@@ -61,18 +65,18 @@ function Home({ navigation }) {
 
   return (
     <View style={utilities.container}>
-      <ScrollView contentContainerStyle={utilities.scrollview}>
+      <ScrollView contentContainerStyle={[utilities.scrollview,{justifyContent: 'flex-start'}]}>
         <TopNav navigation={navigation} active='Drawings' admin={true} />
-        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'flex-end' }}>
-          <Button title={'Refresh'} onPress={() => setRefresh(!refresh)} />
+        <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
+          <Icon name='magnify' type='material-community' color='black' onPress={() => navigation.navigate("Search")} style={{marginTop: 8, marginLeft: 8, marginRight: Dimensions.get('screen').width * 0.35}}/>
+          <Button title={'Drawings Pending Approval'} onPress={() => setRefresh(!refresh)} />
         </View>
-        <View style={utilities.flexCenter}>
+        <View>
           {pendingRaffles.map((raffle, index) =>
             <PendingCard
               data={raffle}
               navigation={navigation}
             />)}
-
         </View>
       </ScrollView>
       <BottomNav navigation={navigation} active={'AdminHome'} admin={true} />

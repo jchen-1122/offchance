@@ -6,11 +6,12 @@ export function stripeFirstPayment(name, amount) {
     const {user, setUser} = useContext(GlobalState)
     const [sessionId, setSessionId] = useState(null)
     const data = require('../../../IP_ADDRESS.json');
+    console.log('SAVING PAY')
 
     // Called everytime the URL starts to load in the webview
     useEffect(() => {
         async function onLoadStart() {
-            let response = await fetch('http://' + data.ipAddress + '/user/oneTimeSave', {
+            let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/oneTimeSave', {
                 method: "POST",
                 headers: {
                 'Accept': 'application/json',
@@ -21,13 +22,13 @@ export function stripeFirstPayment(name, amount) {
             let json = await response.json()
             setSessionId(json.session_id)
             // save user payment information
-            let userResponse = await fetch('http://' + data.ipAddress + '/user/edit/' + user._id, {
-                method: "PATCH",
+            let userResponse = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/edit', {
+                method: "POST",
                 headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({paymentInfo: json.customer})
+                body: JSON.stringify({paymentInfo: json.customer, id: user._id})
             })
             // console.log(json.last4)
         }
