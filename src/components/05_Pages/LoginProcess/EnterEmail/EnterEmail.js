@@ -81,7 +81,7 @@ export default function EnterEmail({ navigation }) {
   const ipaddr = require('../../../IP_ADDRESS.json');
 
   const emailcode = async () => {
-    const response = await fetch('http://'+ipaddr.ipAddress+'/user/sendcode',{
+    const response = await fetch('https://verify-sample-2928-dev.twil.io/start-verify',{
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -95,7 +95,7 @@ export default function EnterEmail({ navigation }) {
   }
 
   const verification = async () => {
-    const response = await fetch('http://'+ipaddr.ipAddress+'/user/verifycode',{
+    const response = await fetch('https://verify-sample-2928-dev.twil.io/check-verify',{
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -111,8 +111,9 @@ export default function EnterEmail({ navigation }) {
   // makes a json object with all the input fields
   const makeJSON = () => {
     let data = {
-      email: _email,
-      code: _code
+      to: _email,
+      channel: 'email',
+      verification_code: _code
     }
     return JSON.stringify(data)
   }

@@ -184,7 +184,7 @@ function Card({ navigation, data, cardType, currUserG, setUserG, inLikesPage, ba
                             {picture}
                             <View>
                                 <Text>{person}{caption}<Text style={{ fontWeight: 'bold' }}>{title}</Text></Text>
-                                <Text style={styles.FeedCard__timestamp}>{time_from_now(date, true)}</Text>
+                                <Text style={styles.FeedCard__timestamp}>{date ? time_from_now(date, true) : 'Coming Soon'}</Text>
                             </View>
                         </View>
                         <View style={{ width: '100%', alignItems: 'center' }}>

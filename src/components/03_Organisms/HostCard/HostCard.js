@@ -3,7 +3,7 @@ import { View, ScrollView, Text, Image, TouchableOpacity } from 'react-native'
 import { utilities, fonts, colors } from '../../../settings/all_settings';
 import GlobalState from '../../globalState'
 import { styles } from './HostCard.styling'
-import { getTimer } from '../../../functions/convert_dates'
+import { getTimer, is_expired } from '../../../functions/convert_dates'
 import Countdown from '../../01_Atoms/Countdown/Countdown'
 
 export default function HostCard(props) {
@@ -19,7 +19,13 @@ export default function HostCard(props) {
                         <Text style={{ fontWeight: 'bold' }}>{raffle.name}</Text>
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.HostCard__info__label}>Time Left:</Text>
-                            <Text>{getTimer(raffle.startTime, false)}</Text>
+                            <Text>{
+                            raffle.startTime ? 
+                                (!is_expired(raffle.startTime) ?
+                                    getTimer(raffle.startTime, false) : 
+                                    'Expired')
+                                :' Not Set'
+                            }</Text>
                         </View>
                         <View style={{ flexDirection: 'row' }}>
                             <Text style={styles.HostCard__info__label}>Amount Raised:</Text>

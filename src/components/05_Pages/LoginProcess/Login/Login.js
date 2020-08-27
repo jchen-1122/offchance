@@ -164,8 +164,10 @@ export default function Login({ navigation, route }) {
             onPress={() => navigation.navigate('EnterEmail')} />
         </View>
 
-        {/* if some input field is invalid, a red error message will pop up */}
+        <View style={{width: '100%', marginLeft: '10%'}}>
         {_errors}
+        </View>
+        {/* if some input field is invalid, a red error message will pop up */}
 
         {/* TODO: Links to Home (no home page currently, button is not functional) */}
         <BlockButton
@@ -174,9 +176,9 @@ export default function Login({ navigation, route }) {
           disabled={buttonText == "LOGGING IN..."}
           onPress={async () => {
             if (!generateErrors()) {
-              setButtonText("LOGGING IN...")
               const userObj = await loginUser()
-              if (userObj.error == null) {
+              if (userObj && userObj.error == null) {
+                setButtonText("LOGGING IN...")
                 setUser(userObj)
                 await AsyncStorage.setItem('user', userObj._id)
                 if (userObj.email === 'admin@admin.com') {
@@ -187,15 +189,11 @@ export default function Login({ navigation, route }) {
                   navigation.navigate('Home')
                   setButtonText("LOG IN")
                 }
-                {/* TODO: Comment out for the sake of convenience. At the end of the day modify plz.
-                 {/* https://stackoverflow.com/questions/42831685/disable-back-button-in-react-navigation}
-              navigation.reset({
-                index: 0,
-                // routes: [{ name: 'HowItWorks' }],
-                actions: [navigation.navigate('HowItWorks', {fromLogin: true})]}) */}
-              } else {
+              }
+               else {
                 let errors = []
                 errors.push(<Text style={fonts.error}>Password is not valid</Text>)
+                console.log(errors)
                 setErrors(errors)
               }
             }

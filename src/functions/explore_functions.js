@@ -179,6 +179,9 @@ export async function getLatestWinners() {
     return latestWinners
 }
 
+// ADMIN FUNCTIONS =================================================================================================================
+
+// raffles that are pending approval from the admin
 export async function getPendingRaffles() {
     let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/query', {
         method: "POST",
@@ -194,6 +197,7 @@ export async function getPendingRaffles() {
     return response
 }
 
+// users that are pending approval from the admin
 export async function getPendingUsers() {
     let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/query', {
         method: "POST",
@@ -222,6 +226,7 @@ export async function getPendingUsers() {
     return res
 }
 
+// users that were reported in live chat
 export async function getReportedUsers() {
     let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/users/query', {
         method: "POST",
@@ -242,7 +247,9 @@ export async function getReportedUsers() {
     return reported
 }
 
-// get coming soon
+// HOME FUNCTIONS =================================================================================================================
+
+// get coming soon raffles
 export async function getComingSoon() {
     let response = await fetch('https://8f5d9a32.us-south.apigw.appdomain.cloud/raffle/query', {
         method: "POST",
