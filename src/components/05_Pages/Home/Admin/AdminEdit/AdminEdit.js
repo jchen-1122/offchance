@@ -2,14 +2,13 @@ import React, { useState, useContext, useRef } from 'react';
 import { View, Text, Alert, Keyboard, Button, TouchableOpacity, Image, Dimensions } from 'react-native';
 import BlockButton from '../../../../01_Atoms/Buttons/BlockButton/BlockButton';
 import InputField from '../../../../02_Molecules/InputField/InputField';
-import { fonts, utilities } from '../../../../../settings/all_settings';
+import { global, utilities } from '../../../../../settings/all_settings';
 import { ScrollView } from 'react-native-gesture-handler';
 import GlobalState from '../../../../globalState';
 import BottomNav from '../../../../02_Molecules/BottomNav/BottomNav';
 import Dropdown from '../../../../01_Atoms/DropDown/DropDown';
 import SizeCarousel from '../../../../01_Atoms/SizeCarousel/SizeCarousel';
 import Checkbox from '../../../../02_Molecules/Checkbox/Checkbox';
-import { styles } from './AdminEdit.styling';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { format_date } from '../../../../../functions/convert_dates';
@@ -318,17 +317,17 @@ export default function AdminEdit({ navigation, route }) {
                             textArea />
 
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 2, marginVertical: 15 }}>
-                            <Text style={styles.InputField__label}>Drawing Duration (Days)*</Text>
+                            <Text style={global.label}>Drawing Duration (Days)*</Text>
                             <Dropdown options={['1', '3', '5', '7', '14', '21', '30']} placeholder={_drawingDuration.toString()} setValue={setDrawingDuration} />
                         </View>
 
                         <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%', zIndex: 1 }}>
-                            <Text style={styles.InputField__label}>Drawing Radius* (mi)</Text>
+                            <Text style={global.label}>Drawing Radius* (mi)</Text>
                             <Dropdown options={['None', 1, 5, 10, 20, 50, 100, 200, 1000]} placeholder={_drawingRadius} setValue={setDrawingRadius} />
                         </View>
 
                         <View style={{ width: '100%', marginVertical: 15 }}>
-                            <Text style={styles.InputField__label}>Type of Product*</Text>
+                            <Text style={global.label}>Type of Product*</Text>
                             {productTypes.map((type, index) =>
                                 <Checkbox
                                     text={type.charAt(0).toUpperCase() + type.slice(1)}
@@ -350,18 +349,18 @@ export default function AdminEdit({ navigation, route }) {
 
                         {_productType == 'sneaker' ?
                             <View style={{ height: 75 }}>
-                                <Text style={[styles.InputField__label]}>Available Sizes*</Text>
+                                <Text style={[global.label]}>Available Sizes*</Text>
                                 <SizeCarousel sizes={route.params.sizes} type='multiple' default={1} setSize={setSizes} />
                             </View>
                             : null}
                         {_productType == 'clothing' ?
                             <View style={{ height: 75, width: '95%' }}>
-                                <Text style={[styles.InputField__label]}>Available Sizes*</Text>
+                                <Text style={[global.label]}>Available Sizes*</Text>
                                 <SizeCarousel sizes={route.params.sizes} type='multiple' default={1} setSize={setSizes} />
                             </View>
                             : null}
                         <View style={{ width: '95%', marginVertical: '5%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                            <Text style={[styles.InputField__label]}>Product Pictures*</Text>
+                            <Text style={[global.label]}>Product Pictures*</Text>
                             <BlockButton color="secondary" title="CHOOSE" size="small" />
                         </View>
 
@@ -369,7 +368,7 @@ export default function AdminEdit({ navigation, route }) {
                                 <Image source={{ uri: route.params.images[0] }}
                                     style={{ height: Dimensions.get('window').height * 0.3, width: Dimensions.get('window').width, resizeMode: 'contain', marginBottom: '5%' }}></Image>}
                         <View style={{ width: '100%', marginVertical: 10 }}>
-                            <Text style={styles.InputField__label}>Status*</Text>
+                            <Text style={global.label}>Status*</Text>
                             <View style={{ flexDirection: 'row' }}>
                                 {['Live', 'Coming Soon', 'Resubmit'].map((status, index) =>
                                     <Checkbox
@@ -393,9 +392,9 @@ export default function AdminEdit({ navigation, route }) {
                         {/* WE NEED THIS FOR ADMIN */}
                         {/* // sup chelly, can u also set the _startTime to the correct format */}
                         {(_status === 'Live') ? <View style={{ width: '100%',  marginTop: 15 }}>
-                            <Text style={styles.InputField__label}>Drawing Time*</Text>
+                            <Text style={global.label}>Drawing Time*</Text>
                             <View style={{ width: '95%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-                                <Text style={styles.InputField__label}>{_startTime == null ? "Pick A Start Date" : format_date(new Date(_startTime * 1000))}</Text>
+                                <Text style={global.label}>{_startTime == null ? "Pick A Start Date" : format_date(new Date(_startTime * 1000))}</Text>
                                 <BlockButton color="secondary" size="small" title={(route.params.approved) ? 'CHANGE' : 'CHOOSE'} onPress={showDatePicker} />
                             </View>
                         </View> : null}

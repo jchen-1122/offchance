@@ -36,6 +36,13 @@ const global = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginHorizontal: Dimensions.get('window').width * 0.025
+    },
+
+    // for forms
+    label: {
+        fontSize: 14,
+        fontWeight: '500', 
+        color: '#888888'
     }
 })
 

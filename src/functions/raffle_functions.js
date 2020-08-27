@@ -10,10 +10,5 @@ export function live_drawing_now(raffle){
     var now = moment()
     var startTime = moment(raffle.startTime * 1000)
     var endTime = moment(startTime).add(LDE_duration, 'minutes') 
-    // console.log('-----------------------------------')
-    // console.log('now', now.format('LLLL'))
-    // console.log('startTime', startTime.format('LLLL'))
-    // console.log('endTime', endTime.format('LLLL'))
-
     return (now.isAfter(startTime) && now.isBefore(endTime))
 }
