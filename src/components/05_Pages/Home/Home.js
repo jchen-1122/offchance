@@ -51,7 +51,7 @@ function Home({ navigation }) {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({query: "approved", val: true})
+          body: JSON.stringify({query: "approved", val: "true"})
       })
       response = await response.json()
       response = response.raffles

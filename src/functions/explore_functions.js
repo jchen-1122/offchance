@@ -130,7 +130,7 @@ export async function getLatestRaffles() {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({query: "approved", val: true})
+        body: JSON.stringify({query: "approved", val: "true"})
     })
     response = await response.json()
     response = response.raffles
@@ -186,10 +186,11 @@ export async function getPendingRaffles() {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({query: "approved", val: false})
+        body: JSON.stringify({query: "approved", val: "false"})
     })
     response = await response.json()
     response = response.raffles
+    console.log(response.length)
     return response
 }
 
@@ -200,7 +201,7 @@ export async function getPendingUsers() {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({query: "isHost", val: false})
+        body: JSON.stringify({query: "approved", val: "false"})
     })
     response = await response.json()
     response = response.users
@@ -249,7 +250,7 @@ export async function getComingSoon() {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({query: "approved", val: true})
+        body: JSON.stringify({query: "approved", val: "true"})
     })
     response = await response.json()
     response = response.raffles
@@ -270,7 +271,7 @@ export async function getLive() {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({query: "approved", val: true})
+        body: JSON.stringify({query: "approved", val: "true"})
     })
     response = await response.json()
     response = response.raffles
