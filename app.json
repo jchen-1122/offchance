@@ -1,12 +1,13 @@
 {
   "expo": {
-    "name": "app",
+    "name": "OffChance",
     "slug": "app",
-    "version": "1.0.0",
+    "privacy": "unlisted",
+    "version": "1.0.1",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/icon.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,13 +18,18 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.offchance.OffChance"
     },
     "facebookScheme": "fb644043759802145",
     "facebookAppId": "644043759802145",
     "facebookDisplayName": "offchance",
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "android": {
+      "package": "Android.package"
+    },
+    "entryPoint": "node_modules/expo/AppEntry.js"
   }
 }

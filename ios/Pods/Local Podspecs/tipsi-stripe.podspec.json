@@ -4,9 +4,7 @@
   "summary": "React Native Stripe binding for iOS/Andriod platforms",
   "description": "React Native Stripe binding for iOS/Andriod platforms",
   "license": "MIT",
-  "authors": {
-    "name": "Tipsi"
-  },
+  "authors": "Tipsi",
   "homepage": "https://github.com/tipsi/tipsi-stripe#readme",
   "source": {
     "git": "https://github.com/tipsi/tipsi-stripe",

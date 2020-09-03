@@ -29,6 +29,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>EXApplication.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>EXConstants.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -64,11 +69,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>EXInAppPurchases.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>EXKeepAwake.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -84,7 +84,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>EXPaymentsStripe.xcscheme</key>
+		<key>EXNotifications.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -99,7 +99,17 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>EXSharing.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>EXSplashScreen.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>EXUpdates.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -169,7 +179,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-offchancebabre.xcscheme</key>
+		<key>Pods-OffChance.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -410,6 +420,11 @@
 			<false/>
 		</dict>
 		<key>react-native-safe-area-context.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>react-native-view-shot.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
